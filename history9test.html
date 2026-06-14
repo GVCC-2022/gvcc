@@ -49,8 +49,9 @@ border-radius:10px;
 <h1>📚 Class 9 History Test</h1>
 <p>Gyan Varsha Coaching Center</p>
 </div><div class="box">
-<input type="text" id="name" placeholder="Student Name">
-<input type="text" id="roll" placeholder="Roll Number">
+<input type="text" id="name" placeholder="Student Name" readonly>
+
+<input type="text" id="roll" placeholder="Roll Number" onkeyup="findName()">
 </div><div class="box">
 <p><b>Q1. ट्रिपल एलायंस का गठन कब किया गया था?</b></p>
 <input type="radio" name="q1" value="0">1782<br>
@@ -168,8 +169,34 @@ border-radius:10px;
 <div id="result"></div>
 
 <script>
-function checkResult(){
+function findName(){
 
+let students = {
+"901":"Prince Kumar",
+"902":"Avinash Kumar",
+"903":"Shyam Kumar",
+"904":"Kajal Kumari",
+"905":"Nuzhat Parveen",
+"906":"Sneha Kumari",
+"907":"Aditya Soni",
+"908":"Gautam Kumari",
+"909":"Mamta Kumari",
+"910":"Priya Kumari",
+"911":"Muskan Khatoon",
+"912":"Abhishek Kumar",
+"913":"Rahul Kumar",
+"914":"Saqib Ansari",
+"915":"Prince Kumar 2",
+"916":"Ritik Raushan"
+};
+
+let roll = document.getElementById("roll").value;
+
+document.getElementById("name").value =
+students[roll] || "";
+}
+  
+function checkResult(){
 let roll = document.getElementById("roll").value;
 
 let validRolls = [
