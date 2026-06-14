@@ -161,7 +161,35 @@ return;
 
 document.getElementById("msg").innerHTML =
 "✅ Welcome " + students[roll];
+document.getElementById("questions").innerHTML = `
+<h3>Q1. 25 + 17 = ?</h3>
+<input type="radio" name="q1"> 40<br>
+<input type="radio" name="q1"> 41<br>
+<input type="radio" name="q1"> 42<br>
+<input type="radio" name="q1"> 43<br>
+`;
 
+let time = 1200;
+
+let timer = setInterval(function(){
+
+let minutes = Math.floor(time/60);
+let seconds = time%60;
+
+document.getElementById("timer").innerHTML =
+"⏰ " + minutes + ":" +
+(seconds<10 ? "0"+seconds : seconds);
+
+time--;
+
+if(time < 0){
+clearInterval(timer);
+
+document.getElementById("timer").innerHTML =
+"⏰ Time Over!";
+}
+
+},1000);
 }
 
 </script></body>
