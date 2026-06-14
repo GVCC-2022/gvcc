@@ -399,7 +399,17 @@ document.getElementById("result").innerHTML =
 "<h3>" + medal + "</h3>";
 document.querySelectorAll('input[type="radio"]')
 .forEach(e => e.disabled = true);
+let msg =
+"🧮 Gyan Varsha Basic Maths Mission Day 1%0A%0A" +
+"Name: " + document.getElementById("name").value + "%0A" +
+"Roll No: " + document.getElementById("roll").value + "%0A" +
+"Score: " + score + "/30%0A" +
+"Percentage: " + percent.toFixed(0) + "%%0A" +
+"Result: " + status + "%0A" +
+"Medal: " + medal;
 
+document.getElementById("waBtn").href =
+"https://wa.me/916203491210?text=" + msg;
 document.getElementById("submitBtn").style.display = "none";
 
 }
