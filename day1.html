@@ -72,7 +72,13 @@ readonly>
 <h2 id="timer">⏰ 20:00</h2>
 
 <div id="questions"></div>
-<p id="msg"></p></div><div class="footer">
+<p id="msg">
+<button onclick="checkResult()">
+📝 Submit Test
+</button>
+
+<div id="result"></div>
+</p></div><div class="footer">
 Prepared By: Md Faiyaz
 </div><script>
 let timerStarted = false;
@@ -153,6 +159,53 @@ students[roll] || "";
 }
 
 function startMission(){
+function checkResult(){
+
+let score = 0;
+
+document.querySelectorAll('input[type=radio]:checked')
+.forEach(e => score += Number(e.value));
+
+let percent = (score/30)*100;
+
+let status =
+percent >= 60 ? "PASS ✅" : "FAIL ❌";
+
+let medal = "";
+
+if(score >= 27){
+medal = "🥇 Gold";
+}
+else if(score >= 24){
+medal = "🥈 Silver";
+}
+else if(score >= 18){
+medal = "🥉 Bronze";
+}
+else{
+medal = "📚 Needs Practice";
+}
+
+document.getElementById("result").innerHTML =
+"<h2>Result</h2>" +
+"<p><b>Name:</b> " +
+document.getElementById("name").value +
+"</p>" +
+
+"<p><b>Roll No:</b> " +
+document.getElementById("roll").value +
+"</p>" +
+
+"<p><b>Score:</b> " +
+score + "/30</p>" +
+
+"<p><b>Percentage:</b> " +
+percent.toFixed(0) + "%</p>" +
+
+"<h3>" + status + "</h3>" +
+"<h3>" + medal + "</h3>";
+
+}
 
 document.getElementById("startBtn").disabled = true;
 
