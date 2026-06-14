@@ -42,6 +42,14 @@ margin-top:30px;
 </head>
 
 <body>
+<script>
+let pass = prompt("Enter Notes Password");
+
+if(pass != "GVCC@437"){
+document.write("<h2>❌ Wrong Password</h2>");
+throw new Error("Access Denied");
+}
+  </script>
 
 <div class="header">
 <h1>📚 Notes Section</h1>
