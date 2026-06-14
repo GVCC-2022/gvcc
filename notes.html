@@ -2,34 +2,47 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notes - Gyan Varsha Coaching</title>
+<title>Notice Board</title>
 
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f4f6f9;
-text-align:center;
 margin:0;
+padding:0;
 }
 
 .header{
 background:#003366;
 color:white;
 padding:20px;
+text-align:center;
 }
 
-.btn{
-display:block;
-background:#007bff;
-color:white;
-text-decoration:none;
+.notice{
+background:white;
+margin:15px;
 padding:15px;
-margin:12px auto;
-width:85%;
-max-width:300px;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
+border-left:5px solid #007bff;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.date{
+color:gray;
+font-size:14px;
+}
+
+h2{
+margin-top:0;
+}
+
+.footer{
+background:#003366;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
 }
 </style>
 </head>
@@ -37,15 +50,31 @@ font-weight:bold;
 <body>
 
 <div class="header">
-<h1>📚 Select Class</h1>
+<h1>📢 Notice Board</h1>
+<p>Latest Updates & Announcements</p>
 </div>
 
-<a class="btn" href="#">📘 Class 6 (Coming Soon)</a>
-<a class="btn" href="#">📘 Class 7 (Coming Soon)</a>
-<a class="btn" href="#">📘 Class 8 (Coming Soon)</a>
-<a class="btn" href="#">📘 Class 9 (Coming Soon)</a>
+<div class="notice">
+<h2>📚 Class 10 Maths Notes Added</h2>
+<p>All chapter formula notes are now available in Notes Section.</p>
+<p class="date">Updated: Today</p>
+</div>
 
-<a class="btn" href="class10.html">📘 Class 10</a>
+<div class="notice">
+<h2>🏆 History Monthly Test Result Published</h2>
+<p>Students can check results from the Result Section.</p>
+<p class="date">Updated: Today</p>
+</div>
+
+<div class="notice">
+<h2>🎥 Live Class Information</h2>
+<p>Google Meet link will be updated before every class.</p>
+<p class="date">Updated: Today</p>
+</div>
+
+<div class="footer">
+© Gyan Varsha Coaching Center
+</div>
 
 </body>
 </html>
