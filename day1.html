@@ -1,15 +1,148 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-<title>Day 1</title>
-</head>
-<body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 - Basic Maths Mission</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+text-align:center;
+margin:0;
+padding:0;
+}
 
+.header{
+background:#003366;
+color:white;
+padding:20px;
+}
+
+.box{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+}
+
+input{
+width:90%;
+padding:12px;
+margin:10px 0;
+font-size:16px;
+}
+
+button{
+background:#007bff;
+color:white;
+padding:12px;
+border:none;
+border-radius:8px;
+font-size:18px;
+width:95%;
+}
+
+.footer{
+background:#003366;
+color:white;
+padding:15px;
+margin-top:20px;
+}
+</style></head><body><div class="header">
 <h1>🧮 Gyan Varsha Basic Maths Mission</h1>
+<p>Day 1 - Arithmetic Foundation</p>
+</div><div class="box"><input type="text"
+id="roll"
+placeholder="Enter Roll Number"
+onkeyup="findName()">
 
-<h2>Day 1</h2>
+<input type="text"
+id="name"
+placeholder="Student Name"
+readonly>
 
-<p>Coming Soon...</p>
+<button onclick="startMission()">
+🚀 Start Day 1
+</button><p id="msg"></p></div><div class="footer">
+Prepared By: Md Faiyaz
+</div><script>
 
-</body>
+let students = {
+
+"801":"Anamika Kumari",
+"802":"Radhika Kumari",
+"803":"Sabrun Khatoon",
+"804":"Rubana Khatoon",
+"805":"Zainab Parveen",
+"806":"Sabiya Khatoon",
+"807":"Fatima Khatoon",
+"808":"Farida Khatoon",
+"809":"Sama Khatoon",
+"810":"Sahnuma Parveen",
+"811":"Musarrat Khatoon",
+"812":"Mamta Kumari",
+"813":"Sakshi Kumari",
+"814":"Md Ashika",
+"815":"Raji Alam",
+"816":"Subodh Kumar",
+"817":"Radhe Krishna",
+"818":"Ansh Kumar",
+"819":"Md Salman",
+
+"917":"Manish Kumar",
+
+"1001":"Aasmin Khatoon",
+"1002":"Saloni Kumari",
+"1003":"Anjali Kumari",
+"1004":"Nitam Kumari",
+"1005":"Saniya Kumari",
+"1006":"Sajiya Parveen",
+"1007":"Rounak Parveen",
+"1008":"Rahnaz Khatoon",
+"1009":"Mustara Khatoon",
+"1010":"Raziya Tabassum",
+"1011":"Ishrat Khatoon",
+"1012":"Rupa Kumari",
+"1013":"Priyanshu Kumari",
+"1014":"Anu Kumari",
+"1015":"Shruti Kumari",
+"1016":"Shivani Kumari I",
+"1017":"Shivani Kumari II",
+"1018":"Afsana Khatoon",
+"1019":"Kajal Kumari",
+"1020":"Priti Kumari",
+"1021":"Md Noor Alam",
+"1022":"Sajan Kumar",
+"1023":"Pankaj Kumar"
+
+};
+
+function findName(){
+
+let roll =
+document.getElementById("roll").value;
+
+document.getElementById("name").value =
+students[roll] || "";
+
+}
+
+function startMission(){
+
+let roll =
+document.getElementById("roll").value;
+
+if(!students[roll]){
+
+document.getElementById("msg").innerHTML =
+"❌ Invalid Roll Number";
+
+return;
+
+}
+
+document.getElementById("msg").innerHTML =
+"✅ Welcome " + students[roll];
+
+}
+
+</script></body>
 </html>
