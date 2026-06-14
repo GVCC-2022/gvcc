@@ -175,6 +175,10 @@ document.getElementById("startBtn").disabled = true;
 
 let roll =
 document.getElementById("roll").value;
+if(localStorage.getItem("day1_" + roll)){
+alert("❌ Aap Day 1 Test pehle hi submit kar chuke hain.");
+return;
+}
 
 if(!students[roll]){
 
@@ -374,6 +378,10 @@ let score = 0;
 
 document.querySelectorAll('input[type=radio]:checked')
 .forEach(e => score += Number(e.value));
+localStorage.setItem(
+"day1_" + document.getElementById("roll").value,
+"submitted"
+);
 
 let percent = (score/30)*100;
 let status = percent >= 60 ? "✅ PASS" : "❌ FAIL";
