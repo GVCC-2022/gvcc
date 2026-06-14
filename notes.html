@@ -2,94 +2,21 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notes Section</title>
-
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-text-align:center;
-margin:0;
-}
-
-.header{
-background:#003366;
-color:white;
-padding:20px;
-}
-
-.btn{
-display:block;
-background:#007bff;
-color:white;
-text-decoration:none;
-padding:15px;
-margin:12px auto;
-width:85%;
-max-width:300px;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
-}
-
-.footer{
-background:#003366;
-color:white;
-padding:15px;
-margin-top:30px;
-}
-</style>
+<title>Notes Login</title>
 </head>
-<script>
-const pass = prompt("🔒 Enter Notes Password");
-
-if (pass !== "GVCC@437") {
-    document.open();
-    document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Access Denied</title>
-      <style>
-        body{
-          font-family:Arial;
-          text-align:center;
-          padding-top:100px;
-          background:#f4f6f9;
-        }
-        h1{
-          color:red;
-        }
-      </style>
-    </head>
-    <body>
-      <h1>❌ Wrong Password</h1>
-      <p>Access Denied</p>
-    </body>
-    </html>
-    `);
-    document.close();
-    throw new Error("Access Denied");
-}
-</script>
-
 <body>
 
-<div class="header">
-<h1>📚 Notes Section</h1>
-<p>Select Your Class</p>
-</div>
+<script>
+let pass = prompt("🔒 Enter Notes Password");
 
-<a class="btn" href="#">Class 6 (Coming Soon)</a>
-<a class="btn" href="#">Class 7 (Coming Soon)</a>
-<a class="btn" href="#">Class 8 (Coming Soon)</a>
-<a class="btn" href="#">Class 9 (Coming Soon)</a>
-
-<a class="btn" href="class10.html">🎓 Class 10</a>
-
-<div class="footer">
-© Gyan Varsha Coaching Center
-</div>
+if(pass === "GVCC@437"){
+    window.location.href = "notes-home.html";
+}
+else{
+    document.body.innerHTML =
+    "<h1 style='color:red;text-align:center;margin-top:100px;'>❌ Wrong Password</h1><p style='text-align:center;'>Access Denied</p>";
+}
+</script>
 
 </body>
 </html>
