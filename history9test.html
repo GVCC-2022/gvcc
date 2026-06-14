@@ -1,15 +1,99 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Class 9 History Test</title>
-</head>
+<title>Class 9 History Test</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:15px;
+}
 
-<body style="font-family:Arial;text-align:center;background:#f4f6f9;">
+.header{
+background:#003366;
+color:white;
+padding:20px;
+text-align:center;
+border-radius:10px;
+}
 
+.box{
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:10px;
+}
+
+input[type=text]{
+width:95%;
+padding:10px;
+margin:5px 0;
+}
+
+button{
+background:#007bff;
+color:white;
+padding:15px;
+border:none;
+border-radius:10px;
+width:100%;
+font-size:18px;
+}
+
+#result{
+margin-top:20px;
+background:white;
+padding:15px;
+border-radius:10px;
+}
+</style></head><body><div class="header">
 <h1>📚 Class 9 History Test</h1>
+<p>Gyan Varsha Coaching Center</p>
+</div><div class="box">
+<input type="text" id="name" placeholder="Student Name">
+<input type="text" id="roll" placeholder="Roll Number">
+</div><div class="box">
+<p><b>Q1. ट्रिपल एलायंस का गठन कब किया गया था?</b></p>
+<input type="radio" name="q1" value="0">1782<br>
+<input type="radio" name="q1" value="0">1883<br>
+<input type="radio" name="q1" value="0">1983<br>
+<input type="radio" name="q1" value="1">1882
+</div><div class="box">
+<p><b>Q2. 1917 में कौन-सा देश प्रथम विश्व युद्ध से अलग हो गया?</b></p>
+<input type="radio" name="q2" value="0">अमेरिका<br>
+<input type="radio" name="q2" value="0">जर्मनी<br>
+<input type="radio" name="q2" value="1">रूस<br>
+<input type="radio" name="q2" value="0">इटली
+</div><div class="box">
+<p><b>Q3. मीनकैम्फ किसकी रचना है?</b></p>
+<input type="radio" name="q3" value="0">मुसोलनी<br>
+<input type="radio" name="q3" value="1">हिटलर<br>
+<input type="radio" name="q3" value="0">हिण्डेनवर्ग<br>
+<input type="radio" name="q3" value="0">स्ट्रैसमैन
+</div><button onclick="checkResult()">Submit Test</button>
 
-<p>History MCQ Test Loading...</p>
+<div id="result"></div><script>
+function checkResult(){
 
-</body>
+let score=0;
+
+document.querySelectorAll('input[type=radio]:checked').forEach(
+e => score += Number(e.value)
+);
+
+let percent=(score/3)*100;
+
+let status = percent>=60 ? "PASS ✅" : "FAIL ❌";
+
+document.getElementById("result").innerHTML=
+"<h2>Result</h2>"+
+"<p><b>Name:</b> "+document.getElementById('name').value+"</p>"+
+"<p><b>Roll No:</b> "+document.getElementById('roll').value+"</p>"+
+"<p><b>Score:</b> "+score+"/3</p>"+
+"<p><b>Percentage:</b> "+percent.toFixed(0)+"%</p>"+
+"<h3>"+status+"</h3>"+
+"<hr>"+
+"<p>Gyan Varsha Coaching Center</p>"+
+"<p>Prepared By: Md Faiyaz</p>";
+}
+</script></body>
 </html>
