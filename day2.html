@@ -190,10 +190,6 @@ function findName(){
 
 let roll =
 document.getElementById("roll").value;
-if(!allowedStudents.includes(roll)){
-   alert("❌ Aap Day 2 ke liye eligible nahi hain.");
-   return;
-}
 
 document.getElementById("name").value =
 students[roll] || "";
