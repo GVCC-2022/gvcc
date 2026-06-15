@@ -429,6 +429,21 @@ let msg =
 document.getElementById("waBtn").href =
 "https://wa.me/916203491210?text=" + msg;
 document.getElementById("submitBtn").style.display = "none";
+addDoc(collection(db, "results"), {
+  name: document.getElementById("name").value,
+  roll: document.getElementById("roll").value,
+  score: score,
+  percentage: percent.toFixed(0),
+  medal: medal,
+  result: status,
+  date: new Date().toLocaleString()
+})
+.then(() => {
+  console.log("Result Saved");
+})
+.catch((error) => {
+  console.log("Error:", error);
+});
 
 }
 </script>
