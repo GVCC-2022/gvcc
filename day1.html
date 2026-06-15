@@ -450,8 +450,14 @@ addDoc(collection(db, "results"), {
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getFirestore, collection, addDoc }
-from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -469,6 +475,9 @@ const db = getFirestore(app);
 window.db = db;
 window.addDoc = addDoc;
 window.collection = collection;
+window.getDocs = getDocs;
+window.query = query;
+window.where = where;
 
 </script>
   
