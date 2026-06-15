@@ -431,5 +431,31 @@ document.getElementById("waBtn").href =
 document.getElementById("submitBtn").style.display = "none";
 
 }
-</script></body>
+</script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getFirestore, collection, addDoc }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+  authDomain: "gvcc-database.firebaseapp.com",
+  projectId: "gvcc-database",
+  storageBucket: "gvcc-database.firebasestorage.app",
+  messagingSenderId: "1063216875940",
+  appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
+  measurementId: "G-DP808QLE7K"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+
+</script>
+  
+</body>
 </html>
