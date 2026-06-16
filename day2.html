@@ -455,17 +455,17 @@ localStorage.setItem(
 "submitted"
 );
 
-let percent = (score/30)*100;
+let percent = (score/20)*100;
 let status = percent >= 60 ? "✅ PASS" : "❌ FAIL";
 let medal = "";
 
-if(score >= 27){
+if(score >= 18){
    medal = "🥇 Gold";
 }
-else if(score >= 24){
+else if(score >= 15){
    medal = "🥈 Silver";
 }
-else if(score >= 18){
+else if(score >= 12){
    medal = "🥉 Bronze";
 }
 else{
@@ -474,7 +474,7 @@ else{
 
 document.getElementById("result").innerHTML =
 "<h2>Result</h2>" +
-"<p>Score: " + score + "/30</p>" +
+"<p>Score: " + score + "/20</p>" +
 "<p>Percentage: " + percent.toFixed(0) + "%</p>" + "<h3>" + status + "</h3>" +
 "<h3>" + medal + "</h3>";
 document.querySelectorAll('input[type="radio"]')
