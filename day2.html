@@ -210,6 +210,13 @@ document.getElementById("startBtn").disabled = true;
 
 let roll =
 document.getElementById("roll").value;
+  let password =
+document.getElementById("password").value;
+
+if(password !== "GVCCDAY2"){
+   alert("❌ Wrong Password");
+   return;
+}
   
 if(!allowedStudents.includes(roll)){
    alert("❌ Aap Day 2 ke liye eligible nahi hain.");
