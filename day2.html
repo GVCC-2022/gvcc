@@ -253,6 +253,23 @@ if(password !== "GVCCDAY2"){
    alert("❌ Wrong Password");
    return;
 }
+let warningCount = 0;
+
+document.addEventListener("visibilitychange", function(){
+
+  if(document.hidden){
+
+    warningCount++;
+
+    alert(
+      "⚠ Warning " +
+      warningCount +
+      ": Test ke dauran app/tab switch detect hua."
+    );
+
+  }
+
+});
   
 if(!allowedStudents.includes(roll)){
    alert("❌ Aap Day 2 ke liye eligible nahi hain.");
