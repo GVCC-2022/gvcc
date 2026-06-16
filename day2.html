@@ -74,7 +74,7 @@ readonly>
 <button id="startBtn" onclick="startMission()">
 🚀 Start Day 2
 </button>
-<h2 id="timer">⏰ 20:00</h2>
+<h2 id="timer">⏰ 15:00</h2>
 
 <div id="questions"></div>
 <a id="waBtn"
@@ -367,7 +367,7 @@ document.getElementById("questions").innerHTML = `
 <input type="radio" name="q20" value="0">1010<br><br>
 `;
 document.getElementById("submitBtn").style.display = "block";
-let time = 1200;
+let time = 900;
 
 let timer = setInterval(function(){
 
@@ -389,7 +389,7 @@ let msg =
 "🧮 Gyan Varsha Basic Maths Mission Day 2%0A%0A" +
 "Name: " + document.getElementById("name").value + "%0A" +
 "Roll No: " + document.getElementById("roll").value + "%0A" +
-"Score: " + score + "/30%0A" +
+"Score: " + score + "/20%0A" +
 "Percentage: " + percent.toFixed(0) + "%%0A" +
 "Result: " + status + "%0A" +
 "Medal: " + medal;
