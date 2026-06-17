@@ -1,4 +1,4 @@
-const CACHE_NAME = "gvcc-cache-v2";
+const CACHE_NAME = "gvcc-cache-v3";
 
 const urlsToCache = [
   "/gvcc/",
