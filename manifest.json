@@ -1,7 +1,8 @@
 {
   "name": "GVCC Maths Mission",
   "short_name": "GVCC",
-  "start_url": "/gvcc/",
+  "start_url": "/gvcc/index.html",
+  "scope": "/gvcc/",
   "display": "standalone",
   "background_color": "#083d77",
   "theme_color": "#083d77",
