@@ -7,6 +7,7 @@ const urlsToCache = [
   "/gvcc/day2.html",
   "/gvcc/results.html",
   "/gvcc/manifest.json"
+  "/gvcc/logo.png"
 ];
 
 self.addEventListener("install", (event) => {
