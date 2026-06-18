@@ -112,11 +112,11 @@ await getDoc(docRef);
 if(docSnap.exists()){
 
 let data =
-  
 docSnap.data();
-console.log(data);
-console.log(data.Password);
-console.log(password);
+
+console.log("Firestore Data:", data);
+console.log("Firestore Password:", data.Password);
+console.log("Entered Password:", password);
 if(data.Password == password){
 
 localStorage.setItem(
@@ -128,6 +128,8 @@ window.location.href =
 "dashboard.html";
 
 }else{
+document.getElementById("msg").innerHTML =
+data.Password + " | " + password;
 
 document.getElementById("msg").innerHTML =
 "❌ Wrong Password";
