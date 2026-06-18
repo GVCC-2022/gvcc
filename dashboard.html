@@ -9,58 +9,15 @@
     <title>GVCC - Student Dashboard</title>
     
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f4f6f9; 
-            padding: 20px; 
-        }
-        .dashboard-box { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            max-width: 450px; 
-            margin: auto; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            text-align: left; 
-        }
-        h2 { 
-            color: #003366; 
-            text-align: center; 
-            margin-bottom: 20px; 
-        }
-        .data-field { 
-            font-size: 18px; 
-            margin: 15px 0; 
-            padding-bottom: 8px; 
-            border-bottom: 1px solid #eee; 
-        }
-        .label { 
-            font-weight: bold; 
-            color: #555; 
-        }
-        .value {
-            color: #333;
-            float: right;
-        }
-        #loading {
-            text-align: center;
-            font-weight: bold;
-            color: orange;
-        }
-        .logout-btn { 
-            background: #dc3545; 
-            color: white; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-size: 16px; 
-            margin-top: 20px; 
-        }
-        .logout-btn:hover {
-            background: #c82333;
-        }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; padding: 20px; }
+        .dashboard-box { background: white; padding: 30px; border-radius: 12px; max-width: 450px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; }
+        h2 { color: #003366; text-align: center; margin-bottom: 20px; }
+        .data-field { font-size: 18px; margin: 15px 0; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        .label { font-weight: bold; color: #555; }
+        .value { color: #333; float: right; }
+        #loading { text-align: center; font-weight: bold; color: orange; }
+        .logout-btn { background: #dc3545; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 20px; }
+        .logout-btn:hover { background: #c82333; }
     </style>
 </head>
 <body>
@@ -81,6 +38,74 @@
         <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
 </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 1. Check Security Session
+    const activeRoll = localStorage.getItem("studentRoll");
+    
+    if (!activeRoll) {
+        // Agar bina login kiye koi aaya toh wapas login page par bhej do
+        window.location.href = "student-login.html";
+    } else {
+        // Agar logged in hai toh data fetch karo
+        fetchStudentData(activeRoll);
+    }
+
+    // 2. Fetch Student Data Function
+    async function fetchStudentData(roll) {
+        try {
+            const docRef = doc(db, "students", roll);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                
+                // 🛠️ FIX: Database me "Name " ke piche space hai, use yahan handle kiya hai
+                let studentName = data["Name "] || data.Name || "N/A";
+                let studentClass = data["Class "] || data.Class || "N/A";
+                
+                // HTML Elements me data set karna
+                document.getElementById("studentName").innerText = studentName;
+                document.getElementById("studentRollDisplay").innerText = roll;
+                document.getElementById("studentClass").innerText = studentClass;
+                
+                // Loading dabba chupana aur Profile dabba dikhana
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("profileData").style.display = "block";
+            } else {
+                alert("Profile not found. Logging out.");
+                logout();
+            }
+        } catch (error) {
+            console.error("Dashboard Error:", error);
+            document.getElementById("loading").innerText = "⚠️ Failed to load profile. Please refresh.";
+        }
+    }
+
+    // 3. Logout Function
+    function logout() {
+        localStorage.removeItem("studentRoll");
+        window.location.href = "student-login.html";
+    }
+
+    // Logout button click handler
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+</script>
 
 </body>
 </html>
