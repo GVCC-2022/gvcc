@@ -44,24 +44,35 @@ body {
     animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 🚀 Absolute Center + Premium Custom Shadow Style */
+/* 🎯 Logo Styling - Perfect Center and Premium Shadow */
 .login-logo {
     width: 200px;
     height: auto;
-    background: transparent;
-    padding: 0;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important; /* Kisi bhi tarah ka round cut hatane ke liye */
     position: absolute;
     top: -110px;
-    
-    /* 🎯 Perfect Center Fixed: */
     left: 50%;
     transform: translateX(-50%);
-    
-    /* 🌟 Professional Transparent PNG Shadow: */
     filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.15));
-    
     z-index: 10;
 }
+
+/* 📦 White Card Styling - Fixed & Back to Normal */
+.login-card {
+    background: #ffffff !important;
+    padding: 120px 25px 40px 25px !important; /* Top padding thodi badhai taaki text logo ke peeche na chupe */
+    border-radius: 24px !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06) !important;
+    width: 100%;
+    max-width: 400px; /* Card ko mobile par fit rakhne ke liye */
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    margin: 120px auto 20px auto; /* Card ko screen ke center mein lane ke liye upper margin */
+}
+
 
 
 
