@@ -61,37 +61,37 @@
         msg.style.color = "orange";
         msg.innerHTML = "🔄 Checking credentials...";
 
-        try {
+                try {
+            // Collection check karne ke liye lowercase students use ho raha hai
             const docRef = doc(db, "students", roll);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 
-                // Humne exact "Password" field nikali hai jo aapke DB me hai
-                let dbPassword = String(data.Password).trim();
-                let inputPassword = String(password).trim();
+                // Yeh alert aapko batayega ki database ke andar kaun-kaun si fields mili hain!
+                alert("DATABASE KEYS FOUND:\n" + Object.keys(data).join(", "));
+                alert("FULL DATA RECEIVED:\n" + JSON.stringify(data));
 
-                // Yeh temporary check karne ke liye popup hai
-                alert("FINAL TEST:\nDB se aaya: [" + dbPassword + "]\nAapne dala: [" + inputPassword + "]");
+                let dbPassword = data.Password || data.password || data.PASSWORD;
 
-                if (dbPassword === inputPassword) {
+                if (dbPassword && String(dbPassword).trim() === inputPassword) {
                     msg.style.color = "green";
                     msg.innerHTML = "✅ Login Successful! Redirecting...";
-                    
                     localStorage.setItem("studentRoll", roll);
                     window.location.href = "dashboard.html";
                 } else {
                     msg.style.color = "red";
-                    msg.innerHTML = "❌ Wrong Password";
+                    msg.innerHTML = "❌ Wrong Password (DB: " + dbPassword + ")";
                     loginBtn.disabled = false;
                 }
             } else {
                 msg.style.color = "red";
-                msg.innerHTML = "❌ Roll Number Not Found";
+                msg.innerHTML = "❌ Roll Number Not Found in DB";
                 loginBtn.disabled = false;
             }
-        } catch (error) {
+        }
+ catch (error) {
             console.error("Error: ", error);
             msg.style.color = "red";
             msg.innerHTML = "⚠️ Network error. Try again.";
