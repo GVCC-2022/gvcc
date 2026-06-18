@@ -243,6 +243,16 @@ margin-top: 15px;
             loginBtn.disabled = false;
         }
     });
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/gvcc/service-worker.js", { scope: "/gvcc/" })
+      .then(function(reg) { console.log("PWA Service Worker Loaded!", reg); })
+      .catch(function(error) { console.log("PWA Error:", error); });
+  });
+}
 </script>
+    
 </body>
 </html>
