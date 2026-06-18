@@ -1,14 +1,14 @@
-const CACHE_NAME = "gvcc-cache-v1";
+ const CACHE_NAME = "gvcc-cache-v2";
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./student-login.html",
-  "./dashboard.html",
-  "./logo.png",
-  "./manifest.json"
+  "/gvcc/",
+  "/gvcc/index.html",
+  "/gvcc/student-login.html",
+  "/gvcc/dashboard.html",
+  "/gvcc/logo.png",
+  "/gvcc/manifest.json"
 ];
 
-// Service Worker Install karna aur files cache mein save karna
+// Service Worker Install
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -17,7 +17,7 @@ self.addEventListener("install", (e) => {
   );
 });
 
-// Purane cache ko delete karna jab naya version aaye
+// Activate & Clear old cache
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -32,7 +32,7 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-// Network se files fetch karna ya cache se load karna
+// Fetch files
 self.addEventListener("fetch", (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
@@ -40,4 +40,3 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
-
