@@ -66,17 +66,15 @@ color:white;
   
 <body>
 
-  <script>
+<script>
     const activeRoll = localStorage.getItem("studentRoll");
-    
     if (activeRoll) {
-        // Agar pehle se logged in hai, toh chupchaap dashboard par bhejo
         window.location.href = "dashboard.html";
     } else {
-        // Agar login nahi hai, toh turant login page par phenko
         window.location.href = "student-login.html";
     }
-  <script>
+</script>
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     // 🛠️ FIX: GitHub Pages ke folder path ke sath register kiya
