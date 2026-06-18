@@ -61,37 +61,40 @@
         msg.style.color = "orange";
         msg.innerHTML = "🔄 Checking credentials...";
 
-                try {
-            // Collection check karne ke liye lowercase students use ho raha hai
+        try {
             const docRef = doc(db, "students", roll);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 
-                // Yeh alert aapko batayega ki database ke andar kaun-kaun si fields mili hain!
-                alert("DATABASE KEYS FOUND:\n" + Object.keys(data).join(", "));
-                alert("FULL DATA RECEIVED:\n" + JSON.stringify(data));
+                // 🛠️ FIX: Database me "Password " ke piche space hai, use yahan handle kiya hai
+                let rawPassword = data["Password "] || data.Password || data["password "]; 
+                
+                let dbPassword = String(rawPassword).trim();
+                let inputPassword = String(password).trim();
 
-                let dbPassword = data.Password || data.password || data.PASSWORD;
-
-                if (dbPassword && String(dbPassword).trim() === inputPassword) {
+                if (dbPassword === inputPassword) {
                     msg.style.color = "green";
                     msg.innerHTML = "✅ Login Successful! Redirecting...";
+                    
                     localStorage.setItem("studentRoll", roll);
-                    window.location.href = "dashboard.html";
+                    
+                    // Thoda rukh kar redirect karein taaki success msg dikhe
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
                 } else {
                     msg.style.color = "red";
-                    msg.innerHTML = "❌ Wrong Password (DB: " + dbPassword + ")";
+                    msg.innerHTML = "❌ Wrong Password";
                     loginBtn.disabled = false;
                 }
             } else {
                 msg.style.color = "red";
-                msg.innerHTML = "❌ Roll Number Not Found in DB";
+                msg.innerHTML = "❌ Roll Number Not Found";
                 loginBtn.disabled = false;
             }
-        }
- catch (error) {
+        } catch (error) {
             console.error("Error: ", error);
             msg.style.color = "red";
             msg.innerHTML = "⚠️ Network error. Try again.";
@@ -99,6 +102,3 @@
         }
     });
 </script>
-
-</body>
-</html>
