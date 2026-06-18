@@ -74,17 +74,29 @@
 alert("DB Password: '" + dbPassword + "'\nInput Password: '" + inputPassword + "'");
                 
 
-                if (dbPassword === inputPassword) {
-                    msg.style.color = "green";
-                    msg.innerHTML = "✅ Login Successful! Redirecting...";
-                    
-                    localStorage.setItem("studentRoll", roll);
-                    window.location.href = "dashboard.html";
-                } else {
-                    msg.style.color = "red";
-                    msg.innerHTML = "❌ Wrong Password";
-                    loginBtn.disabled = false;
-                }
+                if (docSnap.exists()) {
+    let data = docSnap.data();
+    
+    // Dono small aur capital check karne ke liye logic
+    let rawPassword = data.Password || data.password; 
+    
+    let dbPassword = String(rawPassword).trim();
+    let inputPassword = String(password).trim();
+
+    alert("DEBUGER POPUP:\nDatabase se aaya: [" + dbPassword + "]\nAapne likha: [" + inputPassword + "]");
+
+    if (dbPassword === inputPassword && dbPassword !== "undefined") {
+        msg.style.color = "green";
+        msg.innerHTML = "✅ Login Successful! Redirecting...";
+        localStorage.setItem("studentRoll", roll);
+        window.location.href = "dashboard.html";
+    } else {
+        msg.style.color = "red";
+        msg.innerHTML = "❌ Wrong Password";
+        loginBtn.disabled = false;
+    }
+}
+
             } else {
                 msg.style.color = "red";
                 msg.innerHTML = "❌ Roll Number Not Found";
