@@ -5,7 +5,35 @@
 <title>GVCC Student Portal</title>
 
 <style>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+  authDomain: "gvcc-database.firebaseapp.com",
+  projectId: "gvcc-database",
+  storageBucket: "gvcc-database.firebasestorage.app",
+  messagingSenderId: "1063216875940",
+  appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.doc = doc;
+window.getDoc = getDoc;
+
+</script>
+  
 body{
 font-family:Arial,sans-serif;
 background:#f4f6f9;
