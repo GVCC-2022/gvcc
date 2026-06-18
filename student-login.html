@@ -34,7 +34,8 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    // 🛠️ Badlaav: collection aur addDoc ko yahan import kiya hai logs ke liye
+    import { getFirestore, doc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -47,6 +48,21 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // 🕒 Attendance Log save karne ka function
+    async function saveLoginLog(rollNumber, studentName) {
+        try {
+            await addDoc(collection(db, "login_logs"), {
+                roll: rollNumber,
+                name: studentName,
+                loginTime: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), // Indian Standard Time
+                timestamp: new Date() // Firebase sorting ke liye useful
+            });
+            console.log("Attendance recorded successfully!");
+        } catch (error) {
+            console.error("Error recording attendance: ", error);
+        }
+    }
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
@@ -68,22 +84,30 @@
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 
-                // 🛠️ FIX: Database me "Password " ke piche space hai, use yahan handle kiya hai
+                // 🛠️ Database me "Password " ke piche space ka handle
                 let rawPassword = data["Password "] || data.Password || data["password "]; 
+                
+                // 🛠️ Database me "Name " ke piche space ka handle
+                let studentName = data["Name "] || data.Name || "Unknown Student";
                 
                 let dbPassword = String(rawPassword).trim();
                 let inputPassword = String(password).trim();
 
                 if (dbPassword === inputPassword) {
                     msg.style.color = "green";
-                    msg.innerHTML = "✅ Login Successful! Redirecting...";
+                    msg.innerHTML = "✅ Login Successful! Recording attendance...";
                     
                     localStorage.setItem("studentRoll", roll);
                     
-                    // Thoda rukh kar redirect karein taaki success msg dikhe
+                    // 📝 Dashboard par bhejne se pehle attendance database me save karein
+                    await saveLoginLog(roll, studentName);
+                    
+                    msg.innerHTML = "✅ Attendance Marked! Redirecting...";
+
+                    // Thoda rukh kar redirect karein taaki success msg aur data save dono ho jaye
                     setTimeout(() => {
                         window.location.href = "dashboard.html";
-                    }, 1000);
+                    }, 1200);
                 } else {
                     msg.style.color = "red";
                     msg.innerHTML = "❌ Wrong Password";
@@ -93,6 +117,7 @@
                 msg.style.color = "red";
                 msg.innerHTML = "❌ Roll Number Not Found";
                 loginBtn.disabled = false;
+                
             }
         } catch (error) {
             console.error("Error: ", error);
