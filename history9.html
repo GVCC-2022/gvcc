@@ -1,322 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Class 9 History Test - GVCC</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f4f6f9;
-        margin: 0;
-        padding: 0;
-        color: #1e293b;
-    }
-    .header {
-        background: linear-gradient(135deg, #002244, #003366);
-        color: white;
-        padding: 30px 15px;
-        text-align: center;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .header h1 { margin: 0; font-size: 22px; }
-    .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.8; }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>GVCC - Live Test Portal</title>
     
-    .container { max-width: 480px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
+    <!-- FontAwesome & Glassmorphism Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    .profile-lock-box {
-        background: white;
-        padding: 15px 20px;
-        border-radius: 14px;
-        margin-top: -15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        display: flex;
-        gap: 15px;
-    }
-    .profile-field { flex: 1; }
-    .profile-field label { font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; }
-    .profile-field input {
-        width: 100%;
-        padding: 8px 0;
-        font-size: 15px;
-        font-weight: 600;
-        color: #003366;
-        border: none;
-        border-bottom: 2px solid #cbd5e1;
-        background: transparent;
-        outline: none;
-    }
+    <style>
+        :root {
+            --primary: #003366;
+            --accent: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --bg: #0f172a;
+        }
 
-    .box {
-        background: white;
-        padding: 20px;
-        margin-top: 15px;
-        border-radius: 14px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        border: 1px solid rgba(0,0,0,0.01);
-    }
-    .box p { margin: 0 0 15px 0; font-size: 15px; font-weight: 600; line-height: 1.4; color: #002244; }
-    
-    /* Premium Custom Radio Options */
-    .option-container {
-        display: block;
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 14px;
-        user-select: none;
-        color: #475569;
-    }
-    .option-container input { position: absolute; opacity: 0; cursor: pointer; }
-    .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 20px;
-        width: 20px;
-        background-color: #f1f5f9;
-        border: 2px solid #cbd5e1;
-        border-radius: 50%;
-    }
-    .option-container:hover input ~ .checkmark { background-color: #e2e8f0; }
-    .option-container input:checked ~ .checkmark { background-color: #007bff; border-color: #007bff; }
-    .checkmark:after { content: ""; position: absolute; display: none; }
-    .option-container input:checked ~ .checkmark:after { display: block; }
-    .option-container .checkmark:after {
-        top: 6px; left: 6px; width: 8px; height: 8px;
-        border-radius: 50%; background: white;
-    }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Prevents text copying */
+        }
 
-    .submit-btn {
-        background: #007bff;
-        color: white;
-        padding: 14px;
-        border: none;
-        border-radius: 12px;
-        width: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0,123,255,0.25);
-    }
-    .submit-btn:active { transform: scale(0.98); }
+        /* Fixed Header with Timer */
+        .test-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
 
-    /* 🔐 Password Modal Styles */
-    .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 34, 68, 0.85); backdrop-filter: blur(8px);
-        display: flex; align-items: center; justify-content: center; z-index: 1000;
-    }
-    .modal-box {
-        background: white; padding: 30px 24px; border-radius: 20px;
-        width: 85%; max-width: 360px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    .modal-box i { font-size: 45px; color: #ff9f43; margin-bottom: 15px; }
-    .modal-box h3 { margin: 0 0 10px 0; color: #002244; font-size: 18px; }
-    .modal-box p { font-size: 13px; color: #64748b; margin: 0 0 20px 0; }
-    .modal-box input {
-        width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px;
-        font-size: 16px; text-align: center; letter-spacing: 4px; box-sizing: border-box; outline: none;
-    }
-    .modal-box input:focus { border-color: #007bff; }
-    .modal-box button {
-        background: #002244; color: white; border: none; padding: 12px;
-        width: 100%; border-radius: 10px; font-weight: bold; font-size: 15px; margin-top: 15px; cursor: pointer;
-    }
+        .timer-box {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    /* 📊 Glassmorphism Floating Result Screen */
-    .result-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
-        display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; box-sizing: border-box;
-    }
-    .result-card {
-        background: rgba(255, 255, 255, 0.95); border-radius: 24px;
-        padding: 25px; width: 100%; max-width: 380px; text-align: center;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.5);
-    }
-    .badge-status {
-        display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px;
-        border-radius: 50px; font-weight: bold; font-size: 14px; margin-bottom: 15px;
-    }
-    .status-pass { background: #d1fae5; color: #065f46; }
-    .status-fail { background: #fee2e2; color: #991b1b; }
-    
-    .score-circle {
-        width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px auto;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        font-weight: bold; font-size: 24px; border: 6px solid #e2e8f0;
-    }
-</style>
+        /* Glassmorphism Lock & Form Containers */
+        .main-container {
+            max-width: 500px;
+            margin: 80px auto 40px auto;
+            width: 90%;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        h2 { text-align: center; color: #38bdf8; margin-top: 0; }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+        .input-group input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn-premium {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #3b82f6);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-premium:active { transform: scale(0.98); }
+
+        /* Question Cards Styling */
+        .q-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .q-text {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #e2e8f0;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+        .option-label:hover { background: rgba(255,255,255,0.06); }
+        .option-label input { accent-color: var(--accent); }
+
+        /* Custom Modern Modal for Results/Alerts */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+
+        .score-badge {
+            font-size: 48px;
+            font-weight: 800;
+            color: #10b981;
+            margin: 15px 0;
+        }
+    </style>
 </head>
 <body>
 
-<!-- 🔐 Password Verification Popup -->
-<div class="modal-overlay" id="pwdModal">
-    <div class="modal-box">
-        <i class="fa-solid fa-shield-halved"></i>
-        <h3>Enter Test Password</h3>
-        <p>Aaj ke schedule test ka secure lock code daalein.</p>
-        <input type="password" id="testPassword" placeholder="••••" maxlength="6">
-        <button onclick="verifyPassword()">Unlock & Start Test</button>
-    </div>
-</div>
-
-<div class="header">
-    <h1>📚 Class 9 History Test</h1>
-    <p>Gyan Varsha Coaching Center</p>
-</div>
-
-<div class="container">
-    <!-- Profile Row Auto-Loaded -->
-    <div class="profile-lock-box">
-        <div class="profile-field">
-            <label>Student Name</label>
-            <input type="text" id="name" readonly value="Loading...">
+    <!-- ⏳ Top Fixed Header (Shows Student Info & Dynamic Timer) -->
+    <div class="test-header">
+        <div>
+            <div style="font-weight:700; font-size:14px;" id="headerStudentName">Loading...</div>
+            <div style="font-size:11px; color:#94a3b8;">Roll: <span id="headerStudentRoll">--</span></div>
         </div>
-        <div class="profile-field" style="max-width: 100px;">
-            <label>Roll Number</label>
-            <input type="text" id="roll" readonly value="---">
+        <div class="timer-box">
+            <i class="fa-solid fa-clock fa-pulse"></i>
+            <span id="countdownTimer">10:00</span>
         </div>
     </div>
 
-    <!-- Questions Block -->
-    <form id="testForm">
-        <div class="box">
-            <p>Q1. ट्रिपल एलायंस का गठन कब किया गया था?</p>
-            <label class="option-container">1782 <input type="radio" name="q1" value="0"><span class="checkmark"></span></label>
-            <label class="option-container">1883 <input type="radio" name="q1" value="0"><span class="checkmark"></span></label>
-            <label class="option-container">1983 <input type="radio" name="q1" value="0"><span class="checkmark"></span></label>
-            <label class="option-container">1882 <input type="radio" name="q1" value="1"><span class="checkmark"></span></label>
-        </div>
-
-        <div class="box">
-            <p>Q2. 1917 में कौन-सा देश प्रथम विश्व युद्ध से अलग हो गया?</p>
-            <label class="option-container">अमेरिका <input type="radio" name="q2" value="0"><span class="checkmark"></span></label>
-            <label class="option-container">जर्मनी <input type="radio" name="q2" value="0"><span class="checkmark"></span></label>
-            <label class="option-container">रूस <input type="radio" name="q2" value="1"><span class="checkmark"></span></label>
-            <label class="option-container">इटली <input type="radio" name="q2" value="0"><span class="checkmark"></span></label>
-        </div>
-    </form>
-
-    <button class="submit-btn" onclick="checkResult()">Submit Test</button>
-</div>
-
-<!-- 📊 Floating Glass App Result Card -->
-<div class="result-overlay" id="resultWindow">
-    <div class="result-card">
-        <div id="statusBadge" class="badge-status"></div>
-        <div class="score-circle" id="scoreCircle">00</div>
-        <h3 style="margin:5px 0; color:#002244;" id="resName">Student Name</h3>
-        <p style="margin:0 0 15px 0; font-size:13px; color:#64748b;">Roll No: <span id="resRoll">000</span></p>
+    <div class="main-container">
         
-        <div style="background:#f8fafc; padding:12px; border-radius:12px; font-size:14px; text-align:left; color:#475569; margin-bottom:20px;">
-            <div>📈 Percentage Accuracy: <strong id="resPercent" style="color:#002244;">0%</strong></div>
-            <div style="margin-top:4px;">🏫 Center: <strong>Gyan Varsha Coaching Center</strong></div>
-            <div style="margin-top:4px;">✍️ Prepared By: <strong>Md Faiyaz</strong></div>
+        <!-- 🔒 Security Lock Panel (Asks for Password before loading test) -->
+        <div id="lockSection" class="glass-panel">
+            <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
+            <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha Coaching Center.</p>
+            
+            <div class="input-group">
+                <label>Test Activation Password</label>
+                <input type="password" id="testPassword" placeholder="••••••••">
+            </div>
+            <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
         </div>
 
-        <button id="waBtn" style="background:#25D366; color:white; border:none; padding:12px; width:100%; border-radius:12px; font-weight:bold; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
-            <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i> Send Score on WhatsApp
-        </button>
+        <!-- 📝 Live Test Section (Hidden initially) -->
+        <div id="testSection" class="glass-panel" style="display:none;">
+            <h2 id="testTitle">Class 9th History Test</h2>
+            <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:25px;">
+
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="q-card">
+                    <div class="q-text">1. हिन्द-चीन में बसने वाले फ्रांसीसी क्या कहे जाते थे?</div>
+                    <label class="option-label"><input type="radio" name="q1" value="A"> फ्रांसीसी</label>
+                    <label class="option-label"><input type="radio" name="q1" value="B"> शासक वर्ग</label>
+                    <label class="option-label"><input type="radio" name="q1" value="C"> कोलोन</label>
+                    <label class="option-label"><input type="radio" name="q1" value="D"> जनरल</label>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="q-card">
+                    <div class="q-text">2. खोन्द विद्रोह कब और कहाँ हुआ था?</div>
+                    <label class="option-label"><input type="radio" name="q2" value="A"> 1914, ओडिशा</label>
+                    <label class="option-label"><input type="radio" name="q2" value="B"> 1916, बंगाल</label>
+                    <label class="option-label"><input type="radio" name="q2" value="C"> 1910, बिहार</label>
+                    <label class="option-label"><input type="radio" name="q2" value="D"> 1915, गुजरात</label>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="q-card">
+                    <div class="q-text">3. अंकुरवाट का मन्दिर कहाँ स्थित है?</div>
+                    <label class="option-label"><input type="radio" name="q3" value="A"> वियतनाम</label>
+                    <label class="option-label"><input type="radio" name="q3" value="B"> थाईलैण्ड</label>
+                    <label class="option-label"><input type="radio" name="q3" value="C"> लाओस</label>
+                    <label class="option-label"><input type="radio" name="q3" value="D"> कम्बोडिया</label>
+                </div>
+
+                <button type="button" class="btn-premium" onclick="processSubmission(false)">Submit Answers</button>
+            </form>
+        </div>
     </div>
-</div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    <!-- 🏆 Premium Glassmorphism Result Modal -->
+    <div id="resultModal" class="custom-modal">
+        <div class="modal-content">
+            <i class="fa-solid fa-circle-check" style="font-size:50px; color:#10b981;"></i>
+            <h2 style="margin: 15px 0 5px 0; color:white;">Test Submitted!</h2>
+            <p style="color:#94a3b8; font-size:14px; margin-bottom:10px;">Your score has been successfully recorded in the main server.</p>
+            
+            <div class="score-badge" id="modalScore">0/3</div>
+            <p style="font-size:16px; font-weight:600; color:#38bdf8;" id="modalPercentage">0% Marks Obtained</p>
+            
+            <button class="btn-premium" style="margin-top:15px;" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        </div>
+    </div>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-        authDomain: "gvcc-database.firebaseapp.com",
-        projectId: "gvcc-database",
-        storageBucket: "gvcc-database.firebasestorage.app",
-        messagingSenderId: "1063216875940",
-        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-    };
+    <!-- Firebase Logic Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // 🔐 1. Set Password For Tomorrow's Test Here!
-    const CORRECT_TEST_PASSWORD = "1234"; // 👈 Yahan apna custom password change karein jab bhi test lena ho!
-
-    window.verifyPassword = function() {
-        let input = document.getElementById("testPassword").value;
-        if(input === CORRECT_TEST_PASSWORD) {
-            document.getElementById("pwdModal").style.display = "none";
-            loadStudentProfile();
-        } else {
-            alert("❌ Incorrect Test Password! Sahi code enter karein.");
-        }
-    }
-
-    // 👤 2. Auto Fetch Identity Profile from Firebase Storage
-    async function loadStudentProfile() {
-        let activeRoll = localStorage.getItem("studentRoll");
-        if(!activeRoll) {
-            window.location.href = "student-login.html";
-            return;
-        }
-        try {
-            const docRef = doc(db, "students", activeRoll);
-            const docSnap = await getDoc(docRef);
-            if(docSnap.exists()) {
-                let data = docSnap.data();
-                document.getElementById("name").value = data["Name "] || data.Name || "Unknown Student";
-                document.getElementById("roll").value = activeRoll;
-            }
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    // 📊 3. Premium Scoring Calculation & UI Render
-    window.checkResult = function() {
-        let score = 0;
-        let totalQuestions = 2; // Abhi validation ke liye sirf 2 ques hain
-        
-        document.querySelectorAll('#testForm input[type=radio]:checked').forEach(e => {
-            score += Number(e.value);
-        });
-
-        let percent = (score / totalQuestions) * 100;
-        let isPassed = percent >= 60;
-
-        // Populate Result Pop-up UI
-        document.getElementById("resName").innerText = document.getElementById("name").value;
-        document.getElementById("resRoll").innerText = document.getElementById("roll").value;
-        document.getElementById("resPercent").innerText = percent.toFixed(0) + "%";
-        
-        let scoreCircle = document.getElementById("scoreCircle");
-        scoreCircle.innerText = score + "/" + totalQuestions;
-
-        let badge = document.getElementById("statusBadge");
-        if(isPassed) {
-            badge.className = "badge-status status-pass";
-            badge.innerHTML = "<i class='fa-solid fa-circle-check'></i> PASSED";
-            scoreCircle.style.borderColor = "#10b981";
-            scoreCircle.style.color = "#10b981";
-        } else {
-            badge.className = "badge-status status-fail";
-            badge.innerHTML = "<i class='fa-solid fa-circle-xmark'></i> NEEDS IMPROVEMENT";
-            scoreCircle.style.borderColor = "#ef4444";
-            scoreCircle.style.color = "#ef4444";
-        }
-
-        // WhatsApp Link Generator
-        document.getElementById("waBtn").onclick = function() {
-            let text = `📚 Gyan Varsha Coaching Center\n\n📝 Class 9 History Test Report\n👤 Name: ${document.getElementById("name").value}\n🆔 Roll No: ${document.getElementById("roll").value}\n🎯 Score: ${score}/${totalQuestions}\n📈 Percentage: ${percent.toFixed(0)}%\n📊 Result Status: ${isPassed ? 'PASS ✅' : 'FAIL ❌'}`;
-            window.open(`https://wa.me/916203491210?text=${encodeURIComponent(text)}`, '_blank');
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+            authDomain: "gvcc-database.firebaseapp.com",
+            projectId: "gvcc-database",
+            storageBucket: "gvcc-database.firebasestorage.app",
+            messagingSenderId: "1063216875940",
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
 
-        // Open Card Modally
-        document.getElementById("resultWindow").style.display = "flex";
-    }
-</script>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Answer Key Setup
+        const correctAnswers = { q1: "C", q2: "A", q3: "D" };
+        
+        let timerInterval;
+        let totalTimeLeft = 600; // 10 Minutes in Seconds
+        let cheatCount = 0;
+        let hasSubmitted = false;
+
+        // Fetch Student Local Session Info
+        const currentRoll = localStorage.getItem("studentRoll");
+        if (!currentRoll) {
+            window.location.href = "student-login.html";
+        }
+
+        // Auto-fetch profile name on launch
+        async function loadProfileHeader() {
+            try {
+                const docRef = doc(db, "students", currentRoll);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const sData = docSnap.data();
+                    const sName = sData["Name "] || sData.Name || "Student";
+                    document.getElementById("headerStudentName").innerText = sName;
+                    document.getElementById("headerStudentRoll").innerText = currentRoll;
+
+                    // 🔒 One-Time Lock Verification: Check if already submitted
+                    const testCheckRef = doc(db, "students", currentRoll, "tests", "history9_test");
+                    const testCheckSnap = await getDoc(testCheckRef);
+                    if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
+                        alert("⚠️ Security Lock: Aap yeh test pehle hi de chuke hain! Dobara entry block hai.");
+                        window.location.href = "dashboard.html";
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+        loadProfileHeader();
+
+        // Password Verification & Test Init
+        window.verifyAndStartTest = function() {
+            const passInput = document.getElementById("testPassword").value.trim();
+            
+            // Set your master test password here (e.g., 'gvcc2026')
+            if (passInput === "gvcc2026") {
+                document.getElementById("lockSection").style.display = "none";
+                document.getElementById("testSection").style.display = "block";
+                startTestTimer();
+                activateAntiCheatSystem();
+            } else {
+                alert("❌ Galat Password! Please coaching administrator se sahi password lein.");
+            }
+        }
+
+        // Continuous Counting Timer Engine
+        function startTestTimer() {
+            timerInterval = setInterval(() => {
+                if (totalTimeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    processSubmission(true); // Force Auto-Submit when time finishes
+                } else {
+                    totalTimeLeft--;
+                    let minutes = Math.floor(totalTimeLeft / 60);
+                    let seconds = totalTimeLeft % 60;
+                    document.getElementById("countdownTimer").innerText = 
+                        `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            }, 1000);
+        }
+
+        // Anti-Cheat Engine (Background Activity Detection)
+        function activateAntiCheatSystem() {
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden && !hasSubmitted) {
+                    cheatCount++;
+                    alert(`🚨 WARNING: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai. System admin ko iski update bhej di gayi hai.`);
+                }
+            });
+        }
+
+        // Database Score Upload & Submission Handler
+        window.processSubmission = async function(isTimeOut = false) {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            clearInterval(timerInterval);
+
+            if (isTimeOut) {
+                alert("⏰ Time Over! Aapka 10 minute ka samay samapt ho gaya hai. Test automatically submit ho rha hai.");
+            }
+
+            // Calculate Scores
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            const formData = new FormData(document.getElementById("quizForm"));
+
+            for (let q in correctAnswers) {
+                if (formData.get(q) === correctAnswers[q]) {
+                    score++;
+                }
+            }
+
+            let percentage = Math.round((score / totalQuestions) * 100);
+            let cheatStatusText = cheatCount > 0 ? `Detected (${cheatCount} Times App Switched)` : "Clean / No Cheating";
+
+            // Prepare Student Subcollection Object for Firebase
+            const recordPayload = {
+                score: `${score}/${totalQuestions}`,
+                percentage: `${percentage}%`,
+                submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                cheatStatus: cheatStatusText,
+                submitted: true
+            };
+
+            try {
+                // Save directly inside: students -> [Roll Number] -> tests -> history9_test
+                const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
+                await setDoc(testDocRef, recordPayload, { merge: true });
+
+                // UI Presentation
+                document.getElementById("modalScore").innerText = `${score}/${totalQuestions}`;
+                document.getElementById("modalPercentage").innerText = `${percentage}% Marks Obtained`;
+                document.getElementById("resultModal").style.display = "flex";
+
+            } catch (error) {
+                console.error("Database Write Error: ", error);
+                alert("Submission Network Error! Take a screenshot of your screen right now.");
+            }
+        }
+    </script>
 </body>
 </html>
