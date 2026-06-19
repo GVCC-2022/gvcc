@@ -221,7 +221,7 @@
             <i class="fa-solid fa-lock" style="color: #a0aec0;"></i>
         </div>
 
-        <div class="chapter-card" onclick="askPassword('Chapter 2 Notes Link Here')">
+        <discriptv class="chapter-card" onclick="askPassword('Chapter 2 Notes Link Here')">
             <div class="card-left">
                 <i class="fa-solid fa-file-pdf" style="color: #dc3545;"></i>
                 <div class="card-info">
@@ -248,16 +248,41 @@
 
 <script>
     let selectedNotesLink = "";
-    const CORRECT_PASSWORD = "123"; // 🔑 Aapna password yahan set kijiye
+    // 🔑 Aapka purana secure password yahan set kar diya hai
+    const CORRECT_PASSWORD = "GVCC@437"; 
 
+    // 🚀 Page khulte hi sabshe pehle password ka modal popup automatic dikhega
+    window.onload = function() {
+        document.getElementById("passModal").style.display = "flex";
+        document.getElementById("notesPassInput").focus();
+    };
+
+    function verifyPassword() {
+        let inputPass = document.getElementById("notesPassInput").value.trim();
+        
+        if(inputPass === CORRECT_PASSWORD) {
+            // ✅ Password sahi hone par popup band ho jayega aur bacha subjects dekh payega
+            document.getElementById("passModal").style.display = "none";
+        } else {
+            // ❌ Galat password hone par screen block ho jayegi
+            document.body.innerHTML = `
+                <div style='text-align:center; margin-top:100px; font-family: sans-serif;'>
+                    <h1 style='color:#dc3545;'>❌ Wrong Password</h1>
+                    <p style='color:#64748b; font-size:16px;'>Access Denied. Refresh the page to try again.</p>
+                </div>`;
+        }
+    }
+
+    // 📐 Maths Chapters open karne ke liye function
     function openMathsChapters() {
         document.getElementById("subjectsView").style.display = "none";
         document.getElementById("chaptersView").style.display = "block";
         document.getElementById("backBtn").style.display = "flex";
         document.getElementById("headerTitle").innerText = "📐 Class 10 Maths";
-        document.getElementById("headerSub").innerText = "Select chapter to unlock PDF";
+        document.getElementById("headerSub").innerText = "Select chapter to view PDF";
     }
 
+    // 🔙 Wapas Subjects par jaane ke liye
     function goBack() {
         document.getElementById("subjectsView").style.display = "block";
         document.getElementById("chaptersView").style.display = "none";
@@ -266,27 +291,12 @@
         document.getElementById("headerSub").innerText = "Access your curated study materials";
     }
 
-    function askPassword(link) {
-        selectedNotesLink = link;
-        document.getElementById("passModal").style.display = "flex";
-        document.getElementById("notesPassInput").focus();
-    }
-
-    function closeModal() {
-        document.getElementById("passModal").style.display = "none";
-        document.getElementById("notesPassInput").value = "";
-    }
-
-    function verifyPassword() {
-        let inputPass = document.getElementById("notesPassInput").value.trim();
-        if(inputPass === CORRECT_PASSWORD) {
-            closeModal();
-            alert("🔒 Access Granted! Opening file: " + selectedNotesLink);
-            // window.location.href = selectedNotesLink; // Live system me ise on kar dena
-        } else {
-            alert("❌ Invalid Password! Please try again.");
-        }
+    // 📑 Jab bacha kisi chapter par click karega toh direct PDF khulegi
+    function openPDF(pdfUrl) {
+        // Yahan aap direct window.open ya location use kar sakte hain
+        window.location.href = pdfUrl; 
     }
 </script>
+
 </body>
 </html>
