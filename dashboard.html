@@ -34,7 +34,6 @@
             min-height: 100vh;
         }
 
-
         /* Loading Screen Styling */
         #loading {
             font-weight: bold;
@@ -61,25 +60,19 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        /* 🎯 Sirf Header ke andar wale logo ko target karenge taaki poora page na bikhre */
-header .logo {
-    width: 130px !important;       /* 📐 Perfect size dashboard ke hisab se */
-    max-width: 100% !important;
-    height: auto !important;       /* 📐 Auto height taaki aspect ratio kharab na ho */
-    background: transparent !important; 
-    border-radius: 0 !important;   
-    padding: 0 !important;
-    margin: 0 auto 12px auto !important;
-    
-    /* ✨ Elegant soft shadow for dark background */
-    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3))
-            drop-shadow(0px 6px 12px rgba(255, 255, 255, 0.15));
-            
-    display: inline-block !important;
-    object-fit: contain !important; /* 🌟 Image ko khinchne (stretch hone) se bachayega */
-}
-
-
+        header .logo {
+            width: 130px !important;
+            max-width: 100% !important;
+            height: auto !important;
+            background: transparent !important; 
+            border-radius: 0 !important;   
+            padding: 0 !important;
+            margin: 0 auto 12px auto !important;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3))
+                    drop-shadow(0px 6px 12px rgba(255, 255, 255, 0.15));
+            display: inline-block !important;
+            object-fit: contain !important;
+        }
 
         header h1 {
             margin: 0;
@@ -154,7 +147,6 @@ header .logo {
             margin-bottom: 25px;
         }
 
-        /* Full Width for Live Class */
         .full-width {
             grid-column: span 2;
         }
@@ -176,16 +168,9 @@ header .logo {
             text-decoration: none;
         }
 
-        .menu-card i {
-            font-size: 24px;
-        }
+        .menu-card i { font-size: 24px; }
+        .menu-card span { font-size: 14px; font-weight: 600; }
 
-        .menu-card span {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* Individual Card Themes */
         .card-live {
             background: linear-gradient(135deg, #23d5ab, var(--success));
             color: white;
@@ -201,13 +186,11 @@ header .logo {
         .card-result { color: #10b981; border-top: 4px solid #10b981; }
         .card-performer { color: #a855f7; border-top: 4px solid #a855f7; }
 
-        /* Card Active/Hover state for Mobile */
         .menu-card:active {
             transform: scale(0.95);
-            box-shadow: 0 2px 8 rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* Logout Button */
         .btn-logout {
             width: 100%;
             background: #ffe4e6;
@@ -226,7 +209,6 @@ header .logo {
         }
         .btn-logout:active { background: #fecdd3; }
 
-        /* Premium Footer */
         footer {
             background: #001529;
             color: #94a3b8;
@@ -257,7 +239,6 @@ header .logo {
 
     <!-- Main Content App Interface -->
     <div id="mainContent">
-        <!-- Header Section with Coaching Logo -->
         <header>
             <img src="logo.png" alt="GVCC Logo" class="logo">
             <h1>Gyan Varsha Coaching Center</h1>
@@ -265,9 +246,7 @@ header .logo {
             <div class="slogan-tag">✨ हम वादा नहीं, पर दावा जरूर करते हैं ✨</div>
         </header>
 
-        <!-- Main Container -->
         <div class="container">
-            
             <!-- Student Identity Card -->
             <div class="profile-card">
                 <div class="profile-header">
@@ -289,15 +268,13 @@ header .logo {
 
             <!-- 2 Column Smart Grid Navigation -->
             <div class="grid-menu">
-                
-                <!-- Live Class Link (Full Width Action) -->
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i>
                     <span>Join Live Class</span>
                 </a>
 
                 <!-- Notes Tile -->
-                <button class="menu-card card-notes" onclick="window.location.href='notes.html'">
+                <button class="menu-card card-notes" onclick="window.location.href='notesmenu.html'">
                     <i class="fa-solid fa-book-open"></i>
                     <span>Notes</span>
                 </button>
@@ -308,8 +285,8 @@ header .logo {
                     <span>Notice Board</span>
                 </button>
 
-                <!-- Online Test Tile -->
-                <button class="menu-card card-test" onclick="window.location.href='test.html'">
+                <!-- 🛠️ Fix 1: Online Test Router Button Connected -->
+                <button class="menu-card card-test" onclick="routeToLiveTest()">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Online Test</span>
                 </button>
@@ -331,17 +308,13 @@ header .logo {
                     <i class="fa-solid fa-trophy"></i>
                     <span>Day 1 Performers</span>
                 </button>
-
             </div>
 
-            <!-- Logout Action Button -->
             <button class="btn-logout" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
             </button>
-
         </div>
 
-        <!-- Premium Footer -->
         <footer>
             <p>📝 Created By: <strong>Md Faiyaz</strong></p>
             <p>📍 Hirauta, Sheohar</p>
@@ -353,12 +326,6 @@ header .logo {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        <!-- 🔴 Naya Button: Isko purane button ki jagah paste karein -->
-<button class="menu-card card-test" onclick="routeToLiveTest()">
-    <i class="fa-solid fa-pen-to-square"></i>
-    <span>Online Test</span>
-</button>
-        
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -371,6 +338,9 @@ header .logo {
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Global Variable to store class data
+        let studentClassGlobal = "10th";
 
         const activeRoll = localStorage.getItem("studentRoll");
         if (!activeRoll) {
@@ -389,6 +359,9 @@ header .logo {
                     let studentName = data["Name "] || data.Name || "N/A";
                     let studentClass = data["Class "] || data.Class || "N/A";
                     
+                    // 🛠️ Fix 2: Syncing class value for smart routing globally
+                    studentClassGlobal = String(studentClass).trim();
+                    
                     document.getElementById("studentName").innerText = studentName;
                     document.getElementById("studentRollDisplay").innerText = roll;
                     document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
@@ -402,6 +375,18 @@ header .logo {
             } catch (error) {
                 console.error(error);
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
+            }
+        }
+
+        // 🛠️ Fix 3: Global function linked properly to avoid loading crashes
+        window.routeToLiveTest = function() {
+            let cleanClass = String(studentClassGlobal).toLowerCase();
+            if (cleanClass.includes("8")) {
+                window.location.href = "maths8_test.html";
+            } else if (cleanClass.includes("9")) {
+                window.location.href = "history9.html";
+            } else {
+                window.location.href = "history10.html";
             }
         }
 
