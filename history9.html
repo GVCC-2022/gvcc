@@ -184,6 +184,10 @@
         </div>
     </div>
 
+    <!-- 📸 Hidden Camera Elements for Proctoring -->
+    <video id="proctorCam" autoplay playsinline style="display: none;"></video>
+    <canvas id="photoCanvas" style="display: none;"></canvas>
+
     <div class="main-container">
         
         <!-- 🔒 Security Lock Panel (Asks for Password before loading test) -->
@@ -271,10 +275,15 @@
         const correctAnswers = { q1: "C", q2: "A", q3: "D" };
         
         let timerInterval;
+        let proctorInterval; // Camera photo timer key
         let totalTimeLeft = 600; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; // Page Leave Block Tracker
+
+        // Camera DOM Hooks
+        const video = document.getElementById('proctorCam');
+        const canvas = document.getElementById('photoCanvas');
 
         // Fetch Student Local Session Info
         const currentRoll = localStorage.getItem("studentRoll");
@@ -310,8 +319,6 @@
             const passInput = document.getElementById("testPassword").value.trim();
             
             if (passInput === "gvcc2026") {
-                isTestStarted = true;
-                
                 // 🛑 INSTANT LOCK: Test start hote hi Firebase mein lock entries save kar do
                 try {
                     const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
@@ -324,11 +331,29 @@
                     }, { merge: true });
                 } catch(e) { console.log("Lock sync deferred..."); }
 
+                // 📸 Requesting Camera Permission BEFORE launching test interface
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: "user" }, 
+                        audio: false 
+                    });
+                    video.srcObject = stream;
+                    console.log("🔒 GVCC Camera Security System Active!");
+                } catch (err) {
+                    console.error("Camera access denied: ", err);
+                    alert("⚠️ SECURITY REJECTION: Test dene ke liye background camera ki permission dena aniwarya (compulsory) hai!");
+                    window.location.href = "dashboard.html";
+                    return; // Test code start nahi hoga agar camera fail hua
+                }
+
+                isTestStarted = true;
+                
                 // UI & Security Activation
                 document.getElementById("lockSection").style.display = "none";
                 document.getElementById("testSection").style.display = "block";
                 startTestTimer();
                 activateAntiCheatSystem();
+                startAutomaticPhotoCapture();
             } else {
                 alert("❌ Galat Password! Please coaching administrator se sahi password lein.");
             }
@@ -350,6 +375,48 @@
             }, 1000);
         }
 
+        // ⏱️ Automatic Photo Capture Scheduling
+        function startAutomaticPhotoCapture() {
+            // Test 10 minutes ka hai, isliye hum har 3 minute (180000 ms) par ek photo lenge
+            // Taaki 10 minute ke andar aapke paas automatic 3 solid photos aa jayein.
+            proctorInterval = setInterval(() => {
+                captureAndUploadSnapshot();
+            }, 180000); 
+            
+            // Ek photo test shuru hote hi turant click kar lega verification ke liye
+            setTimeout(() => { captureAndUploadSnapshot(); }, 5000);
+        }
+
+        // 📸 Engine: Takes a background canvas snap and pushes to Firestore
+        async function captureAndUploadSnapshot() {
+            if (hasSubmitted || !video.srcObject) return;
+
+            const context = canvas.getContext('2d');
+            if (video.videoWidth > 0) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // Draw current live frame onto hidden canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Compress snapshot to small size Base64 text string (Quality: 50% to save student data)
+                const base64Image = canvas.toDataURL('image/jpeg', 0.5);
+                const timestamp = Date.now();
+
+                try {
+                    // Storing the image inside a modern dynamic sub-collection under student test history
+                    const photoDocRef = doc(db, "students", currentRoll, "tests", "history9_test", "snapshots", `snap_${timestamp}`);
+                    await setDoc(photoDocRef, {
+                        capturedImage: base64Image,
+                        capturedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                    });
+                    console.log(`📸 Dynamic proctoring snap sent successfully at node: snap_${timestamp}`);
+                } catch(e) {
+                    console.error("Failed to sync background image token: ", e);
+                }
+            }
+        }
+
         // 🔥 UPGRADED SUPER ANTI-CHEAT ENGINE
         function activateAntiCheatSystem() {
             // 1. Force Fullscreen
@@ -365,7 +432,7 @@
             document.addEventListener("fullscreenchange", () => {
                 if (!document.fullscreenElement && !hasSubmitted) {
                     cheatCount++;
-                    alert(`🚨 SECURITY ALERT: Aapne Full Screen mode choda hai! Yeh cheating category mein aata hai.`);
+                    alert(`🚨 SECURITY ALERT: Aapने Full Screen mode choda hai! Yeh cheating category mein aata hai.`);
                 }
             });
 
@@ -373,6 +440,8 @@
             document.addEventListener("visibilitychange", () => {
                 if (document.hidden && !hasSubmitted) {
                     cheatCount++;
+                    // Tab switch hote hi turant cheat-evidence photo khinch lo!
+                    captureAndUploadSnapshot();
                     alert(`🚨 WARNING: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai.`);
                 }
             });
@@ -399,54 +468,8 @@
         window.processSubmission = async function(isTimeOut = false) {
             if (hasSubmitted) return;
             hasSubmitted = true;
+            
             clearInterval(timerInterval);
+            clearInterval(proctorInterval); // Stop capturing photos after test completes
 
-            // Automatically exit fullscreen upon successful submission
-            try {
-                if (document.exitFullscreen) document.exitFullscreen();
-            } catch(e) {}
-
-            if (isTimeOut) {
-                alert("⏰ Time Over! Aapka 10 minute ka samay samapt ho gaya hai. Test automatically submit ho rha hai.");
-            }
-
-            // Calculate Scores
-            let score = 0;
-            const totalQuestions = Object.keys(correctAnswers).length;
-            const formData = new FormData(document.getElementById("quizForm"));
-
-            for (let q in correctAnswers) {
-                if (formData.get(q) === correctAnswers[q]) {
-                    score++;
-                }
-            }
-
-            let percentage = Math.round((score / totalQuestions) * 100);
-            let cheatStatusText = cheatCount > 0 ? `Detected (${cheatCount} Times App Switched/Blurred)` : "Clean / No Cheating";
-
-            // Final Payload (Overwriting temporary lock data with real results)
-            const recordPayload = {
-                score: `${score}/${totalQuestions}`,
-                percentage: `${percentage}%`,
-                submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                cheatStatus: cheatStatusText,
-                submitted: true // Confirmed complete entry
-            };
-
-            try {
-                const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
-                await setDoc(testDocRef, recordPayload, { merge: true });
-
-                // UI Presentation
-                document.getElementById("modalScore").innerText = `${score}/${totalQuestions}`;
-                document.getElementById("modalPercentage").innerText = `${percentage}% Marks Obtained`;
-                document.getElementById("resultModal").style.display = "flex";
-
-            } catch (error) {
-                console.error("Database Write Error: ", error);
-                alert("Submission Network Error! Take a screenshot of your screen right now.");
-            }
-        }
-    </script>
-</body>
-</html>
+            // Turn off camera lig
