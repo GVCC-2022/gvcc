@@ -312,48 +312,82 @@
                 }
             } catch (err) { console.error("Header Loading Error: ", err); }
         }
+                // Camera DOM Hooks
+        const video = document.getElementById('proctorCam');
+        const canvas = document.getElementById('photoCanvas');
+
+        // Fetch Student Local Session Info (Safeguard added)
+        const currentRoll = localStorage.getItem("studentRoll") || "student1"; 
+
+        // Auto-fetch profile name on launch
+        async function loadProfileHeader() {
+            // UI ko bina kisi delay ke pehle hi fill kar dete hain taaki 'Loading...' na atka rahe
+            document.getElementById("headerStudentRoll").innerText = currentRoll;
+            document.getElementById("headerStudentName").innerText = "GVCC Student";
+
+            try {
+                const docRef = doc(db, "students", currentRoll);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const sData = docSnap.data();
+                    const sName = sData["Name "] || sData.Name || "Student";
+                    document.getElementById("headerStudentName").innerText = sName;
+
+                    // 🔒 One-Time Lock Verification
+                    const testCheckRef = doc(db, "students", currentRoll, "tests", "history9_test");
+                    const testCheckSnap = await getDoc(testCheckRef);
+                    if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
+                        alert("⚠️ Security Lock: Aap yeh test pehle hi shuru ya submit kar chuke hain! Dobara entry block hai.");
+                        window.location.href = "dashboard.html";
+                    }
+                }
+            } catch (err) { 
+                console.error("Header Fetch Bypass: ", err); 
+                // Agar network slow hai ya connection fail hua, toh error block pure page ko freeze nahi karega
+            }
+        }
         loadProfileHeader();
 
-        // Password Verification & Test Init
+        // 🎯 Password Verification & Test Init (Fully Optimized)
         window.verifyAndStartTest = async function() {
             const passInput = document.getElementById("testPassword").value.trim();
             
             if (passInput === "gvcc2026") {
-                // 🛑 INSTANT LOCK: Test start hote hi Firebase mein lock entries save kar do
-                try {
-                    const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
-                    await setDoc(testDocRef, { 
-                        submitted: true, 
-                        cheatStatus: "Left Test Unfinished / App Closed without Submitting",
-                        score: "0/3",
-                        percentage: "0%",
-                        submittedAt: "Incomplete Attempt"
-                    }, { merge: true });
-                } catch(e) { console.log("Lock sync deferred..."); }
+                // UI & Interface Activation ko pehle rakha hai taaki click hote hi reaction dikhe
+                document.getElementById("lockSection").style.display = "none";
+                document.getElementById("testSection").style.display = "block";
+                
+                isTestStarted = true;
+                startTestTimer();
+                activateAntiCheatSystem();
 
-                // 📸 Requesting Camera Permission BEFORE launching test interface
+                // 📸 Background mein camera start karna aur fail hone par crash na hona
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { facingMode: "user" }, 
                         audio: false 
                     });
                     video.srcObject = stream;
-                    console.log("🔒 GVCC Camera Security System Active!");
+                    console.log("🔒 GVCC Camera Active!");
+                    startAutomaticPhotoCapture(); // Photo capture tabhi suru hoga jab camera chalega
                 } catch (err) {
-                    console.error("Camera access denied: ", err);
-                    alert("⚠️ SECURITY REJECTION: Test dene ke liye background camera ki permission dena compulsory hai!");
-                    window.location.href = "dashboard.html";
-                    return; 
+                    console.error("Camera error:", err);
+                    alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
+                    // Camera agar block bhi hoga, toh test rukega nahi, baccha test de payega!
                 }
 
-                isTestStarted = true;
-                
-                // UI & Security Activation
-                document.getElementById("lockSection").style.display = "none";
-                document.getElementById("testSection").style.display = "block";
-                startTestTimer();
-                activateAntiCheatSystem();
-                startAutomaticPhotoCapture();
+                // 🛑 Firebase mein instant lock background mein save hoga
+                try {
+                    const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
+                    setDoc(testDocRef, { 
+                        submitted: true, 
+                        cheatStatus: "Left Test Unfinished / App Closed without Submitting",
+                        score: "0/3",
+                        percentage: "0%",
+                        submittedAt: "Incomplete Attempt"
+                    }, { merge: true });
+                } catch(e) { console.log("Lock deferred."); }
+
             } else {
                 alert("❌ Galat Password! Please coaching administrator se sahi password lein.");
             }
