@@ -275,53 +275,21 @@
         const correctAnswers = { q1: "C", q2: "A", q3: "D" };
         
         let timerInterval;
-        let proctorInterval; // Camera photo timer key
+        let proctorInterval; 
         let totalTimeLeft = 600; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
-        let isTestStarted = false; // Page Leave Block Tracker
+        let isTestStarted = false; 
 
         // Camera DOM Hooks
         const video = document.getElementById('proctorCam');
         const canvas = document.getElementById('photoCanvas');
 
-        // Fetch Student Local Session Info (अगर localstorage खाली है तो डिफ़ॉल्ट "student1" ले लेगा)
+        // Fetch Student Local Session Info
         const currentRoll = localStorage.getItem("studentRoll") || "student1"; 
 
         // Auto-fetch profile name on launch
         async function loadProfileHeader() {
-            try {
-                // पहले ही रोल नंबर यूआई में दिखा देते हैं ताकि खाली न दिखे
-                document.getElementById("headerStudentRoll").innerText = currentRoll;
-                document.getElementById("headerStudentName").innerText = "GVCC Student";
-
-                const docRef = doc(db, "students", currentRoll);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const sData = docSnap.data();
-                    const sName = sData["Name "] || sData.Name || "Student";
-                    document.getElementById("headerStudentName").innerText = sName;
-
-                    // 🔒 One-Time Lock Verification
-                    const testCheckRef = doc(db, "students", currentRoll, "tests", "history9_test");
-                    const testCheckSnap = await getDoc(testCheckRef);
-                    if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
-                        alert("⚠️ Security Lock: Aap yeh test pehle hi shuru ya submit kar chuke hain! Dobara entry block hai.");
-                        window.location.href = "dashboard.html";
-                    }
-                }
-            } catch (err) { console.error("Header Loading Error: ", err); }
-        }
-                // Camera DOM Hooks
-        const video = document.getElementById('proctorCam');
-        const canvas = document.getElementById('photoCanvas');
-
-        // Fetch Student Local Session Info (Safeguard added)
-        const currentRoll = localStorage.getItem("studentRoll") || "student1"; 
-
-        // Auto-fetch profile name on launch
-        async function loadProfileHeader() {
-            // UI ko bina kisi delay ke pehle hi fill kar dete hain taaki 'Loading...' na atka rahe
             document.getElementById("headerStudentRoll").innerText = currentRoll;
             document.getElementById("headerStudentName").innerText = "GVCC Student";
 
@@ -333,7 +301,6 @@
                     const sName = sData["Name "] || sData.Name || "Student";
                     document.getElementById("headerStudentName").innerText = sName;
 
-                    // 🔒 One-Time Lock Verification
                     const testCheckRef = doc(db, "students", currentRoll, "tests", "history9_test");
                     const testCheckSnap = await getDoc(testCheckRef);
                     if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
@@ -343,17 +310,15 @@
                 }
             } catch (err) { 
                 console.error("Header Fetch Bypass: ", err); 
-                // Agar network slow hai ya connection fail hua, toh error block pure page ko freeze nahi karega
             }
         }
         loadProfileHeader();
 
-        // 🎯 Password Verification & Test Init (Fully Optimized)
+        // 🎯 Password Verification & Test Init
         window.verifyAndStartTest = async function() {
             const passInput = document.getElementById("testPassword").value.trim();
             
             if (passInput === "gvcc2026") {
-                // UI & Interface Activation ko pehle rakha hai taaki click hote hi reaction dikhe
                 document.getElementById("lockSection").style.display = "none";
                 document.getElementById("testSection").style.display = "block";
                 
@@ -361,7 +326,6 @@
                 startTestTimer();
                 activateAntiCheatSystem();
 
-                // 📸 Background mein camera start karna aur fail hone par crash na hona
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { facingMode: "user" }, 
@@ -369,18 +333,16 @@
                     });
                     video.srcObject = stream;
                     console.log("🔒 GVCC Camera Active!");
-                    startAutomaticPhotoCapture(); // Photo capture tabhi suru hoga jab camera chalega
+                    startAutomaticPhotoCapture(); 
                 } catch (err) {
                     console.error("Camera error:", err);
                     alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
-                    // Camera agar block bhi hoga, toh test rukega nahi, baccha test de payega!
                 }
 
-                // 🛑 Firebase mein instant lock background mein save hoga
                 try {
                     const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
-                    setDoc(testDocRef, { 
-                        submitted: true, 
+                    await setDoc(testDocRef, { 
+                        submitted: false, 
                         cheatStatus: "Left Test Unfinished / App Closed without Submitting",
                         score: "0/3",
                         percentage: "0%",
@@ -413,9 +375,9 @@
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
                 captureAndUploadSnapshot();
-            }, 180000); 
+            }, 180000); // Takes photo every 3 minutes
             
-            setTimeout(() => { captureAndUploadSnapshot(); }, 5000);
+            setTimeout(() => { captureAndUploadSnapshot(); }, 5000); // Fast initial snap after 5 seconds
         }
 
         // 📸 Engine: Takes a background canvas snap and pushes to Firestore
@@ -444,7 +406,7 @@
             }
         }
 
-        // 🔥 UPGRADED SUPER ANTI-CHEAT ENGINE
+        // 🔥 ANTI-CHEAT ENGINE
         function activateAntiCheatSystem() {
             try {
                 if (document.documentElement.requestFullscreen) {
@@ -457,7 +419,7 @@
             document.addEventListener("fullscreenchange", () => {
                 if (!document.fullscreenElement && !hasSubmitted) {
                     cheatCount++;
-                    alert(`🚨 SECURITY ALERT: Aapने Full Screen mode choda hai! Yeh cheating category mein aata hai.`);
+                    alert(`🚨 SECURITY ALERT: Aapne Full Screen mode choda hai! Yeh cheating category mein aata hai.`);
                 }
             });
 
@@ -472,50 +434,57 @@
             window.addEventListener("blur", () => {
                 if (!hasSubmitted) {
                     cheatCount++;
-                    alert(`🚨 CHEAT DETECTED: Shortcut menu ya drop-down panel open karne ki koshish pakdi gayi hai!`);
-                }
-            });
-
-            window.addEventListener("beforeunload", (e) => {
-                if (isTestStarted && !hasSubmitted) {
-                    const msg = "🚨 WARNING: Aapka test chal rha hai! Agar aapne page choda toh aap block ho jayenge.";
-                    e.returnValue = msg;
-                    return msg;
+                    captureAndUploadSnapshot();
+                    console.log("Window focus lost");
                 }
             });
         }
 
-        // Database Score Upload & Submission Handler (ये पार्ट अधूरा था जिसे पूरा कर दिया गया है)
+        // 📝 Test Submission Process Logic
         window.processSubmission = async function(isTimeOut = false) {
             if (hasSubmitted) return;
             hasSubmitted = true;
             
             clearInterval(timerInterval);
-            clearInterval(proctorInterval); 
+            clearInterval(proctorInterval);
 
             if (video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
-
-            try {
-                if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
-            } catch(e) {}
-
-            if (isTimeOut) {
-                alert("⏰ Time Over! Aapka 10 minute ka samay samapt ho gaya hai. Test automatically submit ho rha hai.");
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
             }
 
             let score = 0;
-            const totalQuestions = Object.keys(correctAnswers).length;
-            const formData = new FormData(document.getElementById("quizForm"));
-
+            const form = document.getElementById("quizForm");
+            
+            // Checking answers
             for (let q in correctAnswers) {
-                if (formData.get(q) === correctAnswers[q]) {
+                const selected = form.elements[q] ? form.elements[q].value : "";
+                if (selected === correctAnswers[q]) {
                     score++;
                 }
             }
 
-            let percentage = Math.round((score / totalQuestions) * 100);
-            let cheatStatusText = cheatCount > 0 ? `Detected (${cheatCount} Times App Switched/Blurred)` : "Clean / No Cheating";
+            const pct = ((score / 3) * 100).toFixed(0) + "%";
+            const finalScoreStr = `${score}/3`;
 
-            c
+            document.getElementById("modalScore").innerText = finalScoreStr;
+            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
+            document.getElementById("resultModal").style.display = "flex";
+
+            try {
+                const testDocRef = doc(db, "students", currentRoll, "tests", "history9_test");
+                await setDoc(testDocRef, {
+                    submitted: true,
+                    score: finalScoreStr,
+                    percentage: pct,
+                    cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
+                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                }, { merge: true });
+            } catch (err) {
+                console.error("Data saving error: ", err);
+                alert("Score local update secure. Cloud synchronization delayed.");
+            }
+        }
+    </script>
+</body>
+</html>
