@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results - Gyan Varsha Coaching Center</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Class 9th History Result - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -88,14 +89,13 @@
 <body>
 
 <div class="header">
-    <h1>📊 Live Test Results</h1>
+    <h1>📚 Class 9th History Test Result</h1>
     <p>Gyan Varsha Coaching Center</p>
 </div>
 
-<!-- Section 1: Individual Result -->
 <div class="result-box" id="myResultBox">
-    <h2>👤 Aapka Result (Day 1)</h2>
-    <p id="loadingText"><i class="fa-solid fa-spinner fa-spin"></i> Database se fetch ho raha hai...</p>
+    <h2>👤 Aapka History Test Result</h2>
+    <p id="loadingText"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
     
     <div id="myResultContent" class="hidden">
         <h3 id="studentNameDisplay" style="margin: 5px 0;">--</h3>
@@ -108,16 +108,15 @@
     </div>
 </div>
 
-<!-- Section 2: Timer & Leaderboard -->
 <div class="result-box" id="timerBox">
     <p style="color: #d9534f; font-weight: bold; font-size: 15px;">
         ⏳ Leaderboard <span id="timeRemaining">Loading...</span> mein unlock hoga.
     </p>
-    <p style="font-size: 12px; color: #64748b;">(Full class ranking test khatam hone ke baad aayegi)</p>
+    <p style="font-size: 12px; color: #64748b;">(Class 9th ke sabhi bacchon ki ranking test khatam hone ke baad aayegi)</p>
 </div>
 
 <div class="result-box hidden" id="leaderboardBox">
-    <h2>🏆 Class <span id="lbClassDisplay"></span> Leaderboard</h2>
+    <h2>🏆 Class 9th History Leaderboard</h2>
     <div class="table-container" id="leaderboardTableContainer"></div>
 </div>
 
@@ -125,7 +124,6 @@
 
 <div class="footer">© Gyan Varsha Coaching Center</div>
 
-<!-- Firebase V12 Integration -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -142,19 +140,19 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Get Active Roll Number
     const activeRoll = localStorage.getItem("studentRoll");
     let globalClass = "N/A";
     let globalName = "Student";
 
-    // --- TIMING CONFIGURATION ---
-    const targetTestPath = "maths_day1"; 
-    // ⏰ Yahan Test ka Start Time set karein (Format: YYYY-MM-DDTHH:MM:00)
+    // 🎯 TARGET PATH CHANGED TO HISTORY9_TEST
+    const targetTestPath = "history9_test"; 
+    
+    // ⏰ 20 Minutes Timer Settings
     const testStartTime = new Date("2026-06-21T18:00:00").getTime(); 
-    const testDurationMs = 20 * 60 * 1000; // 20 minutes
+    const testDurationMs = 20 * 60 * 1000; 
 
     if (!activeRoll) {
-        alert("Aapka session expire ho gaya hai. Kripya login karein.");
+        alert("Session Expired: Kripya dashboard se login karein.");
         window.location.href = "dashboard.html";
     } else {
         document.getElementById("studentRollDisplay").innerText = activeRoll;
@@ -163,7 +161,7 @@
 
     async function fetchStudentProfileAndResult() {
         try {
-            // 1. Fetch Profile Class & Name
+            // 1. Fetch Profile Class & Name from Root 'students' Collection
             const studentRef = doc(db, "students", activeRoll);
             const studentSnap = await getDoc(studentRef);
 
@@ -174,10 +172,16 @@
                 
                 document.getElementById("studentNameDisplay").innerText = globalName;
                 document.getElementById("studentClassDisplay").innerText = globalClass;
-                document.getElementById("lbClassDisplay").innerText = globalClass;
             }
 
-            // 2. Fetch Personal Test Result
+            // 🛑 STRICT SECURITY CHECK: Agar baccha Class 9th ka nahi hai toh block kar do
+            if (!globalClass.includes("9")) {
+                document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545; font-weight:700;"><i class="fa-solid fa-ban"></i> Error 403: Yeh result sirf Class 9th ke students ke liye published hai.</span>`;
+                document.getElementById("timerBox").classList.add("hidden");
+                return;
+            }
+
+            // 2. Fetch Personal History Test Result
             const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
             const resultSnap = await getDoc(resultRef);
 
@@ -189,13 +193,13 @@
                 document.getElementById("myMarksDisplay").innerText = rData.score || "--/--";
                 document.getElementById("myPercentDisplay").innerText = rData.percentage || "";
                 
-                if (rData.cheatStatus && rData.cheatStatus !== "Clean Profile Verified") {
-                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#dc3545; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Warning: ${rData.cheatStatus}</span>`;
+                if (rData.cheatStatus && rData.cheatStatus !== "Clean Profile Verified" && rData.cheatStatus !== "Clean / No Cheating") {
+                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#dc3545; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Security Status: ${rData.cheatStatus}</span>`;
                 } else {
-                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Profile: Clean</span>`;
+                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
                 }
             } else {
-                document.getElementById("myResultContent").innerHTML = "<p style='color:#dc3545; font-weight:bold;'>Aapne yeh test submit nahi kiya hai.</p>";
+                document.getElementById("myResultContent").innerHTML = "<p style='color:#dc3545; font-weight:bold;'>Aapne Class 9th History Online Test submit nahi kiya hai.</p>";
             }
 
             // 3. Start Timer for Leaderboard
@@ -203,7 +207,7 @@
 
         } catch (error) {
             console.error(error);
-            document.getElementById("loadingText").innerText = "Network Error: Data nahi mila.";
+            document.getElementById("loadingText").innerText = "Network Error: Server se connection nahi ho saka.";
         }
     }
 
@@ -216,7 +220,7 @@
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 document.getElementById("timerBox").classList.add("hidden");
-                loadClassLeaderboard(); // Time's Up! Show Leaderboard
+                loadClassLeaderboard(); 
             } else {
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
@@ -227,33 +231,33 @@
 
     async function loadClassLeaderboard() {
         try {
-            // Firestore Query: Get results only for matching class
-            const q = query(collection(db, "tests", targetTestPath, "students"), where("class", "==", globalClass));
+            // Fetch all records from tests -> history9_test -> students
+            const q = collection(db, "tests", targetTestPath, "students");
             const querySnapshot = await getDocs(q);
             
             let studentsData = [];
             querySnapshot.forEach((doc) => {
                 let data = doc.data();
-                data.rollNumber = doc.id; // Extract Roll No from Document ID
+                data.rollNumber = doc.id; 
                 
-                // Parse score number (e.g. "2/2" -> 2)
+                // Score string extraction (e.g. "3/3" or "2/3" -> parsed to integer for perfect ranking sorting)
                 data.sortScore = parseInt((data.score || "0").split('/')[0]) || 0;
                 studentsData.push(data);
             });
 
-            // Sort logic: Highest score comes first
+            // Highest rank scoring system logic setup
             studentsData.sort((a, b) => b.sortScore - a.sortScore);
 
             renderLeaderboardTable(studentsData);
             document.getElementById("leaderboardBox").classList.remove("hidden");
         } catch(e) {
-            console.error("Leaderboard Fetch Error:", e);
+            console.error("Leaderboard Error:", e);
         }
     }
 
     function renderLeaderboardTable(data) {
         if(data.length === 0) {
-            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Class data available nahi hai.</p>";
+            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Leaderboard data unavailable.</p>";
             return;
         }
 
@@ -274,9 +278,9 @@
 
             html += `<tr class="${rowClass}">
                         <td>#${rank}</td>
-                        <td>${student.name || 'Student'}</td>
+                        <td>${student.name || 'GVCC Student'}</td>
                         <td>${student.rollNumber}</td>
-                        <td style="font-weight:bold; color:#003366;">${student.score}</td>
+                        <td style="font-weight:bold; color:#003366;">${student.score || '--'}</td>
                     </tr>`;
         });
         html += `</table>`;
