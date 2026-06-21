@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 - Basic Maths Mission</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Prevents text selection */
+        }
+
+        .header {
+            background: #003366;
+            color: white;
+            padding: 25px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0 0; opacity: 0.9; font-size: 16px; }
+
+        .box {
+            background: white;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            background: #003366;
+            color: white;
+            padding: 15px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        #questions {
+            text-align: left;
+            padding: 15px 5px;
+        }
+
+        #questions h3 {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        #timer {
+            font-size: 22px;
+            color: #d9534f;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        #waBtn {
+            background: #25d366;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: none;
+            margin-top: 15px;
+            box-shadow: 0 3px 10px rgba(37,211,102,0.3);
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #e9ecef;
+        }
+
+        #camera {
+            width: 110px;
+            height: 140px;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            border: 3px solid #d9534f;
+            border-radius: 12px;
+            display: none;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        #msg {
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧮 Gyan Varsha Basic Maths Mission</h1>
+    <p>Day 1 - Arithmetic Foundation</p>
+</div>
+
+<div class="box">
+    <!-- Login Section -->
+    <div id="loginSection">
+        <input type="text" id="roll" placeholder="Enter Roll Number" oninput="findName()">
+        <input type="password" id="password" placeholder="Enter Day 1 Password">
+        <input type="text" id="name" placeholder="Student Name" readonly>
+        <button id="startBtn" onclick="startMission()">🚀 Start Day 1</button>
+    </div>
+
+    <!-- Test Area -->
+    <h2 id="timer" style="display:none;">⏰ 15:00</h2>
+    <div id="questions"></div>
+
+    <button id="submitBtn" onclick="checkResult()" style="display:none;">📝 Submit Test</button>
+    <a id="waBtn" target="_blank" href="#">📲 Send Result to Teacher</a>
+    
+    <div id="result"></div>
+    <p id="msg"></p>
+</div>
+
+<video id="camera" autoplay playsinline muted></video>
+
+<div class="footer">
+    Prepared By: Md Faiyaz
+</div>
+
+<script>
+// --- GLOBAL CORE VARIABLES ---
+let timerStarted = false;
+let warningCount = 0;
+let time = 900; // 15 Minutes
+let testTimerInterval;
+
+// Security Features: Disable Right Click & Copy-Paste
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u')) {
+        e.preventDefault();
+        alert("❌ Security Alert: Copy/Paste/View-Source Blocked!");
+    }
+});
+
+let students = {
+    "801":"Anamika Kumari", "802":"Radhika Kumari", "803":"Sabrun Khatoon", "804":"Rubana Khatoon",
+    "805":"Zainab Parveen", "806":"Sabiya Khatoon", "807":"Fatima Khatoon", "808":"Farida Khatoon",
+    "809":"Sama Khatoon", "810":"Sahnuma Parveen", "811":"Musarrat Khatoon", "812":"Mamta Kumari",
+    "813":"Sonakshi Kumari", "814":"Md Ashika", "815":"Raji Alam", "816":"Subodh Kumar",
+    "817":"Radhe Krishna", "818":"Ansh Kumar", "819":"Md Salman", "820":"Sonali Kumari",
+    "901":"Prince Raj", "902":"Avinash Kumar", "903":"Shyam Kumar", "904":"Kajal Kumari",
+    "905":"Nuzhat Parveen", "906":"Sneha Kumari", "907":"Aditya Soni", "908":"Gautam Kumari",
+    "909":"Mamta Kumari", "910":"Priya Kumari", "911":"Muskan Khatoon", "912":"Abhishek Kumar",
+    "913":"Rahul Kumar", "914":"Saqib Ansari", "915":"Prince Kumar", "916":"Ritik Raushan",
+    "917":"Manish Kumar", "918":"Altamash", "919":"Pawan Kumar", "920":"Kanchan Kumari",
+    "921":"Puja Kunari", "922":"Uzma Khatoon", "923":"Naushin khatoon", "924":"Radhe Shyam",
+    "1001":"Aasmin Khatoon", "1002":"Saloni Kumari", "1003":"Anjali Kumari", "1004":"Nitam Kumari",
+    "1005":"Saniya Kumari", "1006":"Sajiya Parveen", "1007":"Rounak Parveen", "1008":"Rahnaz Khatoon",
+    "1009":"Mustara Khatoon", "1010":"Raziya Tabassum", "1011":"Ishrat Khatoon", "1012":"Rupa Kumari",
+    "1013":"Priyanshu Kumari", "1014":"Anu Kumari", "1015":"Shruti Kumari", "1016":"Shivani Kumari I",
+    "1017":"Shivani Kumari II", "1018":"Afsana Khatoon", "1019":"Kajal Kumari", "1020":"Priti Kumari",
+    "1021":"Md Noor Alam", "1022":"Sajan Kumar", "1023":"Pankaj Kumar", "2356":"Md Faiyaz"
+};
+
+const allowedStudents = [
+    "801", "804", "814", "902", "914", "911", "918", "813", "922", "905", "923", "924",
+    "1001","1002","1003","1004","1005","1006","1007","1008","1009","1010",
+    "1011","1012","1013","1014","1015","1016","1017","1018","1019","1020",
+    "1021","1022","1023","2356"
+];
+
+function findName(){
+    let roll = document.getElementById("roll").value;
+    document.getElementById("name").value = students[roll] || "";
+}
+
+function startMission(){
+    let roll = document.getElementById("roll").value;
+    let password = document.getElementById("password").value;
+
+    // Basic Validations
+    if(!students[roll]){
+        alert("❌ Invalid Roll Number");
+        return;
+    }
+    if(password !== "GVCCDAY1"){
+        alert("❌ Wrong Password");
+        return;
+    }
+    if(!allowedStudents.includes(roll)){
+        alert("❌ Aap Day 1 ke liye eligible nahi hain.");
+        return;
+    }
+    if(localStorage.getItem("day1_" + roll)){
+        alert("❌ Aap Day 1 Test pehle hi submit kar chuke hain.");
+        return;
+    }
+
+    // Camera Access Request
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function(stream){
+        document.getElementById("camera").style.display = "block";
+        document.getElementById("camera").srcObject = stream;
+        setupTestLayout(roll);
+    })
+    .catch(function(){
+        alert("❌ Camera Permission Required to start the test!");
+    });
+}
+
+function setupTestLayout(roll) {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("timer").style.display = "block";
+    document.getElementById("submitBtn").style.display = "block";
+    document.getElementById("msg").innerHTML = "✅ Welcome " + students[roll];
+
+    // Anti-Cheat: Tab Switch Monitoring
+    document.addEventListener("visibilitychange", function(){
+        if(document.hidden){
+            warningCount++;
+            alert("⚠️ Warning " + warningCount + "/3: Do not switch tabs or open other apps!");
+            if(warningCount >= 3) {
+                alert("❌ Auto-Submitting test due to multiple cheating attempts!");
+                processResult();
+            }
+        }
+    });
+
+    // 1-2 Temporary Basic Questions for setup
+    document.getElementById("questions").innerHTML = `
+        <h3>Q1. 36 + 48 = ?</h3>
+        <input type="radio" name="q1" value="0"> 82<br>
+        <input type="radio" name="q1" value="1"> 84<br>
+        <input type="radio" name="q1" value="0"> 86<br>
+        <input type="radio" name="q1" value="0"> 88<br>
+
+        <h3>Q2. 95 - 37 = ?</h3>
+        <input type="radio" name="q2" value="0"> 56<br>
+        <input type="radio" name="q2" value="0"> 57<br>
+        <input type="radio" name="q2" value="1"> 58<br>
+        <input type="radio" name="q2" value="0"> 59<br>
+    `;
+
+    // Start 15 Mins Timer Loop
+    testTimerInterval = setInterval(function(){
+        let minutes = Math.floor(time/60);
+        let seconds = time%60;
+        document.getElementById("timer").innerHTML = "⏰ " + minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+        time--;
+
+        if(time < 0){
+            clearInterval(testTimerInterval);
+            alert("⏰ Time Over!");
+            processResult();
+        }
+    }, 1000);
+}
+
+function checkResult(){
+    let roll = document.getElementById("roll").value;
+    
+    // Firebase Duplicity Check
+    const q = window.query(
+        window.collection(window.db, "results"),
+        window.where("roll", "==", roll),
+        window.where("day", "==", "day1")
+    );
+      
+    window.getDocs(q).then((snapshot) => {
+        if (!snapshot.empty) {
+            alert("❌ Aap pehle hi test submit kar chuke hain.");
+            return;
+        }
+        processResult();
+    }).catch(err => {
+        console.error(err);
+        processResult(); // Fallback to submit if database check fails
+    });
+}
+
+function processResult(){
+    clearInterval(testTimerInterval);
+    let roll = document.getElementById("roll").value;
+    let sName = document.getElementById("name").value;
+    
+    let score = 0;
+    document.querySelectorAll('input[type=radio]:checked').forEach(e => score += Number(e.value));
+    
+    localStorage.setItem("day1_" + roll, "submitted");
+
+    let totalQuestions = 2; // Temporary updated total count
+    let percent = (score / totalQuestions) * 100;
+    let status = percent >= 60 ? "✅ PASS" : "❌ FAIL";
+    let medal = "";
+
+    if(percent >= 90) medal = "🥇 Gold";
+    else if(percent >= 75) medal = "🥈 Silver";
+    else if(percent >= 60) medal = "🥉 Bronze";
+    else medal = "📚 Needs Practice";
+
+    document.getElementById("result").innerHTML = `
+        <h2>Result Saved!</h2>
+        <p>Score: ${score}/${totalQuestions}</p>
+        <p>Percentage: ${percent.toFixed(0)}%</p>
+        <h3>${status}</h3>
+        <h3>${medal}</h3>
+    `;
+
+    document.querySelectorAll('input[type="radio"]').forEach(e => e.disabled = true);
+    document.getElementById("submitBtn").style.display = "none";
+    document.getElementById("msg").innerHTML = "Warnings: " + warningCount;
+
+    // WhatsApp Message Text String Generation
+    let msgText = `🧮 Gyan Varsha Basic Maths Mission Day 1%0A%0A` +
+                  `Name: ${sName}%0A` +
+                  `Roll No: ${roll}%0A` +
+                  `Score: ${score}/${totalQuestions}%0A` +
+                  `Percentage: ${percent.toFixed(0)}%%0A` +
+                  `Result: ${status}%0A` +
+                  `Warnings: ${warningCount}%0A` +
+                  `Medal: ${medal}`;
+
+    document.getElementById("waBtn").href = "https://wa.me/916203491210?text=" + msgText;
+    document.getElementById("waBtn").style.display = "block";
+
+    // Stop Webcam Track Stream safely
+    if(document.getElementById("camera").srcObject) {
+        document.getElementById("camera").srcObject.getTracks().forEach(track => track.stop());
+        document.getElementById("camera").style.display = "none";
+    }
+
+    // Save To Firestore Cloud
+    window.addDoc(window.collection(window.db, "results"), {
+        name: sName,
+        roll: roll,
+        day: "day1",
+        score: score,
+        percentage: percent.toFixed(0),
+        medal: medal,
+        warnings: warningCount,
+        result: status,
+        date: new Date().toLocaleString()
+    })
+    .then(() => console.log("Result Successfully Synced to Firebase!"))
+    .catch((error) => console.log("Firebase Error:", error));
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDocs, query, where
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+  authDomain: "gvcc-database.firebaseapp.com",
+  projectId: "gvcc-database",
+  storageBucket: "gvcc-database.firebasestorage.app",
+  messagingSenderId: "1063216875940",
+  appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
+  measurementId: "G-DP808QLE7K"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Binding properties globally to window scope securely
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+window.getDocs = getDocs;
+window.query = query;
+window.where = where;
+</script>
+  
+</body>
+</html>
