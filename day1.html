@@ -407,8 +407,9 @@
 
    // Global variable control flag to prevent rapid alert queuing
 let isAlerting = false; 
+// Maan lete hain cheatCount upar declare kiya hua hai
+// let cheatCount = 0; 
 
-// Ek direct function browser ko wapas fullscreen me force karne ke liye
 function forceReturnToFullscreen() {
     try {
         if (document.documentElement.requestFullscreen) {
@@ -421,73 +422,89 @@ function forceReturnToFullscreen() {
     }
 }
 
+// 🚀 NAYA FUNCTION: Default alert() ki jagah Custom HTML Warning Modal
+function showWarningModal(message, reason) {
+    if (isAlerting) return;
+    isAlerting = true;
+    cheatCount++; 
+    captureAndUploadSnapshot();
+
+    if (cheatCount >= 3) {
+        autoLockStudentOnExit(reason);
+        return;
+    }
+
+    // Screen block karne ke liye ek div banayenge
+    const overlay = document.createElement('div');
+    overlay.id = "antiCheatOverlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)"; // Dark background
+    overlay.style.color = "white";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = "999999";
+    overlay.style.fontFamily = "Arial, sans-serif";
+
+    overlay.innerHTML = `
+        <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount}/3 ⚠️</h1>
+        <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
+        <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
+        <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            I Understand, Resume Test
+        </button>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Jab baccha button dabayega, tabhi fullscreen trigger hoga (Valid User Gesture)
+    document.getElementById('resumeTestBtn').addEventListener('click', () => {
+        forceReturnToFullscreen();
+        document.body.removeChild(overlay);
+        
+        // Thoda delay taki browser fullscreen me set ho jaye, fir naya alert allow karein
+        setTimeout(() => {
+            isAlerting = false;
+        }, 2000); 
+    });
+}
+
 function activateAntiCheatSystem() {
-    // Shuruat me fullscreen force karein
     forceReturnToFullscreen();
 
-    // 1. Strict Fullscreen Lock Checker (Har 2 Second - Loop Trap Fixed)
+    // 1. Strict Fullscreen Lock Checker
     setInterval(() => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
-            if (isAlerting) return; 
-            
-            isAlerting = true;
-            cheatCount++; 
-            captureAndUploadSnapshot();
-            
-            // Live warning popup
-            alert(`⚠️ WARNING: Fullscreen se chhedchhad mat kijiye! Warning: ${cheatCount}/3. Iska information Md Faiyaz ke paas chala jayega.`);
-            
-            // 🚀 MAGIC FIX: OK dabate hi turant pehle fullscreen me wapas laao
-            forceReturnToFullscreen();
-            
-            // Browser ko setup hone ke liye 3 second ka pause do, tab tak naya alert nahi chalega
-            setTimeout(() => {
-                isAlerting = false; 
-            }, 3000);
-            
-            if(cheatCount >= 3) {
-                autoLockStudentOnExit("Detected 3+ Fullscreen Violations");
-            }
+            showWarningModal(
+                "Fullscreen se chhedchhad mat kijiye! Test dene ke liye Fullscreen me rehna zaruri hai.", 
+                "Detected 3+ Fullscreen Violations"
+            );
         }
     }, 2000);
 
     // 2. App Switch / Minimize Sensor
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && !hasSubmitted && isTestStarted) {
-            if (isAlerting) return;
-            
-            isAlerting = true;
-            cheatCount++; 
-            captureAndUploadSnapshot();
-            
-            alert(`🚨 SECURITY ALERT: Aapne window change kiya hai! Warning: ${cheatCount}/3. Dubara karne par block ho jayenge.`);
-            
-            forceReturnToFullscreen();
-            setTimeout(() => { isAlerting = false; }, 3000);
-            
-            if(cheatCount >= 3) {
-                autoLockStudentOnExit("Tab Switched/Minimized Multiple Times");
-            }
+            showWarningModal(
+                "🚨 SECURITY ALERT: Aapne window/tab change kiya hai! Dubara karne par block ho jayenge.", 
+                "Tab Switched/Minimized Multiple Times"
+            );
         }
     });
 
-    // 3. Notification Bar Slide Sensor
+    // 3. Notification Bar Slide / Window Blur Sensor
     window.addEventListener("blur", () => {
-        if (!hasSubmitted && isTestStarted) {
-            if (isAlerting) return;
-            
-            isAlerting = true;
-            cheatCount++; 
-            captureAndUploadSnapshot();
-            
-            alert(`⚠️ DISTRACTION DETECTED: Notification slide ya overlay panel touch kiya gaya hai! Warning: ${cheatCount}/3.`);
-            
-            forceReturnToFullscreen();
-            setTimeout(() => { isAlerting = false; }, 3000);
-            
-            if(cheatCount >= 3) {
-                autoLockStudentOnExit("Notification panel drop flag limit crossed");
-            }
+        // Overlay active hone par background click se blur trigger na ho
+        if (!document.getElementById("antiCheatOverlay") && !hasSubmitted && isTestStarted) {
+            showWarningModal(
+                "DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", 
+                "Notification panel drop flag limit crossed"
+            );
         }
     });
 
