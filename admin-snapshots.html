@@ -81,7 +81,7 @@
 
     <div class="search-box">
         <input type="text" id="studentRollInput" placeholder="Enter Student Roll (e.g. 902)">
-        <button class="btn-search" onclick="fetchStudentSnapshots()">View Photos</button>
+        <button class="btn-search" id="searchBtn">View Photos</button>
     </div>
 
     <div id="statusMessage" class="status-msg">Enter a roll number above to audit evidence.</div>
@@ -103,7 +103,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.fetchStudentSnapshots = async function() {
+        // Click event listener directly inside the script block to avoid scope mismatch
+        document.getElementById("searchBtn").addEventListener("click", async () => {
             const rollNo = document.getElementById("studentRollInput").value.trim();
             const gallery = document.getElementById("photoGallery");
             const status = document.getElementById("statusMessage");
@@ -117,7 +118,7 @@
             status.innerText = "Loading proctoring snapshots from main server...";
 
             try {
-                // FIXED PATH: tests -> history9_test -> students -> [rollNo] -> snapshots
+                // Fetching from fixed path: tests -> history9_test -> students -> [rollNo] -> snapshots
                 const snapCollectionRef = collection(db, "tests", "history9_test", "students", rollNo, "snapshots");
                 const querySnapshot = await getDocs(snapCollectionRef);
 
@@ -153,8 +154,7 @@
                 console.error("Error fetching evidence logs: ", error);
                 status.innerText = "Error establishing secure connection with the database backend.";
             }
-        }
+        });
     </script>
 </body>
 </html>
-
