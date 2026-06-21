@@ -372,7 +372,8 @@
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
                 captureAndUploadSnapshot();
-            }, 180000); // Takes photo every 3 minutes
+            }, 30000); // Takes photo every 30 seconds
+            
             
             // Camera module stream settle hone ke liye 6 seconds ka delay diya hai taaki blank snapshot na aaye
             setTimeout(() => { captureAndUploadSnapshot(); }, 6000); 
