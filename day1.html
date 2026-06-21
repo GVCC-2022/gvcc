@@ -406,36 +406,61 @@
         }
 
         function activateAntiCheatSystem() {
-            try {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                }
-            } catch (e) { }
-
-            document.addEventListener("fullscreenchange", () => {
-                if (!document.fullscreenElement && !hasSubmitted) {
-                    cheatCount++;
-                    alert(`🚨 SECURITY WARNING: Full Screen mode exit hua hai! Logs MD Faiyaz ko transmit kar diye gaye hain.`);
-                }
-            });
-
-            document.addEventListener("visibilitychange", () => {
-                if (document.hidden && !hasSubmitted) {
-                    cheatCount++;
-                    captureAndUploadSnapshot();
-                    alert(`🚨 SECURITY WARNING: Window switch alert tab tracking engine triggered.`);
-                }
-            });
-
-            window.addEventListener("blur", () => {
-                if (!hasSubmitted) {
-                    cheatCount++;
-                    captureAndUploadSnapshot();
-                }
-            });
+    // 1. Force Fullscreen Entry
+    try {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
         }
+    } catch (e) { console.log("Fullscreen entry forced pass"); }
+
+    // 2. Strict Fullscreen Monitoring Loop (Har 3 second mein security check)
+    setInterval(() => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
+            cheatCount++;
+            captureAndUploadSnapshot(); // System instantly takes photo proof!
+            alert(`🚨 SECURITY WARNING: Full Screen bypass detected! Warning Count: ${cheatCount}/3. Screen se chhedchhad mat kijiye.`);
+            
+            if(warningCount + cheatCount >= 3) {
+                alert("❌ Systems Locked: Auto-Submitting test due to multiple security violations.");
+                processSubmission();
+            }
+        }
+    }, 3000);
+
+    // 3. Tab Visibility Sensor (For minimized or switched app)
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden && !hasSubmitted) {
+            cheatCount++;
+            captureAndUploadSnapshot();
+            alert(`🚨 SECURITY ALERT: App switch ya hide kiya gya hai! Logs record ho rahe hain.`);
+            if(warningCount + cheatCount >= 3) { processSubmission(); }
+        }
+    });
+
+    // 4. Notification Panel & Alert Pull Sensor (Aggressive Focus Loss Catcher)
+    window.addEventListener("blur", () => {
+        if (!hasSubmitted && isTestStarted) {
+            cheatCount++;
+            captureAndUploadSnapshot();
+            console.log("🚨 Deep Check: Focus lost via status bar slide or overlay pop-up.");
+            
+            // Background check for automatic submit if flags limit crossed
+            if(warningCount + cheatCount >= 3) {
+                processSubmission();
+            }
+        }
+    });
+
+    // 5. Page Hide Fallback Sensor
+    window.addEventListener("pagehide", () => {
+        if (!hasSubmitted && isTestStarted) {
+            captureAndUploadSnapshot();
+        }
+    });
+}
+
 
         window.processSubmission = async function(isTimeOut = false) {
             if (hasSubmitted) return;
