@@ -421,85 +421,182 @@
             }
         }
 
-        // 🔥 ANTI-CHEAT ENGINE
-        function activateAntiCheatSystem() {
-            try {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                }
-            } catch (e) { console.log("Fullscreen forced fail"); }
+        // Global variables jo pehle se hone chahiye: cheatCount, hasSubmitted
+let isAlerting = false; 
 
-            document.addEventListener("fullscreenchange", () => {
-                if (!document.fullscreenElement && !hasSubmitted) {
-                    cheatCount++;
-                    alert(`🚨 SECURITY ALERT: Aapने Full Screen mode choda hai! Yeh cheating category mein aata hai.`);
-                }
-            });
-
-            document.addEventListener("visibilitychange", () => {
-                if (document.hidden && !hasSubmitted) {
-                    cheatCount++;
-                    captureAndUploadSnapshot();
-                    alert(`🚨 WARNING: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai.`);
-                }
-            });
-
-            window.addEventListener("blur", () => {
-                if (!hasSubmitted) {
-                    cheatCount++;
-                    captureAndUploadSnapshot();
-                    console.log("Window focus lost");
-                }
-            });
+// Fullscreen me wapas dhakelne ka function
+function forceReturnToFullscreen() {
+    try {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
         }
+    } catch (e) { 
+        console.log("Fullscreen restoration active"); 
+    }
+}
 
-        // 📝 Test Submission Process Logic
-        window.processSubmission = async function(isTimeOut = false) {
-            if (hasSubmitted) return;
-            hasSubmitted = true;
-            
-            clearInterval(timerInterval);
-            clearInterval(proctorInterval);
+// 🚀 Custom Alert Box Function (Taki browser ka infinite loop na bane)
+function showWarningModal(message, reason) {
+    if (isAlerting) return;
+    isAlerting = true;
+    cheatCount++; 
+    
+    // Agar capture function exists karta hai to photo le lo
+    if (typeof captureAndUploadSnapshot === "function") {
+        captureAndUploadSnapshot();
+    }
 
-            if (video.srcObject) {
-                const tracks = video.srcObject.getTracks();
-                tracks.forEach(track => track.stop());
-            }
+    // Screen block karne ke liye ek dark div
+    const overlay = document.createElement('div');
+    overlay.id = "antiCheatOverlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)";
+    overlay.style.color = "white";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = "999999";
+    overlay.style.fontFamily = "Arial, sans-serif";
 
-            let score = 0;
-            const form = document.getElementById("quizForm");
-            
-            // Checking answers
-            for (let q in correctAnswers) {
-                const selected = form.elements[q] ? form.elements[q].value : "";
-                if (selected === correctAnswers[q]) {
-                    score++;
-                }
-            }
+    overlay.innerHTML = `
+        <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount} ⚠️</h1>
+        <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
+        <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
+        <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            I Understand, Resume Test
+        </button>
+    `;
 
-            const pct = ((score / 3) * 100).toFixed(0) + "%";
-            const finalScoreStr = `${score}/3`;
+    document.body.appendChild(overlay);
 
-            document.getElementById("modalScore").innerText = finalScoreStr;
-            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
-            document.getElementById("resultModal").style.display = "flex";
+    // Jab baccha button dabayega, tabhi fullscreen trigger hoga
+    document.getElementById('resumeTestBtn').addEventListener('click', () => {
+        forceReturnToFullscreen();
+        document.body.removeChild(overlay);
+        
+        setTimeout(() => {
+            isAlerting = false;
+        }, 2000); 
+    });
+}
 
-            try {
-                const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
-                await setDoc(testDocRef, {
-                    submitted: true,
-                    score: finalScoreStr,
-                    percentage: pct,
-                    cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
-                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-                }, { merge: true });
-            } catch (err) {
-                console.error("Data saving error: ", err);
-                alert("Score local update secure. Cloud synchronization delayed.");
-            }
+// 🔥 ANTI-CHEAT ENGINE (Updated)
+function activateAntiCheatSystem() {
+    forceReturnToFullscreen();
+
+    // 1. Back Button Trap (History API) - Piche jane se rokega
+    window.history.pushState(null, null, window.location.href);
+    window.addEventListener("popstate", function () {
+        if (!hasSubmitted) {
+            window.history.pushState(null, null, window.location.href); // Trap: Wapas aage dhakelo
+            showWarningModal(
+                "⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", 
+                "Tried to Exit via Back Button"
+            );
         }
+    });
+
+    // 2. Strict Fullscreen Lock Checker (Har 2 second par check karega)
+    setInterval(() => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted) {
+            showWarningModal(
+                "Fullscreen se chhedchhad mat kijiye! Yeh cheating category mein aata hai.", 
+                "Fullscreen Violation"
+            );
+        }
+    }, 2000);
+
+    // 3. App Switch / Minimize Sensor
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden && !hasSubmitted) {
+            showWarningModal(
+                "🚨 SECURITY ALERT: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai.", 
+                "Tab Switched/Minimized"
+            );
+        }
+    });
+
+    // 4. Notification Bar Slide / Window Blur Sensor
+    window.addEventListener("blur", () => {
+        if (!document.getElementById("antiCheatOverlay") && !hasSubmitted) {
+            showWarningModal(
+                "DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", 
+                "Window focus lost"
+            );
+        }
+    });
+
+    // 5. Hardware Back / Tab Close Button Warning Pop-up
+    window.addEventListener('beforeunload', function (e) {
+        if (!hasSubmitted) {
+            e.preventDefault();
+            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap test se BAHAR ho jayenge!';
+            return e.returnValue;
+        }
+    });
+
+    // 6. Emergency Exit Trigger (Jabardasti Tab band karne ya back chale jane par auto-submit)
+    window.addEventListener('pagehide', function () {
+        if (!hasSubmitted) {
+            console.log("Student forced exit. Auto-submitting...");
+            window.processSubmission(true);
+        }
+    });
+}
+
+// 📝 Test Submission Process Logic (Aapka diya hua wahi same logic)
+window.processSubmission = async function(isTimeOut = false) {
+    if (hasSubmitted) return;
+    hasSubmitted = true;
+    
+    clearInterval(timerInterval);
+    clearInterval(proctorInterval);
+
+    if (video.srcObject) {
+        const tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+    }
+
+    let score = 0;
+    const form = document.getElementById("quizForm");
+    
+    // Checking answers
+    for (let q in correctAnswers) {
+        const selected = form.elements[q] ? form.elements[q].value : "";
+        if (selected === correctAnswers[q]) {
+            score++;
+        }
+    }
+
+    const pct = ((score / 3) * 100).toFixed(0) + "%";
+    const finalScoreStr = `${score}/3`;
+
+    document.getElementById("modalScore").innerText = finalScoreStr;
+    document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
+    document.getElementById("resultModal").style.display = "flex";
+
+    try {
+        const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
+        await setDoc(testDocRef, {
+            submitted: true,
+            score: finalScoreStr,
+            percentage: pct,
+            cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
+            submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+        }, { merge: true });
+    } catch (err) {
+        console.error("Data saving error: ", err);
+        alert("Score local update secure. Cloud synchronization delayed.");
+    }
+}
+
     </script>
 </body>
 </html>
