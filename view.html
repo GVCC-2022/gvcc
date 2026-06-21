@@ -19,29 +19,50 @@
             padding-bottom: 15px;
         }
         .admin-header h1 { color: #38bdf8; margin: 0; font-size: 24px; }
-        .search-box {
-            max-width: 400px;
+        
+        /* Form Box Styles for Dropdown and Search Input */
+        .control-box {
+            max-width: 500px;
             margin: 0 auto 30px auto;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255,255,255,0.02);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .search-box input {
-            flex: 1;
+        .select-style, .search-box input {
+            width: 100%;
             padding: 12px;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
+            background: rgba(15, 23, 42, 0.8);
             color: white;
             font-size: 16px;
+            box-sizing: border-box;
+        }
+        .select-style:focus, .search-box input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
         }
         .btn-search {
             background: #007bff;
             color: white;
             border: none;
-            padding: 0 20px;
+            padding: 0 25px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        .btn-search:hover {
+            background: #0056b3;
         }
         .gallery-grid {
             display: grid;
@@ -76,15 +97,26 @@
 
     <div class="admin-header">
         <h1><i class="fa-solid fa-user-shield"></i> GVCC Proctoring Monitoring Panel</h1>
-        <p style="color: #94a3b8; font-size: 14px;">Class 9th History Test Live Evidence Viewer</p>
+        <!-- Dynamic subtitle that changes based on select dropdown -->
+        <p style="color: #94a3b8; font-size: 14px;" id="liveTestSubtitle">Active System Evidence Viewer</p>
     </div>
 
-    <div class="search-box">
-        <input type="text" id="studentRollInput" placeholder="Enter Student Roll (e.g. 902)">
-        <button class="btn-search" id="searchBtn">View Photos</button>
+    <div class="control-box">
+        <!-- 🎯 Test Selection Dropdown Menu -->
+        <div>
+            <select id="testSelectMenu" class="select-style" onchange="updateSubtitleText()">
+                <option value="maths_day1">🧮 Day 1 - Arithmetic Foundation (Maths)</option>
+                <option value="history9_test">📚 Class 9th - History Test</option>
+            </select>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="studentRollInput" placeholder="Enter Student Roll (e.g. 902)">
+            <button class="btn-search" id="searchBtn">View Photos</button>
+        </div>
     </div>
 
-    <div id="statusMessage" class="status-msg">Enter a roll number above to audit evidence.</div>
+    <div id="statusMessage" class="status-msg">Select a test, enter a roll number, and click View Photos.</div>
     <div class="gallery-grid" id="photoGallery"></div>
 
     <script type="module">
@@ -103,8 +135,20 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Click event listener directly inside the script block to avoid scope mismatch
+        // Subtitle dynamic text renderer engine
+        window.updateSubtitleText = function() {
+            const selectMenu = document.getElementById("testSelectMenu");
+            const subtitle = document.getElementById("liveTestSubtitle");
+            const selectedText = selectMenu.options[selectMenu.selectedIndex].text;
+            subtitle.innerText = `${selectedText} Live Evidence Viewer`;
+        };
+        
+        // Initial setup run
+        updateSubtitleText();
+
+        // Snap Retrieval Engine Click Handler Hook
         document.getElementById("searchBtn").addEventListener("click", async () => {
+            const selectedTestFolder = document.getElementById("testSelectMenu").value;
             const rollNo = document.getElementById("studentRollInput").value.trim();
             const gallery = document.getElementById("photoGallery");
             const status = document.getElementById("statusMessage");
@@ -118,12 +162,12 @@
             status.innerText = "Loading proctoring snapshots from main server...";
 
             try {
-                // Fetching from fixed path: tests -> history9_test -> students -> [rollNo] -> snapshots
-                const snapCollectionRef = collection(db, "tests", "history9_test", "students", rollNo, "snapshots");
+                // 🚀 Dynamic Collection Path: tests -> [selectedTestFolder] -> students -> [rollNo] -> snapshots
+                const snapCollectionRef = collection(db, "tests", selectedTestFolder, "students", rollNo, "snapshots");
                 const querySnapshot = await getDocs(snapCollectionRef);
 
                 if (querySnapshot.empty) {
-                    status.innerText = `No snapshots found for Roll Number: ${rollNo}.`;
+                    status.innerText = `No snapshots found for Roll Number: ${rollNo} in this specific test.`;
                     return;
                 }
 
