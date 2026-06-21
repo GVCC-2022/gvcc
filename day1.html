@@ -477,6 +477,23 @@ function showWarningModal(message, reason) {
 function activateAntiCheatSystem() {
     forceReturnToFullscreen();
 
+    // 🚀 NAYA LOGIC: Back Button Trap (History API)
+    // Jaise hi test shuru ho, history me ek current page dal do taki back karne par bahar na jaye
+    window.history.pushState(null, null, window.location.href);
+
+    window.addEventListener("popstate", function () {
+        if (!hasSubmitted && isTestStarted) {
+            // Baccha back dabaya, toh usko wapas aage dhakel do (Trap)
+            window.history.pushState(null, null, window.location.href);
+            
+            // Custom warning dikhao
+            showWarningModal(
+                "⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", 
+                "Tried to Exit via Back Button"
+            );
+        }
+    });
+
     // 1. Strict Fullscreen Lock Checker
     setInterval(() => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
@@ -499,7 +516,6 @@ function activateAntiCheatSystem() {
 
     // 3. Notification Bar Slide / Window Blur Sensor
     window.addEventListener("blur", () => {
-        // Overlay active hone par background click se blur trigger na ho
         if (!document.getElementById("antiCheatOverlay") && !hasSubmitted && isTestStarted) {
             showWarningModal(
                 "DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", 
@@ -508,22 +524,25 @@ function activateAntiCheatSystem() {
         }
     });
 
-    // 4. Hardware Back / Close Button Lock Pop-up
+    // 4. Hardware Back / Tab Close Button Lock Pop-up
     window.addEventListener('beforeunload', function (e) {
         if (!hasSubmitted && isTestStarted) {
             e.preventDefault();
-            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge!';
+            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge aur test submit ho jayega!';
             return e.returnValue;
         }
     });
 
-    // 5. Emergency Invisible Back/Exit Trigger
+    // 5. Emergency Exit Trigger (Agar baccha jabardasti Tab band kare ya Back chala hi jaye)
     window.addEventListener('pagehide', function () {
         if (!hasSubmitted && isTestStarted) {
-            autoLockStudentOnExit("Zabardasti Back ya Test Window Exit kiya");
+            console.log("Student ne jabardasti exit kiya. Auto-submitting test...");
+            // Seedha processSubmission call kar do taki jitna banaya hai utna score save ho jaye
+            window.processSubmission(true); 
         }
     });
 }
+
 
 // --- SUBMISSION REFACTOR ENGINE ---
 window.processSubmission = async function(isTimeOut = false) {
