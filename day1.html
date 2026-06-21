@@ -418,7 +418,7 @@ function activateAntiCheatSystem() {
     // 1. Strict Fullscreen Lock Checker (Har 2 Second)
     setInterval(() => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
-            cheatCount++; // Sync to single variable
+            cheatCount++; 
             captureAndUploadSnapshot();
             alert(`⚠️ WARNING: Fullscreen se chhedchhad mat kijiye! Warning: ${cheatCount}/3. Iska information Md Faiyaz ke paas chala jayega.`);
             
@@ -431,7 +431,7 @@ function activateAntiCheatSystem() {
     // 2. App Switch / Minimize Sensor
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && !hasSubmitted && isTestStarted) {
-            cheatCount++; // Sync to single variable
+            cheatCount++; 
             captureAndUploadSnapshot();
             alert(`🚨 SECURITY ALERT: Aapne window change kiya hai! Warning: ${cheatCount}/3. Dubara karne par block ho jayenge.`);
             
@@ -441,12 +441,14 @@ function activateAntiCheatSystem() {
         }
     });
 
-    // 3. Notification Bar Slide Sensor
+    // 3. Notification Bar Slide Sensor (🚨 NOW FIXED WITH LIVE POP-UP)
     window.addEventListener("blur", () => {
         if (!hasSubmitted && isTestStarted) {
-            cheatCount++; // Sync to single variable
+            cheatCount++; 
             captureAndUploadSnapshot();
-            console.log("Notification status bar slide detected.");
+            
+            // Ab background me chupke se nahi badhega, live warning popup aayega!
+            alert(`⚠️ DISTRACTION DETECTED: Notification slide ya overlay panel touch kiya gaya hai! Warning: ${cheatCount}/3. Iska data Md Faiyaz ke paas ja raha hai.`);
             
             if(cheatCount >= 3) {
                 autoLockStudentOnExit("Notification panel drop flag limit crossed");
