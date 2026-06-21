@@ -1,1 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Results - Gyan Varsha Coaching Center</title>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.header {
+    background: #003366;
+    color: white;
+    padding: 20px;
+}
+
+.result-box {
+    background: white;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.hidden {
+    display: none;
+}
+
+.marks-highlight {
+    font-size: 28px;
+    color: #28a745;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Leaderboard Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #003366;
+    color: white;
+}
+tr:nth-child(even) { background-color: #f2f2f2; }
+.rank-1 { background-color: #ffd700; font-weight: bold; } /* Gold */
+.rank-2 { background-color: #c0c0c0; font-weight: bold; } /* Silver */
+.rank-3 { background-color: #cd7f32; font-weight: bold; } /* Bronze */
+
+.footer {
+    background: #003366;
+    color: white;
+    padding: 15px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📊 Test Results</h1>
+    <p>Gyan Varsha Coaching Center</p>
+</div>
+
+<!-- Section 1: Individual Result -->
+<div class="result-box" id="myResultBox">
+    <h2>👤 Aapka Result</h2>
+    <p id="loadingText">Data load ho raha hai...</p>
+    
+    <div id="myResultContent" class="hidden">
+        <h3 id="studentNameDisplay"></h3>
+        <p>Class: <strong id="studentClassDisplay"></strong> | Roll: <strong id="studentRollDisplay"></strong></p>
+        <div class="marks-highlight" id="myMarksDisplay">-- / --</div>
+        <p id="cheatStatusDisplay"></p>
+    </div>
+</div>
+
+<!-- Section 2: Class Leaderboard (Initially Hidden) -->
+<div class="result-box hidden" id="leaderboardBox">
+    <h2>🏆 Class <span id="lbClassDisplay"></span> Leaderboard</h2>
+    <p style="font-size: 14px; color: #666;">(Top Performers)</p>
+    <div id="leaderboardTableContainer"></div>
+</div>
+
+<div class="result-box" id="timerBox">
+    <p style="color: #d9534f; font-weight: bold;">
+        ⏳ Leaderboard <span id="timeRemaining">...</span> baad unlock hoga.
+    </p>
+</div>
+
+<div class="footer">
+    © Gyan Varsha Coaching Center
+</div>
+
+<script>
+    // 1. Apni Firebase Config Yahan Daalein
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // 2. LocalStorage se bacche ki details nikalna
+    const studentRoll = localStorage.getItem("studentRoll");
+    const studentClass = localStorage.getItem("studentClass");
+    const studentName = localStorage.getItem("studentName");
+    
+    // Jis test ka result dikhana hai uska naam (e.g., maths_day1)
+    const currentTestId = "maths_day1"; 
+
+    // Test shuru hone ka time (Miliseconds mein). Ise apne hisaab se set karein!
+    // Yahan main dummy time laga raha hu, aap isko Firebase se bhi laa sakte hain.
+    const testStartTime = new Date("2026-06-21T20:00:00").getTime(); 
+    const testDurationMs = 20 * 60 * 1000; // 20 minutes
+
+    window.onload = function() {
+        if(!studentRoll || !studentClass) {
+            alert("Aapka login data nahi mila. Kripya login karein.");
+            window.location.href = "index.html"; // Login page par bhej do
+            return;
+        }
+
+        // Basic info set karna
+        document.getElementById("studentNameDisplay").innerText = studentName || "Student";
+        document.getElementById("studentClassDisplay").innerText = studentClass;
+        document.getElementById("studentRollDisplay").innerText = studentRoll;
+        document.getElementById("lbClassDisplay").innerText = studentClass;
+
+        fetchMyResult();
+        startLeaderboardTimer();
+    };
+
+    // 3. Bacche ka apna result fetch karna
+    function fetchMyResult() {
+        db.collection("tests").doc(currentTestId).collection("students").doc(studentRoll).get()
+        .then((doc) => {
+            document.getElementById("loadingText").classList.add("hidden");
+            
+            if (doc.exists) {
+                const data = doc.data();
+                
+                // Security Check: Agar class match nahi karti toh block karo
+                if(data.class !== studentClass) {
+                    alert("⚠️ Security Error: Class mismatch!");
+                    return;
+                }
+
+                document.getElementById("myResultContent").classList.remove("hidden");
+                document.getElementById("myMarksDisplay").innerText = `${data.marks || 0} / ${data.totalMarks || 0}`;
+                
+                if(data.cheatStatus) {
+                    document.getElementById("cheatStatusDisplay").innerHTML = "❌ <span style='color:red;'>Disqualified due to violation</span>";
+                }
+            } else {
+                document.getElementById("myResultContent").classList.remove("hidden");
+                document.getElementById("myResultContent").innerHTML = "<p>Aapne abhi tak test submit nahi kiya hai ya result upload nahi hua hai.</p>";
+            }
+        }).catch((error) => {
+            console.error("Error fetching result:", error);
+            document.getElementById("loadingText").innerText = "Result load karne mein error aayi.";
+        });
+    }
+
+    // 4. Timer Logic: 20 Minute Check
+    function startLeaderboardTimer() {
+        const timerInterval = setInterval(() => {
+            const currentTime = new Date().getTime();
+            const timePassed = currentTime - testStartTime;
+            const timeLeft = testDurationMs - timePassed;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById("timerBox").classList.add("hidden");
+                loadClassLeaderboard(); // 20 min pure, leaderboard lao!
+            } else {
+                // Calculate minutes and seconds
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                document.getElementById("timeRemaining").innerText = `${minutes}m ${seconds}s`;
+            }
+        }, 1000);
+    }
+
+    // 5. Pure Class ka Leaderboard Fetch aur Sort karna
+    function loadClassLeaderboard() {
+        // Sirf wahi bacche lao jinki class logged-in bacche wali hai
+        db.collection("tests").doc(currentTestId).collection("students")
+        .where("class", "==", studentClass)
+        .get()
+        .then((querySnapshot) => {
+            let studentsData = [];
+            querySnapshot.forEach((doc) => {
+                studentsData.push(doc.data());
+            });
+
+            // Marks ke hisaab se descending order (highest pehle) me sort karo
+            studentsData.sort((a, b) => (b.marks || 0) - (a.marks || 0));
+
+            renderLeaderboardTable(studentsData);
+            document.getElementById("leaderboardBox").classList.remove("hidden");
+        }).catch((error) => {
+            console.error("Error fetching leaderboard:", error);
+        });
+    }
+
+    function renderLeaderboardTable(data) {
+        if(data.length === 0) {
+            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Koi data nahi mila.</p>";
+            return;
+        }
+
+        let html = `<table>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Roll No.</th>
+                            <th>Marks</th>
+                        </tr>`;
+        
+        data.forEach((student, index) => {
+            let rank = index + 1;
+            let rowClass = "";
+            if(rank === 1) rowClass = "rank-1";
+            else if(rank === 2) rowClass = "rank-2";
+            else if(rank === 3) rowClass = "rank-3";
+
+            html += `<tr class="${rowClass}">
+                        <td>#${rank}</td>
+                        <td>${student.name || 'Unknown'}</td>
+                        <td>${student.rollNumber || '--'}</td>
+                        <td><strong>${student.marks || 0}</strong></td>
+                    </tr>`;
+        });
+        html += `</table>`;
+
+        document.getElementById("leaderboardTableContainer").innerHTML = html;
+    }
+</script>
+
+</body>
+</html>
 
