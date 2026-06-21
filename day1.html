@@ -10,7 +10,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            user-select: none; /* Prevents text selection */
+            user-select: none;
         }
 
         .header {
@@ -42,6 +42,14 @@
             box-sizing: border-box;
         }
 
+        /* Readonly inputs display styling */
+        input:read-only {
+            background-color: #e9ecef;
+            color: #495057;
+            border: 1px solid #ced4da;
+            cursor: not-allowed;
+        }
+
         input[type="radio"] {
             width: auto;
             margin-right: 10px;
@@ -58,78 +66,27 @@
             width: 100%;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
         }
 
-        button:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .footer {
-            background: #003366;
-            color: white;
-            padding: 15px;
-            margin-top: 40px;
-            font-size: 14px;
-        }
-
-        #questions {
-            text-align: left;
-            padding: 15px 5px;
-        }
-
-        #questions h3 {
-            font-size: 18px;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        #timer {
-            font-size: 22px;
-            color: #d9534f;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
+        button:disabled { background: #cccccc; cursor: not-allowed; }
+        .footer { background: #003366; color: white; padding: 15px; margin-top: 40px; font-size: 14px; }
+        #questions { text-align: left; padding: 15px 5px; }
+        #questions h3 { font-size: 18px; color: #333; margin-top: 20px; }
+        #timer { font-size: 22px; color: #d9534f; font-weight: bold; margin: 15px 0; }
+        
         #waBtn {
-            background: #25d366;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            display: none;
-            margin-top: 15px;
-            box-shadow: 0 3px 10px rgba(37,211,102,0.3);
+            background: #25d366; color: white; padding: 12px; border-radius: 8px;
+            text-decoration: none; font-weight: bold; display: none; margin-top: 15px;
         }
 
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #e9ecef;
-        }
-
+        #result { margin-top: 20px; padding: 15px; border-radius: 8px; background: #e9ecef; }
+        
         #camera {
-            width: 110px;
-            height: 140px;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            border: 3px solid #d9534f;
-            border-radius: 12px;
-            display: none;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
+            width: 110px; height: 140px; position: fixed; top: 15px; right: 15px;
+            border: 3px solid #d9534f; border-radius: 12px; display: none;
+            object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;
         }
-
-        #msg {
-            font-weight: bold;
-            margin: 15px 0;
-            font-size: 16px;
-        }
+        #msg { font-weight: bold; margin: 15px 0; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -140,11 +97,11 @@
 </div>
 
 <div class="box">
-    <!-- Login Section -->
+    <!-- Login Section (Roll and Name are now auto-filled and locked) -->
     <div id="loginSection">
-        <input type="text" id="roll" placeholder="Enter Roll Number" oninput="findName()">
-        <input type="password" id="password" placeholder="Enter Day 1 Password">
+        <input type="text" id="roll" placeholder="Roll Number" readonly>
         <input type="text" id="name" placeholder="Student Name" readonly>
+        <input type="password" id="password" placeholder="Enter Day 1 Password">
         <button id="startBtn" onclick="startMission()">🚀 Start Day 1</button>
     </div>
 
@@ -166,18 +123,17 @@
 </div>
 
 <script>
-// --- GLOBAL CORE VARIABLES ---
 let timerStarted = false;
 let warningCount = 0;
-let time = 900; // 15 Minutes
+let time = 900; 
 let testTimerInterval;
 
-// Security Features: Disable Right Click & Copy-Paste
+// Security: Copy-Paste and Right-Click strict blocks
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u')) {
         e.preventDefault();
-        alert("❌ Security Alert: Copy/Paste/View-Source Blocked!");
+        alert("❌ Security Alert: Actions Blocked!");
     }
 });
 
@@ -208,18 +164,25 @@ const allowedStudents = [
     "1021","1022","1023","2356"
 ];
 
-function findName(){
-    let roll = document.getElementById("roll").value;
-    document.getElementById("name").value = students[roll] || "";
+// --- AUTO RUN: Extract Roll from URL Parameters ---
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlRoll = urlParams.get('roll');
+    
+    if(urlRoll) {
+        document.getElementById("roll").value = urlRoll;
+        document.getElementById("name").value = students[urlRoll] || "";
+    } else {
+        alert("❌ Error: Dashboard se sahi tarike se login karke aayein.");
+    }
 }
 
 function startMission(){
     let roll = document.getElementById("roll").value;
     let password = document.getElementById("password").value;
 
-    // Basic Validations
-    if(!students[roll]){
-        alert("❌ Invalid Roll Number");
+    if(!roll || !students[roll]){
+        alert("❌ Login session mismatch or missing Roll Number!");
         return;
     }
     if(password !== "GVCCDAY1"){
@@ -235,7 +198,7 @@ function startMission(){
         return;
     }
 
-    // Camera Access Request
+    // Capture Web Camera Stream
     navigator.mediaDevices.getUserMedia({ video: true })
     .then(function(stream){
         document.getElementById("camera").style.display = "block";
@@ -253,11 +216,11 @@ function setupTestLayout(roll) {
     document.getElementById("submitBtn").style.display = "block";
     document.getElementById("msg").innerHTML = "✅ Welcome " + students[roll];
 
-    // Anti-Cheat: Tab Switch Monitoring
+    // Anti-Cheat: Tab Swapping detection monitor
     document.addEventListener("visibilitychange", function(){
         if(document.hidden){
             warningCount++;
-            alert("⚠️ Warning " + warningCount + "/3: Do not switch tabs or open other apps!");
+            alert("⚠️ Warning " + warningCount + "/3: Tab change mat kijiye!");
             if(warningCount >= 3) {
                 alert("❌ Auto-Submitting test due to multiple cheating attempts!");
                 processResult();
@@ -265,7 +228,7 @@ function setupTestLayout(roll) {
         }
     });
 
-    // 1-2 Temporary Basic Questions for setup
+    // 2 setup questions
     document.getElementById("questions").innerHTML = `
         <h3>Q1. 36 + 48 = ?</h3>
         <input type="radio" name="q1" value="0"> 82<br>
@@ -280,7 +243,6 @@ function setupTestLayout(roll) {
         <input type="radio" name="q2" value="0"> 59<br>
     `;
 
-    // Start 15 Mins Timer Loop
     testTimerInterval = setInterval(function(){
         let minutes = Math.floor(time/60);
         let seconds = time%60;
@@ -297,8 +259,6 @@ function setupTestLayout(roll) {
 
 function checkResult(){
     let roll = document.getElementById("roll").value;
-    
-    // Firebase Duplicity Check
     const q = window.query(
         window.collection(window.db, "results"),
         window.where("roll", "==", roll),
@@ -313,7 +273,7 @@ function checkResult(){
         processResult();
     }).catch(err => {
         console.error(err);
-        processResult(); // Fallback to submit if database check fails
+        processResult(); 
     });
 }
 
@@ -324,10 +284,9 @@ function processResult(){
     
     let score = 0;
     document.querySelectorAll('input[type=radio]:checked').forEach(e => score += Number(e.value));
-    
     localStorage.setItem("day1_" + roll, "submitted");
 
-    let totalQuestions = 2; // Temporary updated total count
+    let totalQuestions = 2;
     let percent = (score / totalQuestions) * 100;
     let status = percent >= 60 ? "✅ PASS" : "❌ FAIL";
     let medal = "";
@@ -349,7 +308,6 @@ function processResult(){
     document.getElementById("submitBtn").style.display = "none";
     document.getElementById("msg").innerHTML = "Warnings: " + warningCount;
 
-    // WhatsApp Message Text String Generation
     let msgText = `🧮 Gyan Varsha Basic Maths Mission Day 1%0A%0A` +
                   `Name: ${sName}%0A` +
                   `Roll No: ${roll}%0A` +
@@ -362,13 +320,11 @@ function processResult(){
     document.getElementById("waBtn").href = "https://wa.me/916203491210?text=" + msgText;
     document.getElementById("waBtn").style.display = "block";
 
-    // Stop Webcam Track Stream safely
     if(document.getElementById("camera").srcObject) {
         document.getElementById("camera").srcObject.getTracks().forEach(track => track.stop());
         document.getElementById("camera").style.display = "none";
     }
 
-    // Save To Firestore Cloud
     window.addDoc(window.collection(window.db, "results"), {
         name: sName,
         roll: roll,
@@ -380,8 +336,8 @@ function processResult(){
         result: status,
         date: new Date().toLocaleString()
     })
-    .then(() => console.log("Result Successfully Synced to Firebase!"))
-    .catch((error) => console.log("Firebase Error:", error));
+    .then(() => console.log("Result Synced!"))
+    .catch((error) => console.log("Error:", error));
 }
 </script>
 
@@ -404,7 +360,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Binding properties globally to window scope securely
 window.db = db;
 window.addDoc = addDoc;
 window.collection = collection;
@@ -412,6 +367,5 @@ window.getDocs = getDocs;
 window.query = query;
 window.where = where;
 </script>
-  
 </body>
 </html>
