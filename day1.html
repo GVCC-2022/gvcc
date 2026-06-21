@@ -405,76 +405,77 @@
             }
         }
 
-   function activateAntiCheatSystem() {
-    // 1. Fullscreen activation
+   // --- ANTI-CHEAT ENGINE (FIXED COUNTERS) ---
+function activateAntiCheatSystem() {
     try {
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         } else if (document.documentElement.webkitRequestFullscreen) {
             document.documentElement.webkitRequestFullscreen();
         }
-    } catch (e) { console.log("Fullscreen forced pass"); }
+    } catch (e) { console.log("Fullscreen entry forced pass"); }
 
-    // 2. Strict Hardware Back & Page Exit Blocker (Most Active Tool)
-    window.addEventListener('beforeunload', function (e) {
-        if (!hasSubmitted && isTestStarted) {
-            // Cancel the event as stated by the standard.
-            e.preventDefault();
-            // Chrome requires returnValue to be set.
-            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge aur dubara test BLOCK ho jayega! Iski report Md Faiyaz ke paas ja rahi hai.';
-            return e.returnValue;
-        }
-    });
-
-    // 3. Instant Invisible Cloud Blocker (Agar baccha exit kar hi jata hai)
-    window.addEventListener('pagehide', function () {
-        if (!hasSubmitted && isTestStarted) {
-            autoLockStudentOnExit("Zabardasti Back ya Test Window Exit kiya");
-        }
-    });
-
-    // 4. Strict Fullscreen Lock Checker (Har 2 Second)
+    // 1. Strict Fullscreen Lock Checker (Har 2 Second)
     setInterval(() => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
-            cheatCount++;
+            cheatCount++; // Sync to single variable
             captureAndUploadSnapshot();
             alert(`⚠️ WARNING: Fullscreen se chhedchhad mat kijiye! Warning: ${cheatCount}/3. Iska information Md Faiyaz ke paas chala jayega.`);
             
             if(cheatCount >= 3) {
-                autoLockStudentOnExit("Detected 3+ Cheating/Fullscreen Violations");
+                autoLockStudentOnExit("Detected 3+ Fullscreen Violations");
             }
         }
     }, 2000);
 
-    // 5. App Switch / Notification Center Drop Sensor
+    // 2. App Switch / Minimize Sensor
     document.addEventListener("visibilitychange", () => {
         if (document.hidden && !hasSubmitted && isTestStarted) {
-            cheatCount++;
+            cheatCount++; // Sync to single variable
             captureAndUploadSnapshot();
             alert(`🚨 SECURITY ALERT: Aapne window change kiya hai! Warning: ${cheatCount}/3. Dubara karne par block ho jayenge.`);
+            
             if(cheatCount >= 3) {
                 autoLockStudentOnExit("Tab Switched/Minimized Multiple Times");
             }
         }
     });
 
-    // 6. Notification Bar Drop Panel Catcher
+    // 3. Notification Bar Slide Sensor
     window.addEventListener("blur", () => {
         if (!hasSubmitted && isTestStarted) {
-            cheatCount++;
+            cheatCount++; // Sync to single variable
             captureAndUploadSnapshot();
-            console.log("Focus lost caught.");
+            console.log("Notification status bar slide detected.");
+            
             if(cheatCount >= 3) {
                 autoLockStudentOnExit("Notification panel drop flag limit crossed");
             }
         }
     });
-               }
 
-        async function autoLockStudentOnExit(reason) {
+    // 4. Hardware Back / Close Button Lock Pop-up
+    window.addEventListener('beforeunload', function (e) {
+        if (!hasSubmitted && isTestStarted) {
+            e.preventDefault();
+            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge!';
+            return e.returnValue;
+        }
+    });
+
+    // 5. Emergency Invisible Back/Exit Trigger
+    window.addEventListener('pagehide', function () {
+        if (!hasSubmitted && isTestStarted) {
+            autoLockStudentOnExit("Zabardasti Back ya Test Window Exit kiya");
+        }
+    });
+}
+
+// --- SUBMISSION REFACTOR ENGINE ---
+window.processSubmission = async function(isTimeOut = false) {
     if (hasSubmitted) return;
-    hasSubmitted = true; // Double click validation prevent engine
-
+    hasSubmitted = true;
+    
     clearInterval(timerInterval);
     clearInterval(proctorInterval);
 
@@ -482,74 +483,46 @@
         video.srcObject.getTracks().forEach(track => track.stop());
     }
 
-    // Direct Database Block Trigger
+    let score = 0;
+    const form = document.getElementById("quizForm");
+    
+    for (let q in correctAnswers) {
+        const selected = form.elements[q] ? form.elements[q].value : "";
+        if (selected === correctAnswers[q]) {
+            score++;
+        }
+    }
+
+    const totalQuestionsCount = 2;
+    const pct = ((score / totalQuestionsCount) * 100).toFixed(0) + "%";
+    const finalScoreStr = `${score}/${totalQuestionsCount}`;
+
+    document.getElementById("modalScore").innerText = finalScoreStr;
+    document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
+    document.getElementById("resultModal").style.display = "flex";
+
+    // Dynamic clean profiles check flag mapping
+    let finalCheatStatus = "Clean Profile Verified";
+    if (cheatCount > 0) {
+        finalCheatStatus = `Detected Warning Flags (${cheatCount} Times)`;
+    }
+
     try {
-        const testDocRef = window.doc(window.db, "tests", "maths_day1", "students", currentRoll);
-        await window.setDoc(testDocRef, {
-            submitted: true, // Yeh true hote hi dubara entry block ho jayegi!
+        const testDocRef = doc(db, "tests", "maths_day1", "students", currentRoll);
+        await setDoc(testDocRef, {
+            submitted: true,
             name: studentFetchedName,
             class: studentFetchedClass,
-            score: "Disqualified/Auto-Submitted",
-            percentage: "0%",
-            cheatStatus: `❌ BLOCKED: ${reason}`,
+            score: finalScoreStr,
+            percentage: pct,
+            cheatStatus: finalCheatStatus, // Fixed dynamic status saving
             submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
         }, { merge: true });
-        
-        console.log("🔒 Student session has been successfully locked in server.");
-        alert("❌ Test Blocked! Aapne rules tode hain, aapki details Md Faiyaz ke paas bhej di gayi hain.");
-        window.location.href = 'dashboard.html';
+        console.log("Results compiled & transmitted securely.");
     } catch (err) {
-        console.error("Critical Cloud Save Fail: ", err);
+        console.error("Cloud saving sync failed: ", err);
     }
-        }
-        
-
-
-        window.processSubmission = async function(isTimeOut = false) {
-            if (hasSubmitted) return;
-            hasSubmitted = true;
-            
-            clearInterval(timerInterval);
-            clearInterval(proctorInterval);
-
-            if (video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
-
-            let score = 0;
-            const form = document.getElementById("quizForm");
-            
-            for (let q in correctAnswers) {
-                const selected = form.elements[q] ? form.elements[q].value : "";
-                if (selected === correctAnswers[q]) {
-                    score++;
-                }
-            }
-
-            const totalQuestionsCount = 2;
-            const pct = ((score / totalQuestionsCount) * 100).toFixed(0) + "%";
-            const finalScoreStr = `${score}/${totalQuestionsCount}`;
-
-            document.getElementById("modalScore").innerText = finalScoreStr;
-            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
-            document.getElementById("resultModal").style.display = "flex";
-
-            // Transmit structural sheet records to central server collection path
-            try {
-                const testDocRef = doc(db, "tests", "maths_day1", "students", currentRoll);
-                await setDoc(testDocRef, {
-                    submitted: true,
-                    name: studentFetchedName,
-                    class: studentFetchedClass,
-                    score: finalScoreStr,
-                    percentage: pct,
-                    cheatStatus: cheatCount > 0 ? `Detected Warning Flags (${cheatCount} Times)` : "Clean Profile Verified",
-                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-                }, { merge: true });
-            } catch (err) {
-                console.error("Cloud saving sync failed: ", err);
-            }
-        }
+}
     </script>
 </body>
 </html>
