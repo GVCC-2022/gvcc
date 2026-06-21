@@ -375,7 +375,7 @@
             setTimeout(() => { captureAndUploadSnapshot(); }, 6000); 
         }
 
-        // 📸 Engine: Takes a background canvas snap and pushes to Firestore
+                // 📸 Engine: Takes a background canvas snap and pushes to Firestore
         async function captureAndUploadSnapshot() {
             if (hasSubmitted || !video.srcObject) return;
 
@@ -404,7 +404,7 @@
             const timestamp = Date.now();
 
             try {
-                // FIX: Snapshots ko direct student ke collection ke under save kiya gaya hai
+                // Sahi Modular (v9/v10) Syntax path setup:
                 const photoDocRef = doc(db, "tests", "history9_test", "students", currentRoll, "snapshots", `snap_${timestamp}`);
                 await setDoc(photoDocRef, {
                     capturedImage: base64Image,
@@ -413,8 +413,11 @@
                 console.log(`📸 Valid Base64 snap packet successfully transmitted for ${currentRoll}: snap_${timestamp}`);
             } catch(e) {
                 console.error("Image cloud sync failed: ", e);
+                // Mobile screen par error dekhne ke liye temporary alert (baad mein hata sakte hain)
+                alert("Firebase Error: " + e.message);
             }
         }
+
 
         // 🔥 ANTI-CHEAT ENGINE
         function activateAntiCheatSystem() {
