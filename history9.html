@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>GVCC - Live Test Portal</title>
+    <title>Class 9th Live Test - GVCC</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -22,10 +22,9 @@
             color: #f8fafc;
             margin: 0;
             padding: 0;
-            user-select: none; /* Prevents text copying */
+            user-select: none;
         }
 
-        /* Fixed Header with Timer */
         .test-header {
             position: fixed;
             top: 0;
@@ -54,7 +53,6 @@
             gap: 6px;
         }
 
-        /* Glassmorphism Lock & Form Containers */
         .main-container {
             max-width: 500px;
             margin: 80px auto 40px auto;
@@ -72,101 +70,23 @@
 
         h2 { text-align: center; color: #38bdf8; margin-top: 0; }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 6px;
-        }
-        .input-group input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            box-sizing: border-box;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+        .input-group input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; color: white; font-size: 15px; box-sizing: border-box; }
+        .input-group input:focus { outline: none; border-color: var(--accent); }
 
-        .btn-premium {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent), #3b82f6);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .btn-premium { width: 100%; background: linear-gradient(135deg, var(--accent), #3b82f6); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.2s; }
         .btn-premium:active { transform: scale(0.98); }
 
-        /* Question Cards Styling */
-        .q-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-        .q-text {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            color: #e2e8f0;
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
+        .q-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 18px; margin-bottom: 20px; }
+        .q-text { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #e2e8f0; }
+        .option-label { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
         .option-label:hover { background: rgba(255,255,255,0.06); }
         .option-label input { accent-color: var(--accent); }
 
-        /* Custom Modern Modal for Results/Alerts */
-        .custom-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-        }
-
-        .score-badge {
-            font-size: 48px;
-            font-weight: 800;
-            color: #10b981;
-            margin: 15px 0;
-        }
+        .custom-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 30px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+        .score-badge { font-size: 48px; font-weight: 800; color: #10b981; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -188,22 +108,22 @@
     <div class="main-container">
         
         <div id="lockSection" class="glass-panel">
-    <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
-    
-    <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
-        <i class="fa-solid fa-clock"></i> Test exactly 11:00 AM baje live hoga. Kripya tab tak wait karein!
-    </div>
+            <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
+            
+            <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
+                <i class="fa-solid fa-clock"></i> Test shuru hone ka wait karein...
+            </div>
 
-    <div id="passwordArea" style="display: none;">
-        <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha Coaching Center.</p>
-        
-        <div class="input-group">
-            <label>Test Activation Password</label>
-            <input type="password" id="testPassword" placeholder="••••••••">
+            <div id="passwordArea" style="display: none;">
+                <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha Coaching Center.</p>
+                
+                <div class="input-group">
+                    <label>Test Activation Password</label>
+                    <input type="password" id="testPassword" placeholder="••••••••">
+                </div>
+                <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
+            </div>
         </div>
-        <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
-    </div>
-</div>
 
         <div id="testSection" class="glass-panel" style="display:none;">
             <h2 id="testTitle">Class 9th History Test</h2>
@@ -253,26 +173,10 @@
     </div>
 
     <script type="module">
-        // ⏰ AUTO-LOCK SYSTEM (Isse aapko manually code nahi hatana padega!)
-function checkTestTime() {
-    // Yahan test shuru hone ka time set karein (Year-Month-Day T Hours:Minutes:Seconds)
-    // Aaj ki date aur time 11:00:00 AM set hai
-    const testStartTime = new Date("2027-06-22T11:00:00").getTime(); 
-    const currentTime = new Date().getTime();
-
-    if (currentTime >= testStartTime) {
-        // Jaise hi 11 bajenge -> Message hatao aur Password field dikhao!
-        document.getElementById("timeLockMessage").style.display = "none";
-        document.getElementById("passwordArea").style.display = "block";
-    }
-}
-// Har 1 second mein chupchap check karega (Bacchon ko page refresh bhi nahi karna padega)
-setInterval(checkTestTime, 1000);
-checkTestTime(); 
-        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+        // 1. Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
             authDomain: "gvcc-database.firebaseapp.com",
@@ -285,39 +189,84 @@ checkTestTime();
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Answer Key Setup
+        // 2. Global Variables Setup
         const correctAnswers = { q1: "C", q2: "A", q3: "D" };
-        
         let timerInterval;
         let proctorInterval; 
         let totalTimeLeft = 600; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
+        let isAlerting = false; 
 
-        // Camera DOM Hooks
         const video = document.getElementById('proctorCam');
         const canvas = document.getElementById('photoCanvas');
+        const currentRoll = localStorage.getItem("studentRoll"); 
 
-        // Fetch Student Local Session Info
-        const currentRoll = localStorage.getItem("studentRoll") || "student1"; 
+        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
+        function checkTestTime() {
+            // 👇 YAHAN APNE TEST KA TIME SET KAREIN 👇
+            const testStartTime = new Date("2026-06-22T13:00:00").getTime(); 
+            const testEndTime = new Date("2026-06-22T13:15:00").getTime(); 
+            const currentTime = new Date().getTime();
 
-        // Auto-fetch profile name on launch
+            const timeMsgElement = document.getElementById("timeLockMessage");
+            const passAreaElement = document.getElementById("passwordArea");
+
+            if (!timeMsgElement || !passAreaElement) return; 
+
+            if (currentTime >= testEndTime) {
+                if (isTestStarted === true && hasSubmitted === false) {
+                    alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
+                    window.processSubmission(true); 
+                } 
+                else if (isTestStarted === false) {
+                    timeMsgElement.innerHTML = "<i class='fa-solid fa-ban'></i> Test ka samay samapt ho chuka hai. Entry close.";
+                    timeMsgElement.style.display = "block";
+                    passAreaElement.style.display = "none";
+                }
+            }
+            else if (currentTime >= testStartTime && currentTime < testEndTime) {
+                if (isTestStarted === false) {
+                    timeMsgElement.style.display = "none";
+                    passAreaElement.style.display = "block";
+                }
+            }
+        }
+        
+        setInterval(checkTestTime, 1000);
+        checkTestTime(); 
+
+        // 4. MAIN SYSTEM FUNCTIONS
         async function loadProfileHeader() {
+            if (!currentRoll) {
+                alert("Kripya dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
             document.getElementById("headerStudentRoll").innerText = currentRoll;
             document.getElementById("headerStudentName").innerText = "GVCC Student";
 
             try {
-                // Pehle students main root se name fetch karo
                 const docRef = doc(db, "students", currentRoll);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const sData = docSnap.data();
                     const sName = sData["Name "] || sData.Name || "Student";
+                    const sClass = String(sData["Class "] || sData.Class).trim();
+                    
                     document.getElementById("headerStudentName").innerText = sName;
+
+                    // 🛑 CLASS 9TH STRICT LOCK
+                    if (!sClass.includes("9")) {
+                        alert("⚠️ Security Lock: Yeh test portal sirf Class 9th ke students ke liye hai. Aap allow nahi hain.");
+                        window.location.href = "dashboard.html";
+                        return;
+                    }
                 }
 
-                // Naye secure path par check karo ki kya student pehle hi test de chuka hai
+                // Path set to history9_test
                 const testCheckRef = doc(db, "tests", "history9_test", "students", currentRoll);
                 const testCheckSnap = await getDoc(testCheckRef);
                 if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
@@ -330,7 +279,6 @@ checkTestTime();
         }
         loadProfileHeader();
 
-        // 🎯 Password Verification & Test Init
         window.verifyAndStartTest = async function() {
             const passInput = document.getElementById("testPassword").value.trim();
             
@@ -339,7 +287,6 @@ checkTestTime();
                 document.getElementById("testSection").style.display = "block";
                 
                 isTestStarted = true;
-               // alert("Debug Check: Roll number is " + currentRoll);
                 startTestTimer();
                 activateAntiCheatSystem();
 
@@ -349,15 +296,14 @@ checkTestTime();
                         audio: false 
                     });
                     video.srcObject = stream;
-                    console.log("🔒 GVCC Camera Active!");
                     startAutomaticPhotoCapture(); 
                 } catch (err) {
                     console.error("Camera error:", err);
                     alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
                 }
 
-                // Temporary Connection Sync Test
                 try {
+                    // Path set to history9_test
                     const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
                     await setDoc(testDocRef, { 
                         submitted: false, 
@@ -366,17 +312,14 @@ checkTestTime();
                         percentage: "0%",
                         submittedAt: "Direct Sync Test Successful"
                     }, { merge: true });
-                    
-                   // alert("🚀 Boom! Connection successfully established with Cloud Firestore!");
                 } catch(e) { 
                     alert("❌ Connection Fail Error: " + e.message); 
                 }
             } else {
                 alert("❌ Galat Password! Kripya sahi password enter karein.");
             }
-        }; // FIXED: Yahan missing closing bracket add ho gaya hai!
+        };
 
-        // Continuous Counting Timer Engine
         function startTestTimer() {
             timerInterval = setInterval(() => {
                 if (totalTimeLeft <= 0) {
@@ -392,24 +335,17 @@ checkTestTime();
             }, 1000);
         }
 
-        // ⏱️ Automatic Photo Capture Scheduling
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
                 captureAndUploadSnapshot();
-            }, 30000); // Takes photo every 30 seconds
-            
-            
-            // Camera module stream settle hone ke liye 6 seconds ka delay diya hai taaki blank snapshot na aaye
+            }, 30000); 
             setTimeout(() => { captureAndUploadSnapshot(); }, 6000); 
         }
 
-        // 📸 Engine: Takes a background canvas snap and pushes to Firestore
         async function captureAndUploadSnapshot() {
             if (hasSubmitted || !video.srcObject) return;
 
-            // Strict hardware ready check: camera jab tak data frame generate nahi karega, capture execute nahi hoga
             if (video.readyState !== 4 || video.videoWidth === 0) {
-                console.log("📸 Camera data stream not ready yet. Retrying in 2 seconds...");
                 setTimeout(captureAndUploadSnapshot, 2000);
                 return;
             }
@@ -419,208 +355,149 @@ checkTestTime();
             canvas.height = video.videoHeight;
             
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Image data compress factor set to 0.7 for high structural preservation
             const base64Image = canvas.toDataURL('image/jpeg', 0.7);
 
-            // Double confirmation check: string buffer size evaluate karna empty code filtering ke liye
-            if (base64Image.length < 200) {
-                console.log("⚠️ Structural verification failed (Blank Code String). Sync aborted.");
-                return;
-            }
+            if (base64Image.length < 200) return;
 
             const timestamp = Date.now();
-
             try {
-                // Sahi Modular (v9/v10) Syntax path setup:
+                // Path set to history9_test
                 const photoDocRef = doc(db, "tests", "history9_test", "students", currentRoll, "snapshots", `snap_${timestamp}`);
                 await setDoc(photoDocRef, {
                     capturedImage: base64Image,
                     capturedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
                 });
-                console.log(`📸 Valid Base64 snap packet successfully transmitted for ${currentRoll}: snap_${timestamp}`);
             } catch(e) {
                 console.error("Image cloud sync failed: ", e);
-                alert("Firebase Error: " + e.message);
             }
         }
 
-        // Global variables jo pehle se hone chahiye: cheatCount, hasSubmitted
-let isAlerting = false; 
-
-// Fullscreen me wapas dhakelne ka function
-function forceReturnToFullscreen() {
-    try {
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-            document.documentElement.webkitRequestFullscreen();
+        function forceReturnToFullscreen() {
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } catch (e) { }
         }
-    } catch (e) { 
-        console.log("Fullscreen restoration active"); 
-    }
-}
 
-// 🚀 Custom Alert Box Function (Taki browser ka infinite loop na bane)
-function showWarningModal(message, reason) {
-    if (isAlerting) return;
-    isAlerting = true;
-    cheatCount++; 
-    
-    // Agar capture function exists karta hai to photo le lo
-    if (typeof captureAndUploadSnapshot === "function") {
-        captureAndUploadSnapshot();
-    }
+        function showWarningModal(message, reason) {
+            if (isAlerting) return;
+            isAlerting = true;
+            cheatCount++; 
+            
+            if (typeof captureAndUploadSnapshot === "function") {
+                captureAndUploadSnapshot();
+            }
 
-    // Screen block karne ke liye ek dark div
-    const overlay = document.createElement('div');
-    overlay.id = "antiCheatOverlay";
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100vw";
-    overlay.style.height = "100vh";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)";
-    overlay.style.color = "white";
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.justifyContent = "center";
-    overlay.style.alignItems = "center";
-    overlay.style.zIndex = "999999";
-    overlay.style.fontFamily = "Arial, sans-serif";
+            const overlay = document.createElement('div');
+            overlay.id = "antiCheatOverlay";
+            overlay.style.position = "fixed";
+            overlay.style.top = "0";
+            overlay.style.left = "0";
+            overlay.style.width = "100vw";
+            overlay.style.height = "100vh";
+            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)";
+            overlay.style.color = "white";
+            overlay.style.display = "flex";
+            overlay.style.flexDirection = "column";
+            overlay.style.justifyContent = "center";
+            overlay.style.alignItems = "center";
+            overlay.style.zIndex = "999999";
 
-    overlay.innerHTML = `
-        <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount} ⚠️</h1>
-        <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
-        <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
-        <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-            I Understand, Resume Test
-        </button>
-    `;
+            overlay.innerHTML = `
+                <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount} ⚠️</h1>
+                <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
+                <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
+                <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    I Understand, Resume Test
+                </button>
+            `;
 
-    document.body.appendChild(overlay);
+            document.body.appendChild(overlay);
 
-    // Jab baccha button dabayega, tabhi fullscreen trigger hoga
-    document.getElementById('resumeTestBtn').addEventListener('click', () => {
-        forceReturnToFullscreen();
-        document.body.removeChild(overlay);
-        
-        setTimeout(() => {
-            isAlerting = false;
-        }, 2000); 
-    });
-}
-
-// 🔥 ANTI-CHEAT ENGINE (Updated)
-function activateAntiCheatSystem() {
-    forceReturnToFullscreen();
-
-    // 1. Back Button Trap (History API) - Piche jane se rokega
-    window.history.pushState(null, null, window.location.href);
-    window.addEventListener("popstate", function () {
-        if (!hasSubmitted) {
-            window.history.pushState(null, null, window.location.href); // Trap: Wapas aage dhakelo
-            showWarningModal(
-                "⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", 
-                "Tried to Exit via Back Button"
-            );
+            document.getElementById('resumeTestBtn').addEventListener('click', () => {
+                forceReturnToFullscreen();
+                document.body.removeChild(overlay);
+                setTimeout(() => { isAlerting = false; }, 2000); 
+            });
         }
-    });
 
-    // 2. Strict Fullscreen Lock Checker (Har 2 second par check karega)
-    setInterval(() => {
-        if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted) {
-            showWarningModal(
-                "Fullscreen se chhedchhad mat kijiye! Yeh cheating category mein aata hai.", 
-                "Fullscreen Violation"
-            );
+        function activateAntiCheatSystem() {
+            forceReturnToFullscreen();
+
+            window.history.pushState(null, null, window.location.href);
+            window.addEventListener("popstate", function () {
+                if (!hasSubmitted) {
+                    window.history.pushState(null, null, window.location.href); 
+                    showWarningModal("⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega!", "Tried to Exit via Back Button");
+                }
+            });
+
+            setInterval(() => {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted) {
+                    showWarningModal("Fullscreen se chhedchhad mat kijiye! Yeh cheating category mein aata hai.", "Fullscreen Violation");
+                }
+            }, 2000);
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden && !hasSubmitted) {
+                    showWarningModal("🚨 SECURITY ALERT: Aapne test window se switch kiya hai!", "Tab Switched/Minimized");
+                }
+            });
+
+            window.addEventListener("blur", () => {
+                if (!document.getElementById("antiCheatOverlay") && !hasSubmitted) {
+                    showWarningModal("DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", "Window focus lost");
+                }
+            });
         }
-    }, 2000);
 
-    // 3. App Switch / Minimize Sensor
-    document.addEventListener("visibilitychange", () => {
-        if (document.hidden && !hasSubmitted) {
-            showWarningModal(
-                "🚨 SECURITY ALERT: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai.", 
-                "Tab Switched/Minimized"
-            );
+        window.processSubmission = async function(isTimeOut = false) {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            
+            clearInterval(timerInterval);
+            clearInterval(proctorInterval);
+
+            if (video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+
+            let score = 0;
+            const form = document.getElementById("quizForm");
+            
+            for (let q in correctAnswers) {
+                const selected = form.elements[q] ? form.elements[q].value : "";
+                if (selected === correctAnswers[q]) {
+                    score++;
+                }
+            }
+
+            const pct = ((score / 3) * 100).toFixed(0) + "%";
+            const finalScoreStr = `${score}/3`;
+
+            document.getElementById("modalScore").innerText = finalScoreStr;
+            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
+            document.getElementById("resultModal").style.display = "flex";
+
+            try {
+                // Path set to history9_test
+                const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
+                await setDoc(testDocRef, {
+                    submitted: true,
+                    score: finalScoreStr,
+                    percentage: pct,
+                    cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
+                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                }, { merge: true });
+            } catch (err) {
+                console.error("Data saving error: ", err);
+                alert("Score local update secure. Cloud synchronization delayed.");
+            }
         }
-    });
-
-    // 4. Notification Bar Slide / Window Blur Sensor
-    window.addEventListener("blur", () => {
-        if (!document.getElementById("antiCheatOverlay") && !hasSubmitted) {
-            showWarningModal(
-                "DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", 
-                "Window focus lost"
-            );
-        }
-    });
-
-    // 5. Hardware Back / Tab Close Button Warning Pop-up
-    window.addEventListener('beforeunload', function (e) {
-        if (!hasSubmitted) {
-            e.preventDefault();
-            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap test se BAHAR ho jayenge!';
-            return e.returnValue;
-        }
-    });
-
-    // 6. Emergency Exit Trigger (Jabardasti Tab band karne ya back chale jane par auto-submit)
-    window.addEventListener('pagehide', function () {
-        if (!hasSubmitted) {
-            console.log("Student forced exit. Auto-submitting...");
-            window.processSubmission(true);
-        }
-    });
-}
-
-// 📝 Test Submission Process Logic (Aapka diya hua wahi same logic)
-window.processSubmission = async function(isTimeOut = false) {
-    if (hasSubmitted) return;
-    hasSubmitted = true;
-    
-    clearInterval(timerInterval);
-    clearInterval(proctorInterval);
-
-    if (video.srcObject) {
-        const tracks = video.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
-    }
-
-    let score = 0;
-    const form = document.getElementById("quizForm");
-    
-    // Checking answers
-    for (let q in correctAnswers) {
-        const selected = form.elements[q] ? form.elements[q].value : "";
-        if (selected === correctAnswers[q]) {
-            score++;
-        }
-    }
-
-    const pct = ((score / 3) * 100).toFixed(0) + "%";
-    const finalScoreStr = `${score}/3`;
-
-    document.getElementById("modalScore").innerText = finalScoreStr;
-    document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
-    document.getElementById("resultModal").style.display = "flex";
-
-    try {
-        const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
-        await setDoc(testDocRef, {
-            submitted: true,
-            score: finalScoreStr,
-            percentage: pct,
-            cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
-            submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-        }, { merge: true });
-    } catch (err) {
-        console.error("Data saving error: ", err);
-        alert("Score local update secure. Cloud synchronization delayed.");
-    }
-}
-
     </script>
 </body>
 </html>
