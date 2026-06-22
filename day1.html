@@ -72,101 +72,24 @@
 
         h2 { text-align: center; color: #38bdf8; margin-top: 0; }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 6px;
-        }
-        .input-group input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            box-sizing: border-box;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+        .input-group input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; color: white; font-size: 15px; box-sizing: border-box; }
+        .input-group input:focus { outline: none; border-color: var(--accent); }
 
-        .btn-premium {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent), #3b82f6);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .btn-premium { width: 100%; background: linear-gradient(135deg, var(--accent), #3b82f6); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.2s; }
         .btn-premium:active { transform: scale(0.98); }
 
-        /* Question Cards Styling */
-        .q-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-        .q-text {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            color: #e2e8f0;
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
+        .q-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 18px; margin-bottom: 20px; }
+        .q-text { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #e2e8f0; }
+        .option-label { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
         .option-label:hover { background: rgba(255,255,255,0.06); }
         .option-label input { accent-color: var(--accent); }
 
-        /* Custom Modern Modal for Results/Alerts */
-        .custom-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-        }
+        .custom-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.9); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 30px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
 
-        .score-badge {
-            font-size: 48px;
-            font-weight: 800;
-            color: #10b981;
-            margin: 15px 0;
-        }
+        .score-badge { font-size: 48px; font-weight: 800; color: #10b981; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -182,39 +105,34 @@
         </div>
     </div>
 
-    <!-- Background Web Cam Frames -->
     <video id="proctorCam" autoplay playsinline style="display: none;"></video>
     <canvas id="photoCanvas" style="display: none;"></canvas>
 
     <div class="main-container">
         
-        <!-- Verification Shield Section -->
         <div id="lockSection" class="glass-panel">
-    <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
-    
-    <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
-        <i class="fa-solid fa-clock"></i> Test exactly 11:00 AM baje live hoga. Kripya tab tak wait karein!
-    </div>
+            <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
+            
+            <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
+                <i class="fa-solid fa-clock"></i> Test exactly 11:00 AM baje live hoga. Kripya wait karein!
+            </div>
 
-    <div id="passwordArea" style="display: none;">
-        <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha Coaching Center.</p>
-        
-        <div class="input-group">
-            <label>Test Activation Password</label>
-            <input type="password" id="testPassword" placeholder="••••••••">
+            <div id="passwordArea" style="display: none;">
+                <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha Coaching Center.</p>
+                
+                <div class="input-group">
+                    <label>Test Activation Password</label>
+                    <input type="password" id="testPassword" placeholder="••••••••">
+                </div>
+                <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
+            </div>
         </div>
-        <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
-    </div>
-</div>
 
-
-        <!-- Dynamic Test Interface Form Area -->
         <div id="testSection" class="glass-panel" style="display:none;">
             <h2 id="testTitle">Day 1 - Arithmetic Foundation</h2>
             <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:25px;">
 
             <form id="quizForm">
-                <!-- 1-2 Temporary setup questions as requested -->
                 <div class="q-card">
                     <div class="q-text">1. 36 + 48 = ?</div>
                     <label class="option-label"><input type="radio" name="q1" value="A"> 82</label>
@@ -236,7 +154,6 @@
         </div>
     </div>
 
-    <!-- Premium Custom Final Results Sheet Modal -->
     <div id="resultModal" class="custom-modal">
         <div class="modal-content">
             <i class="fa-solid fa-circle-check" style="font-size:50px; color:#10b981;"></i>
@@ -251,23 +168,6 @@
     </div>
 
     <script type="module">
-        // ⏰ AUTO-LOCK SYSTEM (Isse aapko manually code nahi hatana padega!)
-function checkTestTime() {
-    // Yahan test shuru hone ka time set karein (Year-Month-Day T Hours:Minutes:Seconds)
-    // Aaj ki date aur time 11:00:00 AM set hai
-    const testStartTime = new Date("2027-06-22T11:00:00").getTime(); 
-    const currentTime = new Date().getTime();
-
-    if (currentTime >= testStartTime) {
-        // Jaise hi 11 bajenge -> Message hatao aur Password field dikhao!
-        document.getElementById("timeLockMessage").style.display = "none";
-        document.getElementById("passwordArea").style.display = "block";
-    }
-}
-// Har 1 second mein chupchap check karega (Bacchon ko page refresh bhi nahi karna padega)
-setInterval(checkTestTime, 1000);
-checkTestTime(); 
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -283,7 +183,6 @@ checkTestTime();
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Target Answer Keys Set
         const correctAnswers = { q1: "B", q2: "C" };
         
         let timerInterval;
@@ -292,14 +191,46 @@ checkTestTime();
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
+        let isAlerting = false; 
         let studentFetchedClass = "N/A";
         let studentFetchedName = "Student";
 
         const video = document.getElementById('proctorCam');
         const canvas = document.getElementById('photoCanvas');
-
-        // Central Local Session Storage Roll Hook
         const currentRoll = localStorage.getItem("studentRoll"); 
+
+        // ⏰ FULL AUTO-LOCK AND AUTO-SUBMIT ENGINE
+        function checkTestTime() {
+            // 👇 YAHAN AAP DATE AUR TIME SET KAREIN 👇 (Format: YYYY-MM-DDTHH:MM:SS)
+            const testStartTime = new Date("2026-06-23T11:00:00").getTime(); 
+            const testEndTime = new Date("2026-06-23T11:15:00").getTime(); 
+            const currentTime = new Date().getTime();
+
+            const timeMsgElement = document.getElementById("timeLockMessage");
+            const passAreaElement = document.getElementById("passwordArea");
+
+            if (!timeMsgElement || !passAreaElement) return;
+
+            if (currentTime >= testEndTime) {
+                if (isTestStarted === true && hasSubmitted === false) {
+                    alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
+                    window.processSubmission(true); 
+                } 
+                else if (isTestStarted === false) {
+                    timeMsgElement.innerHTML = "<i class='fa-solid fa-ban'></i> Test ka samay samapt ho chuka hai. Entry close.";
+                    timeMsgElement.style.display = "block";
+                    passAreaElement.style.display = "none";
+                }
+            }
+            else if (currentTime >= testStartTime && currentTime < testEndTime) {
+                if (isTestStarted === false) {
+                    timeMsgElement.style.display = "none";
+                    passAreaElement.style.display = "block";
+                }
+            }
+        }
+        setInterval(checkTestTime, 1000);
+        checkTestTime();
 
         async function loadProfileHeader() {
             if(!currentRoll) {
@@ -326,7 +257,7 @@ checkTestTime();
                     document.getElementById("headerStudentName").innerText = "Unknown Profile";
                 }
 
-                // Check duplicity for Maths Mission Day 1
+                // Check duplicity for Maths Mission Day 1 (No Class Lock Here)
                 const testCheckRef = doc(db, "tests", "maths_day1", "students", currentRoll);
                 const testCheckSnap = await getDoc(testCheckRef);
                 if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
@@ -339,7 +270,6 @@ checkTestTime();
         }
         loadProfileHeader();
 
-        // Unlock Engine Initialization
         window.verifyAndStartTest = async function() {
             const passInput = document.getElementById("testPassword").value.trim();
             
@@ -363,7 +293,6 @@ checkTestTime();
                     alert("⚠️ SYSTEM ALERT: Camera block detected. Proctoring logs will show connection error, test started.");
                 }
 
-                // Create live initial instance session log
                 try {
                     const testDocRef = doc(db, "tests", "maths_day1", "students", currentRoll);
                     await setDoc(testDocRef, { 
@@ -374,9 +303,7 @@ checkTestTime();
                         score: "0/2",
                         percentage: "0%"
                     }, { merge: true });
-                } catch(e) { 
-                    console.log("Initialization connection log pass."); 
-                }
+                } catch(e) { }
             } else {
                 alert("❌ Galat Password! Admin dwara diya gaya aaj ka password dalein.");
             }
@@ -398,10 +325,7 @@ checkTestTime();
         }
 
         function startAutomaticPhotoCapture() {
-            proctorInterval = setInterval(() => {
-                captureAndUploadSnapshot();
-            }, 30000); // 30 seconds capture interval tracking loop
-            
+            proctorInterval = setInterval(() => { captureAndUploadSnapshot(); }, 30000); 
             setTimeout(() => { captureAndUploadSnapshot(); }, 6000); 
         }
 
@@ -425,202 +349,149 @@ checkTestTime();
                     capturedImage: base64Image,
                     capturedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
                 });
-            } catch(e) {
-                console.error("Snapshot synchronization failed: ", e);
+            } catch(e) { }
+        }
+
+        function forceReturnToFullscreen() {
+            try {
+                if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); } 
+                else if (document.documentElement.webkitRequestFullscreen) { document.documentElement.webkitRequestFullscreen(); }
+            } catch (e) { }
+        }
+
+        function showWarningModal(message, reason) {
+            if (isAlerting) return;
+            isAlerting = true;
+            cheatCount++; 
+            captureAndUploadSnapshot();
+
+            // ⚠️ FIX: Agar 3 se zyada cheat hua toh test automatic submit ho jayega
+            if (cheatCount >= 3) {
+                alert("🚫 MAXIMUM WARNINGS REACHED! Aapka test automatic submit kiya ja raha hai.");
+                window.processSubmission(true);
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.id = "antiCheatOverlay";
+            overlay.style.position = "fixed";
+            overlay.style.top = "0"; overlay.style.left = "0";
+            overlay.style.width = "100vw"; overlay.style.height = "100vh";
+            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)"; 
+            overlay.style.color = "white"; overlay.style.display = "flex";
+            overlay.style.flexDirection = "column"; overlay.style.justifyContent = "center";
+            overlay.style.alignItems = "center"; overlay.style.zIndex = "999999";
+            overlay.style.fontFamily = "Arial, sans-serif";
+
+            overlay.innerHTML = `
+                <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount}/3 ⚠️</h1>
+                <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
+                <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
+                <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    I Understand, Resume Test
+                </button>
+            `;
+
+            document.body.appendChild(overlay);
+
+            document.getElementById('resumeTestBtn').addEventListener('click', () => {
+                forceReturnToFullscreen();
+                document.body.removeChild(overlay);
+                setTimeout(() => { isAlerting = false; }, 2000); 
+            });
+        }
+
+        function activateAntiCheatSystem() {
+            forceReturnToFullscreen();
+
+            window.history.pushState(null, null, window.location.href);
+            window.addEventListener("popstate", function () {
+                if (!hasSubmitted && isTestStarted) {
+                    window.history.pushState(null, null, window.location.href);
+                    showWarningModal("⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", "Tried to Exit via Back Button");
+                }
+            });
+
+            setInterval(() => {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
+                    showWarningModal("Fullscreen se chhedchhad mat kijiye! Test dene ke liye Fullscreen me rehna zaruri hai.", "Detected Fullscreen Violations");
+                }
+            }, 2000);
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden && !hasSubmitted && isTestStarted) {
+                    showWarningModal("🚨 SECURITY ALERT: Aapne window/tab change kiya hai! Dubara karne par block ho jayenge.", "Tab Switched/Minimized");
+                }
+            });
+
+            window.addEventListener("blur", () => {
+                if (!document.getElementById("antiCheatOverlay") && !hasSubmitted && isTestStarted) {
+                    showWarningModal("DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", "Window focus lost");
+                }
+            });
+
+            window.addEventListener('beforeunload', function (e) {
+                if (!hasSubmitted && isTestStarted) {
+                    e.preventDefault();
+                    e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge aur test submit ho jayega!';
+                    return e.returnValue;
+                }
+            });
+
+            window.addEventListener('pagehide', function () {
+                if (!hasSubmitted && isTestStarted) {
+                    window.processSubmission(true); 
+                }
+            });
+        }
+
+        window.processSubmission = async function(isTimeOut = false) {
+            if (hasSubmitted) return;
+            hasSubmitted = true;
+            
+            clearInterval(timerInterval);
+            clearInterval(proctorInterval);
+
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
+
+            let score = 0;
+            const form = document.getElementById("quizForm");
+            
+            for (let q in correctAnswers) {
+                const selected = form.elements[q] ? form.elements[q].value : "";
+                if (selected === correctAnswers[q]) { score++; }
+            }
+
+            const totalQuestionsCount = 2; // Isko badha lijiyega jitne questions honge
+            const pct = ((score / totalQuestionsCount) * 100).toFixed(0) + "%";
+            const finalScoreStr = `${score}/${totalQuestionsCount}`;
+
+            document.getElementById("modalScore").innerText = finalScoreStr;
+            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
+            document.getElementById("resultModal").style.display = "flex";
+
+            let finalCheatStatus = "Clean Profile Verified";
+            if (cheatCount > 0) {
+                finalCheatStatus = `Detected Warning Flags (${cheatCount} Times)`;
+            }
+
+            try {
+                const testDocRef = doc(db, "tests", "maths_day1", "students", currentRoll);
+                await setDoc(testDocRef, {
+                    submitted: true,
+                    name: studentFetchedName,
+                    class: studentFetchedClass, // Class yahan save ho jayegi!
+                    score: finalScoreStr,
+                    percentage: pct,
+                    cheatStatus: finalCheatStatus, 
+                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                }, { merge: true });
+            } catch (err) {
+                console.error("Cloud saving sync failed: ", err);
             }
         }
-
-   // Global variable control flag to prevent rapid alert queuing
-let isAlerting = false; 
-// Maan lete hain cheatCount upar declare kiya hua hai
-// let cheatCount = 0; 
-
-function forceReturnToFullscreen() {
-    try {
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-            document.documentElement.webkitRequestFullscreen();
-        }
-    } catch (e) { 
-        console.log("Fullscreen restoration active"); 
-    }
-}
-
-// 🚀 NAYA FUNCTION: Default alert() ki jagah Custom HTML Warning Modal
-function showWarningModal(message, reason) {
-    if (isAlerting) return;
-    isAlerting = true;
-    cheatCount++; 
-    captureAndUploadSnapshot();
-
-    if (cheatCount >= 3) {
-        autoLockStudentOnExit(reason);
-        return;
-    }
-
-    // Screen block karne ke liye ek div banayenge
-    const overlay = document.createElement('div');
-    overlay.id = "antiCheatOverlay";
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100vw";
-    overlay.style.height = "100vh";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.95)"; // Dark background
-    overlay.style.color = "white";
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.justifyContent = "center";
-    overlay.style.alignItems = "center";
-    overlay.style.zIndex = "999999";
-    overlay.style.fontFamily = "Arial, sans-serif";
-
-    overlay.innerHTML = `
-        <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount}/3 ⚠️</h1>
-        <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
-        <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
-        <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-            I Understand, Resume Test
-        </button>
-    `;
-
-    document.body.appendChild(overlay);
-
-    // Jab baccha button dabayega, tabhi fullscreen trigger hoga (Valid User Gesture)
-    document.getElementById('resumeTestBtn').addEventListener('click', () => {
-        forceReturnToFullscreen();
-        document.body.removeChild(overlay);
-        
-        // Thoda delay taki browser fullscreen me set ho jaye, fir naya alert allow karein
-        setTimeout(() => {
-            isAlerting = false;
-        }, 2000); 
-    });
-}
-
-function activateAntiCheatSystem() {
-    forceReturnToFullscreen();
-
-    // 🚀 NAYA LOGIC: Back Button Trap (History API)
-    // Jaise hi test shuru ho, history me ek current page dal do taki back karne par bahar na jaye
-    window.history.pushState(null, null, window.location.href);
-
-    window.addEventListener("popstate", function () {
-        if (!hasSubmitted && isTestStarted) {
-            // Baccha back dabaya, toh usko wapas aage dhakel do (Trap)
-            window.history.pushState(null, null, window.location.href);
-            
-            // Custom warning dikhao
-            showWarningModal(
-                "⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", 
-                "Tried to Exit via Back Button"
-            );
-        }
-    });
-
-    // 1. Strict Fullscreen Lock Checker
-    setInterval(() => {
-        if (!document.fullscreenElement && !document.webkitFullscreenElement && !hasSubmitted && isTestStarted) {
-            showWarningModal(
-                "Fullscreen se chhedchhad mat kijiye! Test dene ke liye Fullscreen me rehna zaruri hai.", 
-                "Detected 3+ Fullscreen Violations"
-            );
-        }
-    }, 2000);
-
-    // 2. App Switch / Minimize Sensor
-    document.addEventListener("visibilitychange", () => {
-        if (document.hidden && !hasSubmitted && isTestStarted) {
-            showWarningModal(
-                "🚨 SECURITY ALERT: Aapne window/tab change kiya hai! Dubara karne par block ho jayenge.", 
-                "Tab Switched/Minimized Multiple Times"
-            );
-        }
-    });
-
-    // 3. Notification Bar Slide / Window Blur Sensor
-    window.addEventListener("blur", () => {
-        if (!document.getElementById("antiCheatOverlay") && !hasSubmitted && isTestStarted) {
-            showWarningModal(
-                "DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", 
-                "Notification panel drop flag limit crossed"
-            );
-        }
-    });
-
-    // 4. Hardware Back / Tab Close Button Lock Pop-up
-    window.addEventListener('beforeunload', function (e) {
-        if (!hasSubmitted && isTestStarted) {
-            e.preventDefault();
-            e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap series se BAHAR ho jayenge aur test submit ho jayega!';
-            return e.returnValue;
-        }
-    });
-
-    // 5. Emergency Exit Trigger (Agar baccha jabardasti Tab band kare ya Back chala hi jaye)
-    window.addEventListener('pagehide', function () {
-        if (!hasSubmitted && isTestStarted) {
-            console.log("Student ne jabardasti exit kiya. Auto-submitting test...");
-            // Seedha processSubmission call kar do taki jitna banaya hai utna score save ho jaye
-            window.processSubmission(true); 
-        }
-    });
-}
-
-
-// --- SUBMISSION REFACTOR ENGINE ---
-window.processSubmission = async function(isTimeOut = false) {
-    if (hasSubmitted) return;
-    hasSubmitted = true;
-    
-    clearInterval(timerInterval);
-    clearInterval(proctorInterval);
-
-    if (video.srcObject) {
-        video.srcObject.getTracks().forEach(track => track.stop());
-    }
-
-    let score = 0;
-    const form = document.getElementById("quizForm");
-    
-    for (let q in correctAnswers) {
-        const selected = form.elements[q] ? form.elements[q].value : "";
-        if (selected === correctAnswers[q]) {
-            score++;
-        }
-    }
-
-    const totalQuestionsCount = 2;
-    const pct = ((score / totalQuestionsCount) * 100).toFixed(0) + "%";
-    const finalScoreStr = `${score}/${totalQuestionsCount}`;
-
-    document.getElementById("modalScore").innerText = finalScoreStr;
-    document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
-    document.getElementById("resultModal").style.display = "flex";
-
-    // Dynamic clean profiles check flag mapping
-    let finalCheatStatus = "Clean Profile Verified";
-    if (cheatCount > 0) {
-        finalCheatStatus = `Detected Warning Flags (${cheatCount} Times)`;
-    }
-
-    try {
-        const testDocRef = doc(db, "tests", "maths_day1", "students", currentRoll);
-        await setDoc(testDocRef, {
-            submitted: true,
-            name: studentFetchedName,
-            class: studentFetchedClass,
-            score: finalScoreStr,
-            percentage: pct,
-            cheatStatus: finalCheatStatus, // Fixed dynamic status saving
-            submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-        }, { merge: true });
-        console.log("Results compiled & transmitted securely.");
-    } catch (err) {
-        console.error("Cloud saving sync failed: ", err);
-    }
-}
     </script>
 </body>
 </html>
