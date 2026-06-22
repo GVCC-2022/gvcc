@@ -153,7 +153,7 @@
 
         /* Premium Dashboard Cards */
         .menu-card {
-            background: white !important; /* Force white background for all cards */
+            background: white !important;
             border: none;
             border-radius: 14px;
             padding: 18px 12px;
@@ -182,10 +182,7 @@
         .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
         .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
         .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
-        
-        /* 🛠️ Fix Applied: Fixed name from card-day2 to card-day1 and injected premium color rules */
         .card-day1 { color: #8b5cf6; border-top: 4px solid #8b5cf6; }
-        
         .card-result { color: #10b981; border-top: 4px solid #10b981; }
         .card-performer { color: #a855f7; border-top: 4px solid #a855f7; }
 
@@ -243,33 +240,28 @@
     <!-- Main Content App Interface -->
     <div id="mainContent">
         <header>
-<!-- 🌟 GVCC PREMIUM STICKY FLOATING HEADER START 🌟 -->
-<div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
-    
-    <!-- 1. LEFT SIDE: Logo -->
-    <div style="position: absolute !important; left: 10px; top: -4px;">
-        <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important;">
-    </div>
-    
-    <!-- 2. RIGHT SIDE: Title, Tagline, and Slogan -->
-    <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
-        <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important; font-family: 'Segoe UI', sans-serif;">Gyan Varsha Coaching Center</h1>
-        
-        <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
-        
-        <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content; white-space: nowrap;">
-            ✨ हम वादा नहीं, पर दावा जरूर करते हैं ✨
-        </div>
-    </div>
-</div>
-
-<!-- Spacer -->
-<div style="height: 110px; width: 100%; background: transparent;"></div>
-<!-- 🌟 GVCC PREMIUM STICKY FLOATING HEADER END 🌟 -->
-
+            <!-- 🌟 GVCC PREMIUM STICKY FLOATING HEADER START 🌟 -->
+            <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
+                
+                <div style="position: absolute !important; left: 10px; top: -4px;">
+                    <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important;">
+                </div>
+                
+                <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
+                    <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important; font-family: 'Segoe UI', sans-serif;">Gyan Varsha Coaching Center</h1>
+                    
+                    <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
+                    
+                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content; white-space: nowrap;">
+                        ✨ हम वादा नहीं, पर दावा जरूर करते हैं ✨
+                    </div>
+                </div>
+            </div>
+            <div style="height: 110px; width: 100%; background: transparent;"></div>
+            <!-- 🌟 GVCC PREMIUM STICKY FLOATING HEADER END 🌟 -->
+        </header>
 
         <div class="container">
-            <!-- Student Identity Card -->
             <div class="profile-card">
                 <div class="profile-header">
                     <i class="fa-solid fa-id-card"></i> 👤 Student Profile
@@ -288,44 +280,39 @@
                 </div>
             </div>
 
-            <!-- 2 Column Smart Grid Navigation -->
             <div class="grid-menu">
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i>
                     <span>Join Live Class</span>
                 </a>
 
-                <!-- Notes Tile -->
                 <button class="menu-card card-notes" onclick="window.location.href='notesmenu.html'">
                     <i class="fa-solid fa-book-open"></i>
                     <span>Notes</span>
                 </button>
 
-                <!-- Notice Board Tile -->
                 <button class="menu-card card-notice" onclick="window.location.href='notice.html'">
                     <i class="fa-solid fa-bullhorn"></i>
                     <span>Notice Board</span>
                 </button>
 
-                <!-- Online Test Router Button Connected -->
+                <!-- 🚀 Updated: Smart Online Test Router -->
                 <button class="menu-card card-test" onclick="routeToLiveTest()">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Online Test</span>
                 </button>
 
-                <!-- Day 1 Test Tile -->
                 <button class="menu-card card-day1" onclick="window.location.href='day1.html'">
                     <i class="fa-solid fa-rocket"></i>
                     <span>Day 1 Test</span>
                 </button>
 
-                <!-- Result Tile -->
-                <button class="menu-card card-result" onclick="window.location.href='result.html'">
+                <!-- 🚀 Updated: Smart Result Router -->
+                <button class="menu-card card-result" onclick="routeToResult()">
                     <i class="fa-solid fa-chart-bar"></i>
                     <span>Result</span>
                 </button>
 
-                <!-- Performers Tile -->
                 <button class="menu-card card-performer" onclick="window.location.href='results.html'">
                     <i class="fa-solid fa-trophy"></i>
                     <span>Day 1 Performers</span>
@@ -344,7 +331,6 @@
         </footer>
     </div>
 
-    <!-- Firebase Logic Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -398,14 +384,33 @@
             }
         }
 
+        // 🎯 Smart Routing Logic for Online Test
         window.routeToLiveTest = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("8")) {
-                window.location.href = "maths8_test.html";
+            
+            if (cleanClass.includes("10")) {
+                window.location.href = "history10.html";
             } else if (cleanClass.includes("9")) {
                 window.location.href = "history9.html";
+            } else if (cleanClass.includes("8")) {
+                alert("⚠️ Alert: Class 8th ka test abhi start nahi hua hai. Kripya baad mein try karein!");
             } else {
-                window.location.href = "history10.html";
+                alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
+            }
+        }
+
+        // 🎯 Smart Routing Logic for Results
+        window.routeToResult = function() {
+            let cleanClass = String(studentClassGlobal).toLowerCase();
+            
+            if (cleanClass.includes("10")) {
+                window.location.href = "result10.html";
+            } else if (cleanClass.includes("9")) {
+                window.location.href = "result.html";
+            } else if (cleanClass.includes("8")) {
+                alert("⚠️ Alert: Class 8th ka result abhi available nahi hai!");
+            } else {
+                alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
             }
         }
 
