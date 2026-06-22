@@ -178,7 +178,7 @@
         </div>
         <div class="timer-box">
             <i class="fa-solid fa-clock fa-pulse"></i>
-            <span id="countdownTimer">10:00</span>
+            <span id="countdownTimer">20:00</span>
         </div>
     </div>
 
@@ -277,7 +277,7 @@
         const correctAnswers = { q1: "C", q2: "A", q3: "D" };
         let timerInterval;
         let proctorInterval; 
-        let totalTimeLeft = 600; // 10 Minutes in Seconds
+        let totalTimeLeft = 1200; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
@@ -290,8 +290,8 @@
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
             // Apne hisaab se Date aur Time change karein
-            const testStartTime = new Date("2026-06-22T12:00:00").getTime(); 
-            const testEndTime = new Date("2026-06-22T12:15:00").getTime(); 
+            const testStartTime = new Date("2026-06-22T15:25:00").getTime(); 
+            const testEndTime = new Date("2026-06-22T15:45:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
