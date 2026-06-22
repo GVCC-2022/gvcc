@@ -256,46 +256,11 @@
         </div>
     </div>
 
-    <script type="module">
-        // ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
-function checkTestTime() {
-    // Test karne ke liye time thoda aage ka daalein (e.g., 11:45 to 11:50)
-    const testStartTime = new Date("2026-06-22T11:45:00").getTime(); 
-    const testEndTime = new Date("2026-06-22T11:50:00").getTime(); 
-    const currentTime = new Date().getTime();
-
-    // Elements check taaki code crash na ho
-    const timeMsgElement = document.getElementById("timeLockMessage");
-    const passAreaElement = document.getElementById("passwordArea");
-
-    if (!timeMsgElement || !passAreaElement) return; // Agar HTML nahi mila to aage mat badho
-
-    if (currentTime >= testEndTime) {
-        if (typeof isTestStarted !== 'undefined' && isTestStarted === true && hasSubmitted === false) {
-            alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
-            window.processSubmission(true); 
-        } 
-        else if (typeof isTestStarted === 'undefined' || isTestStarted === false) {
-            timeMsgElement.innerHTML = "<i class='fa-solid fa-ban'></i> Test ka samay samapt ho chuka hai. Entry close.";
-            timeMsgElement.style.display = "block";
-            passAreaElement.style.display = "none";
-        }
-    }
-    else if (currentTime >= testStartTime && currentTime < testEndTime) {
-        if (typeof isTestStarted === 'undefined' || isTestStarted === false) {
-            timeMsgElement.style.display = "none";
-            passAreaElement.style.display = "block";
-        }
-    }
-}
-setInterval(checkTestTime, 1000);
-
-
-checkTestTime(); 
-        
+        <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+        // 1. Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
             authDomain: "gvcc-database.firebaseapp.com",
@@ -308,24 +273,56 @@ checkTestTime();
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Answer Key Setup
+        // 2. SABHI VARIABLES KO UPAR DEFINE KARNA ZAROORI HAI
         const correctAnswers = { q1: "C", q2: "A", q3: "D" };
-        
         let timerInterval;
         let proctorInterval; 
         let totalTimeLeft = 600; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
+        let isAlerting = false; 
 
-        // Camera DOM Hooks
         const video = document.getElementById('proctorCam');
         const canvas = document.getElementById('photoCanvas');
-
-        // Fetch Student Local Session Info
         const currentRoll = localStorage.getItem("studentRoll"); 
 
-        // Auto-fetch profile name and Validate Class
+        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
+        function checkTestTime() {
+            // Apne hisaab se Date aur Time change karein
+            const testStartTime = new Date("2026-06-22T12:00:00").getTime(); 
+            const testEndTime = new Date("2026-06-22T12:15:00").getTime(); 
+            const currentTime = new Date().getTime();
+
+            const timeMsgElement = document.getElementById("timeLockMessage");
+            const passAreaElement = document.getElementById("passwordArea");
+
+            if (!timeMsgElement || !passAreaElement) return; 
+
+            if (currentTime >= testEndTime) {
+                if (isTestStarted === true && hasSubmitted === false) {
+                    alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
+                    window.processSubmission(true); 
+                } 
+                else if (isTestStarted === false) {
+                    timeMsgElement.innerHTML = "<i class='fa-solid fa-ban'></i> Test ka samay samapt ho chuka hai. Entry close.";
+                    timeMsgElement.style.display = "block";
+                    passAreaElement.style.display = "none";
+                }
+            }
+            else if (currentTime >= testStartTime && currentTime < testEndTime) {
+                if (isTestStarted === false) {
+                    timeMsgElement.style.display = "none";
+                    passAreaElement.style.display = "block";
+                }
+            }
+        }
+        
+        // Har ek second time check karega
+        setInterval(checkTestTime, 1000);
+        checkTestTime(); 
+
+        // 4. BAAKI KA POORA SYSTEM (Profile Load, Anti-Cheat, Submit)
         async function loadProfileHeader() {
             if (!currentRoll) {
                 alert("Kripya dashboard se login karein!");
@@ -337,7 +334,6 @@ checkTestTime();
             document.getElementById("headerStudentName").innerText = "GVCC Student";
 
             try {
-                // Fetch profile data
                 const docRef = doc(db, "students", currentRoll);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
@@ -347,7 +343,6 @@ checkTestTime();
                     
                     document.getElementById("headerStudentName").innerText = sName;
 
-                    // 🛑 STRICT SECURITY LOCK FOR CLASS 10TH
                     if (!sClass.includes("10")) {
                         alert("⚠️ Security Lock: Yeh test portal sirf Class 10th ke students ke liye hai. Aap allow nahi hain.");
                         window.location.href = "dashboard.html";
@@ -355,7 +350,6 @@ checkTestTime();
                     }
                 }
 
-                // Check if already submitted
                 const testCheckRef = doc(db, "tests", "history10_test", "students", currentRoll);
                 const testCheckSnap = await getDoc(testCheckRef);
                 if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
@@ -368,7 +362,6 @@ checkTestTime();
         }
         loadProfileHeader();
 
-        // 🎯 Password Verification & Test Init
         window.verifyAndStartTest = async function() {
             const passInput = document.getElementById("testPassword").value.trim();
             
@@ -393,7 +386,6 @@ checkTestTime();
                     alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
                 }
 
-                // Temporary Connection Sync Test
                 try {
                     const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
                     await setDoc(testDocRef, { 
@@ -411,7 +403,6 @@ checkTestTime();
             }
         };
 
-        // Continuous Counting Timer Engine
         function startTestTimer() {
             timerInterval = setInterval(() => {
                 if (totalTimeLeft <= 0) {
@@ -427,21 +418,17 @@ checkTestTime();
             }, 1000);
         }
 
-        // ⏱️ Automatic Photo Capture Scheduling
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
                 captureAndUploadSnapshot();
             }, 30000); 
-            
             setTimeout(() => { captureAndUploadSnapshot(); }, 6000); 
         }
 
-        // 📸 Engine: Takes a background canvas snap and pushes to Firestore
         async function captureAndUploadSnapshot() {
             if (hasSubmitted || !video.srcObject) return;
 
             if (video.readyState !== 4 || video.videoWidth === 0) {
-                console.log("📸 Camera data stream not ready yet. Retrying in 2 seconds...");
                 setTimeout(captureAndUploadSnapshot, 2000);
                 return;
             }
@@ -453,27 +440,19 @@ checkTestTime();
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const base64Image = canvas.toDataURL('image/jpeg', 0.7);
 
-            if (base64Image.length < 200) {
-                console.log("⚠️ Structural verification failed (Blank Code String). Sync aborted.");
-                return;
-            }
+            if (base64Image.length < 200) return;
 
             const timestamp = Date.now();
-
             try {
-                // Path changed to history10_test
                 const photoDocRef = doc(db, "tests", "history10_test", "students", currentRoll, "snapshots", `snap_${timestamp}`);
                 await setDoc(photoDocRef, {
                     capturedImage: base64Image,
                     capturedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
                 });
-                console.log(`📸 Valid Base64 snap packet successfully transmitted for ${currentRoll}: snap_${timestamp}`);
             } catch(e) {
                 console.error("Image cloud sync failed: ", e);
             }
         }
-
-        let isAlerting = false; 
 
         function forceReturnToFullscreen() {
             try {
@@ -482,9 +461,7 @@ checkTestTime();
                 } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
                 }
-            } catch (e) { 
-                console.log("Fullscreen restoration active"); 
-            }
+            } catch (e) { }
         }
 
         function showWarningModal(message, reason) {
@@ -510,13 +487,12 @@ checkTestTime();
             overlay.style.justifyContent = "center";
             overlay.style.alignItems = "center";
             overlay.style.zIndex = "999999";
-            overlay.style.fontFamily = "Arial, sans-serif";
 
             overlay.innerHTML = `
                 <h1 style="color: #ff4444; margin-bottom: 10px;">⚠️ WARNING ${cheatCount} ⚠️</h1>
                 <h3 style="margin-bottom: 20px; text-align: center; max-width: 80%;">${message}</h3>
                 <p style="color: #cccccc; margin-bottom: 30px;">Iska information Md Faiyaz ke paas chala jayega.</p>
-                <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                <button id="resumeTestBtn" style="padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
                     I Understand, Resume Test
                 </button>
             `;
@@ -537,7 +513,7 @@ checkTestTime();
             window.addEventListener("popstate", function () {
                 if (!hasSubmitted) {
                     window.history.pushState(null, null, window.location.href); 
-                    showWarningModal("⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega aur aap dubara test nahi de payenge!", "Tried to Exit via Back Button");
+                    showWarningModal("⚠️ DHYAN DEIN: Agar aapne Back kiya ya test chhora, toh apka test yahin SUBMIT ho jayega!", "Tried to Exit via Back Button");
                 }
             });
 
@@ -549,28 +525,13 @@ checkTestTime();
 
             document.addEventListener("visibilitychange", () => {
                 if (document.hidden && !hasSubmitted) {
-                    showWarningModal("🚨 SECURITY ALERT: Aapne test window se switch kiya hai! Yeh cheating category mein aata hai.", "Tab Switched/Minimized");
+                    showWarningModal("🚨 SECURITY ALERT: Aapne test window se switch kiya hai!", "Tab Switched/Minimized");
                 }
             });
 
             window.addEventListener("blur", () => {
                 if (!document.getElementById("antiCheatOverlay") && !hasSubmitted) {
                     showWarningModal("DISTRACTION DETECTED: Aapne screen se bahar click kiya hai ya Notification bar khola hai!", "Window focus lost");
-                }
-            });
-
-            window.addEventListener('beforeunload', function (e) {
-                if (!hasSubmitted) {
-                    e.preventDefault();
-                    e.returnValue = '⚠️ WARNING: Agar aapne test choda ya back dabaya toh aap test se BAHAR ho jayenge!';
-                    return e.returnValue;
-                }
-            });
-
-            window.addEventListener('pagehide', function () {
-                if (!hasSubmitted) {
-                    console.log("Student forced exit. Auto-submitting...");
-                    window.processSubmission(true);
                 }
             });
         }
@@ -605,7 +566,6 @@ checkTestTime();
             document.getElementById("resultModal").style.display = "flex";
 
             try {
-                // Path changed to history10_test
                 const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
                 await setDoc(testDocRef, {
                     submitted: true,
