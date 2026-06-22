@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10th History Result - GVCC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- (CSS wahi rahega jo 9th wale result.html mein tha, aap wahan se copy kar sakte hain) -->
+    <style>
+        /* CSS Yahan aap result.html se copy kar lein */
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; text-align: center; }
+        .header { background: linear-gradient(135deg, #002244, #003366); color: white; padding: 25px 15px; }
+        .result-box { background: white; max-width: 450px; width: 90%; margin: 20px auto; padding: 20px; border-radius: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .marks-highlight { font-size: 32px; color: #28a745; font-weight: 800; margin: 10px 0; }
+        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
+        th { background-color: #003366; color: white; }
+        .btn-back { display: inline-block; background: #007bff; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📚 Class 10th History Result</h1>
+    <p>Gyan Varsha Coaching Center</p>
+</div>
+
+<div class="result-box" id="myResultBox">
+    <h2>👤 Aapka History Test Result</h2>
+    <p id="loadingText">Loading...</p>
+    <div id="myResultContent" class="hidden">
+        <h3 id="studentNameDisplay">--</h3>
+        <div class="marks-highlight" id="myMarksDisplay">--/--</div>
+        <p id="cheatStatusDisplay"></p>
+    </div>
+</div>
+
+<div class="result-box hidden" id="leaderboardBox">
+    <h2>🏆 Class 10th History Leaderboard</h2>
+    <div id="leaderboardTableContainer"></div>
+</div>
+
+<a href="dashboard.html" class="btn-back">⬅ Back to Dashboard</a>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = { /* Wahi Config jo aapke baki pages mein hai */ };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const activeRoll = localStorage.getItem("studentRoll");
+    
+    // 🎯 Yahan Path Change Kar Diya Hai
+    const targetTestPath = "history10_test"; 
+
+    async function fetchResult() {
+        const studentRef = doc(db, "students", activeRoll);
+        const studentSnap = await getDoc(studentRef);
+        const sClass = String(studentSnap.data().Class || "").trim();
+
+        // 🛑 Security Check for 10th
+        if (!sClass.includes("10")) {
+            alert("Error: Yeh page sirf 10th ke liye hai!");
+            window.location.href = "dashboard.html";
+            return;
+        }
+
+        const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
+        const resultSnap = await getDoc(resultRef);
+        
+        // ... (Baaki logic 9th wale result.html jaisa hi rahega)
+        if (resultSnap.exists()) {
+            document.getElementById("myMarksDisplay").innerText = resultSnap.data().score;
+            document.getElementById("myResultContent").classList.remove("hidden");
+        }
+        
+        // Leaderboard load karna
+        const q = collection(db, "tests", targetTestPath, "students");
+        const querySnapshot = await getDocs(q);
+        // ... (Leaderboard render logic wahi rahega)
+    }
+    fetchResult();
+</script>
+</body>
+</html>
+
