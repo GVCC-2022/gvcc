@@ -7,6 +7,9 @@
 <meta http-equiv="Expires" content="0">
 <title>Gyan Varsha Coaching Center - Login</title>
 <link rel="manifest" href="manifest.json">
+
+<!-- FontAwesome for Premium Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
 <style>
 body {
@@ -44,28 +47,22 @@ body {
     animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 🎯 Logo Position - Isko bada kiya aur center alignment thik kiya */
+/* 🎯 Logo Position */
 .login-logo {
-    width: 250px !important; /* 👈 Bada size jaisa aapne bola */
+    width: 250px !important; 
     height: auto;
     background: transparent !important;
     padding: 0 !important;
     border-radius: 0 !important;
     position: absolute;
-    
-    /* 📐 Logo ka balance card ke upar banaye rakhne ke liye adjust kiya */
     top: -145px; 
-    
-    /* 🎯 Exact Horizontal Center */
     left: 52%;
     transform: translateX(-48%);
-    
-    /* 🌟 Soft Professional Shadow */
     filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.12));
     z-index: 10;
 }
 
-/* 📦 White Card Position - Top padding thodi badhai taaki bade logo ke niche space mile */
+/* 📦 White Card Position */
 .login-card {
     background: #ffffff !important;
     padding: 135px 25px 40px 25px !important; 
@@ -83,11 +80,34 @@ body {
     color: #003366;
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+/* 🚀 Naya Install Button Style */
+.install-btn {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
+    color: #0284c7 !important;
+    border: 1px solid #7dd3fc !important;
+    margin-bottom: 20px !important;
+    box-shadow: none !important;
+    font-size: 16px !important;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+.install-btn i {
+    animation: bounce 2s infinite;
+}
+
+.divider {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
 input {
@@ -118,7 +138,7 @@ input:focus {
     background: #007bff;
     color: white;
     padding: 14px;
-    margin: 25px auto 10px auto;
+    margin: 20px auto 10px auto;
     width: 95%;
     border: none;
     border-radius: 12px;
@@ -160,6 +180,17 @@ input:focus {
     to { transform: rotate(360deg); }
 }
 
+@keyframes bounce { 
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+    40% {transform: translateY(-4px);} 
+    60% {transform: translateY(-2px);} 
+}
+
+@keyframes pulseGlow {
+    from { box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.4); }
+    to { box-shadow: 0 0 15px 5px rgba(125, 211, 252, 0); }
+}
+
 /* ✨ Animation waala name box */
 #dynamicName {
     font-size: 14px;
@@ -190,11 +221,17 @@ input:focus {
 <body>
 
 <div class="login-container">
-    <!-- ✅ Aapki nayi transparent file aur bada layout set ho gaya -->
     <img src="20260620_144347.png" alt="GVCC Logo" class="login-logo">
 
     <div class="login-card">
         <div class="title">🎓 Student Portal</div>
+        
+        <!-- 🚀 Smart Install App Button -->
+        <button type="button" class="btn install-btn" onclick="installApp()">
+            <i class="fa-solid fa-download"></i> Install GVCC App
+        </button>
+
+        <div class="divider">--- OR LOGIN BELOW ---</div>
         
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
@@ -212,6 +249,29 @@ input:focus {
         <div id="msg"></div>
     </div>
 </div>
+
+<!-- 📲 Smart Install Logic -->
+<script>
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
+    window.installApp = async function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('App Installed Successfully!');
+            }
+            deferredPrompt = null;
+        } else {
+            alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi aur aap login kar payenge.");
+        }
+    };
+</script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
