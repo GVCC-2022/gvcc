@@ -188,55 +188,79 @@
     <div class="main-container">
         
         <div id="lockSection" class="glass-panel">
-    <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
-    
-    <!-- ⏳ TIMELOCK MESSAGE BOX -->
-    <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
-        <i class="fa-solid fa-clock"></i> कृप्या अभी इंतजार करे आपका Test 12 बजे शुरु होगा...
-    </div>
+            <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
+            
+            <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
+                <i class="fa-solid fa-clock"></i> कृप्या अभी इंतजार करे आपका Test 12 बजे शुरु होगा...
+            </div>
 
-    <!-- 🔒 PASSWORD AREA (Pehle chhupa rahega) -->
-    <div id="passwordArea" style="display: none;">
-        <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha.</p>
-        
-        <div class="input-group">
-            <label>Test Activation Password</label>
-            <input type="password" id="testPassword" placeholder="••••••••">
+            <div id="passwordArea" style="display: none;">
+                <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Gyan Varsha.</p>
+                
+                <div class="input-group">
+                    <label>Test Activation Password</label>
+                    <input type="password" id="testPassword" placeholder="••••••••">
+                </div>
+                <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
+            </div>
         </div>
-        <button class="btn-premium" onclick="verifyAndStartTest()">Unlock & Start Test</button>
-    </div>
-</div>
-
-
 
         <div id="testSection" class="glass-panel" style="display:none;">
             <h2 id="testTitle">Class 10th History Test</h2>
             <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:25px;">
 
             <form id="quizForm">
-                <div class="q-card">
-                    <div class="q-text">1. हिन्द-चीन में बसने वाले फ्रांसीसी क्या कहे जाते थे?</div>
-                    <label class="option-label"><input type="radio" name="q1" value="A"> फ्रांसीसी</label>
-                    <label class="option-label"><input type="radio" name="q1" value="B"> शासक वर्ग</label>
-                    <label class="option-label"><input type="radio" name="q1" value="C"> कोलोन</label>
-                    <label class="option-label"><input type="radio" name="q1" value="D"> जनरल</label>
-                </div>
-
-                <div class="q-card">
-                    <div class="q-text">2. कहां हुआ हैं विद्रोह का काल क्या था?</div>
-                    <label class="option-label"><input type="radio" name="q2" value="A"> 1914 से 1920</label>
-                    <label class="option-label"><input type="radio" name="q2" value="B"> 1910 से 1915</label>
-                    <label class="option-label"><input type="radio" name="q2" value="C"> 1921 से 1925</label>
-                    <label class="option-label"><input type="radio" name="q2" value="D"> 1905 से 1910</label>
-                </div>
-
-                <div class="q-card">
-                    <div class="q-text">3. अंकुरवाट का मन्दिर कहाँ स्थित है?</div>
-                    <label class="option-label"><input type="radio" name="q3" value="A"> वियतनाम</label>
-                    <label class="option-label"><input type="radio" name="q3" value="B"> थाईलैण्ड</label>
-                    <label class="option-label"><input type="radio" name="q3" value="C"> लाओस</label>
-                    <label class="option-label"><input type="radio" name="q3" value="D"> कम्बोडिया</label>
-                </div>
+                <!-- All 50 Questions Generated Below -->
+                <div class="q-card"><div class="q-text">1. राष्ट्रवाद की अवधारणा का जन्म किस घटना से माना जाता है?</div><label class="option-label"><input type="radio" name="q1" value="A"> पुनर्जागरण</label><label class="option-label"><input type="radio" name="q1" value="B"> धर्मसुधार आंदोलन</label><label class="option-label"><input type="radio" name="q1" value="C"> गौरवपूर्ण क्रांति</label><label class="option-label"><input type="radio" name="q1" value="D"> फ्रांस की क्रांति</label></div>
+                <div class="q-card"><div class="q-text">2. 1789 की फ्रांसीसी क्रांति के समय वहाँ किस राजवंश का शासन था?</div><label class="option-label"><input type="radio" name="q2" value="A"> ट्यूडर</label><label class="option-label"><input type="radio" name="q2" value="B"> स्टुअर्ट</label><label class="option-label"><input type="radio" name="q2" value="C"> बूर्बों</label><label class="option-label"><input type="radio" name="q2" value="D"> रोमोनोव</label></div>
+                <div class="q-card"><div class="q-text">3. नेपोलियन संहिता किस वर्ष लागू की गई?</div><label class="option-label"><input type="radio" name="q3" value="A"> 1789</label><label class="option-label"><input type="radio" name="q3" value="B"> 1791</label><label class="option-label"><input type="radio" name="q3" value="C"> 1801</label><label class="option-label"><input type="radio" name="q3" value="D"> 1804</label></div>
+                <div class="q-card"><div class="q-text">4. जर्मन राईन राज्य का निर्माण किसने किया था?</div><label class="option-label"><input type="radio" name="q4" value="A"> लुई 18वाँ</label><label class="option-label"><input type="radio" name="q4" value="B"> नेपोलियन बोनापार्ट</label><label class="option-label"><input type="radio" name="q4" value="C"> नेपोलियन III</label><label class="option-label"><input type="radio" name="q4" value="D"> बिस्मार्क</label></div>
+                <div class="q-card"><div class="q-text">5. मारीआन किस देश के राष्ट्रवाद की प्रतीक थी?</div><label class="option-label"><input type="radio" name="q5" value="A"> फ्रांस</label><label class="option-label"><input type="radio" name="q5" value="B"> रूस</label><label class="option-label"><input type="radio" name="q5" value="C"> इटली</label><label class="option-label"><input type="radio" name="q5" value="D"> जर्मनी</label></div>
+                <div class="q-card"><div class="q-text">6. वियना सम्मेलन किस वर्ष हुआ?</div><label class="option-label"><input type="radio" name="q6" value="A"> 1815</label><label class="option-label"><input type="radio" name="q6" value="B"> 1820</label><label class="option-label"><input type="radio" name="q6" value="C"> 1825</label><label class="option-label"><input type="radio" name="q6" value="D"> 1830</label></div>
+                <div class="q-card"><div class="q-text">7. वियना सम्मेलन का अध्यक्ष कौन था?</div><label class="option-label"><input type="radio" name="q7" value="A"> नेपोलियन</label><label class="option-label"><input type="radio" name="q7" value="B"> लुई 18वाँ</label><label class="option-label"><input type="radio" name="q7" value="C"> चार्ल्स एलबर्ट</label><label class="option-label"><input type="radio" name="q7" value="D"> मेटरनिक</label></div>
+                <div class="q-card"><div class="q-text">8. वियना किस देश की राजधानी है?</div><label class="option-label"><input type="radio" name="q8" value="A"> फ्रांस</label><label class="option-label"><input type="radio" name="q8" value="B"> इंग्लैंड</label><label class="option-label"><input type="radio" name="q8" value="C"> ऑस्ट्रिया</label><label class="option-label"><input type="radio" name="q8" value="D"> रूस</label></div>
+                <div class="q-card"><div class="q-text">9. वियना काँग्रेस द्वारा फ्रांस में किस वंश की पुनर्स्थापना की गई?</div><label class="option-label"><input type="radio" name="q9" value="A"> हैप्सबर्ग</label><label class="option-label"><input type="radio" name="q9" value="B"> आलियां</label><label class="option-label"><input type="radio" name="q9" value="C"> बूर्बों</label><label class="option-label"><input type="radio" name="q9" value="D"> जारशाही</label></div>
+                <div class="q-card"><div class="q-text">10. मेटरनिक व्यवस्था का मुख्य उद्देश्य क्या था?</div><label class="option-label"><input type="radio" name="q10" value="A"> प्रजातंत्र</label><label class="option-label"><input type="radio" name="q10" value="B"> पुरातन व्यवस्था की पुनर्स्थापना</label><label class="option-label"><input type="radio" name="q10" value="C"> गणतंत्र</label><label class="option-label"><input type="radio" name="q10" value="D"> राष्ट्रवाद</label></div>
+                <div class="q-card"><div class="q-text">11. 'यंग यूरोप' की स्थापना किसने की?</div><label class="option-label"><input type="radio" name="q11" value="A"> कावूर</label><label class="option-label"><input type="radio" name="q11" value="B"> बिस्मार्क</label><label class="option-label"><input type="radio" name="q11" value="C"> मेजिनी</label><label class="option-label"><input type="radio" name="q11" value="D"> गैरीबाल्डी</label></div>
+                <div class="q-card"><div class="q-text">12. 'यंग इटली' की स्थापना किसने की?</div><label class="option-label"><input type="radio" name="q12" value="A"> गैरीबाल्डी</label><label class="option-label"><input type="radio" name="q12" value="B"> मेजिनी</label><label class="option-label"><input type="radio" name="q12" value="C"> बिस्मार्क</label><label class="option-label"><input type="radio" name="q12" value="D"> कावूर</label></div>
+                <div class="q-card"><div class="q-text">13. मेजिनी का संबंध किस संगठन से था?</div><label class="option-label"><input type="radio" name="q13" value="A"> कार्बोनरी</label><label class="option-label"><input type="radio" name="q13" value="B"> चेका</label><label class="option-label"><input type="radio" name="q13" value="C"> लाल सेना</label><label class="option-label"><input type="radio" name="q13" value="D"> डायट</label></div>
+                <div class="q-card"><div class="q-text">14. गैरीबाल्डी पेशे से क्या था?</div><label class="option-label"><input type="radio" name="q14" value="A"> सिपाही</label><label class="option-label"><input type="radio" name="q14" value="B"> किसान</label><label class="option-label"><input type="radio" name="q14" value="C"> जमींदार</label><label class="option-label"><input type="radio" name="q14" value="D"> नाविक</label></div>
+                <div class="q-card"><div class="q-text">15. 'लाल कुर्ती' का गठन किसने किया?</div><label class="option-label"><input type="radio" name="q15" value="A"> मेजिनी</label><label class="option-label"><input type="radio" name="q15" value="B"> कावूर</label><label class="option-label"><input type="radio" name="q15" value="C"> गैरीबाल्डी</label><label class="option-label"><input type="radio" name="q15" value="D"> बिस्मार्क</label></div>
+                <div class="q-card"><div class="q-text">16. काउंट कावूर को विक्टर इमैनुएल ने किस पद पर नियुक्त किया?</div><label class="option-label"><input type="radio" name="q16" value="A"> सेनापति</label><label class="option-label"><input type="radio" name="q16" value="B"> राजदूत</label><label class="option-label"><input type="radio" name="q16" value="C"> प्रधानमंत्री</label><label class="option-label"><input type="radio" name="q16" value="D"> गृहमंत्री</label></div>
+                <div class="q-card"><div class="q-text">17. इटली की समस्या को संपूर्ण यूरोप की समस्या किसने बनाया?</div><label class="option-label"><input type="radio" name="q17" value="A"> मेजिनी</label><label class="option-label"><input type="radio" name="q17" value="B"> कावूर</label><label class="option-label"><input type="radio" name="q17" value="C"> गैरीबाल्डी</label><label class="option-label"><input type="radio" name="q17" value="D"> विक्टर इमैनुएल</label></div>
+                <div class="q-card"><div class="q-text">18. काउंट कावूर की मृत्यु किस वर्ष हुई?</div><label class="option-label"><input type="radio" name="q18" value="A"> 1800</label><label class="option-label"><input type="radio" name="q18" value="B"> 1861</label><label class="option-label"><input type="radio" name="q18" value="C"> 1864</label><label class="option-label"><input type="radio" name="q18" value="D"> 1866</label></div>
+                <div class="q-card"><div class="q-text">19. इटली और जर्मनी के एकीकरण का सबसे बड़ा विरोधी कौन था?</div><label class="option-label"><input type="radio" name="q19" value="A"> ऑस्ट्रिया</label><label class="option-label"><input type="radio" name="q19" value="B"> फ्रांस</label><label class="option-label"><input type="radio" name="q19" value="C"> ब्रिटेन</label><label class="option-label"><input type="radio" name="q19" value="D"> रूस</label></div>
+                <div class="q-card"><div class="q-text">20. नेपल्स की क्रांति कब हुई थी?</div><label class="option-label"><input type="radio" name="q20" value="A"> 1820</label><label class="option-label"><input type="radio" name="q20" value="B"> 1821</label><label class="option-label"><input type="radio" name="q20" value="C"> 1822</label><label class="option-label"><input type="radio" name="q20" value="D"> 1823</label></div>
+                <div class="q-card"><div class="q-text">21. 'रक्त एवं लौह' की नीति का प्रतिपादन किसने किया?</div><label class="option-label"><input type="radio" name="q21" value="A"> मेजिनी</label><label class="option-label"><input type="radio" name="q21" value="B"> हिटलर</label><label class="option-label"><input type="radio" name="q21" value="C"> बिस्मार्क</label><label class="option-label"><input type="radio" name="q21" value="D"> विलियम-I</label></div>
+                <div class="q-card"><div class="q-text">22. बिस्मार्क पेशे से क्या था?</div><label class="option-label"><input type="radio" name="q22" value="A"> दार्शनिक</label><label class="option-label"><input type="radio" name="q22" value="B"> कूटनीतिज्ञ</label><label class="option-label"><input type="radio" name="q22" value="C"> संगीतज्ञ</label><label class="option-label"><input type="radio" name="q22" value="D"> नाटककार</label></div>
+                <div class="q-card"><div class="q-text">23. बिस्मार्क ने जर्मनी के एकीकरण हेतु कितने युद्ध लड़े?</div><label class="option-label"><input type="radio" name="q23" value="A"> 1</label><label class="option-label"><input type="radio" name="q23" value="B"> 2</label><label class="option-label"><input type="radio" name="q23" value="C"> 3</label><label class="option-label"><input type="radio" name="q23" value="D"> 4</label></div>
+                <div class="q-card"><div class="q-text">24. जालवेरिन मुख्य रूप से किनकी संस्था थी?</div><label class="option-label"><input type="radio" name="q24" value="A"> क्रांतिकारी</label><label class="option-label"><input type="radio" name="q24" value="B"> व्यापारी</label><label class="option-label"><input type="radio" name="q24" value="C"> विद्वान</label><label class="option-label"><input type="radio" name="q24" value="D"> पादरी</label></div>
+                <div class="q-card"><div class="q-text">25. गॉस्टीन की संधि किस वर्ष हुई?</div><label class="option-label"><input type="radio" name="q25" value="A"> 1864</label><label class="option-label"><input type="radio" name="q25" value="B"> 1865</label><label class="option-label"><input type="radio" name="q25" value="C"> 1866</label><label class="option-label"><input type="radio" name="q25" value="D"> 1870</label></div>
+                <div class="q-card"><div class="q-text">26. सेडोवा का युद्ध किनके बीच हुआ?</div><label class="option-label"><input type="radio" name="q26" value="A"> ऑस्ट्रिया-प्रशा</label><label class="option-label"><input type="radio" name="q26" value="B"> फ्रांस-प्रशा</label><label class="option-label"><input type="radio" name="q26" value="C"> इटली-रोम</label><label class="option-label"><input type="radio" name="q26" value="D"> डेनमार्क-प्रशा</label></div>
+                <div class="q-card"><div class="q-text">27. 1870 में फ्रांस और प्रशा के बीच युद्ध कहाँ हुआ?</div><label class="option-label"><input type="radio" name="q27" value="A"> सेडॉन</label><label class="option-label"><input type="radio" name="q27" value="B"> सेडोवा</label><label class="option-label"><input type="radio" name="q27" value="C"> साइडाइन</label><label class="option-label"><input type="radio" name="q27" value="D"> फ्रैंकफर्ट</label></div>
+                <div class="q-card"><div class="q-text">28. किस युद्ध के बाद जर्मनी का एकीकरण पूरा हुआ?</div><label class="option-label"><input type="radio" name="q28" value="A"> प्रशा-डेनमार्क</label><label class="option-label"><input type="radio" name="q28" value="B"> सेडॉन</label><label class="option-label"><input type="radio" name="q28" value="C"> सेडोवा</label><label class="option-label"><input type="radio" name="q28" value="D"> क्रीमिया</label></div>
+                <div class="q-card"><div class="q-text">29. फ्रैंकफर्ट की संधि कब हुई?</div><label class="option-label"><input type="radio" name="q29" value="A"> 1864</label><label class="option-label"><input type="radio" name="q29" value="B"> 1866</label><label class="option-label"><input type="radio" name="q29" value="C"> 1870</label><label class="option-label"><input type="radio" name="q29" value="D"> 1871</label></div>
+                <div class="q-card"><div class="q-text">30. जर्मनी का एकीकरण किस वर्ष पूर्ण हुआ?</div><label class="option-label"><input type="radio" name="q30" value="A"> 1866</label><label class="option-label"><input type="radio" name="q30" value="B"> 1864</label><label class="option-label"><input type="radio" name="q30" value="C"> 1870</label><label class="option-label"><input type="radio" name="q30" value="D"> 1871</label></div>
+                <div class="q-card"><div class="q-text">31. यूरोप का मरीज किसे कहा जाता था?</div><label class="option-label"><input type="radio" name="q31" value="A"> इंग्लैंड</label><label class="option-label"><input type="radio" name="q31" value="B"> इटली</label><label class="option-label"><input type="radio" name="q31" value="C"> तुर्की</label><label class="option-label"><input type="radio" name="q31" value="D"> फ्रांस</label></div>
+                <div class="q-card"><div class="q-text">32. यूरोपवासियों के लिए किस देश का साहित्य एवं ज्ञान प्रेरणास्रोत रहा?</div><label class="option-label"><input type="radio" name="q32" value="A"> तुर्की</label><label class="option-label"><input type="radio" name="q32" value="B"> इंग्लैंड</label><label class="option-label"><input type="radio" name="q32" value="C"> जर्मनी</label><label class="option-label"><input type="radio" name="q32" value="D"> यूनान</label></div>
+                <div class="q-card"><div class="q-text">33. यूनान के स्वतंत्रता संग्राम में किसकी पराजय हुई?</div><label class="option-label"><input type="radio" name="q33" value="A"> रूस</label><label class="option-label"><input type="radio" name="q33" value="B"> तुर्की</label><label class="option-label"><input type="radio" name="q33" value="C"> यूनान</label><label class="option-label"><input type="radio" name="q33" value="D"> फ्रांस</label></div>
+                <div class="q-card"><div class="q-text">34. एड्रियानोपुल की संधि किस देश के साथ हुई थी?</div><label class="option-label"><input type="radio" name="q34" value="A"> तुर्की</label><label class="option-label"><input type="radio" name="q34" value="B"> यूनान</label><label class="option-label"><input type="radio" name="q34" value="C"> हंगरी</label><label class="option-label"><input type="radio" name="q34" value="D"> पोलैंड</label></div>
+                <div class="q-card"><div class="q-text">35. यूनान को स्वतंत्र राष्ट्र के रूप में मान्यता कब मिली?</div><label class="option-label"><input type="radio" name="q35" value="A"> 1830</label><label class="option-label"><input type="radio" name="q35" value="B"> 1832</label><label class="option-label"><input type="radio" name="q35" value="C"> 1835</label><label class="option-label"><input type="radio" name="q35" value="D"> 1842</label></div>
+                <div class="q-card"><div class="q-text">36. क्रीमिया का युद्ध किस वर्ष प्रारंभ हुआ?</div><label class="option-label"><input type="radio" name="q36" value="A"> 1854</label><label class="option-label"><input type="radio" name="q36" value="B"> 1853</label><label class="option-label"><input type="radio" name="q36" value="C"> 1856</label><label class="option-label"><input type="radio" name="q36" value="D"> 1860</label></div>
+                <div class="q-card"><div class="q-text">37. 1830 की क्रांति के बाद फ्रांस में किस प्रकार का शासन स्थापित हुआ?</div><label class="option-label"><input type="radio" name="q37" value="A"> निरंकुश</label><label class="option-label"><input type="radio" name="q37" value="B"> संघीय</label><label class="option-label"><input type="radio" name="q37" value="C"> गणराज्य</label><label class="option-label"><input type="radio" name="q37" value="D"> संवैधानिक राजतंत्र</label></div>
+                <div class="q-card"><div class="q-text">38. "लकड़ी काटना अधिक पसंद करूँगा" कथन किसका है?</div><label class="option-label"><input type="radio" name="q38" value="A"> लुई 16वाँ</label><label class="option-label"><input type="radio" name="q38" value="B"> नेपोलियन</label><label class="option-label"><input type="radio" name="q38" value="C"> लुई फिलिप</label><label class="option-label"><input type="radio" name="q38" value="D"> चार्ल्स दशम</label></div>
+                <div class="q-card"><div class="q-text">39. पोलैंड के विद्रोह को किसने कुचल दिया?</div><label class="option-label"><input type="radio" name="q39" value="A"> रूस</label><label class="option-label"><input type="radio" name="q39" value="B"> ऑस्ट्रिया</label><label class="option-label"><input type="radio" name="q39" value="C"> ब्रिटेन</label><label class="option-label"><input type="radio" name="q39" value="D"> फ्रांस</label></div>
+                <div class="q-card"><div class="q-text">40. हंगरी की राजधानी कहाँ है?</div><label class="option-label"><input type="radio" name="q40" value="A"> बुडापेस्ट</label><label class="option-label"><input type="radio" name="q40" value="B"> पेरिस</label><label class="option-label"><input type="radio" name="q40" value="C"> वियना</label><label class="option-label"><input type="radio" name="q40" value="D"> रोम</label></div>
+                <div class="q-card"><div class="q-text">41. चार्टिस्ट आंदोलन कहाँ हुआ?</div><label class="option-label"><input type="radio" name="q41" value="A"> फ्रांस</label><label class="option-label"><input type="radio" name="q41" value="B"> हंगरी</label><label class="option-label"><input type="radio" name="q41" value="C"> ऑस्ट्रिया</label><label class="option-label"><input type="radio" name="q41" value="D"> इंग्लैंड</label></div>
+                <div class="q-card"><div class="q-text">42. ऐतिहासिक द्वंद्ववाद की व्याख्या किसने की?</div><label class="option-label"><input type="radio" name="q42" value="A"> हीगेल</label><label class="option-label"><input type="radio" name="q42" value="B"> अण्डर्ट</label><label class="option-label"><input type="radio" name="q42" value="C"> हम्बोल्ट</label><label class="option-label"><input type="radio" name="q42" value="D"> जैकब ग्रिम</label></div>
+                <div class="q-card"><div class="q-text">43. ऐक्ट ऑफ यूनियन किस वर्ष पारित हुआ?</div><label class="option-label"><input type="radio" name="q43" value="A"> 1688</label><label class="option-label"><input type="radio" name="q43" value="B"> 1707</label><label class="option-label"><input type="radio" name="q43" value="C"> 1788</label><label class="option-label"><input type="radio" name="q43" value="D"> 1807</label></div>
+                <div class="q-card"><div class="q-text">44. किस भारतीय शासक ने जैकोबिन क्लब की सदस्यता ग्रहण की थी?</div><label class="option-label"><input type="radio" name="q44" value="A"> हैदर अली</label><label class="option-label"><input type="radio" name="q44" value="B"> टीपू सुल्तान</label><label class="option-label"><input type="radio" name="q44" value="C"> सिराजुद्दौला</label><label class="option-label"><input type="radio" name="q44" value="D"> मीर कासिम</label></div>
+                <div class="q-card"><div class="q-text">45. 19वीं शताब्दी में राष्ट्रवाद के विकास का अंतिम परिणाम क्या हुआ?</div><label class="option-label"><input type="radio" name="q45" value="A"> साम्राज्यवाद</label><label class="option-label"><input type="radio" name="q45" value="B"> उपनिवेशवाद</label><label class="option-label"><input type="radio" name="q45" value="C"> निरंकुश राज्य</label><label class="option-label"><input type="radio" name="q45" value="D"> राष्ट्रीय राज्यों की स्थापना</label></div>
+                <div class="q-card"><div class="q-text">46. "जब फ्रांस छींकता है..." कथन किसका है?</div><label class="option-label"><input type="radio" name="q46" value="A"> बिस्मार्क</label><label class="option-label"><input type="radio" name="q46" value="B"> मेटरनिक</label><label class="option-label"><input type="radio" name="q46" value="C"> मेजिनी</label><label class="option-label"><input type="radio" name="q46" value="D"> नेपोलियन</label></div>
+                <div class="q-card"><div class="q-text">47. वियना सम्मेलन में पवित्र संघ की योजना किसने प्रस्तुत की?</div><label class="option-label"><input type="radio" name="q47" value="A"> ऑस्ट्रिया</label><label class="option-label"><input type="radio" name="q47" value="B"> ब्रिटेन</label><label class="option-label"><input type="radio" name="q47" value="C"> रूस</label><label class="option-label"><input type="radio" name="q47" value="D"> प्रशा</label></div>
+                <div class="q-card"><div class="q-text">48. मेटरनिक का पतन किस वर्ष हुआ?</div><label class="option-label"><input type="radio" name="q48" value="A"> मार्च 1848</label><label class="option-label"><input type="radio" name="q48" value="B"> अप्रैल 1848</label><label class="option-label"><input type="radio" name="q48" value="C"> मई 1848</label><label class="option-label"><input type="radio" name="q48" value="D"> जून 1848</label></div>
+                <div class="q-card"><div class="q-text">49. सामाजिक व्यवस्था का सबसे खतरनाक दुश्मन मेटरनिक ने किसे माना?</div><label class="option-label"><input type="radio" name="q49" value="A"> रूसो</label><label class="option-label"><input type="radio" name="q49" value="B"> मेजिनी</label><label class="option-label"><input type="radio" name="q49" value="C"> कार्ल मार्क्स</label><label class="option-label"><input type="radio" name="q49" value="D"> कावूर</label></div>
+                <div class="q-card"><div class="q-text">50. इटली एवं जर्मनी वर्तमान में किस महादेश में हैं?</div><label class="option-label"><input type="radio" name="q50" value="A"> उत्तरी अमेरिका</label><label class="option-label"><input type="radio" name="q50" value="B"> दक्षिणी अमेरिका</label><label class="option-label"><input type="radio" name="q50" value="C"> यूरोप</label><label class="option-label"><input type="radio" name="q50" value="D"> पश्चिमी एशिया</label></div>
 
                 <button type="button" class="btn-premium" onclick="processSubmission(false)">Submit Answers</button>
             </form>
@@ -249,14 +273,14 @@
             <h2 style="margin: 15px 0 5px 0; color:white;">Test Submitted!</h2>
             <p style="color:#94a3b8; font-size:14px; margin-bottom:10px;">Your score has been successfully recorded in the main server.</p>
             
-            <div class="score-badge" id="modalScore">0/3</div>
+            <div class="score-badge" id="modalScore">0/50</div>
             <p style="font-size:16px; font-weight:600; color:#38bdf8;" id="modalPercentage">0% Marks Obtained</p>
             
             <button class="btn-premium" style="margin-top:15px;" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
         </div>
     </div>
 
-        <script type="module">
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -273,8 +297,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 2. SABHI VARIABLES KO UPAR DEFINE KARNA ZAROORI HAI
-        const correctAnswers = { q1: "C", q2: "A", q3: "D" };
+        // 2. Updated Correct Answers array for all 50 Questions
+        const correctAnswers = { q1: "D", q2: "C", q3: "D", q4: "B", q5: "A", q6: "A", q7: "D", q8: "C", q9: "C", q10: "B", q11: "C", q12: "B", q13: "A", q14: "D", q15: "C", q16: "C", q17: "B", q18: "B", q19: "A", q20: "B", q21: "C", q22: "B", q23: "C", q24: "B", q25: "B", q26: "A", q27: "A", q28: "B", q29: "D", q30: "D", q31: "C", q32: "D", q33: "B", q34: "A", q35: "B", q36: "B", q37: "D", q38: "D", q39: "A", q40: "A", q41: "D", q42: "A", q43: "B", q44: "B", q45: "D", q46: "B", q47: "C", q48: "A", q49: "B", q50: "C" };
         let timerInterval;
         let proctorInterval; 
         let totalTimeLeft = 1200; // 10 Minutes in Seconds
@@ -391,7 +415,7 @@
                     await setDoc(testDocRef, { 
                         submitted: false, 
                         cheatStatus: "Testing connection live",
-                        score: "0/3",
+                        score: "0/50",
                         percentage: "0%",
                         submittedAt: "Direct Sync Test Successful"
                     }, { merge: true });
@@ -558,8 +582,8 @@
                 }
             }
 
-            const pct = ((score / 3) * 100).toFixed(0) + "%";
-            const finalScoreStr = `${score}/3`;
+            const pct = ((score / 50) * 100).toFixed(0) + "%";
+            const finalScoreStr = `${score}/50`;
 
             document.getElementById("modalScore").innerText = finalScoreStr;
             document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
