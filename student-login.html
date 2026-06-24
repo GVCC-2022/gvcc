@@ -275,7 +275,8 @@ input:focus {
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    // 🚀 Added "increment" here
+    import { getFirestore, doc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -288,6 +289,20 @@ input:focus {
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // 🎯 BACKGROUND TRACKER: Jab App Install Hogi tab yeh signal bheja jayega
+    window.addEventListener('appinstalled', async () => {
+        console.log('✅ App was installed successfully by user!');
+        try {
+            const statsRef = doc(db, "admin_stats", "app_downloads");
+            await setDoc(statsRef, {
+                total_downloads: increment(1), // Counter ko 1 se badhao
+                last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+            }, { merge: true });
+        } catch (e) {
+            console.error("Error updating download count: ", e);
+        }
+    });
 
     const rollInput = document.getElementById("roll");
     const nameDiv = document.getElementById("dynamicName");
@@ -416,3 +431,4 @@ if ("serviceWorker" in navigator) {
     
 </body>
 </html>
+
