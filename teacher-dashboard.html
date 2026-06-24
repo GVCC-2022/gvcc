@@ -112,7 +112,7 @@
             padding: 30px;
             border-radius: 10px;
             width: 90%;
-            max-width: 450px; /* Thoda bada kiya form elements ke liye */
+            max-width: 450px; 
             position: relative;
         }
         .close-btn {
@@ -137,6 +137,7 @@
             display: block;
             margin-bottom: 5px;
             color: #cbd5e1;
+            font-weight: bold;
         }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
@@ -146,7 +147,12 @@
             background: #0f172a;
             color: white;
             box-sizing: border-box;
-            color-scheme: dark; /* Calendar aur time picker ko dark mode me rakhne ke liye */
+            color-scheme: dark; 
+        }
+        .form-group textarea {
+            font-family: monospace; /* Code jaisa feel dene ke liye */
+            font-size: 13px;
+            color: #34d399; /* Green color code ke liye */
         }
         .submit-btn {
             width: 100%;
@@ -178,21 +184,18 @@
         <div class="subject-badge" id="subjectBadge">Subject</div>
 
         <div class="cards-grid">
-            <!-- Notice Card -->
             <div class="card" id="openNoticeModal">
                 <i class="fa-solid fa-bullhorn"></i>
                 <h3>Send Notice</h3>
                 <p>Broadcast messages to students instantly</p>
             </div>
 
-            <!-- Test Link Card -->
             <div class="card" id="openTestModal">
-                <i class="fa-solid fa-file-signature"></i>
-                <h3>Publish Test</h3>
-                <p>Send a new test link to your class</p>
+                <i class="fa-solid fa-microchip"></i>
+                <h3>Publish AI Test</h3>
+                <p>Paste AI generated code to create test</p>
             </div>
 
-            <!-- Proctoring View Card -->
             <div class="card" onclick="window.location.href='view.html'">
                 <i class="fa-solid fa-video"></i>
                 <h3>View Proctoring</h3>
@@ -223,11 +226,11 @@
         </div>
     </div>
 
-    <!-- Test Modal (UPDATED WITH DATE AND TIME) -->
+    <!-- Test Modal (UPDATED WITH AI CODE SYSTEM) -->
     <div class="modal" id="testModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
-            <h2>Publish Test Link</h2>
+            <h2>Publish AI Test</h2>
             <div class="form-group">
                 <label>Select Class</label>
                 <select id="testClass">
@@ -241,7 +244,6 @@
                 <input type="text" id="testName" placeholder="e.g., History Chapter 1 MCQ">
             </div>
             
-            <!-- New Row for Date and Time -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Start Date</label>
@@ -253,11 +255,14 @@
                 </div>
             </div>
 
+            <!-- Naya AI Code Box -->
             <div class="form-group">
-                <label>Test File Link</label>
-                <input type="text" id="testLink" placeholder="e.g., https://forms.gle/... or test.html">
+                <label>Paste AI Test Code (JSON)</label>
+                <textarea id="testCode" rows="5" placeholder='[
+  {"question": "Bharat ki rajdhani?", "options": ["Delhi", "Mumbai", "Patna"], "answer": "Delhi"}
+]'></textarea>
             </div>
-            <button class="submit-btn" id="sendTestBtn">Publish Test</button>
+            <button class="submit-btn" id="sendTestBtn"><i class="fa-solid fa-rocket"></i> Publish Smart Test</button>
         </div>
     </div>
 
@@ -308,7 +313,7 @@
             document.getElementById("testModal").style.display = "flex";
         });
 
-        // Send Notice to Firebase
+        // Send Notice
         document.getElementById("sendNoticeBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("noticeClass").value;
             const message = document.getElementById("noticeMessage").value.trim();
@@ -335,43 +340,51 @@
             btn.innerText = "Send Notice";
         });
 
-        // Publish Test to Firebase (UPDATED)
+        // Publish Smart AI Test
         document.getElementById("sendTestBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("testClass").value;
             const testName = document.getElementById("testName").value.trim();
-            const testDate = document.getElementById("testDate").value; // Grab Date
-            const testTime = document.getElementById("testTime").value; // Grab Time
-            const testLink = document.getElementById("testLink").value.trim();
+            const testDate = document.getElementById("testDate").value; 
+            const testTime = document.getElementById("testTime").value; 
+            const testCode = document.getElementById("testCode").value.trim();
             const btn = document.getElementById("sendTestBtn");
 
-            if (!testName || !testDate || !testTime || !testLink) { 
-                alert("Please fill all details (Test Name, Date, Time, Link)!"); 
+            if (!testName || !testDate || !testTime || !testCode) { 
+                alert("Please fill all details and paste the AI Code!"); 
                 return; 
             }
 
-            btn.innerText = "Publishing...";
+            // 🚀 SMART CHECK: Verify if the pasted text is valid JSON
+            try {
+                JSON.parse(testCode);
+            } catch (error) {
+                alert("⚠️ Galat Code! Please check karein ki aapne AI se sahi code copy kiya hai. Isme sirf brackets aur data hona chahiye.");
+                return;
+            }
+
+            btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publishing...";
             try {
                 await addDoc(collection(db, "active_tests"), {
                     teacherName: teacherName,
                     subject: teacherSubject,
                     targetClass: targetClass,
                     testName: testName,
-                    testDate: testDate, // Save Date to Database
-                    testTime: testTime, // Save Time to Database
-                    testLink: testLink,
+                    testDate: testDate, 
+                    testTime: testTime, 
+                    testCode: testCode, // Yahan ab "Link" ki jagah seedha Code database me jayega!
                     timestamp: serverTimestamp()
                 });
-                alert("Test Scheduled & Published Successfully!");
+                alert("🚀 Smart Test Published Successfully!");
                 document.getElementById("testName").value = "";
                 document.getElementById("testDate").value = "";
                 document.getElementById("testTime").value = "";
-                document.getElementById("testLink").value = "";
+                document.getElementById("testCode").value = "";
                 closeModals();
             } catch (error) {
                 console.error("Error publishing test:", error);
                 alert("Failed to publish test.");
             }
-            btn.innerText = "Publish Test";
+            btn.innerHTML = "<i class='fa-solid fa-rocket'></i> Publish Smart Test";
         });
     </script>
 </body>
