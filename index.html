@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Gyan Varsha Coaching Center</title>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* 🎯 Entry Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .landing-container {
+            position: relative;
+            width: 85%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* 🎯 Logo Position */
+        .landing-logo {
+            width: 260px;
+            height: auto;
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
+            z-index: 10;
+        }
+
+        /* 📦 Main Glass Card */
+        .landing-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 140px 30px 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            margin-top: 100px;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        /* 🚀 Buttons Styling */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn i { font-size: 20px; }
+
+        .btn-install {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+            animation: pulseGlow 2s infinite alternate;
+        }
+        .btn-install:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5); }
+        .btn-install i { animation: bounce 2s infinite; }
+
+        .btn-student {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        .btn-student:hover { background: #f1f5f9; transform: translateY(-2px); }
+
+        .btn-teacher {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-teacher:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 25px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        @keyframes bounce { 
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+            40% {transform: translateY(-4px);} 
+            60% {transform: translateY(-2px);} 
+        }
+
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
+            to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="landing-container">
+    <img src="20260620_144347.png" alt="GVCC Logo" class="landing-logo">
+
+    <div class="landing-card">
+        <div class="title">GVCC PORTAL</div>
+        <div class="subtitle">Learn • Practice • Succeed</div>
+        
+        <!-- 📲 Install App Button -->
+        <button class="btn btn-install" onclick="installApp()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
+        </button>
+
+        <div class="divider">SELECT YOUR LOGIN</div>
+        
+        <!-- 🎓 Student Portal Button -->
+        <button class="btn btn-student" onclick="window.location.href='student-login.html'">
+            <i class="fa-solid fa-user-graduate" style="color: #2563eb;"></i> Student Portal
+        </button>
+        
+        <!-- 👨‍🏫 Teacher Portal Button -->
+        <button class="btn btn-teacher" onclick="window.location.href='teacher-login.html'">
+            <i class="fa-solid fa-chalkboard-user" style="color: #38bdf8;"></i> Teacher Portal
+        </button>
+    </div>
+</div>
+
+<script type="module">
+    // 🚀 Background App Download Tracker
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Jab koi yahan se app install karega toh bhi count badhega
+    window.addEventListener('appinstalled', async () => {
+        try {
+            const statsRef = doc(db, "admin_stats", "app_downloads");
+            await setDoc(statsRef, {
+                total_downloads: increment(1),
+                last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+            }, { merge: true });
+        } catch (e) {
+            console.error("Error updating count:", e);
+        }
+    });
+</script>
+
+<script>
+    // 📲 Smart Install Logic
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
+    window.installApp = async function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+        } else {
+            alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. App aapke phone mein aa jayegi!");
+        }
+    };
+
+    // PWA Service Worker
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+            navigator.serviceWorker.register("/gvcc/service-worker.js", { scope: "/gvcc/" })
+            .catch(function(error) { console.log("PWA Error:", error); });
+        });
+    }
+</script>
+
+</body>
+</html>
+
