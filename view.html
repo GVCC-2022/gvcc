@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GVCC - Proctoring Admin Control</title>
+    <title>GVCC - Proctoring & Results Control</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -20,7 +20,6 @@
         }
         .admin-header h1 { color: #38bdf8; margin: 0 0 10px 0; font-size: 24px; }
         
-        /* 🚀 Naya Download Stats Badge Style */
         .stats-badge {
             display: inline-block;
             background: rgba(16, 185, 129, 0.15);
@@ -32,18 +31,16 @@
             font-weight: 600;
             margin-top: 5px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1);
         }
 
-        /* Form Box Styles for Dropdown and Search Input */
         .control-box {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto 30px auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             background: rgba(255,255,255,0.02);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.05);
         }
@@ -57,28 +54,71 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        .select-style:focus, .search-box input:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
-        .search-box {
-            display: flex;
-            gap: 10px;
-        }
+        .select-style:focus, .search-box input:focus { outline: none; border-color: #38bdf8; }
+        
+        .search-box { display: flex; gap: 10px; }
+        
         .btn-search {
-            background: #007bff;
-            color: white;
+            background: #38bdf8;
+            color: #0f172a;
             border: none;
-            padding: 0 25px;
+            padding: 0 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: bold;
             font-size: 15px;
-            transition: background 0.2s;
+            transition: 0.3s;
+            white-space: nowrap;
         }
-        .btn-search:hover {
-            background: #0056b3;
+        .btn-search:hover { background: #0284c7; color: white; }
+        
+        .btn-scoreboard {
+            background: #10b981;
+            color: #0f172a;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
         }
+        .btn-scoreboard:hover { background: #059669; color: white; }
+
+        /* 🏆 Scoreboard Table Styling */
+        .scoreboard-container {
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            display: none; /* Hidden by default */
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #0f172a; color: #38bdf8; padding: 15px; font-size: 15px; }
+        td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 14px; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        .cheat-clean { color: #10b981; font-weight: bold; background: rgba(16,185,129,0.1); padding: 4px 8px; border-radius: 5px; }
+        .cheat-warn { color: #ef4444; font-weight: bold; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 5px; }
+
+        /* 👤 Student Detail Card */
+        .student-info-card {
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #38bdf8;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .student-info-card h2 { margin: 0 0 5px 0; color: #f8fafc; font-size: 20px; }
+        .student-info-card p { margin: 0; color: #94a3b8; font-size: 14px; }
+        .score-big { font-size: 32px; font-weight: bold; color: #10b981; }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -92,58 +132,78 @@
             border-radius: 12px;
             padding: 12px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        .photo-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            background: #1e293b;
-            margin-bottom: 10px;
-        }
-        .photo-time {
-            font-size: 13px;
-            color: #94a3b8;
-        }
-        .status-msg { text-align: center; color: #94a3b8; font-size: 16px; margin-top: 20px; }
+        .photo-card img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px; }
+        .photo-time { font-size: 13px; color: #94a3b8; }
+        .status-msg { text-align: center; color: #94a3b8; font-size: 16px; margin-top: 20px; margin-bottom: 20px;}
     </style>
 </head>
 <body>
 
     <div class="admin-header">
-        <h1><i class="fa-solid fa-user-shield"></i> GVCC Proctoring Monitoring Panel</h1>
-        
-        <!-- 🚀 Live Download Count Show Hoga Yahan -->
+        <h1><i class="fa-solid fa-user-shield"></i> GVCC Results & Proctoring Control</h1>
         <div class="stats-badge" id="appStatsDisplay">
             <i class="fa-solid fa-download"></i> Total App Downloads: <span id="downloadCount">Loading...</span>
         </div>
-
-        <!-- Dynamic subtitle that changes based on select dropdown -->
-        <p style="color: #94a3b8; font-size: 14px;" id="liveTestSubtitle">Active System Evidence Viewer</p>
+        <p style="color: #94a3b8; font-size: 14px;" id="liveTestSubtitle">Select a test to view performance</p>
     </div>
 
     <div class="control-box">
-        <!-- 🎯 Test Selection Dropdown Menu -->
         <div>
             <select id="testSelectMenu" class="select-style" onchange="updateSubtitleText()">
                 <option value="maths_day1">🧮 Day 1 - Arithmetic Foundation (Maths)</option>
+                <option value="history8_test">📘 Class 8th - History Test</option>
                 <option value="history9_test">📚 Class 9th - History Test</option>
                 <option value="history10_test">📖 Class 10th - History Test</option>
             </select>
         </div>
         
+        <button class="btn-scoreboard" id="loadScoreboardBtn">
+            <i class="fa-solid fa-ranking-star"></i> Load Live Scoreboard
+        </button>
+
+        <div style="text-align: center; color: #64748b; font-size: 12px;">OR SEARCH INDIVIDUAL EVIDENCE</div>
+
         <div class="search-box">
-            <input type="text" id="studentRollInput" placeholder="Enter Student Roll (e.g. 902)">
-            <button class="btn-search" id="searchBtn">View Photos</button>
+            <input type="number" id="studentRollInput" placeholder="Enter Roll Number">
+            <button class="btn-search" id="searchBtn"><i class="fa-solid fa-camera"></i> Photos</button>
         </div>
     </div>
 
-    <div id="statusMessage" class="status-msg">Select a test, enter a roll number, and click View Photos.</div>
+    <div id="statusMessage" class="status-msg">Select an option above to load data.</div>
+
+    <div class="scoreboard-container" id="scoreboardContainer">
+        <table id="scoreboardTable">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Score</th>
+                    <th>Cheating Status</th>
+                    <th>Submission Time</th>
+                </tr>
+            </thead>
+            <tbody id="scoreboardBody">
+                </tbody>
+        </table>
+    </div>
+
+    <div class="student-info-card" id="studentInfoCard">
+        <div>
+            <h2 id="cardName">Student Name</h2>
+            <p>Roll: <span id="cardRoll" style="color:white; font-weight:bold;">--</span> | Class: <span id="cardClass">--</span></p>
+            <p style="margin-top: 5px;">Status: <span id="cardCheatStatus">--</span></p>
+        </div>
+        <div style="text-align: right;">
+            <div class="score-big" id="cardScore">0/0</div>
+            <p id="cardPercent">0%</p>
+        </div>
+    </div>
+
     <div class="gallery-grid" id="photoGallery"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        // 🚀 Maine yahan 'doc' aur 'getDoc' add kar diya hai Firebase imports mein
         import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -158,60 +218,121 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 🎯 NAYA CODE: Page load hote hi Downloads Count Fetch Karega
+        // Fetch App Downloads
         async function fetchAppDownloads() {
             try {
-                const statsRef = doc(db, "admin_stats", "app_downloads");
-                const statsSnap = await getDoc(statsRef);
-                
+                const statsSnap = await getDoc(doc(db, "admin_stats", "app_downloads"));
                 if (statsSnap.exists()) {
-                    let totalCount = statsSnap.data().total_downloads || 0;
-                    document.getElementById("downloadCount").innerText = totalCount;
+                    document.getElementById("downloadCount").innerText = statsSnap.data().total_downloads || 0;
                 } else {
                     document.getElementById("downloadCount").innerText = "0";
                 }
             } catch (error) {
-                console.error("Error fetching stats:", error);
                 document.getElementById("downloadCount").innerText = "Error";
             }
         }
-        
-        // Function call kar diya taaki page khulte hi count aa jaye
         fetchAppDownloads();
 
-        // Subtitle dynamic text renderer engine
         window.updateSubtitleText = function() {
             const selectMenu = document.getElementById("testSelectMenu");
-            const subtitle = document.getElementById("liveTestSubtitle");
-            const selectedText = selectMenu.options[selectMenu.selectedIndex].text;
-            subtitle.innerText = `${selectedText} Live Evidence Viewer`;
+            document.getElementById("liveTestSubtitle").innerText = `${selectMenu.options[selectMenu.selectedIndex].text} Data Viewer`;
+            
+            // Hide elements on change
+            document.getElementById("scoreboardContainer").style.display = "none";
+            document.getElementById("studentInfoCard").style.display = "none";
+            document.getElementById("photoGallery").innerHTML = "";
+            document.getElementById("statusMessage").innerText = "Select an option above to load data.";
         };
-        
-        // Initial setup run
         updateSubtitleText();
 
-        // Snap Retrieval Engine Click Handler Hook
+        // 🏆 LOAD LIVE SCOREBOARD
+        document.getElementById("loadScoreboardBtn").addEventListener("click", async () => {
+            const testFolder = document.getElementById("testSelectMenu").value;
+            const tbody = document.getElementById("scoreboardBody");
+            const status = document.getElementById("statusMessage");
+            
+            // UI adjustments
+            document.getElementById("photoGallery").innerHTML = "";
+            document.getElementById("studentInfoCard").style.display = "none";
+            document.getElementById("scoreboardContainer").style.display = "block";
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Loading records...</td></tr>`;
+            status.innerText = "";
+
+            try {
+                const studentsRef = collection(db, "tests", testFolder, "students");
+                const querySnapshot = await getDocs(studentsRef);
+
+                if (querySnapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">No students have submitted this test yet.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = ""; // Clear loader
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if(data.submitted) {
+                        const cheatClass = String(data.cheatStatus).includes("Clean") ? "cheat-clean" : "cheat-warn";
+                        
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><strong>${doc.id}</strong></td>
+                                <td>${data.name || "Unknown"}</td>
+                                <td style="color:#38bdf8; font-weight:bold;">${data.score || "0/0"}</td>
+                                <td><span class="${cheatClass}">${data.cheatStatus || "Unknown"}</span></td>
+                                <td style="font-size:12px;">${data.submittedAt || "N/A"}</td>
+                            </tr>
+                        `;
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">Error fetching results.</td></tr>`;
+            }
+        });
+
+        // 📸 LOAD INDIVIDUAL EVIDENCE & PHOTOS
         document.getElementById("searchBtn").addEventListener("click", async () => {
-            const selectedTestFolder = document.getElementById("testSelectMenu").value;
+            const testFolder = document.getElementById("testSelectMenu").value;
             const rollNo = document.getElementById("studentRollInput").value.trim();
             const gallery = document.getElementById("photoGallery");
             const status = document.getElementById("statusMessage");
+            const infoCard = document.getElementById("studentInfoCard");
 
-            if(!rollNo) {
-                alert("Please enter a valid student roll number!");
-                return;
-            }
+            if(!rollNo) { alert("Please enter a valid student roll number!"); return; }
 
-            gallery.innerHTML = "";
-            status.innerText = "Loading proctoring snapshots from main server...";
+            // UI Adjustments
+            document.getElementById("scoreboardContainer").style.display = "none";
+            gallery.innerHTML = ""; 
+            infoCard.style.display = "none";
+            status.innerText = "Loading performance and evidence...";
 
             try {
-                // Dynamic Collection Path: tests -> [selectedTestFolder] -> students -> [rollNo] -> snapshots
-                const snapCollectionRef = collection(db, "tests", selectedTestFolder, "students", rollNo, "snapshots");
+                // 1. Fetch Student Main Result Document
+                const studentDocRef = doc(db, "tests", testFolder, "students", rollNo);
+                const studentSnap = await getDoc(studentDocRef);
+
+                if (studentSnap.exists()) {
+                    const sData = studentSnap.data();
+                    document.getElementById("cardName").innerText = sData.name || "Student Name";
+                    document.getElementById("cardRoll").innerText = rollNo;
+                    document.getElementById("cardClass").innerText = sData.class || "N/A";
+                    document.getElementById("cardScore").innerText = sData.score || "0/0";
+                    document.getElementById("cardPercent").innerText = sData.percentage || "0%";
+                    
+                    const cheatStatusBox = document.getElementById("cardCheatStatus");
+                    cheatStatusBox.innerText = sData.cheatStatus || "Unknown";
+                    cheatStatusBox.style.color = String(sData.cheatStatus).includes("Clean") ? "#10b981" : "#ef4444";
+                    
+                    infoCard.style.display = "flex";
+                }
+
+                // 2. Fetch Photos
+                const snapCollectionRef = collection(db, "tests", testFolder, "students", rollNo, "snapshots");
                 const querySnapshot = await getDocs(snapCollectionRef);
 
                 if (querySnapshot.empty) {
-                    status.innerText = `No snapshots found for Roll Number: ${rollNo} in this specific test.`;
+                    status.innerText = `Result loaded, but no photos found for Roll Number: ${rollNo}.`;
                     return;
                 }
 
@@ -219,30 +340,21 @@
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const base64ImageString = data.capturedImage;
-                    const captureTime = data.capturedAt || "Unknown Time";
-
                     const card = document.createElement("div");
                     card.className = "photo-card";
-
-                    const img = document.createElement("img");
-                    img.src = base64ImageString; 
-                    img.alt = "Proctoring Log Snap";
-
-                    const timeInfo = document.createElement("div");
-                    timeInfo.className = "photo-time";
-                    timeInfo.innerHTML = `<i class="fa-solid fa-clock"></i> ${captureTime}`;
-
-                    card.appendChild(img);
-                    card.appendChild(timeInfo);
+                    card.innerHTML = `
+                        <img src="${data.capturedImage}" alt="Proctoring Log Snap">
+                        <div class="photo-time"><i class="fa-solid fa-clock"></i> ${data.capturedAt || "Unknown Time"}</div>
+                    `;
                     gallery.appendChild(card);
                 });
 
             } catch (error) {
-                console.error("Error fetching evidence logs: ", error);
-                status.innerText = "Error establishing secure connection with the database backend.";
+                console.error(error);
+                status.innerText = "Error fetching data from the database.";
             }
         });
     </script>
 </body>
 </html>
+w
