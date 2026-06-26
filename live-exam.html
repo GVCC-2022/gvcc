@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC Live Exam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Text copy hone se rokne ke liye */
+        }
+        
+        /* Header */
+        .exam-header {
+            background: #1e293b;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #38bdf8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .student-info { font-size: 14px; color: #94a3b8; }
+        .student-info strong { color: #f8fafc; font-size: 16px; }
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Exam Container */
+        .exam-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .test-title { text-align: center; color: #38bdf8; margin-bottom: 30px; }
+
+        /* Questions Box */
+        .question-card {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .option-label {
+            display: block;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.2s;
+        }
+        .option-label:hover { background: rgba(56, 189, 248, 0.1); border-color: #38bdf8; }
+        
+        /* Custom Radio Button styling */
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); accent-color: #38bdf8; }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover { background: #059669; }
+
+        /* Fullscreen Overlay (Loading/Submitting) */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 1000;
+        }
+        .loader {
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid #38bdf8;
+            border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Hidden Camera Elements */
+        #proctorCamera, #snapshotCanvas { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <h2 id="loadingText">Preparing your Smart Exam...</h2>
+    </div>
+
+    <video id="proctorCamera" autoplay playsinline></video>
+    <canvas id="snapshotCanvas"></canvas>
+
+    <div class="exam-header">
+        <div class="student-info">
+            <div id="displayStudentName"><strong>Loading...</strong></div>
+            <div>Roll: <span id="displayRoll">--</span> | Class: <span id="displayClass">--</span></div>
+        </div>
+        <div class="warning-box" id="warningBox">
+            <i class="fa-solid fa-eye"></i> Proctoring Active
+        </div>
+    </div>
+
+    <div class="exam-container">
+        <h2 class="test-title" id="testTitle">Loading Test...</h2>
+        
+        <form id="examForm">
+            <div id="questionsContainer">
+                </div>
+            
+            <button type="button" class="submit-btn" id="submitExamBtn" style="display:none;">
+                <i class="fa-solid fa-check-circle"></i> Submit Exam
+            </button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // Firebase Setup
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+            authDomain: "gvcc-database.firebaseapp.com",
+            projectId: "gvcc-database",
+            storageBucket: "gvcc-database.firebasestorage.app",
+            messagingSenderId: "1063216875940",
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 🚀 1. AUTO-FETCH STUDENT DATA (Saves time & effort)
+        // Yahan dhyan dein: Aap jis naam se login save karte hain, wahi use kijiye.
+        // Example: sessionStorage.getItem("studentRoll")
+        const studentRoll = sessionStorage.getItem("loggedInRollNo") || localStorage.getItem("loggedInRollNo");
+        const studentName = sessionStorage.getItem("loggedInName") || localStorage.getItem("loggedInName");
+        const studentClass = sessionStorage.getItem("loggedInClass") || localStorage.getItem("loggedInClass");
+
+        // Agar baccha login nahi hai, toh wapas bhej do
+        if (!studentRoll) {
+            alert("Error: You are not logged in! Please login first.");
+            window.location.href = "index.html"; // Ya jo bhi aapka login page ho
+        } else {
+            document.getElementById("displayStudentName").innerHTML = `<strong>${studentName}</strong>`;
+            document.getElementById("displayRoll").innerText = studentRoll;
+            document.getElementById("displayClass").innerText = studentClass;
+        }
+
+        // 🚀 2. GET TEST ID FROM URL (Pata karna ki kaunsa test kholna hai)
+        // URL aisa hoga: live-exam.html?testId=ABCDEFG
+        const urlParams = new URLSearchParams(window.location.search);
+        const testId = urlParams.get("testId");
+
+        let testQuestions = []; // AI Code yahan save hoga
+        let cheatWarnings = 0;
+
+        // Start Camera & Load Test
+        async function initExam() {
+            if (!testId) {
+                document.getElementById("loadingText").innerText = "Error: Test ID missing!";
+                return;
+            }
+
+            try {
+                // Fetch AI Code from Database
+                const testDoc = await getDoc(doc(db, "active_tests", testId));
+                if (testDoc.exists()) {
+                    const data = testDoc.data();
+                    document.getElementById("testTitle").innerText = `${data.targetClass} - ${data.testName}`;
+                    
+                    // JSON Code ko asli questions mein badalna
+                    testQuestions = JSON.parse(data.testCode);
+                    renderQuestions();
+                    
+                    // Proctoring Shuru karna
+                    startCamera();
+                } else {
+                    document.getElementById("loadingText").innerText = "Test Not Found!";
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById("loadingText").innerText = "Failed to load exam data.";
+            }
+        }
+
+        // 🚀 3. RENDER QUESTIONS (AI code se Paper design karna)
+        function renderQuestions() {
+            const container = document.getElementById("questionsContainer");
+            container.innerHTML = "";
+
+            testQuestions.forEach((q, index) => {
+                let optionsHTML = "";
+                // Charo options banana
+                q.options.forEach((opt, optIndex) => {
+                    optionsHTML += `
+                        <label class="option-label">
+                            <input type="radio" name="q${index}" value="${opt}">
+                            ${opt}
+                        </label>
+                    `;
+                });
+
+                // Question Card banana
+                container.innerHTML += `
+                    <div class="question-card">
+                        <div class="question-text">Q${index + 1}. ${q.question}</div>
+                        ${optionsHTML}
+                    </div>
+                `;
+            });
+
+            // Loading screen hatao aur submit button dikhao
+            document.getElementById("loadingOverlay").style.display = "none";
+            document.getElementById("submitExamBtn").style.display = "block";
+        }
+
+        // 🚀 4. STEALTH PROCTORING SYSTEM
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                const video = document.getElementById("proctorCamera");
+                video.srcObject = stream;
+                
+                // Har 45 seconds me chupke se photo khichna
+                setInterval(captureAndUploadSnapshot, 45000);
+            } catch (err) {
+                alert("⚠️ Please allow CAMERA permissions to start the exam!");
+            }
+        }
+
+        // Tab Switching Detector
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                cheatWarnings++;
+                alert(`⚠️ Warning! You left the test screen. Warning Count: ${cheatWarnings}`);
+                document.getElementById("warningBox").innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Warnings: ${cheatWarnings}`;
+                captureAndUploadSnapshot("Tab Switched"); // Tab switch karte hi photo
+            }
+        });
+
+        async function captureAndUploadSnapshot(reason = "Auto Check") {
+            const video = document.getElementById("proctorCamera");
+            const canvas = document.getElementById("snapshotCanvas");
+            if (video.readyState !== 4) return;
+
+            canvas.width = 320; 
+            canvas.height = 240;
+            canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+            const base64Image = canvas.toDataURL("image/jpeg", 0.6); // Compress image
+
+            // Upload directly to student's specific test snapshot folder
+            try {
+                await addDoc(collection(db, "tests", testId, "students", studentRoll, "snapshots"), {
+                    capturedImage: base64Image,
+                    reason: reason,
+                    capturedAt: new Date().toLocaleTimeString()
+                });
+            } catch (e) { console.error("Snap error", e); }
+        }
+
+        // 🚀 5. SUBMIT EXAM & AUTO CHECKING
+        document.getElementById("submitExamBtn").addEventListener("click", async () => {
+            // Confirm box
+            if(!confirm("Are you sure you want to submit the exam?")) return;
+
+            // Loading screen wapas dikhao
+            document.getElementById("loadingOverlay").style.display = "flex";
+            document.getElementById("loadingText").innerText = "Checking Answers & Submitting...";
+
+            let score = 0;
+            
+            // Checking Loop
+            testQuestions.forEach((q, index) => {
+                // Bacche ne kya select kiya
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    score++; // Sahi jawab par +1
+                }
+            });
+
+            // Status tay karna
+            const finalCheatStatus = cheatWarnings > 0 ? `${cheatWarnings} Warnings (Suspected)` : "Clean / No Cheating";
+            const percentage = Math.round((score / testQuestions.length) * 100) + "%";
+
+            // Database me bhej do (Aapke view.html ke liye)
+            try {
+                await setDoc(doc(db, "tests", testId, "students", studentRoll), {
+                    name: studentName,
+                    class: studentClass,
+                    score: `${score}/${testQuestions.length}`,
+                    percentage: percentage,
+                    cheatStatus: finalCheatStatus,
+                    submitted: true,
+                    submittedAt: new Date().toLocaleString()
+                });
+
+                // Camera band karo
+                const video = document.getElementById("proctorCamera");
+                if (video.srcObject) { video.srcObject.getTracks().forEach(track => track.stop()); }
+
+                document.getElementById("loadingOverlay").innerHTML = `
+                    <i class="fa-solid fa-circle-check" style="font-size: 60px; color: #10b981; margin-bottom: 20px;"></i>
+                    <h2>Exam Submitted Successfully!</h2>
+                    <p style="color: #94a3b8;">Score: ${score}/${testQuestions.length}</p>
+                    <button onclick="window.location.href='index.html'" class="submit-btn" style="width: 200px; margin-top:20px;">Go to Dashboard</button>
+                `;
+            } catch (error) {
+                console.error(error);
+                alert("Failed to submit exam. Please check your internet connection.");
+                document.getElementById("loadingOverlay").style.display = "none";
+            }
+        });
+
+        // Test start karo
+        window.onload = initExam;
+    </script>
+</body>
+</html>
+
