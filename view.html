@@ -369,9 +369,10 @@
 
                 if (studentSnap.exists()) {
                     const sData = studentSnap.data();
-                    document.getElementById("cardName").innerText = sData.name || "Student Name";
-                    document.getElementById("cardRoll").innerText = rollNo;
-                    document.getElementById("cardClass").innerText = sData.class || "N/A";
+                    document.getElementById("cardName").innerText = sData.name || sData.studentName || "Name Not Registered";
+document.getElementById("cardRoll").innerText = rollNo;
+document.getElementById("cardClass").innerText = sData.class || sData.className || "Class Not Registered";
+
                     document.getElementById("cardScore").innerText = sData.score || "0/0";
                     document.getElementById("cardPercent").innerText = sData.percentage || "0%";
                     
