@@ -93,19 +93,15 @@
 </head>
 <body>
 
-    <!-- Loading & Error Screen -->
     <div class="overlay" id="loadingOverlay">
         <div class="loader" id="spinner"></div>
         <h2 id="loadingText">Authenticating & Loading Test...</h2>
-        <!-- Redirect to Dashboard rather than Index -->
         <button onclick="window.location.href='dashboard.html'" class="submit-btn" id="goBackBtn" style="display:none; width: 250px; margin-top:20px; background: #38bdf8;">Go Back to Dashboard</button>
     </div>
 
-    <!-- Hidden Proctoring -->
     <video id="proctorCamera" autoplay playsinline></video>
     <canvas id="snapshotCanvas"></canvas>
 
-    <!-- Header -->
     <div class="exam-header">
         <div class="student-info">
             <div id="displayStudentName"><strong>Loading...</strong></div>
@@ -119,7 +115,6 @@
         </div>
     </div>
 
-    <!-- Exam Content -->
     <div class="exam-container" id="examContainer">
         <h2 class="test-title" id="testTitle">Loading Test...</h2>
         
@@ -158,7 +153,10 @@
         let cheatWarnings = 0;
         const maxWarnings = 3;
         let timerInterval;
-        let remainingSeconds = 0; // Global remaining time
+        let remainingSeconds = 0; 
+        
+        // 🚀 NEW: Security delay flag (False Warning Preventer)
+        let isTestActive = false; 
 
         // Display Error Function
         function showError(message) {
@@ -168,16 +166,15 @@
         }
 
         async function initExam() {
-            // Agar login nahi hai, toh index.html (login page) par bhejein
             if (!studentRoll) {
                 alert("Please login first!");
-                window.location.href = "index.html";
+                window.location.href = "index.html"; 
                 return;
             }
             if (!testId) { showError("Test ID Missing! Invalid Link."); return; }
 
             try {
-                // 1. Fetch Student Details
+                // Fetch Student Details
                 const studentDocSnap = await getDoc(doc(db, "students", studentRoll));
                 if(studentDocSnap.exists()) {
                     const data = studentDocSnap.data();
@@ -189,39 +186,35 @@
                     document.getElementById("displayClass").innerText = studentClass;
                 }
 
-                // 2. Fetch Test Details
+                // Fetch Test Details
                 const testDoc = await getDoc(doc(db, "active_tests", testId));
                 if (!testDoc.exists()) { showError("Test Not Found or Removed."); return; }
                 const testData = testDoc.data();
 
-                // Base duration setting
                 remainingSeconds = (testData.duration ? parseInt(testData.duration) : 15) * 60;
 
-                // 🚀 FIX: Strict End Time & Live Sync Logic
+                // Live Sync Time Check
                 if (testData.testDate && testData.testTime) {
                     const testStartTime = new Date(`${testData.testDate}T${testData.testTime}`);
                     const durationMinutes = testData.duration ? parseInt(testData.duration) : 15;
                     const testEndTime = new Date(testStartTime.getTime() + durationMinutes * 60000);
                     const currentTime = new Date();
                     
-                    // A) Agar time se pehle aaya hai
                     if (currentTime < testStartTime) {
                         const formattedTime = testStartTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
                         showError(`Exam is locked!<br><br>Scheduled Time: <strong>${testData.testDate} at ${formattedTime}</strong><br>Please refresh the page when it's time.`);
                         return; 
                     }
 
-                    // B) Agar test end time ke baad aaya hai (Deadline miss)
                     if (currentTime >= testEndTime) {
                         showError(`⏳ Exam Over!<br><br>Yeh test <strong>${testEndTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</strong> par khatam ho chuka hai. Ab aap ise nahi de sakte.`);
                         return;
                     }
 
-                    // C) Agar beech mein aaya hai, toh sirf bacha hua time milega
                     remainingSeconds = Math.floor((testEndTime.getTime() - currentTime.getTime()) / 1000);
                 }
 
-                // Class Match Restriction
+                // Restriction & Duplicate Attempt Checks
                 const sNum = String(studentClass).replace(/\D/g, ""); 
                 const tNum = String(testData.targetClass).replace(/\D/g, "");
                 
@@ -230,7 +223,6 @@
                     return;
                 }
 
-                // One-time Entry Check
                 const attemptCheck = await getDoc(doc(db, "tests", testId, "students", studentRoll));
                 if (attemptCheck.exists() && attemptCheck.data().submitted === true) {
                     showError(`Aap already yeh test de chuke hain!<br><br>Score: ${attemptCheck.data().score}`);
@@ -242,6 +234,8 @@
                 testQuestions = JSON.parse(testData.testCode);
                 
                 renderQuestions();
+                
+                // 🚀 START CAMERA FIRST (Awaiting permission)
                 startCamera();
                 
                 // Start Live Timer
@@ -291,16 +285,27 @@
             }, 1000);
         }
 
-        // Advanced Anti-Cheating System
+        // 🚀 FIX: Camera Permission vs Anti-Cheating Conflict
         async function startCamera() {
             try {
+                // Yahan browser popup dega (Allow / Block)
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
                 document.getElementById("proctorCamera").srcObject = stream;
                 setInterval(() => captureAndUploadSnapshot("Auto Check"), 45000);
-            } catch (err) { console.warn("Camera access denied."); }
+                
+                // Permission milne ke theek 2 second baad security trigger hogi
+                setTimeout(() => { isTestActive = true; }, 2000);
+            } catch (err) { 
+                console.warn("Camera access denied."); 
+                // Agar deny bhi karta hai toh test shuru ho jaye par security delay ke baad on ho
+                setTimeout(() => { isTestActive = true; }, 2000);
+            }
         }
 
+        // 🚀 NEW: Ab false alarm block ho jayega
         function handleCheatingDetection() {
+            if (!isTestActive) return; // Agar system abhi delay mode me hai, toh window badalne par ignore karo
+            
             if (document.getElementById("examContainer").style.display === "block") {
                 cheatWarnings++;
                 document.getElementById("warningBox").innerText = `Warnings: ${cheatWarnings}/${maxWarnings}`;
@@ -351,6 +356,7 @@
             if(confirm("Are you sure you want to submit?")) submitExamProcess("Clean / No Cheating");
         });
 
+        // 🚀 FIX: Warning + Time Up Status Overwrite Problem
         async function submitExamProcess(finalStatus) {
             clearInterval(timerInterval); // Stop timer
             document.getElementById("examContainer").style.display = "none";
@@ -364,7 +370,14 @@
                 if (selected && selected.value === q.answer) score++;
             });
 
-            if(cheatWarnings > 0 && finalStatus === "Clean / No Cheating") finalStatus = `${cheatWarnings} Warnings`;
+            // 🚀 SMART STATUS MAKER
+            if(cheatWarnings > 0 && finalStatus !== "Cheating / Terminated") {
+                if (finalStatus === "Time Up") {
+                    finalStatus = `Time Up (${cheatWarnings} Warnings)`; // Time-up bhi rahega, warning bhi batayega!
+                } else {
+                    finalStatus = `${cheatWarnings} Warnings`; // Normal submit kiya par warning thi
+                }
+            }
 
             try {
                 await setDoc(doc(db, "tests", testId, "students", studentRoll), {
