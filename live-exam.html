@@ -98,8 +98,8 @@
         <div class="loader" id="spinner"></div>
         <h2 id="loadingText">Authenticating & Loading Test...</h2>
         <!-- Redirect to Dashboard rather than Index -->
-        <button onclick="window.location.href='student-dashboard.html'" class="submit-btn" id="goBackBtn" style="display:none; width: 250px; margin-top:20px; background: #38bdf8;">Go Back to Dashboard</button>
-    </div>
+        <button onclick="window.location.href='dashboard.html'" class="submit-btn" id="goBackBtn" style="display:none; width: 250px; margin-top:20px; background: #38bdf8;">Go Back to Dashboard</button></div>
+
 
     <!-- Hidden Proctoring -->
     <video id="proctorCamera" autoplay playsinline></video>
@@ -183,7 +183,12 @@
                     studentName = data["Name "] || data.Name || "Unknown";
                     studentClass = data["Class "] || data.Class || "Unknown";
                     
-                    document.getElementById("displayStudentName").innerHTML = `<strong>${studentName}</strong>`;
+                    doif (!studentRoll) {
+    alert("Please login first!");
+    window.location.href = "index.html"; // Yahan LOGIN page ka naam aayega, dashboard nahi!
+    return;
+                    }
+                    cument.getElementById("displayStudentName").innerHTML = `<strong>${studentName}</strong>`;
                     document.getElementById("displayRoll").innerText = studentRoll;
                     document.getElementById("displayClass").innerText = studentClass;
                 }
@@ -374,11 +379,12 @@
 
                 // 🚀 FIX: Ab return to student-dashboard par jayega
                 document.getElementById("loadingOverlay").innerHTML = `
-                    <i class="fa-solid fa-circle-check" style="font-size: 60px; color: #10b981; margin-bottom: 20px;"></i>
-                    <h2>Exam Submitted Successfully!</h2>
-                    <p style="color: #94a3b8; font-size: 18px;">Score: <strong>${score}/${testQuestions.length}</strong></p>
-                    <button onclick="window.location.href='student-dashboard.html'" class="submit-btn" style="width: 250px; margin-top:20px;">Return to Dashboard</button>
-                `;
+    <i class="fa-solid fa-circle-check" style="font-size: 60px; color: #10b981; margin-bottom: 20px;"></i>
+    <h2>Exam Submitted Successfully!</h2>
+    <p style="color: #94a3b8; font-size: 18px;">Score: <strong>${score}/${testQuestions.length}</strong></p>
+    <button onclick="window.location.href='dashboard.html'" class="submit-btn" style="width: 250px; margin-top:20px;">Return to Dashboard</button>
+`;
+
             } catch (error) {
                 showError("Failed to submit! Check Internet.");
             }
