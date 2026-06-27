@@ -150,9 +150,9 @@
             color-scheme: dark; 
         }
         .form-group textarea {
-            font-family: monospace; /* Code jaisa feel dene ke liye */
+            font-family: monospace;
             font-size: 13px;
-            color: #34d399; /* Green color code ke liye */
+            color: #34d399; 
         }
         .submit-btn {
             width: 100%;
@@ -169,7 +169,6 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar">
         <div class="nav-brand"><i class="fa-solid fa-graduation-cap"></i> GVCC Faculty</div>
         <div class="nav-profile">
@@ -178,7 +177,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="container">
         <h1 class="welcome-text">Welcome, <span id="welcomeName">Sir/Madam</span></h1>
         <div class="subject-badge" id="subjectBadge">Subject</div>
@@ -204,7 +202,6 @@
         </div>
     </div>
 
-    <!-- Notice Modal -->
     <div class="modal" id="noticeModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -226,7 +223,6 @@
         </div>
     </div>
 
-    <!-- Test Modal (UPDATED WITH AI CODE SYSTEM) -->
     <div class="modal" id="testModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -255,15 +251,40 @@
                 </div>
             </div>
 
-            <!-- Naya AI Code Box -->
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; color:#cbd5e1;">Exam Time (in Minutes)</label>
+                <input type="number" id="testDuration" placeholder="E.g., 20" required style="width:100%; padding:10px; border-radius:5px; background:#0f172a; color:white; border:1px solid rgba(255,255,255,0.2);">
+            </div>
+
             <div class="form-group">
-                <label>Paste AI Test Code (JSON)</label>
-                <textarea id="testCode" rows="5" placeholder='[
-  {"question": "Bharat ki rajdhani?", "options": ["Delhi", "Mumbai", "Patna"], "answer": "Delhi"}
-]'></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <label style="color:#cbd5e1; margin-bottom:0;">Paste AI JSON Code:</label>
+                    <button type="button" onclick="document.getElementById('aiHelpModal').style.display='block'" style="background: #38bdf8; color: #0f172a; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s;">
+                        <i class="fa-solid fa-lightbulb"></i> How to get code?
+                    </button>
+                </div>
+                <textarea id="testCode" placeholder="Paste JSON code here..." rows="6" required style="width:100%; padding:10px; border-radius:5px; background:#0f172a; color:#34d399; border:1px solid rgba(255,255,255,0.2); font-family:monospace;"></textarea>
             </div>
             <button class="submit-btn" id="sendTestBtn"><i class="fa-solid fa-rocket"></i> Publish Smart Test</button>
         </div>
+    </div>
+
+    <div id="aiHelpModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#1e293b; padding:25px; border-radius:12px; border:2px solid #38bdf8; z-index:1000; width:90%; max-width:400px; box-shadow: 0 0 25px rgba(0,0,0,0.8);">
+        <h3 style="color:#38bdf8; margin-top:0;"><i class="fa-solid fa-robot"></i> AI Prompt Guide</h3>
+        <p style="font-size:14px; color:#cbd5e1;">ChatGPT ya Gemini ko yeh likh kar bhejein:</p>
+        
+        <div style="background:#0f172a; padding:15px; border-radius:8px; font-family:monospace; font-size:13px; color:#10b981; margin-bottom:15px; border:1px solid rgba(255,255,255,0.1); user-select:all;">
+            "Mujhe Class 10 History ke 10 MCQ questions do. Mujhe sirf aur sirf JSON format mein output chahiye. Koi extra text nahi. Format yeh hoga:<br><br>
+            [<br>
+            &nbsp;&nbsp;{<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;"question": "Q1 text here?",<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;"options": ["A", "B", "C", "D"],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;"answer": "A"<br>
+            &nbsp;&nbsp;}<br>
+            ]"
+        </div>
+        
+        <button type="button" onclick="document.getElementById('aiHelpModal').style.display='none'" style="width:100%; padding:12px; background:#ef4444; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Close Guide</button>
     </div>
 
     <script type="module">
@@ -346,11 +367,12 @@
             const testName = document.getElementById("testName").value.trim();
             const testDate = document.getElementById("testDate").value; 
             const testTime = document.getElementById("testTime").value; 
+            const testDuration = document.getElementById("testDuration").value.trim(); // NEW: Fetching Duration
             const testCode = document.getElementById("testCode").value.trim();
             const btn = document.getElementById("sendTestBtn");
 
-            if (!testName || !testDate || !testTime || !testCode) { 
-                alert("Please fill all details and paste the AI Code!"); 
+            if (!testName || !testDate || !testTime || !testDuration || !testCode) { 
+                alert("Please fill all details (including Duration) and paste the AI Code!"); 
                 return; 
             }
 
@@ -371,13 +393,16 @@
                     testName: testName,
                     testDate: testDate, 
                     testTime: testTime, 
-                    testCode: testCode, // Yahan ab "Link" ki jagah seedha Code database me jayega!
+                    duration: testDuration, // NEW: Saving Duration in database
+                    testCode: testCode, 
                     timestamp: serverTimestamp()
                 });
                 alert("🚀 Smart Test Published Successfully!");
+                // Form reset
                 document.getElementById("testName").value = "";
                 document.getElementById("testDate").value = "";
                 document.getElementById("testTime").value = "";
+                document.getElementById("testDuration").value = ""; // Form clear karte waqt reset
                 document.getElementById("testCode").value = "";
                 closeModals();
             } catch (error) {
