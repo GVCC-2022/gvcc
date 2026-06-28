@@ -236,13 +236,14 @@
         }
     };
 
-    // PWA Service Worker
+        // PWA Service Worker (Updated for Custom Domain)
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
-            navigator.serviceWorker.register("/gvcc/service-worker.js", { scope: "/gvcc/" })
+            navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
             .catch(function(error) { console.log("PWA Error:", error); });
         });
     }
+
 </script>
 
 </body>
