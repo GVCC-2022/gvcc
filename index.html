@@ -24,14 +24,13 @@
             overflow: hidden;
         }
 
-        /* 🎯 Entry Animation */
+        /* 🎯 Entry Animation - Modified to move slightly upwards (-5vh) */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            to { opacity: 1; transform: translateY(-5vh); } 
         }
 
         .landing-container {
-            position: relative;
             width: 85%;
             max-width: 400px;
             display: flex;
@@ -40,23 +39,22 @@
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* 🎯 Logo Position */
+        /* 🎯 Logo Position (MADE COMPLETELY FREE) */
+        /* Absolute position हटा दिया गया है। अब यह कार्ड से आज़ाद है। */
         .landing-logo {
             width: 260px;
             height: auto;
-            position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
+            position: relative;
             z-index: 10;
+            margin-bottom: -100px; /* यह कार्ड को लोगो के पीछे खींचता है। इसे आप बदल सकते हैं */
+            filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
         }
 
         /* 📦 Main Glass Card */
         .landing-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            padding: 140px 30px 40px 30px;
+            padding: 120px 30px 40px 30px; /* Top padding 140 से 120 कर दी है */
             border-radius: 24px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -64,7 +62,6 @@
             text-align: center;
             box-sizing: border-box;
             position: relative;
-            margin-top: 100px;
         }
 
         .title {
@@ -157,6 +154,7 @@
 <body>
 
 <div class="landing-container">
+    <!-- Logo ab HTML structure में बिल्कुल अलग और ऊपर है -->
     <img src="20260620_144347.png" alt="GVCC Logo" class="landing-logo">
 
     <div class="landing-card">
@@ -243,4 +241,3 @@
 
 </body>
 </html>
-
