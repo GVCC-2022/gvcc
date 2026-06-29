@@ -178,7 +178,7 @@
         </div>
         <div class="timer-box">
             <i class="fa-solid fa-clock fa-pulse"></i>
-            <span id="countdownTimer">20:00</span>
+            <span id="countdownTimer">10:00</span>
         </div>
     </div>
 
@@ -191,7 +191,7 @@
             <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
             
             <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
-                <i class="fa-solid fa-clock"></i> कृप्या अभी इंतजार करे आपका Test 11:26 A.M पर शुरु होगा...
+                <i class="fa-solid fa-clock"></i> Hey इतना भी जल्दी क्या हैं थोड़ा देर और इंतजार कीजिए न plz नाजरीन ji 😍 पक्का 12:50 में शुरू हो जायेगा...
             </div>
 
             <div id="passwordArea" style="display: none;">
@@ -301,7 +301,7 @@
         const correctAnswers = { q1: "D", q2: "C", q3: "D", q4: "B", q5: "A", q6: "A", q7: "D", q8: "C", q9: "C", q10: "B", q11: "C", q12: "B", q13: "A", q14: "D", q15: "C", q16: "C", q17: "B", q18: "B", q19: "A", q20: "B", q21: "C", q22: "B", q23: "C", q24: "B", q25: "B", q26: "A", q27: "A", q28: "B", q29: "D", q30: "D", q31: "C", q32: "D", q33: "B", q34: "A", q35: "B", q36: "B", q37: "D", q38: "D", q39: "A", q40: "A", q41: "D", q42: "A", q43: "B", q44: "B", q45: "D", q46: "B", q47: "C", q48: "A", q49: "B", q50: "C" };
         let timerInterval;
         let proctorInterval; 
-        let totalTimeLeft = 1200; // 10 Minutes in Seconds
+        let totalTimeLeft = 600; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
@@ -314,8 +314,8 @@
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
             // Apne hisaab se Date aur Time change karein
-            const testStartTime = new Date("2026-06-26T12:00:00").getTime(); 
-            const testEndTime = new Date("2026-06-26T12:02:00").getTime(); 
+            const testStartTime = new Date("2026-06-30T00:50:00").getTime(); 
+            const testEndTime = new Date("2026-06-30T01:00:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
