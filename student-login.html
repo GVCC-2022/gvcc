@@ -48,23 +48,62 @@ body {
     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* 🌀 Logo Outer Aura with Spinning White Light Effect */
+.logo-glow-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -100px; /* लोगो को कार्ड के साथ ओवरलैप करने के लिए */
+    z-index: 10;
+}
+
+/* नाचती हुई सफेद लाइट (Spinning Circle behind logo) */
+.logo-glow-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: conic-gradient(transparent, rgba(255, 255, 255, 0.8), transparent 60%);
+    animation: rotateLight 4s linear infinite;
+    filter: blur(15px);
+    z-index: -1;
+}
+
+/* लोगो को एक्स्ट्रा ब्राइट बनाने के लिए बैकग्राउंड ग्लो */
+.logo-glow-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    filter: blur(25px);
+    z-index: -1;
+}
+
+/* Light Rotation Animation */
+@keyframes rotateLight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 /* 🎯 Logo Position */
 .login-logo {
-    width: 260px;
+    width: 250px;
     height: auto;
+    filter: drop-shadow(0px 8px 20px rgba(255, 255, 255, 0.2)) brightness(1.1);
     position: relative;
-    z-index: 10;
-    margin-bottom: -150px; /* यह कार्ड को लोगो के पीछे खींचता है */
-    filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
-    top: 0px;  
-    left: 10px;
 }
 
 /* 📦 Premium Dark Glass Card */
 .login-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
-    padding: 120px 30px 40px 30px; 
+    padding: 120px 30px 30px 30px; 
     border-radius: 24px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -170,7 +209,7 @@ input:focus {
     background: #ffffff;
     color: #0f172a;
     padding: 16px;
-    margin: 25px auto 10px auto;
+    margin: 25px auto 5px auto;
     width: 100%;
     border: none;
     border-radius: 14px;
@@ -196,6 +235,15 @@ input:focus {
     color: #94a3b8;
     cursor: not-allowed;
     box-shadow: none;
+}
+
+/* 📝 Footer Credit Text */
+.credit-text {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 /* 🔄 Spinner Animation */
@@ -247,7 +295,7 @@ input:focus {
 #msg {
     font-weight: 600;
     font-size: 14px;
-    margin-top: 20px;
+    margin-top: 15px;
     transition: all 0.3s ease;
 }
 </style>
@@ -255,7 +303,10 @@ input:focus {
 <body>
 
 <div class="login-container">
-    <img src="20260620_144347.png" alt="GVCC Logo" class="login-logo">
+    <!-- 🌀 Aura & Logo Wrapped Together -->
+    <div class="logo-glow-wrapper">
+        <img src="20260620_144347.png" alt="GVCC Logo" class="login-logo">
+    </div>
 
     <div class="login-card">
         <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
@@ -281,6 +332,9 @@ input:focus {
         </form>
         
         <div id="msg"></div>
+
+        <!-- 📝 Added Credit Text Right Under Login Form -->
+        <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
     </div>
 </div>
 
