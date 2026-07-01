@@ -100,6 +100,12 @@
         th { background: #0f172a; color: #38bdf8; padding: 15px; font-size: 15px; }
         td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 14px; }
         tr:hover { background: rgba(255,255,255,0.02); }
+        
+        /* Rank Styles */
+        .rank-1 { color: #fbbf24; font-weight: bold; font-size: 16px; } /* Gold */
+        .rank-2 { color: #94a3b8; font-weight: bold; font-size: 16px; } /* Silver */
+        .rank-3 { color: #b45309; font-weight: bold; font-size: 16px; } /* Bronze */
+
         .cheat-clean { color: #10b981; font-weight: bold; background: rgba(16,185,129,0.1); padding: 4px 8px; border-radius: 5px; }
         .cheat-warn { color: #ef4444; font-weight: bold; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 5px; }
 
@@ -174,11 +180,11 @@
         <table id="scoreboardTable">
             <thead>
                 <tr>
+                    <th>Rank</th>
                     <th>Roll No</th>
                     <th>Student Name</th>
                     <th>Score</th>
                     <th>Cheating Status</th>
-                    <th>Submission Time</th>
                 </tr>
             </thead>
             <tbody id="scoreboardBody">
@@ -282,7 +288,7 @@
             document.getElementById("statusMessage").innerText = "Select an option above to load data.";
         };
 
-        // 🏆 LOAD LIVE SCOREBOARD
+        // 🏆 LOAD & SORT LIVE SCOREBOARD
         document.getElementById("loadScoreboardBtn").addEventListener("click", async () => {
             const testFolder = document.getElementById("testSelectMenu").value;
             if(!testFolder) { alert("Please select a test from the list first."); return; }
@@ -293,7 +299,7 @@
             document.getElementById("photoGallery").innerHTML = "";
             document.getElementById("studentInfoCard").style.display = "none";
             document.getElementById("scoreboardContainer").style.display = "block";
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Loading records...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Loading and Ranking records...</td></tr>`;
             status.innerText = "";
 
             try {
@@ -305,21 +311,18 @@
                     return;
                 }
 
-                tbody.innerHTML = ""; 
-                let hasSubmissions = false;
+                let studentsDataArray = [];
                 
-                // 🚀 SMART LOOP WITH MASTER DATABASE FALLBACK
+                // 1. Data Ikhatta karna
                 for (const documentSnap of querySnapshot.docs) {
                     const data = documentSnap.data();
                     const rollNo = documentSnap.id;
                     
                     if(data.submitted) {
-                        hasSubmissions = true;
                         const cheatClass = String(data.cheatStatus).includes("Clean") ? "cheat-clean" : "cheat-warn";
                         
                         let sName = data["Name "] || data["Name"] || data.name || data.studentName;
                         
-                        // अगर टेस्ट वाले डेटा में नाम नहीं है, तो मेन 'students' डेटाबेस से निकालो
                         if (!sName || sName === "Unknown") {
                             try {
                                 const masterStudentSnap = await getDoc(doc(db, "students", rollNo));
@@ -327,26 +330,60 @@
                                     const mData = masterStudentSnap.data();
                                     sName = mData["Name "] || mData["Name"] || mData.name || mData.studentName;
                                 }
-                            } catch(e) { console.error("Error fetching master student data"); }
+                            } catch(e) {}
                         }
                         
                         sName = sName || "Unknown";
 
-                        tbody.innerHTML += `
-                            <tr>
-                                <td><strong>${rollNo}</strong></td>
-                                <td>${sName}</td>
-                                <td style="color:#38bdf8; font-weight:bold;">${data.score || "0/0"}</td>
-                                <td><span class="${cheatClass}">${data.cheatStatus || "Unknown"}</span></td>
-                                <td style="font-size:12px;">${data.submittedAt || "N/A"}</td>
-                            </tr>
-                        `;
+                        // 🚀 NUMBER NIKALNA RANKING KE LIYE (e.g., "28/50" se 28 nikalna)
+                        let rawScore = 0;
+                        if (data.score) {
+                            const scoreParts = String(data.score).split('/');
+                            if (scoreParts.length > 0) {
+                                rawScore = parseInt(scoreParts[0]) || 0;
+                            }
+                        }
+
+                        studentsDataArray.push({
+                            rollNo: rollNo,
+                            name: sName,
+                            scoreString: data.score || "0/0",
+                            numericScore: rawScore,
+                            cheatStatus: data.cheatStatus || "Unknown",
+                            cheatClass: cheatClass,
+                            submittedAt: data.submittedAt || "N/A"
+                        });
                     }
                 }
                 
-                if(!hasSubmissions) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">No submissions found.</td></tr>`;
+                if(studentsDataArray.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">No valid submissions found.</td></tr>`;
+                    return;
                 }
+
+                // 2. 🚀 ARRAY KO SORT KARNA (Sabse jyada marks wala sabse upar)
+                studentsDataArray.sort((a, b) => b.numericScore - a.numericScore);
+
+                // 3. UI MEIN PRINT KARNA (With Rank)
+                tbody.innerHTML = ""; 
+                studentsDataArray.forEach((student, index) => {
+                    let rankDisplay = index + 1;
+                    let rankClass = "";
+                    
+                    if (index === 0) { rankDisplay = "🥇 1st"; rankClass = "rank-1"; }
+                    else if (index === 1) { rankDisplay = "🥈 2nd"; rankClass = "rank-2"; }
+                    else if (index === 2) { rankDisplay = "🥉 3rd"; rankClass = "rank-3"; }
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="${rankClass}">${rankDisplay}</td>
+                            <td><strong>${student.rollNo}</strong></td>
+                            <td>${student.name}</td>
+                            <td style="color:#38bdf8; font-weight:bold;">${student.scoreString}</td>
+                            <td><span class="${student.cheatClass}">${student.cheatStatus}</span></td>
+                        </tr>
+                    `;
+                });
 
             } catch (error) {
                 console.error(error);
@@ -367,9 +404,7 @@
 
             // 🔒 ADMIN PASSWORD CHECK
             const adminPass = prompt("🔒 Enter Admin Password to view confidential evidence photos:");
-            
-            // 👇 YAHAN SE AAP APNA PASSWORD BADAL SAKTE HAIN 👇
-            if (adminPass !== "fr@143") { 
+            if (adminPass !== "fr@111") { 
                 alert("🚫 Access Denied! You don't have permission to view photos.");
                 return; 
             }
@@ -390,7 +425,7 @@
                     let sName = sData["Name "] || sData["Name"] || sData.name || sData.studentName;
                     let sClass = sData["Class "] || sData["Class"] || sData.class || sData.className;
                     
-                    // 🚀 MASTER DATABASE FALLBACK (Agar naam/class missing hai)
+                    // MASTER DATABASE FALLBACK
                     if (!sName || !sClass) {
                         try {
                             const masterStudentSnap = await getDoc(doc(db, "students", rollNo));
@@ -399,7 +434,7 @@
                                 if (!sName) sName = mData["Name "] || mData["Name"] || mData.name || mData.studentName;
                                 if (!sClass) sClass = mData["Class "] || mData["Class"] || mData.class || mData.className;
                             }
-                        } catch(e) { console.error("Master DB Fetch Error"); }
+                        } catch(e) {}
                     }
                     
                     document.getElementById("cardName").innerText = sName || "Name Not Registered";
