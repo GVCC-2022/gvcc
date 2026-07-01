@@ -150,7 +150,6 @@
 
     <div class="control-box">
         <div>
-            <!-- DROPDOWN -->
             <select id="testSelectMenu" class="select-style" onchange="updateSubtitleText()">
                 <option value="">🔄 Loading Tests...</option>
             </select>
@@ -307,18 +306,35 @@
                 }
 
                 tbody.innerHTML = ""; 
+                let hasSubmissions = false;
                 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                // 🚀 SMART LOOP WITH MASTER DATABASE FALLBACK
+                for (const documentSnap of querySnapshot.docs) {
+                    const data = documentSnap.data();
+                    const rollNo = documentSnap.id;
+                    
                     if(data.submitted) {
+                        hasSubmissions = true;
                         const cheatClass = String(data.cheatStatus).includes("Clean") ? "cheat-clean" : "cheat-warn";
                         
-                        // 🚀 SMART CHECKER FOR NAME
-                        const sName = data["Name "] || data["Name"] || data.name || data.studentName || "Unknown";
+                        let sName = data["Name "] || data["Name"] || data.name || data.studentName;
+                        
+                        // अगर टेस्ट वाले डेटा में नाम नहीं है, तो मेन 'students' डेटाबेस से निकालो
+                        if (!sName || sName === "Unknown") {
+                            try {
+                                const masterStudentSnap = await getDoc(doc(db, "students", rollNo));
+                                if (masterStudentSnap.exists()) {
+                                    const mData = masterStudentSnap.data();
+                                    sName = mData["Name "] || mData["Name"] || mData.name || mData.studentName;
+                                }
+                            } catch(e) { console.error("Error fetching master student data"); }
+                        }
+                        
+                        sName = sName || "Unknown";
 
                         tbody.innerHTML += `
                             <tr>
-                                <td><strong>${doc.id}</strong></td>
+                                <td><strong>${rollNo}</strong></td>
                                 <td>${sName}</td>
                                 <td style="color:#38bdf8; font-weight:bold;">${data.score || "0/0"}</td>
                                 <td><span class="${cheatClass}">${data.cheatStatus || "Unknown"}</span></td>
@@ -326,7 +342,12 @@
                             </tr>
                         `;
                     }
-                });
+                }
+                
+                if(!hasSubmissions) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">No submissions found.</td></tr>`;
+                }
+
             } catch (error) {
                 console.error(error);
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444;">Error fetching results.</td></tr>`;
@@ -350,7 +371,7 @@
             // 👇 YAHAN SE AAP APNA PASSWORD BADAL SAKTE HAIN 👇
             if (adminPass !== "fr@143") { 
                 alert("🚫 Access Denied! You don't have permission to view photos.");
-                return; // Password galat hone par code aage nahi badhega
+                return; 
             }
 
             // UI Adjustments
@@ -366,13 +387,24 @@
                 if (studentSnap.exists()) {
                     const sData = studentSnap.data();
                     
-                    // 🚀 SMART CHECKER FOR NAME AND CLASS
-                    const sName = sData["Name "] || sData["Name"] || sData.name || sData.studentName || "Name Not Registered";
-                    const sClass = sData["Class "] || sData["Class"] || sData.class || sData.className || "Class Not Registered";
+                    let sName = sData["Name "] || sData["Name"] || sData.name || sData.studentName;
+                    let sClass = sData["Class "] || sData["Class"] || sData.class || sData.className;
                     
-                    document.getElementById("cardName").innerText = sName;
+                    // 🚀 MASTER DATABASE FALLBACK (Agar naam/class missing hai)
+                    if (!sName || !sClass) {
+                        try {
+                            const masterStudentSnap = await getDoc(doc(db, "students", rollNo));
+                            if (masterStudentSnap.exists()) {
+                                const mData = masterStudentSnap.data();
+                                if (!sName) sName = mData["Name "] || mData["Name"] || mData.name || mData.studentName;
+                                if (!sClass) sClass = mData["Class "] || mData["Class"] || mData.class || mData.className;
+                            }
+                        } catch(e) { console.error("Master DB Fetch Error"); }
+                    }
+                    
+                    document.getElementById("cardName").innerText = sName || "Name Not Registered";
                     document.getElementById("cardRoll").innerText = rollNo;
-                    document.getElementById("cardClass").innerText = sClass;
+                    document.getElementById("cardClass").innerText = sClass || "Class Not Registered";
                     document.getElementById("cardScore").innerText = sData.score || "0/0";
                     document.getElementById("cardPercent").innerText = sData.percentage || "0%";
                     
