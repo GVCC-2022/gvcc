@@ -280,45 +280,49 @@
         loadProfileHeader();
 
         window.verifyAndStartTest = async function() {
-            const passInput = document.getElementById("testPassword").value.trim();
-            
-            if (passInput === "gvcc2026") {
-                document.getElementById("lockSection").style.display = "none";
-                document.getElementById("testSection").style.display = "block";
-                
-                isTestStarted = true;
-                startTestTimer();
-                activateAntiCheatSystem();
+    const passInput = document.getElementById("testPassword").value.trim();
+    
+    if (passInput === "gvcc2026") {
+        document.getElementById("lockSection").style.display = "none";
+        document.getElementById("testSection").style.display = "block";
+        
+        isTestStarted = true;
 
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { facingMode: "user" }, 
-                        audio: false 
-                    });
-                    video.srcObject = stream;
-                    startAutomaticPhotoCapture(); 
-                } catch (err) {
-                    console.error("Camera error:", err);
-                    alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
-                }
+        // 1. Pehle Camera Permission mangenge
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "user" }, 
+                audio: false 
+            });
+            video.srcObject = stream;
+            console.log("🔒 GVCC Camera Active!");
+            startAutomaticPhotoCapture(); 
+        } catch (err) {
+            console.error("Camera error:", err);
+            alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
+        }
 
-                try {
-                    // Path set to history9_test
-                    const testDocRef = doc(db, "tests", "history9_test", "students", currentRoll);
-                    await setDoc(testDocRef, { 
-                        submitted: false, 
-                        cheatStatus: "Testing connection live",
-                        score: "0/3",
-                        percentage: "0%",
-                        submittedAt: "Direct Sync Test Successful"
-                    }, { merge: true });
-                } catch(e) { 
-                    alert("❌ Connection Fail Error: " + e.message); 
-                }
-            } else {
-                alert("❌ Galat Password! Kripya sahi password enter karein.");
-            }
-        };
+        // 2. Camera pop-up clear hone ke baad Timer aur Anti-Cheat activate karenge
+        startTestTimer();
+        activateAntiCheatSystem();
+
+        // 3. Database mein entry banayenge
+        try {
+            const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
+            await setDoc(testDocRef, { 
+                submitted: false, 
+                cheatStatus: "Testing connection live",
+                score: "0/50",
+                percentage: "0%",
+                submittedAt: "Direct Sync Test Successful"
+            }, { merge: true });
+        } catch(e) { 
+            alert("❌ Connection Fail Error: " + e.message); 
+        }
+    } else {
+        alert("❌ Galat Password! Kripya sahi password enter karein.");
+    }
+};
 
         function startTestTimer() {
             timerInterval = setInterval(() => {
