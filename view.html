@@ -150,7 +150,7 @@
 
     <div class="control-box">
         <div>
-            <!-- 🚀 DROPDOWN AB DYNAMIC HO GAYA HAI -->
+            <!-- DROPDOWN -->
             <select id="testSelectMenu" class="select-style" onchange="updateSubtitleText()">
                 <option value="">🔄 Loading Tests...</option>
             </select>
@@ -164,7 +164,7 @@
 
         <div class="search-box">
             <input type="number" id="studentRollInput" placeholder="Enter Roll Number">
-            <button class="btn-search" id="searchBtn"><i class="fa-solid fa-camera"></i> Photos</button>
+            <button class="btn-search" id="searchBtn"><i class="fa-solid fa-lock"></i> Photos</button>
         </div>
     </div>
 
@@ -235,11 +235,10 @@
         }
         fetchAppDownloads();
 
-        // 🚀 NAYA SYSTEM: PURANE TESTS AUR NAYE TESTS DONO DIKHAYEGA
+        // Load Available Tests
         async function loadAvailableTests() {
             const selectMenu = document.getElementById("testSelectMenu");
             try {
-                // 1. Pehle purane (Old) tests list mein daal do taaki unka result hamesha dikhe
                 selectMenu.innerHTML = `
                     <option value="" disabled selected>Select a test to view...</option>
                     <option disabled>────────── Old Tests ──────────</option>
@@ -250,11 +249,9 @@
                     <option disabled>────────── New Live Tests ──────────</option>
                 `;
 
-                // 2. Ab Teacher Dashboard se publish hue naye tests check karo
                 const q = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
 
-                // 3. Agar naye test hain, toh unhe list ke niche jod do
                 if (!querySnapshot.empty) {
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
@@ -264,22 +261,12 @@
                         selectMenu.appendChild(option);
                     });
                 }
-
                 updateSubtitleText(); 
             } catch (error) {
                 console.error("Error loading tests:", error);
-                // Agar error aaye tab bhi purane tests dikhte rahein
-                selectMenu.innerHTML = `
-                    <option value="" disabled selected>Select a test to view...</option>
-                    <option value="maths_day1">🧮 Day 1 - Arithmetic Foundation</option>
-                    <option value="history8_test">📘 Class 8th - History Test</option>
-                    <option value="history9_test">📚 Class 9th - History Test</option>
-                    <option value="history10_test">📖 Class 10th - History Test</option>
-                `;
             }
         }
         
-        // Page load hote hi list mangwa lo
         loadAvailableTests();
 
         window.updateSubtitleText = function() {
@@ -290,7 +277,6 @@
                 document.getElementById("liveTestSubtitle").innerText = `Waiting for test selection...`;
             }
             
-            // UI Reset on Change
             document.getElementById("scoreboardContainer").style.display = "none";
             document.getElementById("studentInfoCard").style.display = "none";
             document.getElementById("photoGallery").innerHTML = "";
@@ -305,7 +291,6 @@
             const tbody = document.getElementById("scoreboardBody");
             const status = document.getElementById("statusMessage");
             
-            // UI adjustments
             document.getElementById("photoGallery").innerHTML = "";
             document.getElementById("studentInfoCard").style.display = "none";
             document.getElementById("scoreboardContainer").style.display = "block";
@@ -313,7 +298,6 @@
             status.innerText = "";
 
             try {
-                // Yahan testFolder ki jagah test ka ID use ho raha hai
                 const studentsRef = collection(db, "tests", testFolder, "students");
                 const querySnapshot = await getDocs(studentsRef);
 
@@ -329,10 +313,13 @@
                     if(data.submitted) {
                         const cheatClass = String(data.cheatStatus).includes("Clean") ? "cheat-clean" : "cheat-warn";
                         
+                        // 🚀 SMART CHECKER FOR NAME
+                        const sName = data["Name "] || data["Name"] || data.name || data.studentName || "Unknown";
+
                         tbody.innerHTML += `
                             <tr>
                                 <td><strong>${doc.id}</strong></td>
-                                <td>${data.name || "Unknown"}</td>
+                                <td>${sName}</td>
                                 <td style="color:#38bdf8; font-weight:bold;">${data.score || "0/0"}</td>
                                 <td><span class="${cheatClass}">${data.cheatStatus || "Unknown"}</span></td>
                                 <td style="font-size:12px;">${data.submittedAt || "N/A"}</td>
@@ -346,7 +333,7 @@
             }
         });
 
-        // 📸 LOAD INDIVIDUAL EVIDENCE & PHOTOS
+        // 📸 LOAD INDIVIDUAL EVIDENCE & PHOTOS (WITH ADMIN LOCK)
         document.getElementById("searchBtn").addEventListener("click", async () => {
             const testFolder = document.getElementById("testSelectMenu").value;
             const rollNo = document.getElementById("studentRollInput").value.trim();
@@ -356,6 +343,15 @@
 
             if(!testFolder) { alert("Please select a test from the list first."); return; }
             if(!rollNo) { alert("Please enter a valid student roll number!"); return; }
+
+            // 🔒 ADMIN PASSWORD CHECK
+            const adminPass = prompt("🔒 Enter Admin Password to view confidential evidence photos:");
+            
+            // 👇 YAHAN SE AAP APNA PASSWORD BADAL SAKTE HAIN 👇
+            if (adminPass !== "admin123") { 
+                alert("🚫 Access Denied! You don't have permission to view photos.");
+                return; // Password galat hone par code aage nahi badhega
+            }
 
             // UI Adjustments
             document.getElementById("scoreboardContainer").style.display = "none";
@@ -369,9 +365,14 @@
 
                 if (studentSnap.exists()) {
                     const sData = studentSnap.data();
-                    document.getElementById("cardName").innerText = sData.name || sData.studentName || "Name Not Registered";
+                    
+                    // 🚀 SMART CHECKER FOR NAME AND CLASS
+                    const sName = sData["Name "] || sData["Name"] || sData.name || sData.studentName || "Name Not Registered";
+                    const sClass = sData["Class "] || sData["Class"] || sData.class || sData.className || "Class Not Registered";
+                    
+                    document.getElementById("cardName").innerText = sName;
                     document.getElementById("cardRoll").innerText = rollNo;
-                    document.getElementById("cardClass").innerText = sData.class || sData.className || "Class Not Registered";
+                    document.getElementById("cardClass").innerText = sClass;
                     document.getElementById("cardScore").innerText = sData.score || "0/0";
                     document.getElementById("cardPercent").innerText = sData.percentage || "0%";
                     
