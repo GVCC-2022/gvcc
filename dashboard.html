@@ -284,19 +284,19 @@
                     <span class="info-value" id="studentClass">--</span>
                 </div>
             </div> 
-            <!-- Live Teacher Updates Section -->
-<div id="live-updates-section" style="margin-top: 30px; text-align: left;">
-    <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px;">
-        <i class="fa-solid fa-bell fa-shake"></i> Live Updates from Teachers
-    </h3>
-    
-    <!-- Yahan Notices Auto-Load Honge -->
-    <div id="studentNotices"></div>
-    
-    <!-- Yahan Tests Auto-Load Honge -->
-    <div id="studentTests"></div>
-</div>
             
+            <!-- Live Teacher Updates Section -->
+            <div id="live-updates-section" style="margin-top: 30px; text-align: left;">
+                <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px;">
+                    <i class="fa-solid fa-bell fa-shake"></i> Live Updates from Teachers
+                </h3>
+                
+                <!-- Yahan Notices Auto-Load Honge -->
+                <div id="studentNotices"></div>
+                
+                <!-- Yahan Tests Auto-Load Honge -->
+                <div id="studentTests"></div>
+            </div>
 
             <div class="grid-menu">
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
@@ -357,16 +357,13 @@
     <script>
         let deferredPrompt;
         
-        // Browser ka default install popup rok kar use apne button ke liye save karna
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
         });
 
-        // Button click hone par yeh function chalega
         window.installApp = async function() {
             if (deferredPrompt) {
-                // Agar phone app install support karta hai, to seedha install window kholo
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
@@ -374,16 +371,47 @@
                 }
                 deferredPrompt = null;
             } else {
-                // Agar phone me support nahi hai (jaise iPhone), to steps dikhao
                 alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi.");
             }
         };
     </script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    <!-- 🔔 Firebase Notification Permission Logic -->
+    <script>
+        function askNotificationPermission() {
+            if (!("Notification" in window)) {
+                console.log("आपके ब्राउज़र में नोटिफिकेशन सपोर्ट नहीं है।");
+                return;
+            }
 
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    console.log("✅ Permission Granted!");
+                    alert("🎉 शानदार! अब आपको GVCC की सभी नोटिफिकेशन्स और अपडेट्स यहीं मिलेंगी।");
+                    
+                    // Permission milte hi token generate karne function call karein
+                    if (window.generateFCMToken) {
+                        window.generateFCMToken();
+                    }
+                } else if (permission === "denied") {
+                    console.log("❌ Permission Denied!");
+                }
+            });
+        }
+
+        window.onload = function() {
+            setTimeout(askNotificationPermission, 2000);
+        };
+    </script>
+
+    <!-- 🌟 MERGED FIREBASE SCRIPT FOR ALL FUNCTIONALITY 🌟 -->
+    <script type="module">
+        // 1. All Imports in one place
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+
+        // 2. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
             authDomain: "gvcc-database.firebaseapp.com",
@@ -393,18 +421,32 @@
             appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
 
-        const app = initializeApp(firebaseConfig);
+        // 3. Initialize Firebase ONLY ONCE safely
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
         const db = getFirestore(app);
+        
+        // Initialize Messaging safely
+        let messaging;
+        try {
+            if (typeof window !== "undefined" && "Notification" in window) {
+                messaging = getMessaging(app);
+            }
+        } catch(e) {
+            console.log("Messaging init error:", e);
+        }
 
         let studentClassGlobal = "10th";
-
         const activeRoll = localStorage.getItem("studentRoll");
+
         if (!activeRoll) {
             window.location.href = "student-login.html";
         } else {
             fetchStudentData(activeRoll);
         }
 
+        // ==========================================
+        // 🔹 1. FETCH STUDENT PROFILE DATA
+        // ==========================================
         async function fetchStudentData(roll) {
             try {
                 const docRef = doc(db, "students", roll);
@@ -412,8 +454,10 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let studentName = data["Name "] || data.Name || "N/A";
-                    let studentClass = data["Class "] || data.Class || "N/A";
+                    
+                    // Added extra fallbacks just in case field names are typed differently
+                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
+                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
                     studentClassGlobal = String(studentClass).trim();
                     
@@ -428,14 +472,87 @@
                     logout();
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Profile Fetch Error:", error);
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
         }
 
+        // ==========================================
+        // 🔹 2. LIVE NOTICES & TESTS
+        // ==========================================
+        const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
+        onSnapshot(qNotices, (snapshot) => {
+            const noticeBox = document.getElementById("studentNotices");
+            noticeBox.innerHTML = ""; 
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                noticeBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
+                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName}</strong> (${data.subject}) • Target: ${data.targetClass}
+                        </div>
+                        <div style="color: #f8fafc; font-size: 15px;">${data.message}</div>
+                    </div>
+                `;
+            });
+        });
+
+        const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
+        onSnapshot(qTests, (snapshot) => {
+            const testBox = document.getElementById("studentTests");
+            testBox.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                testBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
+                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName}</strong> (${data.subject}) • ${data.targetClass}
+                            </div>
+                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName}</div>
+                        </div>
+                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
+                            Start Test <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+            });
+        });
+
+        // ==========================================
+        // 🔹 3. FIREBASE NOTIFICATION (TOKEN GEN)
+        // ==========================================
+        window.generateFCMToken = async function() {
+            if(!messaging) return;
+            try {
+                const currentToken = await getToken(messaging, { 
+                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" 
+                });
+                
+                if (currentToken) {
+                    console.log("🔥 FCM Token मिल गया:", currentToken);
+                    if (activeRoll) {
+                        await setDoc(doc(db, "students", activeRoll), {
+                            fcmToken: currentToken
+                        }, { merge: true });
+                        console.log("✅ Token Database में सेव हो गया!");
+                    }
+                }
+            } catch (err) {
+                console.log("⚠️ टोकन लाने में एरर:", err);
+            }
+        }
+
+        // Page load hone par agar permission pehle se hai to token update kar do
+        if ("Notification" in window && Notification.permission === "granted") {
+            window.generateFCMToken();
+        }
+
+        // ==========================================
+        // 🔹 GLOBAL ROUTING FUNCTIONS
+        // ==========================================
         window.routeToLiveTest = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
-            
             if (cleanClass.includes("10")) {
                 window.location.href = "history10.html";
             } else if (cleanClass.includes("9")) {
@@ -449,7 +566,6 @@
 
         window.routeToResult = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
-            
             if (cleanClass.includes("10")) {
                 window.location.href = "result10.html";
             } else if (cleanClass.includes("9")) {
@@ -461,153 +577,13 @@
             }
         }
 
-        function logout() {
+        window.logout = function() {
             localStorage.removeItem("studentRoll");
             window.location.href = "student-login.html";
         }
-        document.getElementById("logoutBtn").addEventListener("click", logout);
-    </script> 
-    <!-- Teacher Notice & Test Live Fetcher -->
-<script type="module">
-    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        
+        document.getElementById("logoutBtn").addEventListener("click", window.logout);
 
-    // Firebase Config (Aapka database)
-    const firebaseConfig = {
-        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-        authDomain: "gvcc-database.firebaseapp.com",
-        projectId: "gvcc-database",
-        storageBucket: "gvcc-database.firebasestorage.app",
-        messagingSenderId: "1063216875940",
-        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-    };
-
-    // Trick: Agar Firebase pehle se dashboard me initialize hai, to error nahi aayega
-    const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-    const db = getFirestore(app);
-
-    // 1. Fetch Live Notices
-    const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
-    onSnapshot(qNotices, (snapshot) => {
-        const noticeBox = document.getElementById("studentNotices");
-        noticeBox.innerHTML = ""; 
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            noticeBox.innerHTML += `
-                <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
-                    <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
-                        <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName}</strong> (${data.subject}) • Target: ${data.targetClass}
-                    </div>
-                    <div style="color: #f8fafc; font-size: 15px;">${data.message}</div>
-                </div>
-            `;
-        });
-    });
-
-        // 2. Fetch Live Tests
-    const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
-    onSnapshot(qTests, (snapshot) => {
-        const testBox = document.getElementById("studentTests");
-        testBox.innerHTML = "";
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            testBox.innerHTML += `
-                <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <div>
-                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
-                            <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName}</strong> (${data.subject}) • ${data.targetClass}
-                        </div>
-                        <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName}</div>
-                    </div>
-                    <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
-                        Start Test <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-            `;
-        });
-    });
-
-</script>
-    <!-- 🔔 Firebase Notification Permission Logic -->
-<script>
-    function askNotificationPermission() {
-        // चेक करें कि ब्राउज़र नोटिफिकेशन सपोर्ट करता है या नहीं
-        if (!("Notification" in window)) {
-            console.log("आपके ब्राउज़र में नोटिफिकेशन सपोर्ट नहीं है।");
-            return;
-        }
-
-        // यूज़र से परमिशन मांगना
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                console.log("✅ Permission Granted! (यूज़र ने Allow कर दिया)");
-                
-                // अभी टेस्टिंग के लिए एक छोटा सा अलर्ट दिखा रहे हैं
-                alert("🎉 शानदार! अब आपको GVCC की सभी नोटिफिकेशन्स और अपडेट्स यहीं मिलेंगी।");
-                
-                // (अगले स्टेप में हम यहाँ Firebase Token जनरेट करने का कोड डालेंगे)
-                
-            } else if (permission === "denied") {
-                console.log("❌ Permission Denied! (यूज़र ने Block कर दिया)");
-            }
-        });
-    }
-
-    // जैसे ही पेज लोड हो, परमिशन वाला पॉपअप आ जाए
-    window.onload = function() {
-        // थोड़ा सा डिले (Delay) दे रहे हैं ताकि पेज आराम से लोड हो जाए (2 सेकंड)
-        setTimeout(askNotificationPermission, 2000);
-    };
-</script>
-    <!-- 🔔 Firebase Notification - Token Generation & Save -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-        authDomain: "gvcc-database.firebaseapp.com",
-        projectId: "gvcc-database",
-        storageBucket: "gvcc-database.firebasestorage.app",
-        messagingSenderId: "1063216875940",
-        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-    const db = getFirestore(app);
-
-    async function getAndSaveToken() {
-        try {
-            // यहाँ हमने आपकी निकाली हुई चाबी (VAPID Key) डाल दी है 👇
-            const currentToken = await getToken(messaging, { 
-                vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" 
-            });
-            
-            if (currentToken) {
-                console.log("🔥 FCM Token मिल गया:", currentToken);
-                
-                // बच्चे का रोल नंबर निकालें 
-                const rollNumber = localStorage.getItem("studentRoll");
-                if (rollNumber) {
-                    // डेटाबेस में बच्चे के नाम के साथ टोकन सेव करें
-                    await setDoc(doc(db, "students", rollNumber), {
-                        fcmToken: currentToken
-                    }, { merge: true }); // merge: true से पुराना डेटा (पासवर्ड आदि) डिलीट नहीं होगा
-                    console.log("✅ Token Database में सेव हो गया!");
-                }
-            }
-        } catch (err) {
-            console.log("⚠️ टोकन लाने में एरर:", err);
-        }
-    }
-
-    // अगर ब्राउज़र में परमिशन Allow है, तो तुरंत टोकन ले लो
-    if ("Notification" in window && Notification.permission === "granted") {
-        getAndSaveToken();
-    }
-</script>
-    
+    </script>
 </body>
 </html>
