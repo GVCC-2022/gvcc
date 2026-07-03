@@ -528,31 +528,36 @@
     });
 
 </script>
-    <!-- 🔔 Firebase Notification - Auto Popup on First Touch -->
+    <!-- 🔔 Firebase Notification Permission Logic -->
 <script>
-    // यह फंक्शन तब चलेगा जब बच्चा पहली बार स्क्रीन पर कहीं भी टच करेगा
-    function askPermOnFirstTouch() {
-        // चेक करें कि ब्राउज़र में नोटिफिकेशन सपोर्ट है या नहीं
-        if ("Notification" in window) {
-            // अगर अभी तक परमिशन नहीं मांगी गई है (default है)
-            if (Notification.permission === "default") {
-                Notification.requestPermission().then((permission) => {
-                    if (permission === "granted") {
-                        console.log("✅ बच्चे ने Notification Allow कर दिया!");
-                    } else {
-                        console.log("❌ बच्चे ने Block कर दिया।");
-                    }
-                });
-            }
+    function askNotificationPermission() {
+        // चेक करें कि ब्राउज़र नोटिफिकेशन सपोर्ट करता है या नहीं
+        if (!("Notification" in window)) {
+            console.log("आपके ब्राउज़र में नोटिफिकेशन सपोर्ट नहीं है।");
+            return;
         }
+
+        // यूज़र से परमिशन मांगना
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                console.log("✅ Permission Granted! (यूज़र ने Allow कर दिया)");
+                
+                // अभी टेस्टिंग के लिए एक छोटा सा अलर्ट दिखा रहे हैं
+                alert("🎉 शानदार! अब आपको GVCC की सभी नोटिफिकेशन्स और अपडेट्स यहीं मिलेंगी।");
+                
+                // (अगले स्टेप में हम यहाँ Firebase Token जनरेट करने का कोड डालेंगे)
+                
+            } else if (permission === "denied") {
+                console.log("❌ Permission Denied! (यूज़र ने Block कर दिया)");
+            }
+        });
     }
 
-    // जैसे ही स्क्रीन पर कहीं भी क्लिक/टच होगा, यह कोड सिर्फ एक बार चलेगा ({ once: true })
-    document.body.addEventListener('click', askPermOnFirstTouch, { once: true });
-    document.body.addEventListener('touchstart', askPermOnFirstTouch, { once: true });
+    // जैसे ही पेज लोड हो, परमिशन वाला पॉपअप आ जाए
+    window.onload = function() {
+        // थोड़ा सा डिले (Delay) दे रहे हैं ताकि पेज आराम से लोड हो जाए (2 सेकंड)
+        setTimeout(askNotificationPermission, 2000);
+    };
 </script>
-
-    
-    
 </body>
 </html>
