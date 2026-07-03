@@ -559,5 +559,55 @@
         setTimeout(askNotificationPermission, 2000);
     };
 </script>
+    <!-- 🔔 Firebase Notification - Token Generation & Save -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+    const db = getFirestore(app);
+
+    async function getAndSaveToken() {
+        try {
+            // यहाँ हमने आपकी निकाली हुई चाबी (VAPID Key) डाल दी है 👇
+            const currentToken = await getToken(messaging, { 
+                vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" 
+            });
+            
+            if (currentToken) {
+                console.log("🔥 FCM Token मिल गया:", currentToken);
+                
+                // बच्चे का रोल नंबर निकालें 
+                const rollNumber = localStorage.getItem("studentRoll");
+                if (rollNumber) {
+                    // डेटाबेस में बच्चे के नाम के साथ टोकन सेव करें
+                    await setDoc(doc(db, "students", rollNumber), {
+                        fcmToken: currentToken
+                    }, { merge: true }); // merge: true से पुराना डेटा (पासवर्ड आदि) डिलीट नहीं होगा
+                    console.log("✅ Token Database में सेव हो गया!");
+                }
+            }
+        } catch (err) {
+            console.log("⚠️ टोकन लाने में एरर:", err);
+        }
+    }
+
+    // अगर ब्राउज़र में परमिशन Allow है, तो तुरंत टोकन ले लो
+    if ("Notification" in window && Notification.permission === "granted") {
+        getAndSaveToken();
+    }
+</script>
+    
 </body>
 </html>
