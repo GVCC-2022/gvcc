@@ -13,7 +13,77 @@
     <style>
         :root { --primary: #003366; --secondary: #007bff; --success: #28a745; --danger: #dc3545; --bg: #f8fafc; --text-main: #1e293b; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
-        #loading { font-weight: bold; color: #003366; margin: 100px auto; font-size: 18px; text-align: center; }
+                /* 🌟 Premium Smart Loader Styling 🌟 */
+        #loading {
+            margin: 120px auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .smart-loader {
+            position: relative;
+            width: 75px;
+            height: 75px;
+            margin-bottom: 25px;
+        }
+
+        .smart-loader::before, .smart-loader::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid transparent;
+        }
+
+        /* बाहरी रिंग (नीली) */
+        .smart-loader::before {
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-top-color: #003366;
+            border-bottom-color: #007bff;
+            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+
+        /* अंदरूनी रिंग (हरी-नारंगी) */
+        .smart-loader::after {
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border-left-color: #f59e0b;
+            border-right-color: #10b981;
+            animation: spin-reverse 1s linear infinite;
+        }
+
+        /* बीच का आइकॉन */
+        .loader-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 26px;
+            color: #003366;
+            animation: pulse-icon 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #003366, #10b981, #007bff, #003366);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 2s linear infinite;
+        }
+
+        /* एनिमेशन्स */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+        @keyframes pulse-icon { 
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
+            50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
         #mainContent { display: none; flex-direction: column; min-height: 100vh; }
         header { background: linear-gradient(135deg, #002244, var(--primary)); color: white; padding: 30px 15px 35px 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         header .logo { width: auto !important; max-width: 180px !important; height: auto !important; background: none !important; background-color: transparent !important; border-radius: 0 !important; padding: 0 !important; margin: 0 auto 15px auto !important; display: block !important; object-fit: scale-down !important; box-shadow: none !important; }
@@ -50,10 +120,15 @@
 </head>
 <body>
 
+        <!-- 🌟 Advanced Premium Loading Screen -->
     <div id="loading">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; color: #003366; margin-bottom: 10px;"></i>
-        <div>⏳ Securing Connection & Loading Profile...</div>
+        <div class="smart-loader">
+            <!-- बीच में पढ़ाई (Book) वाला आइकॉन -->
+            <i class="fa-solid fa-book-open-reader loader-icon"></i>
+        </div>
+        <div class="loading-text">Getting Your Profile Ready...</div>
     </div>
+
 
     <div id="mainContent">
         <header>
