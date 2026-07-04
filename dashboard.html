@@ -406,60 +406,47 @@
 
     <!-- 🌟 MERGED FIREBASE SCRIPT FOR ALL FUNCTIONALITY 🌟 -->
     <script type="module">
-        // 1. All Imports in one place
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+        // 1. All Imports in one place (यहाँ getAnalytics और setUserProperties जोड़ दिया है)
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js"; // 👈 नई लाइन
 
-        // 2. Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-            authDomain: "gvcc-database.firebaseapp.com",
-            projectId: "gvcc-database",
-            storageBucket: "gvcc-database.firebasestorage.app",
-            messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-        };
+// 2. Firebase Config (वही रहेगा)
+const firebaseConfig = {
+    apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+    authDomain: "gvcc-database.firebaseapp.com",
+    projectId: "gvcc-database",
+    storageBucket: "gvcc-database.firebasestorage.app",
+    messagingSenderId: "1063216875940",
+    appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+};
 
-        // 3. Initialize Firebase ONLY ONCE safely
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const db = getFirestore(app);
-        
-        // Initialize Messaging safely
-        let messaging;
-        try {
-            if (typeof window !== "undefined" && "Notification" in window) {
-                messaging = getMessaging(app);
-            }
-        } catch(e) {
-            console.log("Messaging init error:", e);
-        }
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
+const analytics = getAnalytics(app); // 👈 नई लाइन (Analytics चालू करने के लिए)
 
-        let studentClassGlobal = "10th";
-        const activeRoll = localStorage.getItem("studentRoll");
+// ... (बाकी का आपका कोड सेम रहेगा) ...
 
-        if (!activeRoll) {
-            window.location.href = "student-login.html";
-        } else {
-            fetchStudentData(activeRoll);
-        }
+// 🔹 1. FETCH STUDENT PROFILE DATA (इस फंक्शन के अंदर हमें एक लाइन जोड़नी है)
+async function fetchStudentData(roll) {
+    try {
+        const docRef = doc(db, "students", roll);
+        const docSnap = await getDoc(docRef);
 
-        // ==========================================
-        // 🔹 1. FETCH STUDENT PROFILE DATA
-        // ==========================================
-        async function fetchStudentData(roll) {
-            try {
-                const docRef = doc(db, "students", roll);
-                const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            
+            let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
+            let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
+            
+            studentClassGlobal = String(studentClass).trim();
+            
+            // 👇 नई लाइन: फायरबेस को बताना कि यह बच्चा किस क्लास का है
+            setUserProperties(analytics, { class_group: studentClassGlobal }); 
+            
+            // ... (बाकी का कोड सेम) ...
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    // Added extra fallbacks just in case field names are typed differently
-                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
-                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
-                    
-                    studentClassGlobal = String(studentClass).trim();
                     
                     document.getElementById("studentName").innerText = studentName;
                     document.getElementById("studentRollDisplay").innerText = roll;
