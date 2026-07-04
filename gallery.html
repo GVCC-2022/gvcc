@@ -15,7 +15,8 @@
             background: radial-gradient(circle, #2a0845 0%, #001529 100%);
             z-index: 99999; display: flex; align-items: center; justify-content: center;
             flex-direction: column; color: white;
-            transition: opacity 1.5s ease, visibility 1.5s ease, filter 1.5s ease;
+            /* गायब होने की स्पीड 1 सेकंड कर दी है */
+            transition: opacity 1s ease, visibility 1s ease, filter 1s ease;
         }
 
         .welcome-hidden { opacity: 0; visibility: hidden; filter: blur(10px); }
@@ -25,14 +26,13 @@
             background: linear-gradient(90deg, #ffe4e6, #f43f5e, #ffe4e6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shine 3s linear infinite; }
 
-        .petal { position: absolute; top: -10%; background: linear-gradient(135deg, #e11d48, #be123c);
-            border-radius: 15px 0 15px 0; opacity: 0; animation: fall linear forwards; z-index: 999999; }
+        /* अब बैकग्राउंड कलर CSS से हटाकर JavaScript से डालेंगे ताकि अलग-अलग रंग आएं */
+        .petal { position: absolute; top: -10%; border-radius: 15px 0 15px 0; opacity: 0; animation: fall linear forwards; z-index: 999999; }
 
-        /* फूल गिरने का एनीमेशन */
         @keyframes fall { 
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            80% { opacity: 0.8; }
+            10% { opacity: 0.9; }
+            80% { opacity: 0.9; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } 
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
@@ -54,7 +54,6 @@
 </head>
 <body>
 
-    <!-- Audio Element -->
     <audio id="bgSong">
         <source src="song.mp3" type="audio/mpeg">
     </audio>
@@ -83,36 +82,45 @@
         const welcome = document.getElementById('welcome-screen');
 
         function createPetals() {
-            // फूल 35 से बढ़ाकर 100 कर दिए हैं
+            // अलग-अलग फूलों के रंग (लाल, नारंगी, पीला, सफ़ेद, गुलाबी)
+            const colors = [
+                ['#e11d48', '#be123c'], // गुलाब (Red)
+                ['#f59e0b', '#d97706'], // गेंदा (Orange)
+                ['#fde047', '#eab308'], // सूरजमुखी (Yellow)
+                ['#ffffff', '#e2e8f0'], // चमेली (White)
+                ['#f472b6', '#db2777']  // कमल (Pink)
+            ];
+
             for (let i = 0; i < 100; i++) {
                 let petal = document.createElement('div');
                 petal.classList.add('petal');
+                
+                // रैंडम रंग चुनना
+                let randomColor = colors[Math.floor(Math.random() * colors.length)];
+                petal.style.background = `linear-gradient(135deg, ${randomColor[0]}, ${randomColor[1]})`;
+
                 let size = Math.random() * 15 + 10;
                 petal.style.width = size + 'px'; 
                 petal.style.height = size + 'px';
                 petal.style.left = Math.random() * 100 + 'vw';
                 
-                // फूल थोड़ा और आराम से गिरेंगे (3 से 7 सेकंड में)
-                petal.style.animationDuration = (Math.random() * 4 + 3) + 's';
-                
-                // सभी फूल एक साथ नहीं गिरेंगे, 0 से 5 सेकंड के बीच रुक-रुक कर आएंगे
-                petal.style.animationDelay = Math.random() * 5 + 's';
+                // फूल 2 से 4 सेकंड के बीच तेजी से गिरेंगे (क्योंकि एनीमेशन टाइम कम है)
+                petal.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                petal.style.animationDelay = Math.random() * 2 + 's';
                 
                 welcome.appendChild(petal);
             }
         }
 
         window.addEventListener('load', () => {
-            // 1. फूल गिरना शुरू
             createPetals();
 
-            // 2. 7.5 सेकंड बाद स्क्रीन अपने-आप हटेगी (ताकि गाना पूरा हो जाए)
+            // टाइमिंग फिक्स: 4.25 सेकंड पर फेड होना शुरू होगा, और 1 सेकंड में पूरा गायब होकर 5.25 सेकंड पर खत्म!
             setTimeout(() => { 
                 welcome.classList.add('welcome-hidden');
-                setTimeout(() => { welcome.style.display = 'none'; }, 1500);
-            }, 7500);
+                setTimeout(() => { welcome.style.display = 'none'; }, 1000); // 1 सेकंड फेड टाइम
+            }, 4250); 
 
-            // 3. गाना चलाने की कोशिश
             let playPromise = song.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
