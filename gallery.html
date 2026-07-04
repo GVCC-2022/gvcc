@@ -16,7 +16,6 @@
             z-index: 99999; display: flex; align-items: center; justify-content: center;
             flex-direction: column; color: white;
             transition: opacity 1.5s ease, visibility 1.5s ease, filter 1.5s ease;
-            cursor: pointer; /* ताकी यूजर क्लिक करके गाना शुरू कर सके */
         }
 
         .welcome-hidden { opacity: 0; visibility: hidden; filter: blur(10px); }
@@ -56,7 +55,7 @@
 
     <div id="welcome-screen">
         <i class="fa-solid fa-photo-film welcome-icon"></i>
-        <div class="welcome-text">✨ यादों के सफ़र में<br>आपका स्वागत हैं... ✨<br><small style="font-size:12px; opacity:0.6;">(स्क्रीन पर कहीं भी क्लिक करें)</small></div>
+        <div class="welcome-text">✨ यादों के सफ़र में<br>आपका स्वागत हैं... ✨</div>
     </div>
 
     <header>
@@ -77,12 +76,6 @@
         const song = document.getElementById('bgSong');
         const welcome = document.getElementById('welcome-screen');
 
-        function startExperience() {
-            song.play();
-            welcome.classList.add('welcome-hidden');
-            setTimeout(() => { welcome.style.display = 'none'; }, 1500);
-        }
-
         function createPetals() {
             for (let i = 0; i < 35; i++) {
                 let petal = document.createElement('div');
@@ -96,8 +89,24 @@
         }
 
         window.addEventListener('load', () => {
+            // 1. फूल गिरना शुरू
             createPetals();
-            welcome.addEventListener('click', startExperience);
+
+            // 2. 4 सेकंड बाद स्क्रीन अपने-आप हट जाएगी (बिना क्लिक किए)
+            setTimeout(() => { 
+                welcome.classList.add('welcome-hidden');
+                setTimeout(() => { welcome.style.display = 'none'; }, 1500);
+            }, 4000);
+
+            // 3. गाना चलाने की कोशिश
+            let playPromise = song.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // अगर ब्राउज़र ने ऑटो-प्ले रोक दिया, तो जैसे ही यूजर स्क्रीन पर कहीं भी टच करेगा (जैसे स्क्रॉल करने के लिए), गाना बज उठेगा!
+                    window.addEventListener('touchstart', () => { song.play(); }, { once: true });
+                    window.addEventListener('click', () => { song.play(); }, { once: true });
+                });
+            }
         });
 
         function openModal(el) { document.getElementById("myModal").style.display = "block"; document.getElementById("modalImg").src = el.querySelector("img").src; }
@@ -105,3 +114,4 @@
     </script>
 </body>
 </html>
+
