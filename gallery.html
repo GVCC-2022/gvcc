@@ -26,9 +26,15 @@
             animation: shine 3s linear infinite; }
 
         .petal { position: absolute; top: -10%; background: linear-gradient(135deg, #e11d48, #be123c);
-            border-radius: 15px 0 15px 0; opacity: 0.8; animation: fall linear forwards; z-index: 999999; }
+            border-radius: 15px 0 15px 0; opacity: 0; animation: fall linear forwards; z-index: 999999; }
 
-        @keyframes fall { 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+        /* फूल गिरने का एनीमेशन */
+        @keyframes fall { 
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } 
+        }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes shine { to { background-position: 200% center; } }
 
@@ -77,13 +83,21 @@
         const welcome = document.getElementById('welcome-screen');
 
         function createPetals() {
-            for (let i = 0; i < 35; i++) {
+            // फूल 35 से बढ़ाकर 100 कर दिए हैं
+            for (let i = 0; i < 100; i++) {
                 let petal = document.createElement('div');
                 petal.classList.add('petal');
                 let size = Math.random() * 15 + 10;
-                petal.style.width = size + 'px'; petal.style.height = size + 'px';
+                petal.style.width = size + 'px'; 
+                petal.style.height = size + 'px';
                 petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                // फूल थोड़ा और आराम से गिरेंगे (3 से 7 सेकंड में)
+                petal.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                
+                // सभी फूल एक साथ नहीं गिरेंगे, 0 से 5 सेकंड के बीच रुक-रुक कर आएंगे
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                
                 welcome.appendChild(petal);
             }
         }
@@ -92,17 +106,16 @@
             // 1. फूल गिरना शुरू
             createPetals();
 
-            // 2. 4 सेकंड बाद स्क्रीन अपने-आप हट जाएगी (बिना क्लिक किए)
+            // 2. 7.5 सेकंड बाद स्क्रीन अपने-आप हटेगी (ताकि गाना पूरा हो जाए)
             setTimeout(() => { 
                 welcome.classList.add('welcome-hidden');
                 setTimeout(() => { welcome.style.display = 'none'; }, 1500);
-            }, 4000);
+            }, 7500);
 
             // 3. गाना चलाने की कोशिश
             let playPromise = song.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
-                    // अगर ब्राउज़र ने ऑटो-प्ले रोक दिया, तो जैसे ही यूजर स्क्रीन पर कहीं भी टच करेगा (जैसे स्क्रॉल करने के लिए), गाना बज उठेगा!
                     window.addEventListener('touchstart', () => { song.play(); }, { once: true });
                     window.addEventListener('click', () => { song.play(); }, { once: true });
                 });
@@ -114,4 +127,3 @@
     </script>
 </body>
 </html>
-
