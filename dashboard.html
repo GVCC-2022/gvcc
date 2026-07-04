@@ -8,12 +8,31 @@
     <title>GVCC - Student Dashboard</title>
     
     <link rel="manifest" href="manifest.json">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --primary: #003366; --secondary: #007bff; --success: #28a745; --danger: #dc3545; --bg: #f8fafc; --text-main: #1e293b; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
-                /* 🌟 Premium Smart Loader Styling 🌟 */
+        :root {
+            --primary: #003366;
+            --secondary: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Premium Smart Loader Styling */
         #loading {
             margin: 120px auto;
             text-align: center;
@@ -37,7 +56,6 @@
             border: 4px solid transparent;
         }
 
-        /* बाहरी रिंग (नीली) */
         .smart-loader::before {
             top: 0; left: 0; right: 0; bottom: 0;
             border-top-color: #003366;
@@ -45,7 +63,6 @@
             animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
-        /* अंदरूनी रिंग (हरी-नारंगी) */
         .smart-loader::after {
             top: 12px; left: 12px; right: 12px; bottom: 12px;
             border-left-color: #f59e0b;
@@ -53,11 +70,9 @@
             animation: spin-reverse 1s linear infinite;
         }
 
-        /* बीच का आइकॉन */
         .loader-icon {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             font-size: 26px;
             color: #003366;
@@ -75,75 +90,194 @@
             animation: shine 2s linear infinite;
         }
 
-        /* एनिमेशन्स */
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
-        @keyframes pulse-icon { 
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
-            50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 
+        #mainContent {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        @keyframes shine { to { background-position: 200% center; } }
 
-        #mainContent { display: none; flex-direction: column; min-height: 100vh; }
-        header { background: linear-gradient(135deg, #002244, var(--primary)); color: white; padding: 30px 15px 35px 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-        header .logo { width: auto !important; max-width: 180px !important; height: auto !important; background: none !important; background-color: transparent !important; border-radius: 0 !important; padding: 0 !important; margin: 0 auto 15px auto !important; display: block !important; object-fit: scale-down !important; box-shadow: none !important; }
-        header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
-        header p { margin: 6px 0 14px 0; font-size: 13px; opacity: 0.8; }
-        .container { max-width: 450px; width: 90%; margin: -25px auto 30px auto; flex: 1; }
-        .profile-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02); margin-bottom: 25px; }
-        .profile-header { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #f1f5f9; }
+        /* Premium Header with Logo */
+        header {
+            background: linear-gradient(135deg, #002244, var(--primary));
+            color: white;
+            padding: 30px 15px 35px 15px;
+            text-align: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 450px;
+            width: 90%;
+            margin: -25px auto 30px auto;
+            flex: 1;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.02);
+            margin-bottom: 25px;
+        }
+
+        .profile-header {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px dashed #f1f5f9;
+        }
         .info-row:last-child { border: none; }
+
         .info-label { color: #64748b; font-weight: 500; }
         .info-value { color: var(--text-main); font-weight: 600; }
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .full-width { grid-column: span 2; }
-        .menu-card { background: white !important; border: none; border-radius: 14px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: all 0.2s ease; text-decoration: none; }
+
+        /* Feature Grid System */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        /* Premium Dashboard Cards */
+        .menu-card {
+            background: white !important;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
         .menu-card i { font-size: 24px; }
         .menu-card span { font-size: 14px; font-weight: 600; }
-        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white; flex-direction: row; padding: 14px; }
+
+        .card-live {
+            background: linear-gradient(135deg, #23d5ab, var(--success)) !important;
+            color: white;
+            flex-direction: row;
+            padding: 14px;
+        }
         .card-live i { font-size: 20px; animation: pulse 1.5s infinite; }
+
         .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
         .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
         .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
         .card-day1 { color: #8b5cf6; border-top: 4px solid #8b5cf6; }
         .card-result { color: #10b981; border-top: 4px solid #10b981; }
         .card-performer { color: #a855f7; border-top: 4px solid #a855f7; }
-        .card-install { background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important; color: #0284c7; border: 1px solid #7dd3fc; flex-direction: row; padding: 14px; }
+        
+        .card-install { 
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
+            color: #0284c7; 
+            border: 1px solid #7dd3fc;
+            flex-direction: row;
+            padding: 14px;
+        }
         .card-install i { font-size: 20px; animation: bounce 2s infinite; }
-        .menu-card:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .btn-logout { width: 100%; background: #ffe4e6; color: var(--danger); border: 1px solid #fecdd3; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
-        footer { background: #001529; color: #94a3b8; text-align: center; padding: 15px; font-size: 12px; margin-top: auto; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+
+        .menu-card:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn-logout {
+            width: 100%;
+            background: #ffe4e6;
+            color: var(--danger);
+            border: 1px solid #fecdd3;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-logout:active { background: #fecdd3; }
+
+        footer {
+            background: #001529;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            margin-top: auto;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        footer p { margin: 4px 0; }
+        footer strong { color: white; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+        @keyframes pulse-icon { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } }
+        @keyframes shine { to { background-position: 200% center; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
     </style>
 </head>
 <body>
 
-        <!-- 🌟 Advanced Premium Loading Screen -->
     <div id="loading">
         <div class="smart-loader">
-            <!-- बीच में पढ़ाई (Book) वाला आइकॉन -->
             <i class="fa-solid fa-book-open-reader loader-icon"></i>
         </div>
         <div class="loading-text">Getting Your Profile Ready...</div>
     </div>
 
-
     <div id="mainContent">
         <header>
             <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
+                
                 <div style="position: absolute !important; left: 10px; top: -4px;">
                     <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important;">
                 </div>
+                
                 <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
                     <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important; font-family: 'Segoe UI', sans-serif;">Gyan Varsha Coaching Center</h1>
+                    
                     <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
-                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content; white-space: nowrap;">✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨</div>
+                    
+                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content; white-space: nowrap;">
+                        ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
+                    </div>
                 </div>
             </div>
             <div style="height: 110px; width: 100%; background: transparent;"></div>
-        </header>
+            </header>
 
         <div class="container">
             <div class="profile-card">
@@ -168,30 +302,61 @@
                 <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px;">
                     <i class="fa-solid fa-bell fa-shake"></i> Live Updates from Teachers
                 </h3>
+                
                 <div id="studentNotices"></div>
                 <div id="studentTests"></div>
             </div>
 
             <div class="grid-menu">
-                <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank"><i class="fa-solid fa-video"></i><span>Join Live Class</span></a>
-                <button class="menu-card card-notes" onclick="window.location.href='notesmenu.html'"><i class="fa-solid fa-book-open"></i><span>Notes</span></button>
-                <button class="menu-card card-notice" onclick="window.location.href='notice.html'"><i class="fa-solid fa-bullhorn"></i><span>Notice Board</span></button>
-                <button class="menu-card card-test" onclick="routeToLiveTest()"><i class="fa-solid fa-pen-to-square"></i><span>Online Test</span></button>
-                <button class="menu-card card-day1" onclick="window.location.href='day1.html'"><i class="fa-solid fa-rocket"></i><span>Day 1 Test</span></button>
-                <button class="menu-card card-result" onclick="routeToResult()"><i class="fa-solid fa-chart-bar"></i><span>Result</span></button>
-                <button class="menu-card card-performer" onclick="window.location.href='results.html'"><i class="fa-solid fa-trophy"></i><span>Day 1 Performers</span></button>
-                <!-- 📸 Premium Full-Width Gallery Button -->
-<button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="window.location.href='gallery.html'">
-    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
-    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
-</button>
+                <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Join Live Class</span>
+                </a>
 
+                <button class="menu-card card-notes" onclick="window.location.href='notesmenu.html'">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Notes</span>
+                </button>
 
-        
-                <button class="menu-card card-install full-width" onclick="installApp()"><i class="fa-solid fa-download"></i><span>Install GVCC App</span></button>
+                <button class="menu-card card-notice" onclick="window.location.href='notice.html'">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span>Notice Board</span>
+                </button>
+
+                <button class="menu-card card-test" onclick="routeToLiveTest()">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Online Test</span>
+                </button>
+
+                <button class="menu-card card-day1" onclick="window.location.href='day1.html'">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Day 1 Test</span>
+                </button>
+
+                <button class="menu-card card-result" onclick="routeToResult()">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    <span>Result</span>
+                </button>
+
+                <button class="menu-card card-performer" onclick="window.location.href='results.html'">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>Day 1 Performers</span>
+                </button>
+
+                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="window.location.href='gallery.html'">
+                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
+                    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
+                </button>
+
+                <button class="menu-card card-install full-width" onclick="installApp()">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Install GVCC App</span>
+                </button>
             </div>
 
-            <button class="btn-logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout Securely</button>
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+            </button>
         </div>
 
         <footer>
@@ -201,10 +366,13 @@
         </footer>
     </div>
 
-    <!-- Smart Install App Logic -->
     <script>
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
         window.installApp = async function() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -216,21 +384,24 @@
         };
     </script>
 
-    <!-- 🔔 Firebase Notification Permission Logic -->
     <script>
         function askNotificationPermission() {
             if (!("Notification" in window)) return;
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
-                    alert("🎉 शानदार! अब आपको GVCC की सभी नोटिफिकेशन्स और अपडेट्स यहीं मिलेंगी।");
-                    if (window.generateFCMToken) window.generateFCMToken();
+                    console.log("✅ Notification Permission Granted.");
+                    if (window.generateFCMToken) {
+                        window.generateFCMToken();
+                    }
                 }
             });
         }
-        window.onload = function() { setTimeout(askNotificationPermission, 2000); };
+
+        window.onload = function() {
+            setTimeout(askNotificationPermission, 2000);
+        };
     </script>
 
-    <!-- 🌟 MERGED FIREBASE SCRIPT FOR ALL FUNCTIONALITY 🌟 -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -244,17 +415,15 @@
             storageBucket: "gvcc-database.firebasestorage.app",
             messagingSenderId: "1063216875940",
             appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
-            measurementId: "G-DP808QLE7K" // <-- इसे आपको बाद में बदलना है
+            measurementId: "G-DP808QLE7K"
         };
 
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
         const db = getFirestore(app);
         
-        // 🛡️ Safe Analytics
         let analytics = null;
         try { analytics = getAnalytics(app); } catch(e) { console.log("Analytics loading skipped"); }
 
-        // 🛡️ Safe Messaging
         let messaging;
         try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
@@ -274,12 +443,12 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
+                    
                     let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
                     let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
                     studentClassGlobal = String(studentClass).trim();
-
-                    // 🎯 Targeted Messaging Setup
+                    
                     if (analytics) {
                         try { setUserProperties(analytics, { class_group: studentClassGlobal }); } 
                         catch(e) { console.log("Analytics tracking error", e); }
@@ -308,7 +477,14 @@
             noticeBox.innerHTML = ""; 
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                noticeBox.innerHTML += `<div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;"><div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;"><i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName}</strong> (${data.subject}) • Target: ${data.targetClass}</div><div style="color: #f8fafc; font-size: 15px;">${data.message}</div></div>`;
+                noticeBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
+                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || 'General'}) • Target: ${data.targetClass || 'All'}
+                        </div>
+                        <div style="color: #f8fafc; font-size: 15px;">${data.message || ''}</div>
+                    </div>
+                `;
             });
         });
 
@@ -319,7 +495,19 @@
             testBox.innerHTML = "";
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                testBox.innerHTML += `<div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;"><div><div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;"><i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName}</strong> (${data.subject}) • ${data.targetClass}</div><div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName}</div></div><a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">Start Test <i class="fa-solid fa-arrow-right"></i></a></div>`;
+                testBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
+                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || ''}) • ${data.targetClass || ''}
+                            </div>
+                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName || 'Online Test'}</div>
+                        </div>
+                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
+                            Start Test <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
             });
         });
 
@@ -327,9 +515,16 @@
         window.generateFCMToken = async function() {
             if(!messaging) return;
             try {
-                const currentToken = await getToken(messaging, { vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" });
-                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-            } catch (err) {}
+                const currentToken = await getToken(messaging, { 
+                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" 
+                });
+                if (currentToken && activeRoll) {
+                    await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
+                    console.log("✅ Token Synced with DB");
+                }
+            } catch (err) {
+                console.log("FCM Error", err);
+            }
         }
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
@@ -350,10 +545,12 @@
             else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
         }
 
-        window.logout = function() { localStorage.removeItem("studentRoll"); window.location.href = "student-login.html"; }
+        window.logout = function() { 
+            localStorage.removeItem("studentRoll"); 
+            window.location.href = "student-login.html"; 
+        }
+        
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
-
     </script>
 </body>
 </html>
-
