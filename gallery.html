@@ -21,7 +21,53 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        /* 🌟 Cinematic Welcome Screen */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0f172a, #003366);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .welcome-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #fbcfe8;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .welcome-text {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            padding: 0 20px;
+            background: linear-gradient(90deg, #fbcfe8, #c026d3, #fbcfe8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 2s linear infinite, popup 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popup {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
 
         /* 🌟 Premium Header */
         header {
@@ -64,7 +110,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            aspect-ratio: 1 / 1; /* चौकोर (Square) डिज़ाइन */
+            aspect-ratio: 1 / 1; 
         }
 
         .gallery-item:active { transform: scale(0.95); }
@@ -135,6 +181,12 @@
 </head>
 <body>
 
+    <!-- ✨ The Cinematic Welcome Screen ✨ -->
+    <div id="welcome-screen">
+        <i class="fa-solid fa-photo-film welcome-icon"></i>
+        <div class="welcome-text">✨ यादों के सफ़र में<br>आपका स्वागत हैं... ✨</div>
+    </div>
+
     <header>
         <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
         <h1><i class="fa-solid fa-images"></i> GVCC Gallery</h1>
@@ -142,8 +194,6 @@
 
     <div class="gallery-container">
         <!-- 📷 यहाँ से आपकी फोटोज़ शुरू होंगी -->
-        <!-- आप 'src' के अंदर अपनी फोटो का लिंक या नाम डाल सकते हैं -->
-        
         <div class="gallery-item" onclick="openModal(this)">
             <img src="20260620_144347.png" alt="GVCC Event">
         </div>
@@ -163,8 +213,6 @@
         <div class="gallery-item" onclick="openModal(this)">
             <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=500&auto=format&fit=crop" alt="Event">
         </div>
-
-        <!-- 📷 फोटो सेक्शन खत्म -->
     </div>
 
     <!-- The Full Screen Modal -->
@@ -178,6 +226,15 @@
     </footer>
 
     <script>
+        // Welcome Screen Fade Out Logic
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const welcomeScreen = document.getElementById('welcome-screen');
+                welcomeScreen.style.opacity = '0';
+                welcomeScreen.style.visibility = 'hidden';
+            }, 2500); // 2.5 सेकंड तक एनीमेशन दिखेगा
+        });
+
         // Modal Logic
         const modal = document.getElementById("myModal");
         const modalImg = document.getElementById("modalImg");
@@ -192,7 +249,6 @@
             modal.style.display = "none";
         }
 
-        // अगर कोई फोटो के बाहर ब्लैक हिस्से पर क्लिक करे, तो भी बंद हो जाए
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
