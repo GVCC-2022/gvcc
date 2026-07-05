@@ -40,7 +40,10 @@
         header { background: linear-gradient(135deg, #002244 0%, #003366 100%); color: white; padding: 20px 15px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
         .back-btn { color: white; font-size: 20px; text-decoration: none; margin-right: 15px; padding: 5px 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
         header h1 { margin: 0; font-size: 20px; flex: 1; }
-        .gallery-container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; flex: 1; }
+        
+        /* 👇 यह रही वो लाइन जिससे ग्रिड का स्पेस खत्म होगा (grid-auto-flow: dense;) */
+        .gallery-container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; flex: 1; grid-auto-flow: dense; }
+        
         .gallery-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 1 / 1; cursor: pointer; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .gallery-item:hover img { transform: scale(1.1); }
@@ -66,27 +69,24 @@
         <h1><i class="fa-solid fa-images"></i> GVCC Gallery</h1>
     </header>
 
-    <!-- 🚀 स्मार्ट गैलरी का डिब्बा (खाली रखा है, क्योंकि जावास्क्रिप्ट इसे भरेगा) -->
     <div class="gallery-container" id="myGalleryBox"></div>
 
     <div id="myModal"><span class="close-modal" onclick="closeModal()" style="position:absolute; top:20px; right:30px; color:white; font-size:40px; cursor:pointer;">&times;</span><img id="modalImg"></div>
 
     <script>
         // ==========================================
-        // 📸 यहाँ अपनी फ़ोटोज़ के नाम डालिए
-        // ==========================================
         const myPhotos = [
-            "20260620_144347.png",           // आपकी मेन फोटो
-            "15august/IMG_20260126_161908211_HDR.jpg",           // 15 अगस्त फोल्डर की फोटो
-            "15august/20260705_063454.jpg"            // (इन नामों को अपनी अपलोड की गई फोटो के नाम से बदल लें)
+            "20260620_144347.png",           
+            "15august/IMG_20260126_161908211_HDR.jpg",           
+            "15august/20260705_063454.jpg"            
         ];
 
-        // यह कोड अपने-आप सभी फोटो को सजा देगा
         const galleryBox = document.getElementById("myGalleryBox");
         myPhotos.forEach(photo => {
+            // 👇 यहाँ मैंने 'onerror' लगा दिया है! अगर फोटो का नाम गलत हुआ तो डिब्बा छुप जाएगा
             galleryBox.innerHTML += `
                 <div class="gallery-item" onclick="openModal(this)">
-                    <img src="${photo}" alt="GVCC Photo" loading="lazy">
+                    <img src="${photo}" alt="GVCC Photo" loading="lazy" onerror="this.parentElement.style.display='none';">
                 </div>
             `;
         });
@@ -114,8 +114,6 @@
 
         window.addEventListener('load', () => {
             createPetals();
-
-            // ⏱️ टाइमिंग फिक्स: अब यह ठीक 5.25 सेकंड (5250ms) तक इंतज़ार करेगा, फिर गायब होना शुरू होगा
             setTimeout(() => { 
                 welcome.classList.add('welcome-hidden');
                 setTimeout(() => { welcome.style.display = 'none'; }, 1000); 
