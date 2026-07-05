@@ -384,7 +384,19 @@
         };
     </script>
 
+        <!-- 🔔 Notification & Service Worker Registration -->
     <script>
+        // 1. सर्विस वर्कर को रजिस्टर करना (ताकि बैकग्राउंड में मैसेज गिरे)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker Registered successfully scope:', registration.scope);
+            })
+            .catch(function(err) {
+                console.log('❌ Service Worker registration failed:', err);
+            });
+        }
+
         function askNotificationPermission() {
             if (!("Notification" in window)) return;
             Notification.requestPermission().then((permission) => {
@@ -393,15 +405,18 @@
                     if (window.generateFCMToken) {
                         window.generateFCMToken();
                     }
+                } else {
+                    console.log("❌ Notification Permission Denied by User.");
                 }
             });
         }
 
         window.onload = function() {
-            setTimeout(askNotificationPermission, 2000);
+            setTimeout(askNotificationPermission, 2500);
         };
     </script>
 
+    <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -511,19 +526,24 @@
             });
         });
 
-        // FCM Token Setup
+        // FCM Token Setup (WITH SERVICE WORKER LINK)
         window.generateFCMToken = async function() {
             if(!messaging) return;
             try {
+                // यह लाइन सर्विस वर्कर को जबरदस्ती ढूँढती है
+                const registration = await navigator.serviceWorker.ready; 
+                
                 const currentToken = await getToken(messaging, { 
-                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM" 
+                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
+                    serviceWorkerRegistration: registration 
                 });
+                
                 if (currentToken && activeRoll) {
                     await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-                    console.log("✅ Token Synced with DB");
+                    console.log("✅ Token Generated & Synced with DB!");
                 }
             } catch (err) {
-                console.log("FCM Error", err);
+                console.log("FCM Token Error:", err);
             }
         }
 
