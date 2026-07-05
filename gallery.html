@@ -41,8 +41,15 @@
         .back-btn { color: white; font-size: 20px; text-decoration: none; margin-right: 15px; padding: 5px 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
         header h1 { margin: 0; font-size: 20px; flex: 1; }
         
-        /* 👇 यह रही वो लाइन जिससे ग्रिड का स्पेस खत्म होगा (grid-auto-flow: dense;) */
-        .gallery-container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; flex: 1; grid-auto-flow: dense; }
+        /* 👇 यह रहा आपका नया कोड जो गैप खत्म करेगा */
+        .gallery-container { 
+            padding: 20px; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 15px; 
+            flex: 1; 
+            align-content: start; 
+        }
         
         .gallery-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 1 / 1; cursor: pointer; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -79,12 +86,11 @@
             "20260620_144347.png",           
             "15august/IMG_20260126_161908211_HDR.jpg",           
             "15august/20260705_063454.jpg",
-            "15august/20260705_075220.jpg",
+            "15august/20260705_075220.jpg"
         ];
 
         const galleryBox = document.getElementById("myGalleryBox");
         myPhotos.forEach(photo => {
-            // 👇 यहाँ मैंने 'onerror' लगा दिया है! अगर फोटो का नाम गलत हुआ तो डिब्बा छुप जाएगा
             galleryBox.innerHTML += `
                 <div class="gallery-item" onclick="openModal(this)">
                     <img src="${photo}" alt="GVCC Photo" loading="lazy" onerror="this.parentElement.style.display='none';">
