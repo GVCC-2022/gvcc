@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GVCC - Student Notes Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+    /* 👇 APP FEELING CODE: Chrome features block 👇 */
+    * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Password Input ko allow karne ke liye */
+    input {
+        -webkit-user-select: auto;
+        -moz-user-select: auto;
+        -ms-user-select: auto;
+        user-select: auto;
+    }
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: #f4f6f9;
         margin: 0;
         padding: 0;
         color: #1e293b;
+        overscroll-behavior-y: none; /* Upar se scroll loading roke */
+        touch-action: manipulation;
+    }
+
+    /* Page Exit Animation */
+    .page-exit {
+        animation: zoomOutUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
+
+    @keyframes zoomOutUp {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to { opacity: 0; transform: translateY(-5vh) scale(0.95); }
     }
     
     header {
@@ -51,13 +82,15 @@
         justify-content: space-between;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
         cursor: pointer;
-        transition: all 0.25s ease;
+        transition: all 0.2s ease;
         border-left: 5px solid #007bff;
     }
 
-    .subject-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0, 123, 255, 0.1);
+    /* 👇 NAYA CODE: Button Press Animation 👇 */
+    .subject-card:active {
+        transform: scale(0.96) !important;
+        box-shadow: 0 2px 5px rgba(0, 123, 255, 0.1);
+        background: #f8fafc;
     }
 
     .card-left {
@@ -82,6 +115,13 @@
         opacity: 0.7;
         cursor: not-allowed;
     }
+    
+    /* Coming soon button par click effect nahi hoga */
+    .coming-soon:active {
+        transform: none !important;
+        background: white;
+    }
+
     .coming-soon i { color: #94a3b8; }
     .coming-soon h3 { color: #64748b; }
     
@@ -92,18 +132,6 @@
         border-radius: 6px;
         font-size: 11px;
         font-weight: bold;
-    }
-
-    .back-btn {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 10px;
     }
 
     /* 🔒 Security Modal Popup */
@@ -157,15 +185,47 @@
         border-radius: 10px;
         font-weight: bold;
         cursor: pointer;
+        transition: all 0.1s ease;
     }
+    
+    .m-btn:active { transform: scale(0.95); }
+    
     .m-btn.cancel { background: #f1f5f9; color: #64748b; }
     .m-btn.confirm { background: #007bff; color: white; }
+
+    /* Top Back Button Design */
+    .top-back-btn {
+        position: absolute;
+        top: 20px;
+        left: 15px;
+        background: rgba(255,255,255,0.1);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.1s ease;
+    }
+    .top-back-btn:active {
+        background: rgba(255,255,255,0.3);
+        transform: scale(0.9);
+    }
 </style>
 </head>
 <body>
 
-<header>
-    <h1 id="headerTitle">📚 Student Notes Portal</h1>
+<header style="position: relative;">
+    <!-- NAYA CODE: Asli App jaisa Top Back Button -->
+    <button class="top-back-btn" onclick="goBackToDashboard()">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h1 id="headerTitle">📚 Student Notes</h1>
     <p id="headerSub">Access your curated study materials</p>
 </header>
 
@@ -212,8 +272,9 @@
         <p style="font-size: 13px; color: #64748b; margin: 0;">Gyan Varsha Coaching Center Security</p>
         <input type="password" id="notesPassInput" placeholder="Enter Password">
         <div class="modal-btns">
-            <button class="m-btn cancel" onclick="window.location.href='dashboard.html'">Go Back</button>
-            <button class="m-btn confirm" onclick="verifyPassword()">Unlock Portal</button>
+            <!-- Modal ka Back Button jo replace use karke cache clean rakhega -->
+            <button class="m-btn cancel" onclick="window.location.replace('student-dashboard.html')">Go Back</button>
+            <button class="m-btn confirm" onclick="verifyPassword()">Unlock</button>
         </div>
     </div>
 </div>
@@ -234,17 +295,16 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const CORRECT_PASSWORD = "GVCC@437";
+    const CORRECT_PASSWORD = "GVCC"; 
     let studentClass = "10th"; // Default fallback
 
-    // Page load hote hi password security maangna hai aur class check karni hai
     window.onload = function() {
         document.getElementById("passModal").style.display = "flex";
         document.getElementById("notesPassInput").focus();
         fetchStudentClass();
     };
 
-    // 👤 Student Database se Live Class Fetch karne ka Logic
+    // Database se Class Fetch karne ka Logic
     async function fetchStudentClass() {
         let roll = localStorage.getItem("studentRoll");
         if (roll) {
@@ -253,11 +313,8 @@
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     let data = docSnap.data();
-                    // Firebase field check (Class ya class)
                     let rawClass = data["Class "] || data.Class || data["class"] || "10th";
                     studentClass = String(rawClass).trim().toLowerCase();
-                    
-                    // Display set karna
                     document.getElementById("classDisplayTitle").innerText = `Your Subjects (Class: ${rawClass})`;
                 }
             } catch (error) {
@@ -265,7 +322,8 @@
                 document.getElementById("classDisplayTitle").innerText = "Your Subjects";
             }
         } else {
-            document.getElementById("classDisplayTitle").innerText = "Your Subjects";
+            // Agar bina login ke notes khol liya toh replace karke wapas bhejo
+            window.location.replace("student-login.html");
         }
     }
 
@@ -275,27 +333,44 @@
         if(inputPass === CORRECT_PASSWORD) {
             document.getElementById("passModal").style.display = "none";
         } else {
-            document.body.innerHTML = `
-                <div style='text-align:center; margin-top:100px; font-family: sans-serif;'>
-                    <h1 style='color:#dc3545;'>❌ Wrong Password</h1>
-                    <p style='color:#64748b; font-size:16px;'>Access Denied. Refresh to try again.</p>
-                </div>`;
+            // Galat password par lal border dikhayega aur shake karega (UI improvement)
+            let passInput = document.getElementById("notesPassInput");
+            passInput.style.borderColor = "#dc3545";
+            passInput.value = "";
+            passInput.placeholder = "Wrong Password!";
+            setTimeout(() => {
+                passInput.style.borderColor = "#e2e8f0";
+                passInput.placeholder = "Enter Password";
+            }, 2000);
         }
     }
 
-    // 🎯 Class ke hisab se routing button action (8th, 9th, 10th Teeno ke liye)
-window.goToMathsNotes = function() {
-    if (studentClass.includes("8") || studentClass.includes("8th")) {
-        window.location.href = "maths8.html";  // 👈 8th walo ke liye naya path
-    } 
-    else if (studentClass.includes("9") || studentClass.includes("9th")) {
-        window.location.href = "maths9.html";  // 👈 9th walo ke liye path
-    } 
-    else {
-        window.location.href = "maths10.html"; // 👈 10th walo ke liye path
+    // Header Back button Logic (Animation ke saath)
+    window.goBackToDashboard = function() {
+        document.body.classList.add('page-exit');
+        setTimeout(() => {
+            window.location.replace("student-dashboard.html");
+        }, 300);
     }
-}
 
+    // 🎯 Class ke hisab se routing button action
+    window.goToMathsNotes = function() {
+        document.body.classList.add('page-exit');
+        
+        setTimeout(() => {
+            if (studentClass.includes("8") || studentClass.includes("8th")) {
+                window.location.href = "maths8.html";  
+            } 
+            else if (studentClass.includes("9") || studentClass.includes("9th")) {
+                window.location.href = "maths9.html";  
+            } 
+            else {
+                window.location.href = "maths10.html"; 
+            }
+        }, 300);
+    }
 </script>
+
 </body>
 </html>
+
