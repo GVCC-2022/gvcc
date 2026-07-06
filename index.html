@@ -252,6 +252,34 @@
     }
 
 </script>
+    <!-- 🔔 Global Notification Permission Script -->
+<script>
+    // परमिशन माँगने वाला फंक्शन
+    async function requestNotificationAccess() {
+        if (!("Notification" in window)) {
+            console.log("This browser does not support notifications.");
+            return;
+        }
+
+        if (Notification.permission === "granted") {
+            console.log("✅ Already granted.");
+        } else if (Notification.permission !== "denied") {
+            // परमिशन पॉप-अप दिखाएँ
+            const permission = await Notification.requestPermission();
+            if (permission === "granted") {
+                console.log("✅ Notification Permission Granted by user.");
+                // यहाँ आप चाहें तो टोकन जनरेट करने वाला फंक्शन भी कॉल कर सकते हैं
+                if (window.generateFCMToken) window.generateFCMToken();
+            }
+        }
+    }
+
+    // पेज लोड होने के 2 सेकंड बाद पॉप-अप दिखाएँ
+    window.addEventListener('load', () => {
+        setTimeout(requestNotificationAccess, 2000);
+    });
+</script>
+    
 
 </body>
 </html>
