@@ -22,15 +22,20 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    margin: 0;
+    padding: 0;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+    /* 👇 ये 2 लाइनें आपके ऐप को असली एंड्रॉइड ऐप बना देंगी */
+    overscroll-behavior-y: none; /* ऊपर से खींचने वाला लोडिंग रोकेगा */
+    touch-action: manipulation;  /* स्क्रीन ज़ूम होना रोकेगा */
+}
+
 
         /* Premium Smart Loader Styling */
         #loading {
