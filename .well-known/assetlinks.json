@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "online.gvcc",
+        "sha256_cert_fingerprints": ["E8:87:DF:78:C3:45:2A:0F:4C:C2:DE:DA:B2:A7:AC:0B:00:CD:F8:5F:4C:F9:00:AB:18:1F:17:F4:7F:B7:D8:73"]
+      }
+    }]
