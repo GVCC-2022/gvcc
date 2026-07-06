@@ -5,7 +5,7 @@
 <title>GVCC - Student Notes Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    /* 👇 APP FEELING CODE: Chrome features block 👇 */
+    /* 👇 APP FEELING CODE 👇 */
     * {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -16,7 +16,6 @@
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* Password Input ko allow karne ke liye */
     input {
         -webkit-user-select: auto;
         -moz-user-select: auto;
@@ -30,11 +29,10 @@
         margin: 0;
         padding: 0;
         color: #1e293b;
-        overscroll-behavior-y: none; /* Upar se scroll loading roke */
+        overscroll-behavior-y: none;
         touch-action: manipulation;
     }
 
-    /* Page Exit Animation */
     .page-exit {
         animation: zoomOutUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
     }
@@ -52,6 +50,7 @@
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        position: relative;
     }
 
     header h1 { margin: 0; font-size: 22px; }
@@ -86,29 +85,15 @@
         border-left: 5px solid #007bff;
     }
 
-    /* 👇 NAYA CODE: Button Press Animation 👇 */
     .subject-card:active {
         transform: scale(0.96) !important;
         box-shadow: 0 2px 5px rgba(0, 123, 255, 0.1);
         background: #f8fafc;
     }
 
-    .card-left {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .card-left i {
-        font-size: 20px;
-        color: #007bff;
-    }
-
-    .card-info h3 {
-        margin: 0;
-        font-size: 16px;
-        color: #003366;
-    }
+    .card-left { display: flex; align-items: center; gap: 15px; }
+    .card-left i { font-size: 20px; color: #007bff; }
+    .card-info h3 { margin: 0; font-size: 16px; color: #003366; }
 
     .coming-soon {
         border-left-color: #94a3b8;
@@ -116,7 +101,6 @@
         cursor: not-allowed;
     }
     
-    /* Coming soon button par click effect nahi hoga */
     .coming-soon:active {
         transform: none !important;
         background: white;
@@ -134,7 +118,7 @@
         font-weight: bold;
     }
 
-    /* 🔒 Security Modal Popup */
+    /* 🔒 Security Modal */
     .modal {
         display: none;
         position: fixed;
@@ -156,22 +140,18 @@
         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
-    .modal-content i {
-        font-size: 35px;
-        color: #007bff;
-        margin-bottom: 15px;
-    }
-
+    .modal-content i { font-size: 35px; color: #007bff; margin-bottom: 15px; }
     .modal-content h3 { margin: 0 0 10px 0; color: #003366; }
     
     .modal-content input {
-        width: 90%;
+        width: 80%;
         padding: 12px;
         margin: 15px 0;
         border: 1.5px solid #e2e8f0;
         border-radius: 10px;
         font-size: 16px;
         text-align: center;
+        transition: all 0.3s;
     }
     
     .modal-content input:focus { outline: none; border-color: #007bff; }
@@ -193,7 +173,6 @@
     .m-btn.cancel { background: #f1f5f9; color: #64748b; }
     .m-btn.confirm { background: #007bff; color: white; }
 
-    /* Top Back Button Design */
     .top-back-btn {
         position: absolute;
         top: 20px;
@@ -220,8 +199,8 @@
 </head>
 <body>
 
-<header style="position: relative;">
-    <!-- NAYA CODE: Asli App jaisa Top Back Button -->
+<header>
+    <!-- 👇 FIX 1: Back button par file ka naam theek kar diya 👇 -->
     <button class="top-back-btn" onclick="goBackToDashboard()">
         <i class="fa-solid fa-arrow-left"></i>
     </button>
@@ -270,10 +249,13 @@
         <i class="fa-solid fa-shield-halved"></i>
         <h3>Unlock Notes Portal</h3>
         <p style="font-size: 13px; color: #64748b; margin: 0;">Gyan Varsha Coaching Center Security</p>
-        <input type="password" id="notesPassInput" placeholder="Enter Password">
+        
+        <!-- Naya function lagaya hai jisse Keyboard ka Enter kaam karega -->
+        <input type="password" id="notesPassInput" placeholder="Enter Password" onkeypress="handleEnter(event)">
+        
         <div class="modal-btns">
-            <!-- Modal ka Back Button jo replace use karke cache clean rakhega -->
-            <button class="m-btn cancel" onclick="window.location.replace('student-dashboard.html')">Go Back</button>
+            <!-- 👇 FIX 2: Go Back button par file ka naam 'dashboard.html' kar diya 👇 -->
+            <button class="m-btn cancel" onclick="goBackToDashboard()">Go Back</button>
             <button class="m-btn confirm" onclick="verifyPassword()">Unlock</button>
         </div>
     </div>
@@ -295,8 +277,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const CORRECT_PASSWORD = "GVCC"; 
-    let studentClass = "10th"; // Default fallback
+    // 👇 FIX 3: Password wapas original kar diya 👇
+    const CORRECT_PASSWORD = "GVCC@437"; 
+    let studentClass = "10th"; 
 
     window.onload = function() {
         document.getElementById("passModal").style.display = "flex";
@@ -304,7 +287,6 @@
         fetchStudentClass();
     };
 
-    // Database se Class Fetch karne ka Logic
     async function fetchStudentClass() {
         let roll = localStorage.getItem("studentRoll");
         if (roll) {
@@ -322,18 +304,22 @@
                 document.getElementById("classDisplayTitle").innerText = "Your Subjects";
             }
         } else {
-            // Agar bina login ke notes khol liya toh replace karke wapas bhejo
             window.location.replace("student-login.html");
         }
     }
 
-    // Password verify logic
+    // Keyboard se Enter dabane par unlock hoga
+    window.handleEnter = function(event) {
+        if (event.key === "Enter") {
+            verifyPassword();
+        }
+    }
+
     window.verifyPassword = function() {
         let inputPass = document.getElementById("notesPassInput").value.trim();
         if(inputPass === CORRECT_PASSWORD) {
             document.getElementById("passModal").style.display = "none";
         } else {
-            // Galat password par lal border dikhayega aur shake karega (UI improvement)
             let passInput = document.getElementById("notesPassInput");
             passInput.style.borderColor = "#dc3545";
             passInput.value = "";
@@ -345,18 +331,16 @@
         }
     }
 
-    // Header Back button Logic (Animation ke saath)
     window.goBackToDashboard = function() {
         document.body.classList.add('page-exit');
         setTimeout(() => {
-            window.location.replace("student-dashboard.html");
+            // Agar aapke dashboard ka naam kuch aur hai, toh yahan change karein
+            window.location.replace("dashboard.html");
         }, 300);
     }
 
-    // 🎯 Class ke hisab se routing button action
     window.goToMathsNotes = function() {
         document.body.classList.add('page-exit');
-        
         setTimeout(() => {
             if (studentClass.includes("8") || studentClass.includes("8th")) {
                 window.location.href = "maths8.html";  
