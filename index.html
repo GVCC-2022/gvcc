@@ -191,6 +191,16 @@
             from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
             to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); }
         }
+                /* 👇 NAYA CODE: Page chhodte waqt ka smooth Exit Animation 👇 */
+        .page-exit {
+            animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @keyframes zoomOutUp {
+            from { opacity: 1; transform: translateY(-8vh) scale(1); }
+            to { opacity: 0; transform: translateY(-15vh) scale(0.9); }
+        }
+        
     </style>
 </head>
 <body>
@@ -209,10 +219,16 @@
 
         <div class="divider">SELECT YOUR LOGIN</div>
         
-        <!-- 🎓 Student Portal Button (अब यह पहले परमिशन माँगेगा, फिर आगे भेजेगा) -->
-        <button class="btn btn-student" onclick="handleNavigation('student-login.html')">
-            <i class="fa-solid fa-user-graduate" style="color: #2563eb;"></i> छात्र के लिए
-        </button>
+        <!-- Student Button -->
+<button class="btn btn-student" onclick="openPortal('student-login.html')">
+    <i class="fa-solid fa-user-graduate"></i> Student Portal
+</button>
+
+<!-- Teacher Button -->
+<button class="btn btn-teacher" onclick="openPortal('teacher-login.html')">
+    <i class="fa-solid fa-chalkboard-user"></i> Teacher Portal
+</button>
+
         
         <!-- 👨‍🏫 Teacher Portal Button (अब यह भी पहले परमिशन माँगेगा) -->
         <button class="btn btn-teacher" onclick="handleNavigation('teacher-login.html')">
@@ -296,6 +312,20 @@
         });
     }
 </script>
-
+    <!-- 👇 NAYA CODE: Page Transition Script 👇 -->
+    <script>
+        function openPortal(url) {
+            // 1. Main container ko select karo
+            const container = document.querySelector('.landing-container');
+            
+            // 2. Usme bahar jaane wala (Exit) animation laga do
+            container.classList.add('page-exit');
+            
+            // 3. 400ms (aadha second se bhi kam) wait karke naya page kholo
+            setTimeout(() => {
+                window.location.href = url;
+            }, 400); 
+        }
+    </script> 
 </body>
 </html>
