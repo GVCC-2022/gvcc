@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>Gyan Varsha Coaching Center</title>
+    
     <!-- 👇 Google Search और Browser Tab में लोगो दिखाने के लिए 👇 -->
     <link rel="icon" type="image/png" href="20260620_144347.png"> 
     
@@ -18,18 +19,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
+        /* 👇 APP FEELING CODE: Browser features block karne ke लिए 👇 */
         * {
-            -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
-            -webkit-user-select: none;   /* Text selection ko block karega */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
             -khtml-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
-            user-select: none;           /* Koi text copy nahi kar payega */
-            -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Agar aage chalkar app me input form lagayein, toh type hone dena zaroori hai */
         input, textarea {
             -webkit-user-select: auto;
             -moz-user-select: auto;
@@ -37,7 +37,6 @@
             user-select: auto;
         }
 
-        /* Images ko kheenchne (drag) se rokne ke liye */
         img {
             -webkit-user-drag: none; 
         }
@@ -82,7 +81,7 @@
             filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
             top: 0px;  
             left: 10px; 
-            pointer-events: none; /* 👇 NAYA CODE: Logo par click/hold puri tarah band */
+            pointer-events: none;
         }
 
         /* 📦 Main Glass Card */
@@ -132,11 +131,11 @@
             box-sizing: border-box;
         }
 
-        /* 👇 NAYA CODE: Button ko zinda karne ke liye (Click effect) 👇 */
+        /* 👇 Button ko zinda karne ke लिए (Click effect) 👇 */
         .btn:active {
-            transform: scale(0.95) !important; /* Dabane par halka chhota hoga */
+            transform: scale(0.95) !important;
             opacity: 0.8; 
-            transition: all 0.1s ease; /* Fast response */
+            transition: all 0.1s ease;
         }
 
         .btn i { font-size: 20px; }
@@ -191,7 +190,8 @@
             from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
             to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); }
         }
-                /* 👇 NAYA CODE: Page chhodte waqt ka smooth Exit Animation 👇 */
+        
+        /* 👇 Page chhodte waqt ka smooth Exit Animation 👇 */
         .page-exit {
             animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
         }
@@ -200,7 +200,6 @@
             from { opacity: 1; transform: translateY(-8vh) scale(1); }
             to { opacity: 0; transform: translateY(-15vh) scale(0.9); }
         }
-        
     </style>
 </head>
 <body>
@@ -220,18 +219,12 @@
         <div class="divider">SELECT YOUR LOGIN</div>
         
         <!-- Student Button -->
-<button class="btn btn-student" onclick="openPortal('student-login.html')">
-    <i class="fa-solid fa-user-graduate"></i> Student Portal
-</button>
+        <button class="btn btn-student" onclick="openPortal('student-login.html')">
+            <i class="fa-solid fa-user-graduate"></i> Student Portal
+        </button>
 
-<!-- Teacher Button -->
-<button class="btn btn-teacher" onclick="openPortal('teacher-login.html')">
-    <i class="fa-solid fa-chalkboard-user"></i> Teacher Portal
-</button>
-
-        
-        <!-- 👨‍🏫 Teacher Portal Button (अब यह भी पहले परमिशन माँगेगा) -->
-        <button class="btn btn-teacher" onclick="handleNavigation('teacher-login.html')">
+        <!-- Teacher Button (अब इसमें Animation और Notification दोनों एक साथ काम करेंगे) -->
+        <button class="btn btn-teacher" onclick="openPortal('teacher-login.html')">
             <i class="fa-solid fa-chalkboard-user" style="color: #38bdf8;"></i> शिक्षक के लिए
         </button>
     </div>
@@ -268,24 +261,6 @@
 </script>
 
 <script>
-    // 🔔 Smart Notification & Navigation Logic
-    async function handleNavigation(redirectUrl) {
-        // चेक करें कि ब्राउज़र नोटिफिकेशन सपोर्ट करता है या नहीं
-        if ("Notification" in window) {
-            // अगर यूज़र ने अभी तक कोई जवाब नहीं दिया है (default)
-            if (Notification.permission === "default") {
-                try {
-                    // परमिशन पॉप-अप लाएं और यूज़र के क्लिक करने का इंतज़ार करें
-                    await Notification.requestPermission();
-                } catch(error) {
-                    console.log("Notification Permission Error:", error);
-                }
-            }
-        }
-        // परमिशन का जवाब मिलते ही (या अगर पहले से दी हुई है) पेज बदल दें
-        window.location.href = redirectUrl;
-    }
-
     // 📲 Smart Install Logic
     let deferredPrompt;
     
@@ -311,21 +286,27 @@
             .catch(function(error) { console.log("PWA Error:", error); });
         });
     }
-</script>
-    <!-- 👇 NAYA CODE: Page Transition Script 👇 -->
-    <script>
-        function openPortal(url) {
-            // 1. Main container ko select karo
-            const container = document.querySelector('.landing-container');
-            
-            // 2. Usme bahar jaane wala (Exit) animation laga do
-            container.classList.add('page-exit');
-            
-            // 3. 400ms (aadha second se bhi kam) wait karke naya page kholo
-            setTimeout(() => {
-                window.location.href = url;
-            }, 400); 
+
+    // 👇 NAYA CODE: Page Transition aur Notification Script Dono Ek Sath 👇
+    async function openPortal(url) {
+        // 1. Notification Permission Check (Agar browser support karta hai)
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                await Notification.requestPermission();
+            } catch(error) {
+                console.log("Notification Permission Error:", error);
+            }
         }
-    </script> 
+
+        // 2. Main container ko select karo aur Exit animation lagao
+        const container = document.querySelector('.landing-container');
+        container.classList.add('page-exit');
+        
+        // 3. 400ms (aadha second se bhi kam) wait karke naya page kholo
+        setTimeout(() => {
+            window.location.href = url;
+        }, 400); 
+    }
+</script> 
 </body>
 </html>
