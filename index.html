@@ -287,26 +287,41 @@
         });
     }
 
-    // 👇 NAYA CODE: Page Transition aur Notification Script Dono Ek Sath 👇
-    async function openPortal(url) {
-        // 1. Notification Permission Check (Agar browser support karta hai)
-        if ("Notification" in window && Notification.permission === "default") {
-            try {
-                await Notification.requestPermission();
-            } catch(error) {
-                console.log("Notification Permission Error:", error);
+        <!-- 👇 NAYA CODE: Page Transition aur Mobile Back Button Fix 👇 -->
+    <script>
+        async function openPortal(url) {
+            // 1. Notification Permission Check (Agar browser support karta hai)
+            if ("Notification" in window && Notification.permission === "default") {
+                try {
+                    await Notification.requestPermission();
+                } catch(error) {
+                    console.log("Notification Permission Error:", error);
+                }
             }
+
+            // 2. Main container ko select karo aur Exit animation lagao
+            const container = document.querySelector('.landing-container');
+            container.classList.add('page-exit');
+            
+            // 3. 400ms wait karke naya page kholo
+            setTimeout(() => {
+                window.location.href = url;
+            }, 400); 
         }
 
-        // 2. Main container ko select karo aur Exit animation lagao
-        const container = document.querySelector('.landing-container');
-        container.classList.add('page-exit');
-        
-        // 3. 400ms (aadha second se bhi kam) wait karke naya page kholo
-        setTimeout(() => {
-            window.location.href = url;
-        }, 400); 
-    }
-</script> 
+        // 🎯 MOBILE BACK BUTTON FIX
+        // Jab user mobile ka back button ya swipe use karke wapas aaye:
+        window.addEventListener('pageshow', function(event) {
+            // Check karo ki kya page history/cache se wapas load hua hai
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                const container = document.querySelector('.landing-container');
+                if (container) {
+                    // Exit wala animation hata do, taaki card wapas dikhne lage
+                    container.classList.remove('page-exit');
+                }
+            }
+        });
+    </script> 
 </body>
 </html>
+
