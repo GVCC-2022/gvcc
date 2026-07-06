@@ -6,6 +6,30 @@
     <title>GVCC - Teacher Portal Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
+        * {
+            -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
+            -webkit-user-select: none;   /* Text selection ko block karega */
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;           /* Koi text copy nahi kar payega */
+            -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
+        }
+
+        /* 👇 LOGIN FORM FIX: Input fields me type karne ke liye ise ON rakhna zaroori hai 👇 */
+        input, textarea {
+            -webkit-user-select: auto !important;
+            -moz-user-select: auto !important;
+            -ms-user-select: auto !important;
+            user-select: auto !important;
+        }
+
+        /* Images ko kheenchne (drag) se rokne ke liye */
+        img {
+            -webkit-user-drag: none; 
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0f172a; /* Dark theme matching GVCC */
@@ -15,7 +39,11 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden; /* 👇 Scroll hone se rokega */
+            overscroll-behavior-y: none; /* 👇 Upar se kheenchne wala pull-to-refresh roke ga */
+            touch-action: manipulation;  /* 👇 Screen zoom hona roke ga */
         }
+        
         .login-container {
             background: rgba(30, 41, 59, 0.8);
             padding: 40px 30px;
@@ -30,6 +58,7 @@
             font-size: 50px;
             color: #38bdf8;
             margin-bottom: 15px;
+            pointer-events: none; /* Icon par long press block */
         }
         h2 {
             margin: 0 0 5px 0;
@@ -64,6 +93,7 @@
             outline: none;
             border-color: #38bdf8;
         }
+        
         .login-btn {
             width: 100%;
             background: #38bdf8;
@@ -76,10 +106,19 @@
             cursor: pointer;
             transition: 0.3s;
         }
+        
         .login-btn:hover {
             background: #0284c7;
             color: white;
         }
+
+        /* 👇 NAYA CODE: Button me click effect (jaan dalne) ke liye 👇 */
+        .login-btn:active {
+            transform: scale(0.95) !important; 
+            opacity: 0.8; 
+            transition: all 0.1s ease;
+        }
+
         #error-msg {
             color: #ef4444;
             font-size: 14px;
