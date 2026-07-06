@@ -6,13 +6,49 @@
     <title>GVCC - Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 👇 APP FEELING CODE: Chrome ke lakshan block 👇 */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Forms me type hone dena zaroori hai */
+        input, textarea, select {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        img {
+            -webkit-user-drag: none; 
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0f172a;
             color: #f8fafc;
             margin: 0;
             padding: 0;
+            overscroll-behavior-y: none; /* App ko upar kheechne se rokega */
+            touch-action: manipulation;  
         }
+
+        /* Page Exit Animation */
+        .page-exit {
+            animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @keyframes zoomOutUp {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-10vh) scale(0.95); }
+        }
+
         /* Navbar */
         .navbar {
             background: #1e293b;
@@ -40,6 +76,11 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.1s ease;
+        }
+        .logout-btn:active {
+            transform: scale(0.95);
+            background: #dc2626;
         }
         
         /* Dashboard Content */
@@ -77,13 +118,23 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s ease; /* Thoda fast animation */
         }
-        .card:hover {
-            transform: translateY(-5px);
+        /* Desktop Hover Effect */
+        @media (hover: hover) {
+            .card:hover {
+                transform: translateY(-5px);
+                border-color: #38bdf8;
+                box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+            }
+        }
+        /* Mobile Click Effect */
+        .card:active {
+            transform: scale(0.95) !important;
             border-color: #38bdf8;
-            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 5px 10px rgba(56, 189, 248, 0.2);
         }
+
         .card i {
             font-size: 40px;
             color: #38bdf8;
@@ -106,6 +157,7 @@
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
         .modal-content {
             background: #1e293b;
@@ -121,6 +173,7 @@
             font-size: 24px;
             cursor: pointer;
             color: #cbd5e1;
+            padding: 5px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -164,6 +217,11 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
+            transition: all 0.1s ease;
+        }
+        .submit-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -194,7 +252,8 @@
                 <p>Paste AI generated code to create test</p>
             </div>
 
-            <div class="card" onclick="window.location.href='view.html'">
+            <!-- 👇 Page Transition Animation Added 👇 -->
+            <div class="card" onclick="navigateWithAnimation('view.html')">
                 <i class="fa-solid fa-video"></i>
                 <h3>View Proctoring</h3>
                 <p>Check CBT results and live tracking</p>
@@ -202,6 +261,7 @@
         </div>
     </div>
 
+    <!-- Modals remain the same -->
     <div class="modal" id="noticeModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -259,7 +319,7 @@
             <div class="form-group">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                     <label style="color:#cbd5e1; margin-bottom:0;">Paste AI JSON Code:</label>
-                    <button type="button" onclick="document.getElementById('aiHelpModal').style.display='block'" style="background: #38bdf8; color: #0f172a; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s;">
+                    <button type="button" onclick="document.getElementById('aiHelpModal').style.display='flex'" style="background: #38bdf8; color: #0f172a; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.1s ease;">
                         <i class="fa-solid fa-lightbulb"></i> How to get code?
                     </button>
                 </div>
@@ -269,29 +329,46 @@
         </div>
     </div>
 
-    <div id="aiHelpModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#1e293b; padding:25px; border-radius:12px; border:2px solid #38bdf8; z-index:1000; width:90%; max-width:400px; box-shadow: 0 0 25px rgba(0,0,0,0.8);">
-        <h3 style="color:#38bdf8; margin-top:0;"><i class="fa-solid fa-robot"></i> AI Prompt Guide</h3>
-        <p style="font-size:14px; color:#cbd5e1;">ChatGPT ya Gemini ko yeh likh kar bhejein:</p>
-        
-        <div style="background:#0f172a; padding:15px; border-radius:8px; font-family:monospace; font-size:13px; color:#10b981; margin-bottom:15px; border:1px solid rgba(255,255,255,0.1); user-select:all;">
-            "Question Ka Photo Ya Apna Question AI Ke Pass Bheje Aur Yah Kahe. "Mujhe sirf aur sirf JSON format mein output chahiye. Koi extra text nahi. Format yeh hoga:<br><br>
-            [<br>
-            &nbsp;&nbsp;{<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;"question": "Q1 text here?",<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;"options": ["A", "B", "C", "D"],<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;"answer": "A"<br>
-            &nbsp;&nbsp;}<br>
-            ]"
+    <div id="aiHelpModal" class="modal">
+        <div style="background:#1e293b; padding:25px; border-radius:12px; border:2px solid #38bdf8; width:90%; max-width:400px; box-shadow: 0 0 25px rgba(0,0,0,0.8); position: relative;">
+            <h3 style="color:#38bdf8; margin-top:0;"><i class="fa-solid fa-robot"></i> AI Prompt Guide</h3>
+            <p style="font-size:14px; color:#cbd5e1;">ChatGPT ya Gemini ko yeh likh kar bhejein:</p>
+            
+            <div style="background:#0f172a; padding:15px; border-radius:8px; font-family:monospace; font-size:13px; color:#10b981; margin-bottom:15px; border:1px solid rgba(255,255,255,0.1); user-select:all;">
+                "Question Ka Photo Ya Apna Question AI Ke Pass Bheje Aur Yah Kahe. "Mujhe sirf aur sirf JSON format mein output chahiye. Koi extra text nahi. Format yeh hoga:<br><br>
+                [<br>
+                &nbsp;&nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"question": "Q1 text here?",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"options": ["A", "B", "C", "D"],<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"answer": "A"<br>
+                &nbsp;&nbsp;}<br>
+                ]"
+            </div>
+            
+            <button type="button" onclick="document.getElementById('aiHelpModal').style.display='none'" class="submit-btn" style="background:#ef4444; color:white;">Close Guide</button>
         </div>
-        
-        <button type="button" onclick="document.getElementById('aiHelpModal').style.display='none'" style="width:100%; padding:12px; background:#ef4444; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Close Guide</button>
     </div>
+
+    <!-- 👇 Navigation Animation Script 👇 -->
+    <script>
+        function navigateWithAnimation(url) {
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                document.body.classList.remove('page-exit');
+            }
+        });
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // Firebase Setup
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
             authDomain: "gvcc-database.firebaseapp.com",
@@ -303,29 +380,33 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Security Check
+        // Security Check 👇 (Yahan replace lagaya hai taaki back button se page reload na ho)
         const teacherId = sessionStorage.getItem("loggedTeacherId");
         const teacherName = sessionStorage.getItem("loggedTeacherName") || "Unknown Teacher";
         const teacherSubject = sessionStorage.getItem("loggedTeacherSubject") || "General";
 
         if (!teacherId) {
-            window.location.href = "teacher-login.html";
+            window.location.replace("teacher-login.html");
         } else {
             document.getElementById("displayTeacherName").innerText = teacherName;
             document.getElementById("welcomeName").innerText = teacherName;
             document.getElementById("subjectBadge").innerText = teacherSubject + " Department";
         }
 
-        // Logout System
+        // Logout System 👇 (Yahan Index par bhej raha hu Logout ke baad)
         document.getElementById("logoutBtn").addEventListener("click", () => {
-            sessionStorage.clear();
-            window.location.href = "teacher-login.html";
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                sessionStorage.clear();
+                window.location.replace("index.html");
+            }, 300);
         });
 
         // Modals Open/Close Logic
         window.closeModals = function() {
             document.getElementById("noticeModal").style.display = "none";
             document.getElementById("testModal").style.display = "none";
+            document.getElementById("aiHelpModal").style.display = "none";
         }
         document.getElementById("openNoticeModal").addEventListener("click", () => {
             document.getElementById("noticeModal").style.display = "flex";
@@ -367,7 +448,7 @@
             const testName = document.getElementById("testName").value.trim();
             const testDate = document.getElementById("testDate").value; 
             const testTime = document.getElementById("testTime").value; 
-            const testDuration = document.getElementById("testDuration").value.trim(); // NEW: Fetching Duration
+            const testDuration = document.getElementById("testDuration").value.trim();
             const testCode = document.getElementById("testCode").value.trim();
             const btn = document.getElementById("sendTestBtn");
 
@@ -376,7 +457,6 @@
                 return; 
             }
 
-            // 🚀 SMART CHECK: Verify if the pasted text is valid JSON
             try {
                 JSON.parse(testCode);
             } catch (error) {
@@ -393,16 +473,15 @@
                     testName: testName,
                     testDate: testDate, 
                     testTime: testTime, 
-                    duration: testDuration, // NEW: Saving Duration in database
+                    duration: testDuration, 
                     testCode: testCode, 
                     timestamp: serverTimestamp()
                 });
                 alert("🚀 Smart Test Published Successfully!");
-                // Form reset
                 document.getElementById("testName").value = "";
                 document.getElementById("testDate").value = "";
                 document.getElementById("testTime").value = "";
-                document.getElementById("testDuration").value = ""; // Form clear karte waqt reset
+                document.getElementById("testDuration").value = ""; 
                 document.getElementById("testCode").value = "";
                 closeModals();
             } catch (error) {
