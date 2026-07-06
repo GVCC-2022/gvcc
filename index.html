@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 👇 NAYA CODE: App jaisi real feeling ke liye Browser features block kiye hain 👇 */
+        /* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
         * {
             -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
             -webkit-user-select: none;   /* Text selection ko block karega */
@@ -26,10 +26,10 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;           /* Koi text copy nahi kar payega */
-            -webkit-tap-highlight-color: transparent; /* Button dabane par aane wala blue color hatayega */
+            -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
         }
 
-        /* Agar aage chalkar app me login form lagayein, toh wahan type hone dena zaroori hai */
+        /* Agar aage chalkar app me input form lagayein, toh type hone dena zaroori hai */
         input, textarea {
             -webkit-user-select: auto;
             -moz-user-select: auto;
@@ -41,7 +41,6 @@
         img {
             -webkit-user-drag: none; 
         }
-        /* 👆 NAYA CODE YAHAN KHATAM HOTA HAI 👆 */
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -83,7 +82,7 @@
             filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
             top: 0px;  
             left: 10px; 
-            pointer-events: none; /* 👇 NAYA CODE: Logo par click puri tarah band kar dega */
+            pointer-events: none; /* 👇 NAYA CODE: Logo par click/hold puri tarah band */
         }
 
         /* 📦 Main Glass Card */
@@ -131,6 +130,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-sizing: border-box;
+        }
+
+        /* 👇 NAYA CODE: Button ko zinda karne ke liye (Click effect) 👇 */
+        .btn:active {
+            transform: scale(0.95) !important; /* Dabane par halka chhota hoga */
+            opacity: 0.8; 
+            transition: all 0.1s ease; /* Fast response */
         }
 
         .btn i { font-size: 20px; }
