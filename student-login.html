@@ -20,6 +20,30 @@
 
     
 <style>
+/* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
+* {
+    -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
+    -webkit-user-select: none;   /* Text selection ko block karega */
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;           /* Koi text copy nahi kar payega */
+    -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
+}
+
+/* 👇 LOGIN FORM FIX: Input fields me type karne ke liye ise ON rakhna zaroori hai 👇 */
+input, textarea {
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+}
+
+/* Images ko kheenchne (drag) se rokne ke liye */
+img {
+    -webkit-user-drag: none; 
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -75,7 +99,7 @@ body {
     margin-left: 10px; 
     border-radius: 50%;
     
-    /* 👇 ब्राइटनेस सेट करने की जगह (0.4 को बढ़ाकर 0.6 या 0.8 करेंगे तो चमक बढ़ेगी) */
+    /* 👇 ब्राइटनेस सेट करने की जगह */
     background: repeating-conic-gradient(
         from 0deg,
         rgba(255, 255, 255, 0.4) 0deg 3deg, 
@@ -98,7 +122,6 @@ body {
     margin-top: 25px;
     margin-left: 10px;
     border-radius: 50%;
-    /* 👇 सेंटर की ब्राइटनेस (0.4 को बढ़ा/घटा सकते हैं) */
     background: rgba(255, 255, 255, 0.4); 
     filter: blur(20px);
     z-index: -1;
@@ -116,9 +139,8 @@ body {
     filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5));
     position: relative;
     z-index: 5;
-    
-    /* 👇 लोगो को दाएँ-बाएँ खिसकाने का बटन (25px को बढ़ाकर 30-35px करेंगे तो राइट जाएगा, कम करेंगे तो लेफ्ट आएगा) */
     left: 10px; 
+    pointer-events: none; /* 👇 NAYA CODE: Logo par click puri tarah band karega */
 }
 
 /* 📦 Premium Dark Glass Card */
@@ -171,6 +193,13 @@ body {
 .install-btn:hover { 
     transform: translateY(-3px); 
     box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; 
+}
+
+/* 👇 NAYA CODE: Button me click effect (jaan dalne) ke liye 👇 */
+.install-btn:active, .btn-login:active:not(:disabled) {
+    transform: scale(0.95) !important; 
+    opacity: 0.8; 
+    transition: all 0.1s ease;
 }
 
 .install-btn i {
@@ -242,7 +271,8 @@ input:focus {
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
-.btn-login:active:not(:disabled) { transform: translateY(0); }
+/* Pehle yaha ".btn-login:active" tha, usko upar merge kar diya gaya hai smooth effect ke liye */
+
 .btn-login:disabled {
     background: rgba(255, 255, 255, 0.2);
     color: #94a3b8;
