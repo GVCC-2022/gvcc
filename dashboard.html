@@ -464,7 +464,7 @@
         };
     </script>
 
-    <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
+        <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -492,8 +492,9 @@
         let studentClassGlobal = "10th";
         const activeRoll = localStorage.getItem("studentRoll");
 
+        // 👇 FIX 1: Yahan 'href' ki jagah 'replace' kar diya 👇
         if (!activeRoll) {
-            window.location.href = "student-login.html";
+            window.location.replace("student-login.html"); 
         } else {
             fetchStudentData(activeRoll);
         }
@@ -588,12 +589,11 @@
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
-        // 👇 FIX: Class 8th Testing Link Setup 👇
         window.routeToLiveTest = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
             if (cleanClass.includes("10")) navigateWithAnimation("history10.html");
             else if (cleanClass.includes("9")) navigateWithAnimation("history9.html");
-            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html"); // Added Class 8th
+            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html");
             else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
         }
 
@@ -606,10 +606,11 @@
         }
 
         window.logout = function() { 
-            document.body.classList.add('page-exit'); // Add animation on logout too
+            document.body.classList.add('page-exit'); 
             setTimeout(() => {
                 localStorage.removeItem("studentRoll"); 
-                window.location.href = "student-login.html"; 
+                // 👇 FIX 2: Yahan bhi 'href' ki jagah 'replace' laga diya 👇
+                window.location.replace("student-login.html"); 
             }, 300);
         }
         
