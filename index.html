@@ -9,7 +9,6 @@
     <!-- 👇 Google Search और Browser Tab में लोगो दिखाने के लिए 👇 -->
     <link rel="icon" type="image/png" href="20260620_144347.png"> 
     
-    
     <!-- 👇 सर्च रिज़ल्ट के लिए नया कोड (Meta Description) 👇 -->
     <meta name="description" content="ज्ञान वर्षा कोचिंग सेंटर (GVCC), हिरौता ward no.13 (Sheohar)। आपकी सफलता ही हमारी पहचान है । हमारे स्मार्ट पोर्टल से जुड़ें, ऑनलाइन स्टडी और ऐप डाउनलोड करें! Manage By :– GVCC All Members [MFR]">
     
@@ -30,9 +29,11 @@
             min-height: 100vh;
             color: white;
             overflow: hidden;
+            overscroll-behavior-y: none;
+            touch-action: manipulation;
         }
 
-        /* 🎯 Entry Animation - Modified to move slightly upwards (-5vh) */
+        /* 🎯 Entry Animation */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(-8vh); } 
@@ -47,27 +48,23 @@
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* 🎯 Logo Position (MADE COMPLETELY FREE) */
-        /* Absolute position हटा दिया गया है। अब यह कार्ड से आज़ाद है। */
-                .landing-logo {
+        /* 🎯 Logo Position */
+        .landing-logo {
             width: 260px;
             height: auto;
             position: relative;
             z-index: 10;
-            margin-bottom: -110px; /* यह कार्ड को लोगो के पीछे खींचता है */
+            margin-bottom: -110px; 
             filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
-
-            /* 🎯 यहाँ से आप लोगो को किसी भी दिशा में खिसका सकते हैं */
             top: 0px;  
             left: 10px; 
         }
-
 
         /* 📦 Main Glass Card */
         .landing-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            padding: 120px 30px 40px 30px; /* Top padding 140 से 120 कर दी है */
+            padding: 120px 30px 40px 30px; 
             border-radius: 24px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -167,7 +164,6 @@
 <body>
 
 <div class="landing-container">
-    <!-- Logo ab HTML structure में बिल्कुल अलग और ऊपर है -->
     <img src="20260620_144347.png" alt="GVCC Logo" class="landing-logo">
 
     <div class="landing-card">
@@ -181,13 +177,13 @@
 
         <div class="divider">SELECT YOUR LOGIN</div>
         
-        <!-- 🎓 Student Portal Button -->
-        <button class="btn btn-student" onclick="window.location.href='student-login.html'">
+        <!-- 🎓 Student Portal Button (अब यह पहले परमिशन माँगेगा, फिर आगे भेजेगा) -->
+        <button class="btn btn-student" onclick="handleNavigation('student-login.html')">
             <i class="fa-solid fa-user-graduate" style="color: #2563eb;"></i> छात्र के लिए
         </button>
         
-        <!-- 👨‍🏫 Teacher Portal Button -->
-        <button class="btn btn-teacher" onclick="window.location.href='teacher-login.html'">
+        <!-- 👨‍🏫 Teacher Portal Button (अब यह भी पहले परमिशन माँगेगा) -->
+        <button class="btn btn-teacher" onclick="handleNavigation('teacher-login.html')">
             <i class="fa-solid fa-chalkboard-user" style="color: #38bdf8;"></i> शिक्षक के लिए
         </button>
     </div>
@@ -210,7 +206,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Jab koi yahan se app install karega toh bhi count badhega
     window.addEventListener('appinstalled', async () => {
         try {
             const statsRef = doc(db, "admin_stats", "app_downloads");
@@ -225,6 +220,24 @@
 </script>
 
 <script>
+    // 🔔 Smart Notification & Navigation Logic
+    async function handleNavigation(redirectUrl) {
+        // चेक करें कि ब्राउज़र नोटिफिकेशन सपोर्ट करता है या नहीं
+        if ("Notification" in window) {
+            // अगर यूज़र ने अभी तक कोई जवाब नहीं दिया है (default)
+            if (Notification.permission === "default") {
+                try {
+                    // परमिशन पॉप-अप लाएं और यूज़र के क्लिक करने का इंतज़ार करें
+                    await Notification.requestPermission();
+                } catch(error) {
+                    console.log("Notification Permission Error:", error);
+                }
+            }
+        }
+        // परमिशन का जवाब मिलते ही (या अगर पहले से दी हुई है) पेज बदल दें
+        window.location.href = redirectUrl;
+    }
+
     // 📲 Smart Install Logic
     let deferredPrompt;
     
@@ -243,43 +256,14 @@
         }
     };
 
-        // PWA Service Worker (Updated for Custom Domain)
+    // PWA Service Worker (Updated for Custom Domain)
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
             navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
             .catch(function(error) { console.log("PWA Error:", error); });
         });
     }
-
 </script>
-    <!-- 🔔 Global Notification Permission Script -->
-<script>
-    // परमिशन माँगने वाला फंक्शन
-    async function requestNotificationAccess() {
-        if (!("Notification" in window)) {
-            console.log("This browser does not support notifications.");
-            return;
-        }
-
-        if (Notification.permission === "granted") {
-            console.log("✅ Already granted.");
-        } else if (Notification.permission !== "denied") {
-            // परमिशन पॉप-अप दिखाएँ
-            const permission = await Notification.requestPermission();
-            if (permission === "granted") {
-                console.log("✅ Notification Permission Granted by user.");
-                // यहाँ आप चाहें तो टोकन जनरेट करने वाला फंक्शन भी कॉल कर सकते हैं
-                if (window.generateFCMToken) window.generateFCMToken();
-            }
-        }
-    }
-
-    // पेज लोड होने के 2 सेकंड बाद पॉप-अप दिखाएँ
-    window.addEventListener('load', () => {
-        setTimeout(requestNotificationAccess, 2000);
-    });
-</script>
-    
 
 </body>
 </html>
