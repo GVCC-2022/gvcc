@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -31,7 +31,12 @@ body {
     min-height: 100vh;
     color: white;
     overflow: hidden;
+    
+    /* 👇 ये 2 लाइनें आपके ऐप को असली एंड्रॉइड ऐप बना देंगी */
+    overscroll-behavior-y: none; /* ऊपर से खींचने वाला लोडिंग रोकेगा */
+    touch-action: manipulation;  /* स्क्रीन ज़ूम होना रोकेगा */
 }
+
 
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(40px); }
