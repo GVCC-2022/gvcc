@@ -4,22 +4,19 @@
     <meta name="google-site-verification" content="smTR7T7o1MeEBFJU_zg880rkDG2EWxsQRT0eMnzZXpE" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- 👇 NAYA CODE: Logo ko sabse pehle (fast) load karne ke liye 👇 -->
+    <link rel="preload" href="20260620_144347.png" as="image">
+    
     <title>Gyan Varsha Coaching Center</title>
     
-    <!-- 👇 Google Search और Browser Tab में लोगो दिखाने के लिए 👇 -->
     <link rel="icon" type="image/png" href="20260620_144347.png"> 
-    
-    <!-- 👇 सर्च रिज़ल्ट के लिए नया कोड (Meta Description) 👇 -->
     <meta name="description" content="ज्ञान वर्षा कोचिंग सेंटर (GVCC), हिरौता ward no.13 (Sheohar)। आपकी सफलता ही हमारी पहचान है । हमारे स्मार्ट पोर्टल से जुड़ें, ऑनलाइन स्टडी और ऐप डाउनलोड करें! Manage By :– GVCC All Members [MFR]">
-    
     <link rel="manifest" href="manifest.json">
-
-    <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 👇 APP FEELING CODE: Browser features block karne ke लिए 👇 */
+        /* 👇 APP FEELING CODE 👇 */
         * {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -131,7 +128,7 @@
             box-sizing: border-box;
         }
 
-        /* 👇 Button ko zinda karne ke लिए (Click effect) 👇 */
+        /* Button Click Effect */
         .btn:active {
             transform: scale(0.95) !important;
             opacity: 0.8; 
@@ -191,7 +188,7 @@
             to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); }
         }
         
-        /* 👇 Page chhodte waqt ka smooth Exit Animation 👇 */
+        /* 👇 Page Exit Animation 👇 */
         .page-exit {
             animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
         }
@@ -223,7 +220,7 @@
             <i class="fa-solid fa-user-graduate"></i> Student Portal
         </button>
 
-        <!-- Teacher Button (अब इसमें Animation और Notification दोनों एक साथ काम करेंगे) -->
+        <!-- Teacher Button -->
         <button class="btn btn-teacher" onclick="openPortal('teacher-login.html')">
             <i class="fa-solid fa-chalkboard-user" style="color: #38bdf8;"></i> शिक्षक के लिए
         </button>
@@ -279,7 +276,7 @@
         }
     };
 
-    // PWA Service Worker (Updated for Custom Domain)
+    // PWA Service Worker 
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
             navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
@@ -287,41 +284,32 @@
         });
     }
 
-        <!-- 👇 NAYA CODE: Page Transition aur Mobile Back Button Fix 👇 -->
-    <script>
-        async function openPortal(url) {
-            // 1. Notification Permission Check (Agar browser support karta hai)
-            if ("Notification" in window && Notification.permission === "default") {
-                try {
-                    await Notification.requestPermission();
-                } catch(error) {
-                    console.log("Notification Permission Error:", error);
-                }
-            }
-
-            // 2. Main container ko select karo aur Exit animation lagao
-            const container = document.querySelector('.landing-container');
-            container.classList.add('page-exit');
-            
-            // 3. 400ms wait karke naya page kholo
-            setTimeout(() => {
-                window.location.href = url;
-            }, 400); 
+    // 👇 NAYA CODE FIX: Button freeze problem solved 👇
+    function openPortal(url) {
+        // Notification permission background me mangega, page ko rukega nahi
+        if ("Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission().catch(e => console.log(e));
         }
 
-        // 🎯 MOBILE BACK BUTTON FIX
-        // Jab user mobile ka back button ya swipe use karke wapas aaye:
-        window.addEventListener('pageshow', function(event) {
-            // Check karo ki kya page history/cache se wapas load hua hai
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                const container = document.querySelector('.landing-container');
-                if (container) {
-                    // Exit wala animation hata do, taaki card wapas dikhne lage
-                    container.classList.remove('page-exit');
-                }
+        // Animation chalao
+        const container = document.querySelector('.landing-container');
+        container.classList.add('page-exit');
+        
+        // 400ms ke baad page change karo (No waiting for notification)
+        setTimeout(() => {
+            window.location.href = url;
+        }, 400); 
+    }
+
+    // 👇 MOBILE BACK BUTTON FIX 👇
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            const container = document.querySelector('.landing-container');
+            if (container) {
+                container.classList.remove('page-exit');
             }
-        });
-    </script> 
+        }
+    });
+</script> 
 </body>
 </html>
-
