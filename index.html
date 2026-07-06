@@ -18,6 +18,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* 👇 NAYA CODE: App jaisi real feeling ke liye Browser features block kiye hain 👇 */
+        * {
+            -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
+            -webkit-user-select: none;   /* Text selection ko block karega */
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;           /* Koi text copy nahi kar payega */
+            -webkit-tap-highlight-color: transparent; /* Button dabane par aane wala blue color hatayega */
+        }
+
+        /* Agar aage chalkar app me login form lagayein, toh wahan type hone dena zaroori hai */
+        input, textarea {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        /* Images ko kheenchne (drag) se rokne ke liye */
+        img {
+            -webkit-user-drag: none; 
+        }
+        /* 👆 NAYA CODE YAHAN KHATAM HOTA HAI 👆 */
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -58,6 +83,7 @@
             filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
             top: 0px;  
             left: 10px; 
+            pointer-events: none; /* 👇 NAYA CODE: Logo par click puri tarah band kar dega */
         }
 
         /* 📦 Main Glass Card */
