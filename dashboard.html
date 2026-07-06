@@ -8,10 +8,31 @@
     <title>GVCC - Student Dashboard</title>
     
     <link rel="manifest" href="manifest.json">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* 👇 APP FEELING CODE: Chrome ke features block 👇 */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input, textarea {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        img {
+            -webkit-user-drag: none; 
+        }
+
         :root {
             --primary: #003366;
             --secondary: #007bff;
@@ -22,20 +43,29 @@
         }
 
         body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg);
-    margin: 0;
-    padding: 0;
-    color: var(--text-main);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    
-    /* 👇 ये 2 लाइनें आपके ऐप को असली एंड्रॉइड ऐप बना देंगी */
-    overscroll-behavior-y: none; /* ऊपर से खींचने वाला लोडिंग रोकेगा */
-    touch-action: manipulation;  /* स्क्रीन ज़ूम होना रोकेगा */
-}
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            
+            /* 👇 असली एंड्रॉइड ऐप फील के लिए 👇 */
+            overscroll-behavior-y: none; 
+            touch-action: manipulation;  
+        }
 
+        /* Page Exit Animation */
+        .page-exit {
+            animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @keyframes zoomOutUp {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-10vh) scale(0.95); }
+        }
 
         /* Premium Smart Loader Styling */
         #loading {
@@ -179,21 +209,15 @@
             gap: 10px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             text-decoration: none;
         }
 
         .menu-card i { font-size: 24px; }
         .menu-card span { font-size: 14px; font-weight: 600; }
 
-        .card-live {
-            background: linear-gradient(135deg, #23d5ab, var(--success)) !important;
-            color: white;
-            flex-direction: row;
-            padding: 14px;
-        }
+        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white; flex-direction: row; padding: 14px; }
         .card-live i { font-size: 20px; animation: pulse 1.5s infinite; }
-
         .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
         .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
         .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
@@ -210,8 +234,10 @@
         }
         .card-install i { font-size: 20px; animation: bounce 2s infinite; }
 
+        /* 👇 NAYA CODE: Snappy Click Effect 👇 */
         .menu-card:active {
-            transform: scale(0.95);
+            transform: scale(0.92) !important;
+            opacity: 0.85;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
@@ -229,9 +255,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.2s;
+            transition: all 0.1s ease;
         }
-        .btn-logout:active { background: #fecdd3; }
+        
+        .btn-logout:active { 
+            background: #fecdd3; 
+            transform: scale(0.95);
+        }
 
         footer {
             background: #001529;
@@ -268,7 +298,7 @@
             <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
                 
                 <div style="position: absolute !important; left: 10px; top: -4px;">
-                    <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important;">
+                    <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none;">
                 </div>
                 
                 <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
@@ -282,7 +312,7 @@
                 </div>
             </div>
             <div style="height: 110px; width: 100%; background: transparent;"></div>
-            </header>
+        </header>
 
         <div class="container">
             <div class="profile-card">
@@ -312,43 +342,46 @@
                 <div id="studentTests"></div>
             </div>
 
+            <!-- 👇 NAYA CODE: Dashboard Buttons with Animation Navigation 👇 -->
             <div class="grid-menu">
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i>
                     <span>Join Live Class</span>
                 </a>
 
-                <button class="menu-card card-notes" onclick="window.location.href='notesmenu.html'">
+                <button class="menu-card card-notes" onclick="navigateWithAnimation('notesmenu.html')">
                     <i class="fa-solid fa-book-open"></i>
                     <span>Notes</span>
                 </button>
 
-                <button class="menu-card card-notice" onclick="window.location.href='notice.html'">
+                <button class="menu-card card-notice" onclick="navigateWithAnimation('notice.html')">
                     <i class="fa-solid fa-bullhorn"></i>
                     <span>Notice Board</span>
                 </button>
 
+                <!-- 👇 Online Test Button 👇 -->
                 <button class="menu-card card-test" onclick="routeToLiveTest()">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Online Test</span>
                 </button>
 
-                <button class="menu-card card-day1" onclick="window.location.href='day1.html'">
+                <button class="menu-card card-day1" onclick="navigateWithAnimation('day1.html')">
                     <i class="fa-solid fa-rocket"></i>
                     <span>Day 1 Test</span>
                 </button>
 
+                <!-- 👇 Result Button 👇 -->
                 <button class="menu-card card-result" onclick="routeToResult()">
                     <i class="fa-solid fa-chart-bar"></i>
                     <span>Result</span>
                 </button>
 
-                <button class="menu-card card-performer" onclick="window.location.href='results.html'">
+                <button class="menu-card card-performer" onclick="navigateWithAnimation('results.html')">
                     <i class="fa-solid fa-trophy"></i>
                     <span>Day 1 Performers</span>
                 </button>
 
-                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="window.location.href='gallery.html'">
+                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
                     <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
                     <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
                 </button>
@@ -365,11 +398,27 @@
         </div>
 
         <footer>
-            <p>📝 Created By: <strong>Md Faiyaz</strong></p>
+            <p>📝 Created By: <strong>Md Faiyaz Reza</strong></p>
             <p>📍 Hirauta, Sheohar</p>
             <p>© Gyan Varsha Coaching Center</p>
         </footer>
     </div>
+
+    <!-- 👇 NAYA CODE: Page Transition & Back Button Fix Functions 👇 -->
+    <script>
+        function navigateWithAnimation(url) {
+            document.body.classList.add('page-exit');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300); // 300ms delay for snappier experience
+        }
+
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                document.body.classList.remove('page-exit');
+            }
+        });
+    </script>
 
     <script>
         let deferredPrompt;
@@ -389,13 +438,12 @@
         };
     </script>
 
-        <!-- 🔔 Notification & Service Worker Registration -->
+    <!-- 🔔 Notification & Service Worker Registration -->
     <script>
-        // 1. सर्विस वर्कर को रजिस्टर करना (ताकि बैकग्राउंड में मैसेज गिरे)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/firebase-messaging-sw.js')
             .then(function(registration) {
-                console.log('✅ Service Worker Registered successfully scope:', registration.scope);
+                console.log('✅ Service Worker Registered successfully');
             })
             .catch(function(err) {
                 console.log('❌ Service Worker registration failed:', err);
@@ -406,12 +454,7 @@
             if (!("Notification" in window)) return;
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
-                    console.log("✅ Notification Permission Granted.");
-                    if (window.generateFCMToken) {
-                        window.generateFCMToken();
-                    }
-                } else {
-                    console.log("❌ Notification Permission Denied by User.");
+                    if (window.generateFCMToken) window.generateFCMToken();
                 }
             });
         }
@@ -442,8 +485,7 @@
         const db = getFirestore(app);
         
         let analytics = null;
-        try { analytics = getAnalytics(app); } catch(e) { console.log("Analytics loading skipped"); }
-
+        try { analytics = getAnalytics(app); } catch(e) {}
         let messaging;
         try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
@@ -463,7 +505,6 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    
                     let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
                     let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
@@ -471,7 +512,7 @@
                     
                     if (analytics) {
                         try { setUserProperties(analytics, { class_group: studentClassGlobal }); } 
-                        catch(e) { console.log("Analytics tracking error", e); }
+                        catch(e) {}
                     }
                     
                     document.getElementById("studentName").innerText = studentName;
@@ -485,12 +526,10 @@
                     window.logout();
                 }
             } catch (error) {
-                console.error("Profile Fetch Error:", error);
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
         }
 
-        // Live Notices
         const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
         onSnapshot(qNotices, (snapshot) => {
             const noticeBox = document.getElementById("studentNotices");
@@ -508,7 +547,6 @@
             });
         });
 
-        // Live Tests
         const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
         onSnapshot(qTests, (snapshot) => {
             const testBox = document.getElementById("studentTests");
@@ -531,13 +569,10 @@
             });
         });
 
-        // FCM Token Setup (WITH SERVICE WORKER LINK)
         window.generateFCMToken = async function() {
             if(!messaging) return;
             try {
-                // यह लाइन सर्विस वर्कर को जबरदस्ती ढूँढती है
                 const registration = await navigator.serviceWorker.ready; 
-                
                 const currentToken = await getToken(messaging, { 
                     vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
                     serviceWorkerRegistration: registration 
@@ -545,7 +580,6 @@
                 
                 if (currentToken && activeRoll) {
                     await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-                    console.log("✅ Token Generated & Synced with DB!");
                 }
             } catch (err) {
                 console.log("FCM Token Error:", err);
@@ -554,25 +588,29 @@
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
+        // 👇 FIX: Class 8th Testing Link Setup 👇
         window.routeToLiveTest = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) window.location.href = "history10.html";
-            else if (cleanClass.includes("9")) window.location.href = "history9.html";
-            else if (cleanClass.includes("8")) alert("⚠️ Alert: Class 8th ka test abhi start nahi hua hai. Kripya baad mein try karein!");
+            if (cleanClass.includes("10")) navigateWithAnimation("history10.html");
+            else if (cleanClass.includes("9")) navigateWithAnimation("history9.html");
+            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html"); // Added Class 8th
             else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
         }
 
         window.routeToResult = function() {
             let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) window.location.href = "result10.html";
-            else if (cleanClass.includes("9")) window.location.href = "result.html";
+            if (cleanClass.includes("10")) navigateWithAnimation("result10.html");
+            else if (cleanClass.includes("9")) navigateWithAnimation("result.html");
             else if (cleanClass.includes("8")) alert("⚠️ Alert: Class 8th ka result abhi available nahi hai!");
             else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
         }
 
         window.logout = function() { 
-            localStorage.removeItem("studentRoll"); 
-            window.location.href = "student-login.html"; 
+            document.body.classList.add('page-exit'); // Add animation on logout too
+            setTimeout(() => {
+                localStorage.removeItem("studentRoll"); 
+                window.location.href = "student-login.html"; 
+            }, 300);
         }
         
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
