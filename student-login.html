@@ -447,7 +447,7 @@ input:focus {
                     localStorage.setItem("studentRoll", roll);
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
                     msg.innerHTML = "🚀 Redirecting...";
-                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
+                    setTimeout(() => { window.location.replace = "dashboard.html"; }, 1200);
                 } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Wrong Password"; resetButton(); }
             } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
         } catch (error) { msg.style.color = "#f87171"; msg.innerHTML = "⚠️ Network error."; resetButton(); }
