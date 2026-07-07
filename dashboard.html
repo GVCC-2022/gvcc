@@ -205,7 +205,7 @@
                 <div class="info-row"><span class="info-label">Class:</span><span class="info-value" id="studentClass">--</span></div>
             </div> 
             
-            <!-- 📌 NEW: LIVE DAILY DIARY (HOMEWORK) SECTION -->
+            <!-- 📌 LIVE DAILY DIARY (HOMEWORK) SECTION -->
             <div id="daily-diary-section" style="margin-top: 25px; margin-bottom: 25px;">
                 <h3 style="color: #8b5cf6; border-bottom: 2px solid rgba(139, 92, 246, 0.2); padding-bottom: 8px; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="--fa-animation-duration: 2s;"></i> Today's Class Update
@@ -226,7 +226,7 @@
                 <div id="studentTests"></div>
             </div>
 
-            <!-- 📌 UPDATED: CLEAN 2x2 GRID MENU -->
+            <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i><span>Join Live Class</span>
@@ -359,7 +359,15 @@
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
 
-                    // 📌 NEW FUNCTION: LIVE DAILY DIARY
+                    fetchLiveDailyDiary();
+                } else {
+                    alert("Session Error: Profile not found."); window.logout();
+                }
+            } catch (error) {
+                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
+            }
+        }
+
         function fetchLiveDailyDiary() {
             const qDiary = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
             onSnapshot(qDiary, (snapshot) => {
@@ -372,11 +380,10 @@
                     let target = String(data.targetClass || "All").trim().toLowerCase();
                     let myClass = String(studentClassGlobal).trim().toLowerCase();
                     
-                    // Filter: Show only if it's for 'All' or matches student's class
                     if (target === "all" || myClass.includes(target) || target.includes(myClass)) {
                         hasData = true;
                         
-                        // 👇 नया कॉम्पैक्ट वीडियो बटन (छोटा और स्लीक)
+                        // 👇 यहाँ मैंने सिर्फ एक बार `let videoHTML = "";` रहने दिया है
                         let videoHTML = "";
                         if (data.videoLink && data.videoLink.length > 5) {
                             videoHTML = `
@@ -385,7 +392,6 @@
                             </a>`;
                         }
 
-                        // 👇 नया और एकदम Compact Card Design 
                         diaryBox.innerHTML += `
                             <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6;">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
