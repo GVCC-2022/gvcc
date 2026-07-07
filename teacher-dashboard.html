@@ -183,6 +183,16 @@
                     <option value="All">All Classes</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label>Select Teacher (शिक्षक चुनें)</label>
+                <select id="diaryTeacher">
+                    <option value="Md Faiyaz">Md Faiyaz</option>
+                    <option value="Md Nijamuddin Sir">Md Nijamuddin Sir</option>
+                    <option value="Md Kaish Sir">Md Kaish Sir</option>
+                    <option value="Vikash Sir">Vikash Sir</option>
+                </select>
+            </div>
+            
 
             <div class="form-group">
                 <label>
@@ -402,9 +412,10 @@
         document.getElementById("openTestModal").addEventListener("click", () => { document.getElementById("testModal").style.display = "flex"; });
         document.getElementById("openDiaryModal").addEventListener("click", () => { document.getElementById("diaryModal").style.display = "flex"; });
 
-        // 📌 PUBLISH DAILY DIARY / HOMEWORK
+                // 📌 PUBLISH DAILY DIARY / HOMEWORK
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
+            const selectedTeacher = document.getElementById("diaryTeacher").value; // 👇 नया: टीचर का नाम ड्रॉपडाउन से लेगा
             const classTopic = document.getElementById("diaryTopic").value.trim();
             const homework = document.getElementById("diaryHomework").value.trim();
             const videoLink = document.getElementById("diaryVideo").value.trim();
@@ -412,14 +423,13 @@
 
             if (!classTopic || !homework) { alert("Please Topic aur Homework dono bharein!"); return; }
 
-            // Aaj ki date format karna (Jaise: 15 July 2026)
             const dateObj = new Date();
             const dateStr = dateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publishing...";
             try {
                 await addDoc(collection(db, "daily_diary"), {
-                    teacherName: teacherName,
+                    teacherName: selectedTeacher, // 👇 नया: अब आपका लॉगिन नाम नहीं, बल्कि चुना हुआ नाम सेव होगा
                     subject: teacherSubject,
                     targetClass: targetClass,
                     classTopic: classTopic,
