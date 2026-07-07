@@ -359,17 +359,7 @@
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
 
-                    // 📌 Fetch Live Diaries (Homework) only AFTER knowing student's class
-                    fetchLiveDailyDiary();
-                } else {
-                    alert("Session Error: Profile not found."); window.logout();
-                }
-            } catch (error) {
-                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
-            }
-        }
-
-        // 📌 NEW FUNCTION: LIVE DAILY DIARY
+                    // 📌 NEW FUNCTION: LIVE DAILY DIARY
         function fetchLiveDailyDiary() {
             const qDiary = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
             onSnapshot(qDiary, (snapshot) => {
@@ -386,15 +376,6 @@
                     if (target === "all" || myClass.includes(target) || target.includes(myClass)) {
                         hasData = true;
                         
-                        let videoHTML = "";
-                        if (data.videoLink && data.videoLink.length > 5) {
-                            videoHTML = `
-                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
-                                <a href="${data.videoLink}" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; transition: all 0.2s;">
-                                    <i class="fa-brands fa-youtube" style="font-size: 18px;"></i> बेसिक Video देखें
-                                </a>
-                            </div>`;
-                        }
                         // 👇 नया कॉम्पैक्ट वीडियो बटन (छोटा और स्लीक)
                         let videoHTML = "";
                         if (data.videoLink && data.videoLink.length > 5) {
@@ -426,8 +407,6 @@
                                 ${videoHTML}
                             </div>
                         `;
-
-
                     }
                 });
 
