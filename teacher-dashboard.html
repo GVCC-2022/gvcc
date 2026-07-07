@@ -64,9 +64,9 @@
             </div>
 
             <div class="card" id="openViewDiaryModal" style="border-color: #10b981;">
-                <i class="fa-solid fa-copy" style="color: #10b981;"></i>
-                <h3 style="color: #10b981;">View Homework</h3>
-                <p>Read & copy published updates</p>
+                <i class="fa-solid fa-list-check" style="color: #10b981;"></i>
+                <h3 style="color: #10b981;">View & Delete</h3>
+                <p>Manage published updates</p>
             </div>
 
             <div class="card" id="openNoticeModal">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <!-- MODAL: Add Daily Diary (UPDATED FORM) -->
+    <!-- MODAL: Add Daily Diary -->
     <div class="modal" id="diaryModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -116,34 +116,41 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Subject (विषय)</label>
-                <select id="diarySubject">
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Science">Science</option>
-                    <option value="Social Science">Social Science</option>
-                    <option value="Hindi">Hindi</option>
-                    <option value="English">English</option>
-                    <option value="Sanskrit">Sanskrit</option>
-                    <option value="Urdu">Urdu</option>
-                </select>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Subject (विषय)</label>
+                    <!-- 🌟 NAYA: Subject Dropdown updated with onchange event -->
+                    <select id="diarySubject" onchange="updateSubSubjects()">
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Science">Science</option>
+                        <option value="Social Science">Social Science</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="English">English</option>
+                        <option value="Sanskrit">Sanskrit</option>
+                        <option value="Urdu">Urdu</option>
+                    </select>
+                </div>
+                <!-- 🌟 NAYA: Sub-Subject Dropdown (Physics, History etc.) -->
+                <div class="form-group" id="subSubjectGroup" style="display: none;">
+                    <label style="color:#f59e0b;">Sub-Subject</label>
+                    <select id="diarySubSubject">
+                        <!-- Options will be injected by JavaScript -->
+                    </select>
+                </div>
             </div>
 
-            <!-- 1. Topic -->
             <div class="form-group">
                 <label style="color:#0ea5e9;">📝 आज क्या पढ़ाया गया? (Topic) <button type="button" class="mic-btn" onclick="startVoiceTyping('diaryTopic', this)"><i class="fa-solid fa-microphone"></i> Mic</button></label>
                 <textarea id="diaryTopic" rows="2" placeholder="उदा: History chapter 4"></textarea>
             </div>
 
-            <!-- 2. HW Summary -->
             <div class="form-group">
                 <label style="color:#ef4444;">🏠 होमवर्क क्या है? (Short Summary) <button type="button" class="mic-btn" onclick="startVoiceTyping('diaryHomeworkSummary', this)"><i class="fa-solid fa-microphone"></i> Mic</button></label>
                 <textarea id="diaryHomeworkSummary" rows="2" placeholder="उदा: Objective याद करना है"></textarea>
             </div>
 
-            <!-- 3. Full Detailed HW (Optional) -->
             <div class="form-group">
-                <label style="color:#10b981;">📋 पूरा होमवर्क / प्रश्न (Optional - Copy Paste Here)</label>
+                <label style="color:#10b981;">📋 पूरा होमवर्क / प्रश्न (Optional - Copy Paste)</label>
                 <textarea id="diaryFullHomework" rows="4" placeholder="यहाँ लम्बे प्रश्न या नोट्स पेस्ट करें... (अगर नहीं है तो खाली छोड़ दें)"></textarea>
             </div>
 
@@ -156,11 +163,11 @@
         </div>
     </div>
 
-    <!-- MODAL: View & Copy Homework -->
+    <!-- MODAL: View, Copy & Delete Homework -->
     <div class="modal" id="viewDiaryModal">
         <div class="modal-content" style="background: #1e293b;">
             <span class="close-btn" onclick="closeModals()">&times;</span>
-            <h2 style="color: #10b981; margin-top: 0; text-align: left;"><i class="fa-solid fa-list-check"></i> Published Updates</h2>
+            <h2 style="color: #10b981; margin-top: 0; text-align: left;"><i class="fa-solid fa-list-check"></i> Manage Updates</h2>
             <div id="teacherDiaryList" style="text-align: left; margin-top: 20px;">
                 <div style="text-align: center; color: #94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
             </div>
@@ -181,6 +188,24 @@
             navigator.clipboard.writeText(decoded).then(() => alert("✅ Full Homework Text Copied!")).catch(err => alert("⚠️ Copy failed!"));
         }
 
+        // 🌟 NAYA: Sub-Subject Logic
+        window.updateSubSubjects = function() {
+            const subject = document.getElementById("diarySubject").value;
+            const subGroup = document.getElementById("subSubjectGroup");
+            const subSelect = document.getElementById("diarySubSubject");
+            subSelect.innerHTML = "";
+            
+            if (subject === "Science") {
+                subGroup.style.display = "block";
+                subSelect.innerHTML = '<option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Biology">Biology</option>';
+            } else if (subject === "Social Science") {
+                subGroup.style.display = "block";
+                subSelect.innerHTML = '<option value="History">History</option><option value="Geography">Geography</option><option value="Political Science">Political Science</option><option value="Economics">Economics</option>';
+            } else {
+                subGroup.style.display = "none";
+            }
+        }
+
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         if (SpeechRecognition) { recognition = new SpeechRecognition(); recognition.lang = 'hi-IN'; recognition.interimResults = false; }
@@ -197,7 +222,8 @@
     <!-- FIREBASE SYSTEM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        // 🌟 NAYA: deleteDoc, doc import kiya gaya hai
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", authDomain: "gvcc-database.firebaseapp.com", projectId: "gvcc-database", storageBucket: "gvcc-database.firebasestorage.app", messagingSenderId: "1063216875940", appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" };
         const app = initializeApp(firebaseConfig); const db = getFirestore(app);
@@ -220,6 +246,18 @@
             loadTeacherDiaries();
         });
 
+        // 🌟 NAYA: Delete function for Homework
+        window.deleteDiary = async function(docId) {
+            if(confirm("⚠️ क्या आप सच में इस होमवर्क को हमेशा के लिए डिलीट करना चाहते हैं?")) {
+                try {
+                    await deleteDoc(doc(db, "daily_diary", docId));
+                    alert("✅ होमवर्क डिलीट हो गया!");
+                } catch(error) {
+                    alert("⚠️ Delete fail: " + error.message);
+                }
+            }
+        }
+
         function loadTeacherDiaries() {
             const list = document.getElementById("teacherDiaryList");
             const qDiary = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
@@ -227,11 +265,12 @@
                 list.innerHTML = "";
                 if(snapshot.empty) return list.innerHTML = "<div style='color:#cbd5e1; text-align:center;'>No updates found!</div>";
                 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const docId = docSnap.id; // Yahan se unique ID milta hai delete ke liye
                     
                     const hwSummary = data.homeworkSummary || data.homework || "N/A";
-                    const fullHW = data.fullHomework || data.homework || ""; // Backup for old data
+                    const fullHW = data.fullHomework || data.homework || ""; 
                     const cleanText = encodeURIComponent(`${data.classTopic} \nHomework: ${fullHW}`);
                     
                     list.innerHTML += `
@@ -243,11 +282,18 @@
                             <div style="font-size:13px; color:#cbd5e1; margin-bottom:4px;"><strong>Topic:</strong> ${data.classTopic}</div>
                             <div style="font-size:13px; color:#cbd5e1; margin-bottom:12px;"><strong>HW:</strong> ${hwSummary}</div>
                             
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; flex-wrap:wrap; gap:10px;">
                                 <span style="font-size:11px; color:#f59e0b;">👨‍🏫 ${data.teacherName}</span>
-                                <button onclick="copyTextToClipboard('${cleanText}')" style="background:#10b981; color:#0f172a; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">
-                                    <i class="fa-regular fa-copy"></i> Copy Full Text
-                                </button>
+                                
+                                <!-- 🌟 NAYA: Copy aur Delete Button dono yahan hain -->
+                                <div style="display:flex; gap: 8px;">
+                                    <button onclick="deleteDiary('${docId}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <button onclick="copyTextToClipboard('${cleanText}')" style="background:#10b981; color:#0f172a; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">
+                                        <i class="fa-regular fa-copy"></i> Copy
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -255,11 +301,18 @@
             });
         }
 
-        // 🌟 UPDATED: WRITE DAILY DIARY TO DB
+        // WRITE DAILY DIARY TO DB
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
             const selectedTeacher = document.getElementById("diaryTeacher").value;
-            const selectedSubject = document.getElementById("diarySubject").value;
+            
+            // 🌟 NAYA: Subject aur Sub-Subject ko ek sath milana
+            let selectedSubject = document.getElementById("diarySubject").value;
+            const subGroupStyle = document.getElementById("subSubjectGroup").style.display;
+            if (subGroupStyle === "block") {
+                const subSubject = document.getElementById("diarySubSubject").value;
+                selectedSubject = selectedSubject + " (" + subSubject + ")"; // e.g. "Science (Physics)"
+            }
             
             const classTopic = document.getElementById("diaryTopic").value.trim();
             const hwSummary = document.getElementById("diaryHomeworkSummary").value.trim();
@@ -279,8 +332,8 @@
                     subject: selectedSubject,
                     targetClass: targetClass,
                     classTopic: classTopic,
-                    homeworkSummary: hwSummary, // Short version
-                    fullHomework: fullHW,       // Long version (Optional)
+                    homeworkSummary: hwSummary, 
+                    fullHomework: fullHW,       
                     videoLink: videoLink,
                     date: dateStr,
                     timestamp: serverTimestamp()
@@ -297,8 +350,38 @@
         });
 
         // Other Modals Logic
-        document.getElementById("sendNoticeBtn").addEventListener("click", async () => { /* Logic */ closeModals(); });
-        document.getElementById("sendTestBtn").addEventListener("click", async () => { /* Logic */ closeModals(); });
+        document.getElementById("sendNoticeBtn").addEventListener("click", async () => {
+            /* Logic code */
+            const targetClass = document.getElementById("noticeClass").value;
+            const message = document.getElementById("noticeMessage").value.trim();
+            const btn = document.getElementById("sendNoticeBtn");
+            if (!message) { alert("Please type a message!"); return; }
+            btn.innerText = "Sending...";
+            try {
+                await addDoc(collection(db, "notices"), { teacherName: teacherName, subject: teacherSubject, targetClass: targetClass, message: message, timestamp: serverTimestamp() });
+                alert("Notice sent successfully!"); document.getElementById("noticeMessage").value = ""; closeModals();
+            } catch (error) { alert("Failed to send notice."); }
+            btn.innerText = "Send Notice";
+        });
+        
+        document.getElementById("sendTestBtn").addEventListener("click", async () => {
+            /* Logic code */
+            const targetClass = document.getElementById("testClass").value;
+            const testName = document.getElementById("testName").value.trim();
+            const testDate = document.getElementById("testDate").value; 
+            const testTime = document.getElementById("testTime").value; 
+            const testDuration = document.getElementById("testDuration").value.trim();
+            const testCode = document.getElementById("testCode").value.trim();
+            const btn = document.getElementById("sendTestBtn");
+            if (!testName || !testDate || !testTime || !testDuration || !testCode) { alert("Please fill all details!"); return; }
+            try { JSON.parse(testCode); } catch (e) { alert("⚠️ Galat JSON Code format!"); return; }
+            btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publishing...";
+            try {
+                await addDoc(collection(db, "active_tests"), { teacherName: teacherName, subject: teacherSubject, targetClass: targetClass, testName: testName, testDate: testDate, testTime: testTime, duration: testDuration, testCode: testCode, timestamp: serverTimestamp() });
+                alert("🚀 Smart AI Test Published Successfully!"); document.getElementById("testName").value = ""; document.getElementById("testDate").value = ""; document.getElementById("testTime").value = ""; document.getElementById("testDuration").value = ""; document.getElementById("testCode").value = ""; closeModals();
+            } catch (error) { alert("Failed to publish test."); }
+            btn.innerHTML = "<i class='fa-solid fa-rocket'></i> Publish Smart Test";
+        });
     </script>
 </body>
 </html>
