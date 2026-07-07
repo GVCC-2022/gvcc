@@ -398,12 +398,19 @@
 
                         diaryBox.innerHTML += `
                             <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 5px solid #8b5cf6; border: 1px solid #f1f5f9; border-left-width: 5px; border-left-color: #8b5cf6;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                     <span style="font-weight: 800; color: #003366; font-size: 15px;">
                                         <i class="fa-solid fa-book-open" style="color: #8b5cf6; margin-right: 5px;"></i> ${data.subject}
                                     </span>
                                     <span style="font-size: 11px; color: #64748b; background: #f1f5f9; padding: 4px 8px; border-radius: 12px; font-weight: bold;">
                                         <i class="fa-regular fa-calendar"></i> ${data.date || 'Today'}
+                                    </span>
+                                </div>
+                                
+                                <!-- 👇 नया: टीचर का नाम दिखाने वाला बैज 👇 -->
+                                <div style="margin-bottom: 10px;">
+                                    <span style="background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #bae6fd;">
+                                        👨‍🏫 By: ${data.teacherName}
                                     </span>
                                 </div>
                                 
@@ -420,6 +427,7 @@
                                 ${videoHTML}
                             </div>
                         `;
+
                     }
                 });
 
