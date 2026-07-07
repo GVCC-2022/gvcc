@@ -395,38 +395,38 @@
                                 </a>
                             </div>`;
                         }
+                        // 👇 नया कॉम्पैक्ट वीडियो बटन (छोटा और स्लीक)
+                        let videoHTML = "";
+                        if (data.videoLink && data.videoLink.length > 5) {
+                            videoHTML = `
+                            <a href="${data.videoLink}" target="_blank" style="display: block; text-align: center; margin-top: 8px; background: #fee2e2; color: #ef4444; padding: 6px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">
+                                <i class="fa-brands fa-youtube"></i> Video देखें
+                            </a>`;
+                        }
 
+                        // 👇 नया और एकदम Compact Card Design 
                         diaryBox.innerHTML += `
-                            <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 5px solid #8b5cf6; border: 1px solid #f1f5f9; border-left-width: 5px; border-left-color: #8b5cf6;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <span style="font-weight: 800; color: #003366; font-size: 15px;">
-                                        <i class="fa-solid fa-book-open" style="color: #8b5cf6; margin-right: 5px;"></i> ${data.subject}
-                                    </span>
-                                    <span style="font-size: 11px; color: #64748b; background: #f1f5f9; padding: 4px 8px; border-radius: 12px; font-weight: bold;">
-                                        <i class="fa-regular fa-calendar"></i> ${data.date || 'Today'}
-                                    </span>
-                                </div>
-                                
-                                <!-- 👇 नया: टीचर का नाम दिखाने वाला बैज 👇 -->
-                                <div style="margin-bottom: 10px;">
-                                    <span style="background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #bae6fd;">
-                                        👨‍🏫 By: ${data.teacherName}
+                            <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div>
+                                        <div style="font-weight: 800; color: #003366; font-size: 14px; margin-bottom: 2px;">
+                                            <i class="fa-solid fa-book" style="color: #8b5cf6; font-size: 12px;"></i> ${data.subject}
+                                        </div>
+                                        <div style="font-size: 11px; color: #0284c7; font-weight: 700;">👨‍🏫 By: ${data.teacherName}</div>
+                                    </div>
+                                    <span style="font-size: 10px; color: #64748b; background: #f1f5f9; padding: 3px 6px; border-radius: 4px; font-weight: bold;">
+                                        ${data.date || 'Today'}
                                     </span>
                                 </div>
                                 
-                                <div style="font-size: 13.5px; color: #334155; margin-bottom: 12px; line-height: 1.5;">
-                                    <strong style="color: #0ea5e9;">📝 क्लास में क्या पढ़ाया गया:</strong><br>
-                                    <span style="color: #475569;">${data.classTopic}</span>
+                                <div style="background: #f8fafc; padding: 8px; border-radius: 6px; font-size: 13px; color: #334155; line-height: 1.4; border: 1px solid #e2e8f0;">
+                                    <div style="margin-bottom: 4px;"><strong style="color: #0ea5e9;">📝 Topic:</strong> ${data.classTopic}</div>
+                                    <div><strong style="color: #ef4444;">🏠 HW:</strong> ${data.homework}</div>
                                 </div>
-                                
-                                <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
-                                    <strong style="color: #ef4444;">🏠 होमवर्क (Homework):</strong><br>
-                                    <span style="color: #475569; font-weight: 600;">${data.homework}</span>
-                                </div>
-                                
                                 ${videoHTML}
                             </div>
                         `;
+
 
                     }
                 });
