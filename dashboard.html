@@ -204,21 +204,9 @@
                 <div class="info-row"><span class="info-label">Roll Number:</span><span class="info-value" id="studentRollDisplay">--</span></div>
                 <div class="info-row"><span class="info-label">Class:</span><span class="info-value" id="studentClass">--</span></div>
             </div> 
-            
-            <!-- 📌 LIVE DAILY DIARY (HOMEWORK) SECTION -->
-            <div id="daily-diary-section" style="margin-top: 25px; margin-bottom: 25px;">
-                <h3 style="color: #8b5cf6; border-bottom: 2px solid rgba(139, 92, 246, 0.2); padding-bottom: 8px; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-clipboard-list fa-bounce" style="--fa-animation-duration: 2s;"></i> Today's Class Update
-                </h3>
-                <div id="dailyDiaryContent">
-                    <div style="text-align: center; padding: 15px; color: #94a3b8;">
-                        <i class="fa-solid fa-spinner fa-spin"></i> Checking today's diary...
-                    </div>
-                </div>
-            </div>
 
             <!-- 📌 NOTICES & EXAMS -->
-            <div id="live-updates-section" style="margin-top: 30px; margin-bottom: 25px; text-align: left;">
+            <div id="live-updates-section" style="margin-top: 20px; margin-bottom: 25px; text-align: left;">
                 <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; font-size: 18px;">
                     <i class="fa-solid fa-bell fa-shake"></i> Notice & Live Tests
                 </h3>
@@ -228,6 +216,13 @@
 
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
+                
+                <!-- 🌟 NAYA: Link to Daily Diary Page -->
+                <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: #faf5ff !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
+                    <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
+                    <span style="font-size: 16px; color: #6b21a8; font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
+                </button>
+
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i><span>Join Live Class</span>
                 </a>
@@ -350,6 +345,10 @@
                     let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
                     studentClassGlobal = String(studentClass).trim();
+                    
+                    // 🌟 NAYA: Class ko local storage me save kar rahe hain taaki daily-diary padh sake
+                    localStorage.setItem("studentClass", studentClassGlobal);
+                    
                     if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
                     
                     document.getElementById("studentName").innerText = studentName;
@@ -359,80 +358,12 @@
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
 
-                    fetchLiveDailyDiary();
                 } else {
                     alert("Session Error: Profile not found."); window.logout();
                 }
             } catch (error) {
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
-        }
-
-        function fetchLiveDailyDiary() {
-            const qDiary = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
-            onSnapshot(qDiary, (snapshot) => {
-                const diaryBox = document.getElementById("dailyDiaryContent");
-                diaryBox.innerHTML = "";
-                let hasData = false;
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    let target = String(data.targetClass || "All").trim().toLowerCase();
-                    let myClass = String(studentClassGlobal).trim().toLowerCase();
-                    
-                    if (target === "all" || myClass.includes(target) || target.includes(myClass)) {
-                        hasData = true;
-                        
-                        // 👇 यहाँ मैंने सिर्फ एक बार `let videoHTML = "";` रहने दिया है
-                        let videoHTML = "";
-                        if (data.videoLink && data.videoLink.length > 5) {
-                            videoHTML = `
-                            <a href="${data.videoLink}" target="_blank" style="display: block; text-align: center; margin-top: 8px; background: #fee2e2; color: #ef4444; padding: 6px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">
-                                <i class="fa-brands fa-youtube"></i> Video देखें
-                            </a>`;
-                        }
-
-                        // 👇 NAYA PROFESSIONAL LIST LAYOUT 👇
-diaryBox.innerHTML += `
-    <div style="display: flex; gap: 12px; margin-bottom: 16px; border-left: 2px solid #e2e8f0; padding-left: 12px; position: relative;">
-        <!-- Timeline Dot -->
-        <div style="width: 10px; height: 10px; background: #8b5cf6; border-radius: 50%; position: absolute; left: -6px; top: 5px;"></div>
-        
-        <div style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <span style="font-weight: 700; color: #1e293b; font-size: 14px;">${data.subject}</span>
-                <span style="font-size: 10px; color: #64748b; font-weight: 600;">${data.date}</span>
-            </div>
-            
-            <div style="font-size: 13px; color: #475569; margin-bottom: 6px;">
-                <strong style="color: #0ea5e9;">Topic:</strong> ${data.classTopic}
-            </div>
-            
-            <div style="font-size: 13px; color: #475569; background: #f1f5f9; padding: 6px; border-radius: 6px; margin-bottom: 6px;">
-                <strong style="color: #ef4444;">HW:</strong> ${data.homework}
-            </div>
-            
-            ${videoHTML ? `<div style="font-size: 11px;">${videoHTML.replace('padding: 6px', 'padding: 4px 8px').replace('12px', '11px')}</div>` : ''}
-            
-            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px; font-style: italic;">
-                👨‍🏫 ${data.teacherName}
-            </div>
-        </div>
-    </div>
-`;
-
-                    }
-                });
-
-                if (!hasData) {
-                    diaryBox.innerHTML = `
-                        <div style="background: white; border-radius: 12px; padding: 20px; text-align: center; border: 1px dashed #cbd5e1;">
-                            <i class="fa-solid fa-mug-hot" style="font-size: 24px; color: #94a3b8; margin-bottom: 10px;"></i>
-                            <div style="color: #64748b; font-size: 14px; font-weight: 500;">आज का कोई नया अपडेट या होमवर्क नहीं है।</div>
-                        </div>
-                    `;
-                }
-            });
         }
 
         // Notices
