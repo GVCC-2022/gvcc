@@ -5,33 +5,67 @@
     <title>Class Updates - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; }
-        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; padding-bottom: 30px; }
         
         /* Timeline List Styling */
         .update-item { 
-            background: white; margin-bottom: 15px; padding: 15px; border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6;
+            background: white; margin-bottom: 16px; padding: 15px; border-radius: 14px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid #8b5cf6;
         }
-        .meta { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-bottom: 8px; }
-        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
-        .content-box { background: #f8fafc; padding: 10px; border-radius: 8px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; }
+        .meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 8px; }
+        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block; margin-bottom: 12px; }
+        
+        /* 🌟 NAYA: Clean Content Box (Topic & Short Homework) */
+        .content-box { 
+            background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; 
+            color: #334155; border: 1px solid #e2e8f0; line-height: 1.5;
+        }
+        
+        /* 🌟 NAYA: View Homework Button (Sleek Design) */
+        .btn-view-hw {
+            background: #10b981; color: white; border: none; padding: 10px 15px;
+            border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            width: 100%; margin-top: 12px; transition: 0.2s; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+        .btn-view-hw:active { transform: scale(0.96); }
+
         .video-link { 
-            display: block; text-align: center; margin-top: 10px; background: #fee2e2; 
-            color: #ef4444; padding: 8px; border-radius: 6px; text-decoration: none; 
-            font-size: 13px; font-weight: bold; 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            margin-top: 10px; background: #fee2e2; color: #ef4444; padding: 10px; 
+            border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; 
+        }
+
+        /* 🌟 NAYA: Premium Bottom Sheet Modal (नीचे से खुलने वाला पॉप-अप) */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: flex-end; 
+            backdrop-filter: blur(4px);
+        }
+        .modal-content { 
+            background: white; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; 
+            padding: 20px; max-height: 85vh; display: flex; flex-direction: column;
+            animation: slideUp 0.3s ease-out forwards;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        /* Modal Handle (Design ke liye) */
+        .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
+        
+        .hw-text { 
+            font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; 
+            margin-top: 10px; background: #f8fafc; padding: 18px; border-radius: 12px; 
+            border: 1px solid #e2e8f0; overflow-y: auto; flex: 1; margin-bottom: 15px;
         }
 
         /* Fun Empty State Animation */
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .empty-state {
             text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
             border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            border: 2px dashed #cbd5e1; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border: 2px dashed #cbd5e1; animation: popIn 0.5s forwards;
         }
     </style>
 </head>
@@ -45,6 +79,28 @@
         <div style="text-align: center; margin-top: 50px; color: #64748b;">
             <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
             <p>Loading updates...</p>
+        </div>
+    </div>
+
+    <!-- 🌟 NAYA: Premium Bottom Sheet Homework Modal -->
+    <div class="modal" id="hwModal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <h3 style="color: #10b981; margin: 0; font-size: 18px;">
+                    <i class="fa-solid fa-book-open-reader"></i> Class Homework
+                </h3>
+                <i class="fa-solid fa-circle-xmark" onclick="closeHomeworkModal()" style="font-size: 24px; color: #94a3b8; cursor: pointer;"></i>
+            </div>
+            
+            <div style="font-size: 13px; color: #64748b; margin-top: 12px;" id="modalSubtitle"></div>
+            
+            <!-- यहाँ बच्चों को आपका पूरा लम्बा टेक्स्ट लाइन-बाय-लाइन दिखेगा -->
+            <div class="hw-text" id="modalHWText"></div>
+            
+            <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">
+                Close Homework
+            </button>
         </div>
     </div>
 
@@ -74,17 +130,40 @@
                 const data = doc.data();
                 if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
                     hasData = true;
+                    
+                    const fullHW = data.homework || "आज कोई लिखित होमवर्क नहीं है।";
+                    
+                    // 🌟 NAYA: कार्ड पर दिखाने के लिए होमवर्क को छोटा करना (सिर्फ 50 अक्षरों तक) 🌟
+                    let shortHW = fullHW;
+                    if (fullHW.length > 50) {
+                        shortHW = fullHW.substring(0, 50) + "...";
+                    }
+
+                    // लम्बा टेक्स्ट सुरक्षित पास करने के लिए
+                    const safeHW = encodeURIComponent(fullHW);
+
                     list.innerHTML += `
                         <div class="update-item">
                             <div class="meta">
-                                <span><i class="fa-solid fa-book"></i> ${data.subject}</span>
-                                <span>${data.date}</span>
+                                <span style="font-weight:800; color:#1e293b; font-size:14px;"><i class="fa-solid fa-book" style="color:#8b5cf6;"></i> ${data.subject}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${data.date}</span>
                             </div>
-                            <div style="margin-bottom:8px;"><span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span></div>
+                            <span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span>
+                            
                             <div class="content-box">
-                                <div><strong style="color:#0ea5e9;">Topic:</strong> ${data.classTopic}</div>
-                                <div style="margin-top:5px;"><strong style="color:#ef4444;">HW:</strong> ${data.homework}</div>
+                                <div style="margin-bottom: 8px;">
+                                    <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
+                                </div>
+                                <div>
+                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${shortHW}</span>
+                                </div>
                             </div>
+                            
+                            <!-- 🌟 NAYA: View Homework Button -->
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}')">
+                                <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
+                            </button>
+
                             ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
                         </div>
                     `;
@@ -108,6 +187,20 @@
                 `;
             }
         });
+    </script>
+
+    <!-- 🌟 NAYA: Bottom Sheet Modal Logic -->
+    <script>
+        window.openHomeworkModal = function(encodedHW, teacherName, subject) {
+            document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
+            // यहाँ टेक्स्ट वापस डिकोड होकर लाइन-बाय-लाइन सेट हो जाएगा
+            document.getElementById("modalHWText").innerText = decodeURIComponent(encodedHW);
+            document.getElementById("hwModal").style.display = "flex";
+        }
+
+        window.closeHomeworkModal = function() {
+            document.getElementById("hwModal").style.display = "none";
+        }
     </script>
 </body>
 </html>
