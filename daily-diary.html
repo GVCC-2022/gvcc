@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Class Updates - GVCC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; }
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+        
+        /* Timeline List Styling */
+        .update-item { 
+            background: white; margin-bottom: 15px; padding: 15px; border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6;
+        }
+        .meta { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-bottom: 8px; }
+        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        .content-box { background: #f8fafc; padding: 10px; border-radius: 8px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; }
+        .video-link { 
+            display: block; text-align: center; margin-top: 10px; background: #fee2e2; 
+            color: #ef4444; padding: 8px; border-radius: 6px; text-decoration: none; 
+            font-size: 13px; font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left" style="float:left;"></i> Daily Class Diary
+    </div>
+
+    <div class="container" id="diaryList">
+        <div style="text-align: center; margin-top: 50px; color: #64748b;">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading updates...
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+            authDomain: "gvcc-database.firebaseapp.com",
+            projectId: "gvcc-database",
+            storageBucket: "gvcc-database.firebasestorage.app",
+            messagingSenderId: "1063216875940",
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const studentClass = localStorage.getItem("studentClass") || "10th"; // Dashboard se pass karna hoga
+
+        const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const list = document.getElementById("diaryList");
+            list.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.targetClass === "All" || data.targetClass === studentClass) {
+                    list.innerHTML += `
+                        <div class="update-item">
+                            <div class="meta">
+                                <span><i class="fa-solid fa-book"></i> ${data.subject}</span>
+                                <span>${data.date}</span>
+                            </div>
+                            <div style="margin-bottom:8px;"><span class="teacher-badge">👨‍🏫 ${data.teacherName}</span></div>
+                            <div class="content-box">
+                                <div><strong style="color:#0ea5e9;">Topic:</strong> ${data.classTopic}</div>
+                                <div style="margin-top:5px;"><strong style="color:#ef4444;">HW:</strong> ${data.homework}</div>
+                            </div>
+                            ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
+                        </div>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
