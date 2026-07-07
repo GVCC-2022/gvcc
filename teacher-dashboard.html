@@ -193,6 +193,19 @@
                 </select>
             </div>
             
+            <div class="form-group">
+                <label>Select Subject (विषय चुनें)</label>
+                <select id="diarySubject">
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="Social Science">Social Science</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="English">English</option>
+                    <option value="Sanskrit">Sanskrit</option>
+                    <option value="Urdu">Urdu</option>
+                </select>
+            </div>
+            
 
             <div class="form-group">
                 <label>
@@ -412,10 +425,11 @@
         document.getElementById("openTestModal").addEventListener("click", () => { document.getElementById("testModal").style.display = "flex"; });
         document.getElementById("openDiaryModal").addEventListener("click", () => { document.getElementById("diaryModal").style.display = "flex"; });
 
-                // 📌 PUBLISH DAILY DIARY / HOMEWORK
+                        // 📌 PUBLISH DAILY DIARY / HOMEWORK
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
-            const selectedTeacher = document.getElementById("diaryTeacher").value; // 👇 नया: टीचर का नाम ड्रॉपडाउन से लेगा
+            const selectedTeacher = document.getElementById("diaryTeacher").value;
+            const selectedSubject = document.getElementById("diarySubject").value; // 👇 नया कोड
             const classTopic = document.getElementById("diaryTopic").value.trim();
             const homework = document.getElementById("diaryHomework").value.trim();
             const videoLink = document.getElementById("diaryVideo").value.trim();
@@ -429,8 +443,8 @@
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publishing...";
             try {
                 await addDoc(collection(db, "daily_diary"), {
-                    teacherName: selectedTeacher, // 👇 नया: अब आपका लॉगिन नाम नहीं, बल्कि चुना हुआ नाम सेव होगा
-                    subject: teacherSubject,
+                    teacherName: selectedTeacher,
+                    subject: selectedSubject, // 👇 यहाँ हमने प्रोफाइल सब्जेक्ट हटाकर नया वाला डाल दिया
                     targetClass: targetClass,
                     classTopic: classTopic,
                     homework: homework,
@@ -449,6 +463,7 @@
             }
             btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Publish Update";
         });
+
 
         // Send Notice (Same as before)
         document.getElementById("sendNoticeBtn").addEventListener("click", async () => {
