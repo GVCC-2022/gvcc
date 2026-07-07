@@ -9,7 +9,6 @@
         .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .container { max-width: 500px; margin: 20px auto; padding: 0 15px; padding-bottom: 30px; }
         
-        /* Timeline List Styling */
         .update-item { 
             background: white; margin-bottom: 16px; padding: 15px; border-radius: 14px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid #8b5cf6;
@@ -17,13 +16,8 @@
         .meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 8px; }
         .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block; margin-bottom: 12px; }
         
-        /* 🌟 NAYA: Clean Content Box (Topic & Short Homework) */
-        .content-box { 
-            background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; 
-            color: #334155; border: 1px solid #e2e8f0; line-height: 1.5;
-        }
+        .content-box { background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; line-height: 1.5; }
         
-        /* 🌟 NAYA: View Homework Button (Sleek Design) */
         .btn-view-hw {
             background: #10b981; color: white; border: none; padding: 10px 15px;
             border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;
@@ -32,26 +26,13 @@
         }
         .btn-view-hw:active { transform: scale(0.96); }
 
-        .video-link { 
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            margin-top: 10px; background: #fee2e2; color: #ef4444; padding: 10px; 
-            border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; 
-        }
+        .video-link { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
 
-        /* 🌟 NAYA: Premium Bottom Sheet Modal (नीचे से खुलने वाला पॉप-अप) */
-        .modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: flex-end; 
-            backdrop-filter: blur(4px);
-        }
-        .modal-content { 
-            background: white; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; 
-            padding: 20px; max-height: 85vh; display: flex; flex-direction: column;
-            animation: slideUp 0.3s ease-out forwards;
-        }
+        /* Premium Bottom Sheet Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px); }
+        .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out forwards; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        /* Modal Handle (Design ke liye) */
         .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
         
         .hw-text { 
@@ -60,12 +41,9 @@
             border: 1px solid #e2e8f0; overflow-y: auto; flex: 1; margin-bottom: 15px;
         }
 
-        /* Fun Empty State Animation */
-        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .empty-state {
-            text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
-            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            border: 2px dashed #cbd5e1; animation: popIn 0.5s forwards;
+        /* Funny Empty Box Design inside Modal */
+        .funny-box {
+            text-align: center; padding: 25px 15px;
         }
     </style>
 </head>
@@ -82,7 +60,7 @@
         </div>
     </div>
 
-    <!-- 🌟 NAYA: Premium Bottom Sheet Homework Modal -->
+    <!-- 🌟 Premium Bottom Sheet Homework Modal -->
     <div class="modal" id="hwModal">
         <div class="modal-content">
             <div class="modal-handle"></div>
@@ -95,7 +73,7 @@
             
             <div style="font-size: 13px; color: #64748b; margin-top: 12px;" id="modalSubtitle"></div>
             
-            <!-- यहाँ बच्चों को आपका पूरा लम्बा टेक्स्ट लाइन-बाय-लाइन दिखेगा -->
+            <!-- Modal Content (Text ya Funny Animation) -->
             <div class="hw-text" id="modalHWText"></div>
             
             <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">
@@ -131,15 +109,10 @@
                 if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
                     hasData = true;
                     
-                    const fullHW = data.homework || "आज कोई लिखित होमवर्क नहीं है।";
-                    
-                    // 🌟 NAYA: कार्ड पर दिखाने के लिए होमवर्क को छोटा करना (सिर्फ 50 अक्षरों तक) 🌟
-                    let shortHW = fullHW;
-                    if (fullHW.length > 50) {
-                        shortHW = fullHW.substring(0, 50) + "...";
-                    }
+                    // NAYA SYSTEM: Backup purane data ke liye
+                    const hwSummary = data.homeworkSummary || data.homework || "कोई जानकारी नहीं";
+                    const fullHW = data.fullHomework || ""; // Ye blank ho sakta hai
 
-                    // लम्बा टेक्स्ट सुरक्षित पास करने के लिए
                     const safeHW = encodeURIComponent(fullHW);
 
                     list.innerHTML += `
@@ -155,11 +128,11 @@
                                     <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
                                 </div>
                                 <div>
-                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${shortHW}</span>
+                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${hwSummary}</span>
                                 </div>
                             </div>
                             
-                            <!-- 🌟 NAYA: View Homework Button -->
+                            <!-- 🌟 Button for Full HW Modal -->
                             <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}')">
                                 <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
                             </button>
@@ -170,31 +143,42 @@
                 }
             });
 
-            // 🌟 मजेदार Empty State 🌟
             if (!hasData) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-regular fa-face-rolling-eyes fa-bounce" style="font-size: 60px; color: #8b5cf6; margin-bottom: 20px;"></i>
-                        <h3 style="color: #1e293b; margin-bottom: 10px; font-size: 20px;">अरे सन्नाटा क्यों है भाई? 😅</h3>
-                        <p style="color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
-                            आज का कोई अपडेट या होमवर्क नहीं मिला... लगता है <strong>Md Faiyaz</strong> सर अभी तक भूल गए हैं! 
-                        </p>
-                        <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                            <span style="font-size: 13px; color: #475569;">जल्दी से उन्हें मैसेज करो और पूछो:</span><br>
-                            <span style="color: #ef4444; font-weight: bold; font-size: 16px; display: inline-block; margin-top: 5px;">"सर, आज का होमवर्क कहाँ है?" 🚀</span>
-                        </div>
-                    </div>
-                `;
+                list.innerHTML = `<div style="text-align:center; margin-top:40px; color:#94a3b8;">आज का कोई अपडेट नहीं है।</div>`;
             }
         });
     </script>
 
-    <!-- 🌟 NAYA: Bottom Sheet Modal Logic -->
+    <!-- 🌟 NAYA: Modal Logic (With Funny Animation inside) -->
     <script>
         window.openHomeworkModal = function(encodedHW, teacherName, subject) {
             document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
-            // यहाँ टेक्स्ट वापस डिकोड होकर लाइन-बाय-लाइन सेट हो जाएगा
-            document.getElementById("modalHWText").innerText = decodeURIComponent(encodedHW);
+            
+            let decodedHW = decodeURIComponent(encodedHW).trim();
+            const modalTextContainer = document.getElementById("modalHWText");
+
+            // 🌟 अगर सर ने लम्बा टेक्स्ट नहीं डाला है, तो मज़ेदार एनिमेशन दिखेगा 🌟
+            if (!decodedHW || decodedHW === "undefined") {
+                modalTextContainer.innerHTML = `
+                    <div class="funny-box">
+                        <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 55px; color: #f59e0b; margin-bottom: 15px;"></i>
+                        <h3 style="color:#1e293b; margin-bottom:10px; font-size: 18px;">अरे रे! 😅</h3>
+                        <p style="color:#64748b; font-size:14px; line-height:1.5;">लगता है सर डिटेल वाले प्रश्न डालना भूल गए हैं या उन्होंने क्लास में ही सब बता दिया है!</p>
+                        <div style="background:#f1f5f9; padding:12px; border-radius:8px; margin-top:15px; border: 1px dashed #cbd5e1;">
+                            <span style="font-size:12px; color:#475569;">Md Faiyaz सर को मैसेज करके याद दिलाएं! 🚀</span>
+                        </div>
+                    </div>
+                `;
+                // Modal ka background white kar do taaki design achha lage
+                modalTextContainer.style.background = "white";
+                modalTextContainer.style.border = "none";
+            } else {
+                // Agar text dala hai, toh wo line-by-line dikhega
+                modalTextContainer.innerText = decodedHW;
+                modalTextContainer.style.background = "#f8fafc";
+                modalTextContainer.style.border = "1px solid #e2e8f0";
+            }
+            
             document.getElementById("hwModal").style.display = "flex";
         }
 
