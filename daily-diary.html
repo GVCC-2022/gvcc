@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; }
-        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
         
         /* Timeline List Styling */
@@ -22,17 +22,29 @@
             color: #ef4444; padding: 8px; border-radius: 6px; text-decoration: none; 
             font-size: 13px; font-weight: bold; 
         }
+
+        /* Fun Empty State Animation */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .empty-state {
+            text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
+            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border: 2px dashed #cbd5e1; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
     </style>
 </head>
 <body>
 
     <div class="header" onclick="window.history.back()">
-        <i class="fa-solid fa-arrow-left" style="float:left;"></i> Daily Class Diary
+        <i class="fa-solid fa-arrow-left" style="float:left; margin-top: 3px;"></i> Daily Class Diary
     </div>
 
     <div class="container" id="diaryList">
         <div style="text-align: center; margin-top: 50px; color: #64748b;">
-            <i class="fa-solid fa-spinner fa-spin"></i> Loading updates...
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p>Loading updates...</p>
         </div>
     </div>
 
@@ -50,22 +62,25 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const studentClass = localStorage.getItem("studentClass") || "10th"; // Dashboard se pass karna hoga
+        const studentClass = localStorage.getItem("studentClass") || "All"; 
 
         const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
             const list = document.getElementById("diaryList");
             list.innerHTML = "";
+            let hasData = false;
+
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                if(data.targetClass === "All" || data.targetClass === studentClass) {
+                if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
+                    hasData = true;
                     list.innerHTML += `
                         <div class="update-item">
                             <div class="meta">
                                 <span><i class="fa-solid fa-book"></i> ${data.subject}</span>
                                 <span>${data.date}</span>
                             </div>
-                            <div style="margin-bottom:8px;"><span class="teacher-badge">👨‍🏫 ${data.teacherName}</span></div>
+                            <div style="margin-bottom:8px;"><span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span></div>
                             <div class="content-box">
                                 <div><strong style="color:#0ea5e9;">Topic:</strong> ${data.classTopic}</div>
                                 <div style="margin-top:5px;"><strong style="color:#ef4444;">HW:</strong> ${data.homework}</div>
@@ -75,6 +90,23 @@
                     `;
                 }
             });
+
+            // 🌟 मजेदार Empty State 🌟
+            if (!hasData) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-face-rolling-eyes fa-bounce" style="font-size: 60px; color: #8b5cf6; margin-bottom: 20px;"></i>
+                        <h3 style="color: #1e293b; margin-bottom: 10px; font-size: 20px;">अरे सन्नाटा क्यों है भाई? 😅</h3>
+                        <p style="color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
+                            आज का कोई अपडेट या होमवर्क नहीं मिला... लगता है <strong>Md Faiyaz</strong> सर अभी तक भूल गए हैं! 
+                        </p>
+                        <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <span style="font-size: 13px; color: #475569;">जल्दी से उन्हें मैसेज करो और पूछो:</span><br>
+                            <span style="color: #ef4444; font-weight: bold; font-size: 16px; display: inline-block; margin-top: 5px;">"सर, आज का होमवर्क कहाँ है?" 🚀</span>
+                        </div>
+                    </div>
+                `;
+            }
         });
     </script>
 </body>
