@@ -1,134 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GVCC Live Smart Exam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Class Updates - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
-            margin: 0;
-            padding: 0;
-            user-select: none; /* No text copy */
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
         
-        /* Premium Header */
-        .exam-header {
-            background: #1e293b;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #38bdf8;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        /* Timeline List Styling */
+        .update-item { 
+            background: white; margin-bottom: 15px; padding: 15px; border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6;
         }
-        .student-info { font-size: 14px; color: #94a3b8; }
-        .student-info strong { color: #f8fafc; font-size: 16px; }
+        .meta { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-bottom: 8px; }
+        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        .content-box { background: #f8fafc; padding: 10px; border-radius: 8px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; }
         
-        .timer-box {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            border: 1px solid #10b981;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* 🌟 NAYA: View Homework Button */
+        .btn-view-hw {
+            background: #10b981; color: white; border: none; padding: 10px 15px;
+            border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer;
+            display: block; width: 100%; text-align: center; margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); transition: 0.2s;
         }
-        .timer-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
+        .btn-view-hw:active { transform: scale(0.96); }
 
-        .warning-box {
-            color: #ef4444;
-            font-size: 14px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 5px;
+        .video-link { 
+            display: block; text-align: center; margin-top: 10px; background: #fee2e2; 
+            color: #ef4444; padding: 8px; border-radius: 6px; text-decoration: none; 
+            font-size: 13px; font-weight: bold; 
         }
 
-        /* Exam Container */
-        .exam-container { max-width: 800px; margin: 30px auto; padding: 20px; display: none; }
-        .test-title { text-align: center; color: #38bdf8; margin-bottom: 30px; }
-
-        .question-card {
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 25px;
+        /* 🌟 NAYA: Homework Modal (Popup) Styling */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; 
+            padding: 15px; box-sizing: border-box; backdrop-filter: blur(5px);
         }
-        .question-text { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
-        .option-label {
-            display: block; background: rgba(15, 23, 42, 0.8); padding: 15px;
-            margin-bottom: 10px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1);
+        .modal-content { 
+            background: white; width: 100%; max-width: 400px; border-radius: 12px; 
+            padding: 20px; max-height: 85vh; overflow-y: auto; position: relative; animation: popIn 0.3s; 
         }
-        input[type="radio"] { margin-right: 10px; transform: scale(1.2); accent-color: #38bdf8; }
-
-        .submit-btn {
-            width: 100%; background: #10b981; color: white; border: none; padding: 15px;
-            font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px;
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 26px; color: #64748b; cursor: pointer; }
+        /* white-space: pre-wrap; ki wajah se aapka lamba text line-by-line dikhega */
+        .hw-text { 
+            font-size: 15px; color: #334155; line-height: 1.6; white-space: pre-wrap; 
+            margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; 
         }
 
-        /* Fullscreen Overlay (Loading/Error) */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f172a; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 1000; text-align: center; padding: 20px; box-sizing: border-box;
+        /* Fun Empty State Animation */
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .empty-state {
+            text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
+            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border: 2px dashed #cbd5e1; animation: popIn 0.5s forwards;
         }
-        .loader {
-            border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #38bdf8;
-            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Hidden Camera */
-        #proctorCamera, #snapshotCanvas { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="loadingOverlay">
-        <div class="loader" id="spinner"></div>
-        <h2 id="loadingText">Authenticating & Loading Test...</h2>
-        <button onclick="window.location.href='dashboard.html'" class="submit-btn" id="goBackBtn" style="display:none; width: 250px; margin-top:20px; background: #38bdf8;">Go Back to Dashboard</button>
+    <div class="header" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left" style="float:left; margin-top: 3px;"></i> Daily Class Diary
     </div>
 
-    <video id="proctorCamera" autoplay playsinline></video>
-    <canvas id="snapshotCanvas"></canvas>
-
-    <div class="exam-header">
-        <div class="student-info">
-            <div id="displayStudentName"><strong>Loading...</strong></div>
-            <div>Roll: <span id="displayRoll">--</span> | Class: <span id="displayClass">--</span></div>
-        </div>
-        <div>
-            <div class="timer-box" id="timerBox">
-                <i class="fa-solid fa-hourglass-half"></i> <span id="timeRemaining">00:00</span>
-            </div>
-            <div class="warning-box" id="warningBox">Warnings: 0/3</div>
+    <div class="container" id="diaryList">
+        <div style="text-align: center; margin-top: 50px; color: #64748b;">
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p>Loading updates...</p>
         </div>
     </div>
 
-    <div class="exam-container" id="examContainer">
-        <h2 class="test-title" id="testTitle">Loading Test...</h2>
-        
-        <form id="examForm">
-            <div id="questionsContainer"></div>
-            <button type="button" class="submit-btn" id="submitExamBtn">
-                <i class="fa-solid fa-check-circle"></i> Submit Exam
+    <!-- 🌟 NAYA: Homework Modal (Popup box) -->
+    <div class="modal" id="hwModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeHomeworkModal()">&times;</span>
+            <h3 style="color: #10b981; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                <i class="fa-solid fa-book-open-reader"></i> Class Homework
+            </h3>
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 10px;" id="modalSubtitle"></div>
+            
+            <!-- Yahan bachho ko aapka pura copy-paste kiya hua text dikhega -->
+            <div class="hw-text" id="modalHWText"></div>
+            
+            <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:12px; border-radius:6px; margin-top:15px; font-weight:bold; font-size:15px; cursor:pointer;">
+                Close
             </button>
-        </form>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -140,265 +104,76 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const studentClass = localStorage.getItem("studentClass") || "All"; 
 
-        // Variables
-        const studentRoll = localStorage.getItem("studentRoll");
-        let studentName = "Unknown";
-        let studentClass = "Unknown";
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const testId = urlParams.get("testId");
+        const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const list = document.getElementById("diaryList");
+            list.innerHTML = "";
+            let hasData = false;
 
-        let testQuestions = [];
-        let cheatWarnings = 0;
-        const maxWarnings = 3;
-        let timerInterval;
-        let remainingSeconds = 0; 
-        
-        // 🚀 NEW: Security delay flag (False Warning Preventer)
-        let isTestActive = false; 
-
-        // Display Error Function
-        function showError(message) {
-            document.getElementById("spinner").style.display = "none";
-            document.getElementById("loadingText").innerHTML = `<span style="color: #ef4444;"><i class="fa-solid fa-circle-exclamation"></i> ${message}</span>`;
-            document.getElementById("goBackBtn").style.display = "block";
-        }
-
-        async function initExam() {
-            if (!studentRoll) {
-                alert("Please login first!");
-                window.location.href = "index.html"; 
-                return;
-            }
-            if (!testId) { showError("Test ID Missing! Invalid Link."); return; }
-
-            try {
-                // Fetch Student Details
-                const studentDocSnap = await getDoc(doc(db, "students", studentRoll));
-                if(studentDocSnap.exists()) {
-                    const data = studentDocSnap.data();
-                    studentName = data["Name "] || data.Name || "Unknown";
-                    studentClass = data["Class "] || data.Class || "Unknown";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
+                    hasData = true;
                     
-                    document.getElementById("displayStudentName").innerHTML = `<strong>${studentName}</strong>`;
-                    document.getElementById("displayRoll").innerText = studentRoll;
-                    document.getElementById("displayClass").innerText = studentClass;
+                    // Lamba text safely pass karne ke liye encode kiya gaya hai
+                    const safeHW = encodeURIComponent(data.homework || "आज कोई लिखित होमवर्क नहीं है।");
+
+                    list.innerHTML += `
+                        <div class="update-item">
+                            <div class="meta">
+                                <span style="font-weight:bold; color:#1e293b;"><i class="fa-solid fa-book" style="color:#8b5cf6;"></i> ${data.subject}</span>
+                                <span>${data.date}</span>
+                            </div>
+                            <div style="margin-bottom:8px;"><span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span></div>
+                            <div class="content-box">
+                                <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
+                            </div>
+                            
+                            <!-- 🌟 NAYA: View Homework Button -->
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}')">
+                                <i class="fa-solid fa-file-pen"></i> View Homework
+                            </button>
+
+                            ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
+                        </div>
+                    `;
                 }
-
-                // Fetch Test Details
-                const testDoc = await getDoc(doc(db, "active_tests", testId));
-                if (!testDoc.exists()) { showError("Test Not Found or Removed."); return; }
-                const testData = testDoc.data();
-
-                remainingSeconds = (testData.duration ? parseInt(testData.duration) : 15) * 60;
-
-                // Live Sync Time Check
-                if (testData.testDate && testData.testTime) {
-                    const testStartTime = new Date(`${testData.testDate}T${testData.testTime}`);
-                    const durationMinutes = testData.duration ? parseInt(testData.duration) : 15;
-                    const testEndTime = new Date(testStartTime.getTime() + durationMinutes * 60000);
-                    const currentTime = new Date();
-                    
-                    if (currentTime < testStartTime) {
-                        const formattedTime = testStartTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-                        showError(`Exam is locked!<br><br>Scheduled Time: <strong>${testData.testDate} at ${formattedTime}</strong><br>Please refresh the page when it's time.`);
-                        return; 
-                    }
-
-                    if (currentTime >= testEndTime) {
-                        showError(`⏳ Exam Over!<br><br>Yeh test <strong>${testEndTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</strong> par khatam ho chuka hai. Ab aap ise nahi de sakte.`);
-                        return;
-                    }
-
-                    remainingSeconds = Math.floor((testEndTime.getTime() - currentTime.getTime()) / 1000);
-                }
-
-                // Restriction & Duplicate Attempt Checks
-                const sNum = String(studentClass).replace(/\D/g, ""); 
-                const tNum = String(testData.targetClass).replace(/\D/g, "");
-                
-                if(sNum !== tNum && tNum !== "") {
-                    showError(`Yeh test Class ${tNum} ke liye hai, aap isse nahi de sakte!`);
-                    return;
-                }
-
-                const attemptCheck = await getDoc(doc(db, "tests", testId, "students", studentRoll));
-                if (attemptCheck.exists() && attemptCheck.data().submitted === true) {
-                    showError(`Aap already yeh test de chuke hain!<br><br>Score: ${attemptCheck.data().score}`);
-                    return;
-                }
-
-                // Setup Test
-                document.getElementById("testTitle").innerText = `${testData.targetClass} - ${testData.testName}`;
-                testQuestions = JSON.parse(testData.testCode);
-                
-                renderQuestions();
-                
-                // 🚀 START CAMERA FIRST (Awaiting permission)
-                startCamera();
-                
-                // Start Live Timer
-                startTimer(remainingSeconds);
-
-            } catch (error) {
-                console.error(error);
-                showError("Server Connection Failed.");
-            }
-        }
-
-        // Render Questions
-        function renderQuestions() {
-            const container = document.getElementById("questionsContainer");
-            container.innerHTML = "";
-            testQuestions.forEach((q, index) => {
-                let optionsHTML = "";
-                q.options.forEach(opt => {
-                    optionsHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
-                });
-                container.innerHTML += `<div class="question-card"><div class="question-text">Q${index + 1}. ${q.question}</div>${optionsHTML}</div>`;
             });
 
-            document.getElementById("loadingOverlay").style.display = "none";
-            document.getElementById("examContainer").style.display = "block";
-        }
-
-        // Timer Function
-        function startTimer(totalSeconds) {
-            timerInterval = setInterval(() => {
-                totalSeconds--;
-                let minutes = Math.floor(totalSeconds / 60);
-                let seconds = totalSeconds % 60;
-                
-                let timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                document.getElementById("timeRemaining").innerText = timeStr;
-
-                if (totalSeconds <= 60) {
-                    document.getElementById("timerBox").classList.add("timer-danger");
-                }
-
-                if (totalSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    alert("⏳ Time is UP! Auto-submitting your test.");
-                    submitExamProcess("Time Up");
-                }
-            }, 1000);
-        }
-
-        // 🚀 FIX: Camera Permission vs Anti-Cheating Conflict
-        async function startCamera() {
-            try {
-                // Yahan browser popup dega (Allow / Block)
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-                document.getElementById("proctorCamera").srcObject = stream;
-                setInterval(() => captureAndUploadSnapshot("Auto Check"), 45000);
-                
-                // Permission milne ke theek 2 second baad security trigger hogi
-                setTimeout(() => { isTestActive = true; }, 2000);
-            } catch (err) { 
-                console.warn("Camera access denied."); 
-                // Agar deny bhi karta hai toh test shuru ho jaye par security delay ke baad on ho
-                setTimeout(() => { isTestActive = true; }, 2000);
-            }
-        }
-
-        // 🚀 NEW: Ab false alarm block ho jayega
-        function handleCheatingDetection() {
-            if (!isTestActive) return; // Agar system abhi delay mode me hai, toh window badalne par ignore karo
-            
-            if (document.getElementById("examContainer").style.display === "block") {
-                cheatWarnings++;
-                document.getElementById("warningBox").innerText = `Warnings: ${cheatWarnings}/${maxWarnings}`;
-                captureAndUploadSnapshot("Suspicious Activity (Tab Switch / Minimized)");
-                
-                if(cheatWarnings >= maxWarnings) {
-                    alert("🚫 CHEATING DETECTED!\nAapne test window leave ki. Aapka exam terminate ho gaya hai.");
-                    submitExamProcess("Cheating / Terminated");
-                } else {
-                    alert(`⚠️ STRICT WARNING!\nAapne doosri window ya screen open ki hai. Aisa ${maxWarnings - cheatWarnings} baar aur karne par test cancel ho jayega.`);
-                }
-            }
-        }
-
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden) handleCheatingDetection();
-        });
-        
-        window.addEventListener("blur", () => {
-            handleCheatingDetection();
-        });
-
-        // Dynamic Canvas Aspect Ratio
-        async function captureAndUploadSnapshot(reason) {
-            const video = document.getElementById("proctorCamera");
-            const canvas = document.getElementById("snapshotCanvas");
-            
-            if (video.readyState !== 4 || video.videoWidth === 0) return;
-            
-            canvas.width = video.videoWidth; 
-            canvas.height = video.videoHeight;
-            
-            canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            try {
-                await addDoc(collection(db, "tests", testId, "students", studentRoll, "snapshots"), {
-                    capturedImage: canvas.toDataURL("image/jpeg", 0.6), 
-                    reason: reason, 
-                    capturedAt: new Date().toLocaleTimeString()
-                });
-            } catch (e) { 
-                console.error("Snapshot error:", e);
-            }
-        }
-
-        // Submit Exam
-        document.getElementById("submitExamBtn").addEventListener("click", () => {
-            if(confirm("Are you sure you want to submit?")) submitExamProcess("Clean / No Cheating");
-        });
-
-        // 🚀 FIX: Warning + Time Up Status Overwrite Problem
-        async function submitExamProcess(finalStatus) {
-            clearInterval(timerInterval); // Stop timer
-            document.getElementById("examContainer").style.display = "none";
-            document.getElementById("loadingOverlay").style.display = "flex";
-            document.getElementById("loadingText").innerText = "Checking Answers & Submitting...";
-            document.getElementById("spinner").style.display = "block";
-
-            let score = 0;
-            testQuestions.forEach((q, index) => {
-                const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                if (selected && selected.value === q.answer) score++;
-            });
-
-            // 🚀 SMART STATUS MAKER
-            if(cheatWarnings > 0 && finalStatus !== "Cheating / Terminated") {
-                if (finalStatus === "Time Up") {
-                    finalStatus = `Time Up (${cheatWarnings} Warnings)`; // Time-up bhi rahega, warning bhi batayega!
-                } else {
-                    finalStatus = `${cheatWarnings} Warnings`; // Normal submit kiya par warning thi
-                }
-            }
-
-            try {
-                await setDoc(doc(db, "tests", testId, "students", studentRoll), {
-                    name: studentName, class: studentClass, score: `${score}/${testQuestions.length}`,
-                    percentage: Math.round((score / testQuestions.length) * 100) + "%",
-                    cheatStatus: finalStatus, submitted: true, submittedAt: new Date().toLocaleString()
-                });
-
-                document.getElementById("loadingOverlay").innerHTML = `
-                    <i class="fa-solid fa-circle-check" style="font-size: 60px; color: #10b981; margin-bottom: 20px;"></i>
-                    <h2>Exam Submitted Successfully!</h2>
-                    <p style="color: #94a3b8; font-size: 18px;">Score: <strong>${score}/${testQuestions.length}</strong></p>
-                    <button onclick="window.location.href='dashboard.html'" class="submit-btn" style="width: 250px; margin-top:20px;">Return to Dashboard</button>
+            // 🌟 मजेदार Empty State 🌟
+            if (!hasData) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-face-rolling-eyes fa-bounce" style="font-size: 60px; color: #8b5cf6; margin-bottom: 20px;"></i>
+                        <h3 style="color: #1e293b; margin-bottom: 10px; font-size: 20px;">अरे सन्नाटा क्यों है भाई? 😅</h3>
+                        <p style="color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
+                            आज का कोई अपडेट या होमवर्क नहीं मिला... लगता है <strong>Md Faiyaz</strong> सर अभी तक भूल गए हैं! 
+                        </p>
+                        <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <span style="font-size: 13px; color: #475569;">जल्दी से उन्हें मैसेज करो और पूछो:</span><br>
+                            <span style="color: #ef4444; font-weight: bold; font-size: 16px; display: inline-block; margin-top: 5px;">"सर, आज का होमवर्क कहाँ है?" 🚀</span>
+                        </div>
+                    </div>
                 `;
-
-            } catch (error) {
-                showError("Failed to submit! Check Internet.");
             }
+        });
+    </script>
+
+    <!-- 🌟 NAYA: Modal Open/Close Logic -->
+    <script>
+        window.openHomeworkModal = function(encodedHW, teacherName, subject) {
+            document.getElementById("modalSubtitle").innerHTML = `<strong>Subject:</strong> ${subject} <br> <strong>Teacher:</strong> ${teacherName}`;
+            // Yahan text wapas decode hokar line-by-line set ho jayega
+            document.getElementById("modalHWText").innerText = decodeURIComponent(encodedHW);
+            document.getElementById("hwModal").style.display = "flex";
         }
 
-        window.onload = initExam;
+        window.closeHomeworkModal = function() {
+            document.getElementById("hwModal").style.display = "none";
+        }
     </script>
 </body>
 </html>
+
