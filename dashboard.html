@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 👇 APP FEELING CODE: Chrome ke features block 👇 */
+        /* 👇 APP FEELING CODE 👇 */
         * {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -29,9 +29,7 @@
             user-select: auto;
         }
 
-        img {
-            -webkit-user-drag: none; 
-        }
+        img { -webkit-user-drag: none; }
 
         :root {
             --primary: #003366;
@@ -51,23 +49,17 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            
-            /* 👇 असली एंड्रॉइड ऐप फील के लिए 👇 */
             overscroll-behavior-y: none; 
             touch-action: manipulation;  
         }
 
-        /* Page Exit Animation */
-        .page-exit {
-            animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-        }
+        .page-exit { animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
 
         @keyframes zoomOutUp {
             from { opacity: 1; transform: translateY(0) scale(1); }
             to { opacity: 0; transform: translateY(-10vh) scale(0.95); }
         }
 
-        /* Premium Smart Loader Styling */
         #loading {
             margin: 120px auto;
             text-align: center;
@@ -77,141 +69,71 @@
             justify-content: center;
         }
 
-        .smart-loader {
-            position: relative;
-            width: 75px;
-            height: 75px;
-            margin-bottom: 25px;
-        }
-
+        .smart-loader { position: relative; width: 75px; height: 75px; margin-bottom: 25px; }
         .smart-loader::before, .smart-loader::after {
-            content: "";
-            position: absolute;
-            border-radius: 50%;
-            border: 4px solid transparent;
+            content: ""; position: absolute; border-radius: 50%; border: 4px solid transparent;
         }
-
         .smart-loader::before {
             top: 0; left: 0; right: 0; bottom: 0;
-            border-top-color: #003366;
-            border-bottom-color: #007bff;
+            border-top-color: #003366; border-bottom-color: #007bff;
             animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
-
         .smart-loader::after {
             top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border-left-color: #f59e0b;
-            border-right-color: #10b981;
+            border-left-color: #f59e0b; border-right-color: #10b981;
             animation: spin-reverse 1s linear infinite;
         }
 
         .loader-icon {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 26px;
-            color: #003366;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 26px; color: #003366;
             animation: pulse-icon 1.5s ease-in-out infinite;
         }
 
         .loading-text {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
             background: linear-gradient(90deg, #003366, #10b981, #007bff, #003366);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite;
+            background-size: 200% auto; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shine 2s linear infinite;
         }
 
-        #mainContent {
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        #mainContent { display: none; flex-direction: column; min-height: 100vh; }
 
-        /* Premium Header with Logo */
         header {
             background: linear-gradient(135deg, #002244, var(--primary));
-            color: white;
-            padding: 30px 15px 35px 15px;
-            text-align: center;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
+            color: white; padding: 30px 15px 35px 15px; text-align: center;
+            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        /* Main Container */
-        .container {
-            max-width: 450px;
-            width: 90%;
-            margin: -25px auto 30px auto;
-            flex: 1;
-        }
+        .container { max-width: 450px; width: 90%; margin: -25px auto 30px auto; flex: 1; }
 
-        /* Profile Card */
         .profile-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.02);
+            background: white; border-radius: 16px; padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02);
             margin-bottom: 25px;
         }
 
         .profile-header {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 8px;
+            font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-            border-bottom: 1px dashed #f1f5f9;
-        }
+        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #f1f5f9; }
         .info-row:last-child { border: none; }
-
         .info-label { color: #64748b; font-weight: 500; }
         .info-value { color: var(--text-main); font-weight: 600; }
 
-        /* Feature Grid System */
-        .grid-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
+        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .full-width { grid-column: span 2; }
 
-        .full-width {
-            grid-column: span 2;
-        }
-
-        /* Premium Dashboard Cards */
         .menu-card {
-            background: white !important;
-            border: none;
-            border-radius: 14px;
-            padding: 18px 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.1s ease;
-            text-decoration: none;
+            background: white !important; border: none; border-radius: 14px; padding: 18px 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.1s ease; text-decoration: none;
         }
+        .menu-card:active { transform: scale(0.92) !important; opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
         .menu-card i { font-size: 24px; }
         .menu-card span { font-size: 14px; font-weight: 600; }
@@ -221,57 +143,24 @@
         .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
         .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
         .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
-        .card-day1 { color: #8b5cf6; border-top: 4px solid #8b5cf6; }
         .card-result { color: #10b981; border-top: 4px solid #10b981; }
-        .card-performer { color: #a855f7; border-top: 4px solid #a855f7; }
         
         .card-install { 
             background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
-            color: #0284c7; 
-            border: 1px solid #7dd3fc;
-            flex-direction: row;
-            padding: 14px;
+            color: #0284c7; border: 1px solid #7dd3fc; flex-direction: row; padding: 14px;
         }
         .card-install i { font-size: 20px; animation: bounce 2s infinite; }
 
-        /* 👇 NAYA CODE: Snappy Click Effect 👇 */
-        .menu-card:active {
-            transform: scale(0.92) !important;
-            opacity: 0.85;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
         .btn-logout {
-            width: 100%;
-            background: #ffe4e6;
-            color: var(--danger);
-            border: 1px solid #fecdd3;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.1s ease;
+            width: 100%; background: #ffe4e6; color: var(--danger); border: 1px solid #fecdd3;
+            padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.1s ease;
         }
-        
-        .btn-logout:active { 
-            background: #fecdd3; 
-            transform: scale(0.95);
-        }
+        .btn-logout:active { background: #fecdd3; transform: scale(0.95); }
 
         footer {
-            background: #001529;
-            color: #94a3b8;
-            text-align: center;
-            padding: 15px;
-            font-size: 12px;
-            margin-top: auto;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            background: #001529; color: #94a3b8; text-align: center; padding: 15px; font-size: 12px;
+            margin-top: auto; border-top-left-radius: 15px; border-top-right-radius: 15px;
         }
         footer p { margin: 4px 0; }
         footer strong { color: white; }
@@ -287,26 +176,20 @@
 <body>
 
     <div id="loading">
-        <div class="smart-loader">
-            <i class="fa-solid fa-book-open-reader loader-icon"></i>
-        </div>
+        <div class="smart-loader"><i class="fa-solid fa-book-open-reader loader-icon"></i></div>
         <div class="loading-text">Getting Your Profile Ready...</div>
     </div>
 
     <div id="mainContent">
         <header>
             <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
-                
                 <div style="position: absolute !important; left: 10px; top: -4px;">
                     <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none;">
                 </div>
-                
                 <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
-                    <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important; font-family: 'Segoe UI', sans-serif;">Gyan Varsha Coaching Center</h1>
-                    
+                    <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important;">Gyan Varsha Coaching Center</h1>
                     <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
-                    
-                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content; white-space: nowrap;">
+                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content;">
                         ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
                     </div>
                 </div>
@@ -316,69 +199,53 @@
 
         <div class="container">
             <div class="profile-card">
-                <div class="profile-header">
-                    <i class="fa-solid fa-id-card"></i> 👤 Student Profile
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Name:</span>
-                    <span class="info-value" id="studentName">--</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Roll Number:</span>
-                    <span class="info-value" id="studentRollDisplay">--</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Class:</span>
-                    <span class="info-value" id="studentClass">--</span>
-                </div>
+                <div class="profile-header"><i class="fa-solid fa-id-card"></i> 👤 Student Profile</div>
+                <div class="info-row"><span class="info-label">Name:</span><span class="info-value" id="studentName">--</span></div>
+                <div class="info-row"><span class="info-label">Roll Number:</span><span class="info-value" id="studentRollDisplay">--</span></div>
+                <div class="info-row"><span class="info-label">Class:</span><span class="info-value" id="studentClass">--</span></div>
             </div> 
             
-            <div id="live-updates-section" style="margin-top: 30px; text-align: left;">
-                <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px;">
-                    <i class="fa-solid fa-bell fa-shake"></i> Live Updates from Teachers
+            <!-- 📌 NEW: LIVE DAILY DIARY (HOMEWORK) SECTION -->
+            <div id="daily-diary-section" style="margin-top: 25px; margin-bottom: 25px;">
+                <h3 style="color: #8b5cf6; border-bottom: 2px solid rgba(139, 92, 246, 0.2); padding-bottom: 8px; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-clipboard-list fa-bounce" style="--fa-animation-duration: 2s;"></i> Today's Class Update
                 </h3>
-                
+                <div id="dailyDiaryContent">
+                    <div style="text-align: center; padding: 15px; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Checking today's diary...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📌 NOTICES & EXAMS -->
+            <div id="live-updates-section" style="margin-top: 30px; margin-bottom: 25px; text-align: left;">
+                <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; font-size: 18px;">
+                    <i class="fa-solid fa-bell fa-shake"></i> Notice & Live Tests
+                </h3>
                 <div id="studentNotices"></div>
                 <div id="studentTests"></div>
             </div>
 
-            <!-- 👇 NAYA CODE: Dashboard Buttons with Animation Navigation 👇 -->
+            <!-- 📌 UPDATED: CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
-                    <i class="fa-solid fa-video"></i>
-                    <span>Join Live Class</span>
+                    <i class="fa-solid fa-video"></i><span>Join Live Class</span>
                 </a>
 
                 <button class="menu-card card-notes" onclick="navigateWithAnimation('notesmenu.html')">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span>Notes</span>
+                    <i class="fa-solid fa-book-open"></i><span>Notes</span>
                 </button>
 
                 <button class="menu-card card-notice" onclick="navigateWithAnimation('notice.html')">
-                    <i class="fa-solid fa-bullhorn"></i>
-                    <span>Notice Board</span>
+                    <i class="fa-solid fa-bullhorn"></i><span>Notice Board</span>
                 </button>
 
-                <!-- 👇 Online Test Button 👇 -->
                 <button class="menu-card card-test" onclick="routeToLiveTest()">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Online Test</span>
+                    <i class="fa-solid fa-pen-to-square"></i><span>Online Test</span>
                 </button>
 
-                <button class="menu-card card-day1" onclick="navigateWithAnimation('day1.html')">
-                    <i class="fa-solid fa-rocket"></i>
-                    <span>Day 1 Test</span>
-                </button>
-
-                <!-- 👇 Result Button 👇 -->
                 <button class="menu-card card-result" onclick="routeToResult()">
-                    <i class="fa-solid fa-chart-bar"></i>
-                    <span>Result</span>
-                </button>
-
-                <button class="menu-card card-performer" onclick="navigateWithAnimation('results.html')">
-                    <i class="fa-solid fa-trophy"></i>
-                    <span>Day 1 Performers</span>
+                    <i class="fa-solid fa-chart-bar"></i><span>Result</span>
                 </button>
 
                 <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
@@ -387,8 +254,7 @@
                 </button>
 
                 <button class="menu-card card-install full-width" onclick="installApp()">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Install GVCC App</span>
+                    <i class="fa-solid fa-download"></i><span>Install GVCC App</span>
                 </button>
             </div>
 
@@ -404,67 +270,44 @@
         </footer>
     </div>
 
-    <!-- 👇 NAYA CODE: Page Transition & Back Button Fix Functions 👇 -->
+    <!-- UI & App Install Scripts -->
     <script>
         function navigateWithAnimation(url) {
             document.body.classList.add('page-exit');
-            setTimeout(() => {
-                window.location.href = url;
-            }, 300); // 300ms delay for snappier experience
+            setTimeout(() => { window.location.href = url; }, 300);
         }
-
         window.addEventListener('pageshow', function(event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 document.body.classList.remove('page-exit');
             }
         });
-    </script>
 
-    <script>
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
         window.installApp = async function() {
             if (deferredPrompt) {
-                deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
-                deferredPrompt = null;
+                deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null;
             } else {
-                alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi.");
+                alert("📲 App Install Kaise Karein:\n\n1. Browser menu (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.");
             }
         };
     </script>
 
-    <!-- 🔔 Notification & Service Worker Registration -->
+    <!-- Notification Permission Script -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(function(registration) {
-                console.log('✅ Service Worker Registered successfully');
-            })
-            .catch(function(err) {
-                console.log('❌ Service Worker registration failed:', err);
-            });
+            navigator.serviceWorker.register('/firebase-messaging-sw.js').catch(err => console.log('SW Error:', err));
         }
-
         function askNotificationPermission() {
             if (!("Notification" in window)) return;
             Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    if (window.generateFCMToken) window.generateFCMToken();
-                }
+                if (permission === "granted" && window.generateFCMToken) window.generateFCMToken();
             });
         }
-
-        window.onload = function() {
-            setTimeout(askNotificationPermission, 2500);
-        };
+        window.onload = function() { setTimeout(askNotificationPermission, 2500); };
     </script>
 
-        <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
+    <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -484,15 +327,12 @@
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
         const db = getFirestore(app);
         
-        let analytics = null;
-        try { analytics = getAnalytics(app); } catch(e) {}
-        let messaging;
-        try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
+        let analytics = null; try { analytics = getAnalytics(app); } catch(e) {}
+        let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
         let studentClassGlobal = "10th";
         const activeRoll = localStorage.getItem("studentRoll");
 
-        // 👇 FIX 1: Yahan 'href' ki jagah 'replace' kar diya 👇
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
@@ -510,11 +350,7 @@
                     let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
                     studentClassGlobal = String(studentClass).trim();
-                    
-                    if (analytics) {
-                        try { setUserProperties(analytics, { class_group: studentClassGlobal }); } 
-                        catch(e) {}
-                    }
+                    if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
                     
                     document.getElementById("studentName").innerText = studentName;
                     document.getElementById("studentRollDisplay").innerText = roll;
@@ -522,15 +358,83 @@
                     
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
+
+                    // 📌 Fetch Live Diaries (Homework) only AFTER knowing student's class
+                    fetchLiveDailyDiary();
                 } else {
-                    alert("Session Error: Profile not found.");
-                    window.logout();
+                    alert("Session Error: Profile not found."); window.logout();
                 }
             } catch (error) {
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
         }
 
+        // 📌 NEW FUNCTION: LIVE DAILY DIARY
+        function fetchLiveDailyDiary() {
+            const qDiary = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
+            onSnapshot(qDiary, (snapshot) => {
+                const diaryBox = document.getElementById("dailyDiaryContent");
+                diaryBox.innerHTML = "";
+                let hasData = false;
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let target = String(data.targetClass || "All").trim().toLowerCase();
+                    let myClass = String(studentClassGlobal).trim().toLowerCase();
+                    
+                    // Filter: Show only if it's for 'All' or matches student's class
+                    if (target === "all" || myClass.includes(target) || target.includes(myClass)) {
+                        hasData = true;
+                        
+                        let videoHTML = "";
+                        if (data.videoLink && data.videoLink.length > 5) {
+                            videoHTML = `
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
+                                <a href="${data.videoLink}" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; transition: all 0.2s;">
+                                    <i class="fa-brands fa-youtube" style="font-size: 18px;"></i> बेसिक Video देखें
+                                </a>
+                            </div>`;
+                        }
+
+                        diaryBox.innerHTML += `
+                            <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 5px solid #8b5cf6; border: 1px solid #f1f5f9; border-left-width: 5px; border-left-color: #8b5cf6;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                    <span style="font-weight: 800; color: #003366; font-size: 15px;">
+                                        <i class="fa-solid fa-book-open" style="color: #8b5cf6; margin-right: 5px;"></i> ${data.subject}
+                                    </span>
+                                    <span style="font-size: 11px; color: #64748b; background: #f1f5f9; padding: 4px 8px; border-radius: 12px; font-weight: bold;">
+                                        <i class="fa-regular fa-calendar"></i> ${data.date || 'Today'}
+                                    </span>
+                                </div>
+                                
+                                <div style="font-size: 13.5px; color: #334155; margin-bottom: 12px; line-height: 1.5;">
+                                    <strong style="color: #0ea5e9;">📝 क्लास में क्या पढ़ाया गया:</strong><br>
+                                    <span style="color: #475569;">${data.classTopic}</span>
+                                </div>
+                                
+                                <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
+                                    <strong style="color: #ef4444;">🏠 होमवर्क (Homework):</strong><br>
+                                    <span style="color: #475569; font-weight: 600;">${data.homework}</span>
+                                </div>
+                                
+                                ${videoHTML}
+                            </div>
+                        `;
+                    }
+                });
+
+                if (!hasData) {
+                    diaryBox.innerHTML = `
+                        <div style="background: white; border-radius: 12px; padding: 20px; text-align: center; border: 1px dashed #cbd5e1;">
+                            <i class="fa-solid fa-mug-hot" style="font-size: 24px; color: #94a3b8; margin-bottom: 10px;"></i>
+                            <div style="color: #64748b; font-size: 14px; font-weight: 500;">आज का कोई नया अपडेट या होमवर्क नहीं है।</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Notices
         const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
         onSnapshot(qNotices, (snapshot) => {
             const noticeBox = document.getElementById("studentNotices");
@@ -548,6 +452,7 @@
             });
         });
 
+        // Active Tests
         const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
         onSnapshot(qTests, (snapshot) => {
             const testBox = document.getElementById("studentTests");
@@ -578,13 +483,8 @@
                     vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
                     serviceWorkerRegistration: registration 
                 });
-                
-                if (currentToken && activeRoll) {
-                    await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-                }
-            } catch (err) {
-                console.log("FCM Token Error:", err);
-            }
+                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
+            } catch (err) { console.log("FCM Token Error:", err); }
         }
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
@@ -609,11 +509,9 @@
             document.body.classList.add('page-exit'); 
             setTimeout(() => {
                 localStorage.removeItem("studentRoll"); 
-                // 👇 FIX 2: Yahan bhi 'href' ki jagah 'replace' laga diya 👇
                 window.location.replace("student-login.html"); 
             }, 300);
         }
-        
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
     </script>
 </body>
