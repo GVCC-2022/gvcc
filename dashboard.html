@@ -348,7 +348,8 @@
                     
                     // 🌟 NAYA: Class ko local storage me save kar rahe hain taaki daily-diary padh sake
                     localStorage.setItem("studentClass", studentClassGlobal);
-                    
+                    localStorage.setItem("studentName", studentName);
+                
                     if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
                     
                     document.getElementById("studentName").innerText = studentName;
