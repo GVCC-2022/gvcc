@@ -318,22 +318,27 @@
         }
     });
 </script>
-                    <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
+                        <!-- 🛑 SMART NOTIFICATION SCREEN (FAIL-SAFE) -->
+    <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
         
         <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
         <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
-        <p id="permMsg" style="color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; font-size: 15px;">
+        
+        <!-- 🛠️ यहाँ डिज़ाइन फिक्स किया गया है (width, max-width और margin: 0 auto) -->
+        <p id="permMsg" style="color: #cbd5e1; margin: 0 auto 25px auto; line-height: 1.6; font-size: 15px; width: 100%; max-width: 320px; word-wrap: break-word; text-align: center;">
             Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.
         </p>
 
-        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
+        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
             Enable Notifications 🚀
         </button>
 
+        <!-- 🔥 EMERGENCY BYPASS BUTTON -->
         <button onclick="document.getElementById('notificationBlocker').style.display='none'" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
             Skip for now (Enter App) &rarr;
         </button>
     </div>
+
 
     <script>
         function checkAndForceNotification() {
