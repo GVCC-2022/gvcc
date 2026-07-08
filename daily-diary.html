@@ -7,13 +7,16 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; }
         .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; padding-bottom: 30px; }
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; padding-bottom: 40px; }
         
         .update-item { background: white; margin-bottom: 16px; padding: 15px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid #8b5cf6; }
         .meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 8px; }
         .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block; margin-bottom: 12px; }
         .content-box { background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; line-height: 1.5; }
-        .btn-view-hw { background: #10b981; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; margin-top: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+        
+        .btn-view-hw { background: #10b981; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; margin-top: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); transition: 0.2s;}
+        .btn-view-hw:active { transform: scale(0.96); }
+
         .video-link { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
 
         /* Premium Modal */
@@ -21,12 +24,17 @@
         .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out forwards; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
-        .hw-text { display: block; font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-top: 10px; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; overflow-y: auto; flex: 1; margin-bottom: 15px; text-align: left; }
+        
+        .hw-text { display: block; font-size: 15px; color: #1e293b; line-height: 1.7; margin-top: 10px; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; overflow-y: auto; flex: 1; margin-bottom: 15px; text-align: left; }
 
-        /* Empty State */
-        .funny-box { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px 10px; width: 100%; }
-        .wa-btn-list { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
-        .wa-btn { background: #25D366; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: bold; text-align: center; }
+        /* WhatsApp Button Main */
+        .wa-btn { background: #f1f5f9; color: #475569; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1; width: 100%; box-sizing: border-box; display: block; text-align: center; text-decoration: none; margin-top: 15px; transition: 0.2s; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .wa-btn:active { background: #e2e8f0; transform: scale(0.98); border-color: #25D366; }
+
+        /* Small WhatsApp Buttons for Missing Teachers */
+        .missing-box { margin-top: 25px; padding: 15px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .wa-btn-small { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; margin: 5px; transition: 0.2s; border: none; cursor: pointer; }
+        .wa-btn-small:active { transform: scale(0.95); background: #1da851; }
     </style>
 </head>
 <body>
@@ -42,20 +50,120 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Box -->
     <div class="modal" id="hwModal">
         <div class="modal-content">
             <div class="modal-handle"></div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
-                <h3 style="color: #10b981; margin: 0; font-size: 18px;">Class Homework</h3>
+                <h3 style="color: #10b981; margin: 0; font-size: 18px;"><i class="fa-solid fa-book-open-reader"></i> Class Homework</h3>
                 <i class="fa-solid fa-circle-xmark" onclick="closeHomeworkModal()" style="font-size: 24px; color: #94a3b8; cursor: pointer;"></i>
             </div>
             <div style="font-size: 13px; color: #64748b; margin-top: 12px;" id="modalSubtitle"></div>
+            
             <div class="hw-text" id="modalHWText"></div>
-            <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">Close</button>
+            
+            <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">Close Homework</button>
         </div>
     </div>
 
+    <!-- 🌟 Smart Logic Engine 🌟 -->
+    <script>
+        const teacherPhones = {
+            "Md Faiyaz": "916203491210",
+            "Md Nijamuddin Sir": "916201799298",
+            "Md Kaish Sir": "917542830148",
+            "Vikash Sir": "917485032599"
+        };
+
+        // 🌟 Helper: Student Name, Gender & Time Detection
+        function getStudentContext() {
+            const sName = localStorage.getItem("studentName") || "Student";
+            const sClass = localStorage.getItem("studentClass") || "All";
+            const nameLower = sName.toLowerCase();
+            
+            let actionWord = "कर रहा हूँ"; 
+            const girlKeywords = ["kumari", "khatoon", "parveen", "bano", "begum", "saba", "fatima", "anjali", "priya", "neha", "sana", "muskan", "rani", "gajala", "shabnam"];
+            if (girlKeywords.some(keyword => nameLower.includes(keyword))) { actionWord = "कर रही हूँ"; }
+
+            const hour = new Date().getHours();
+            let greeting = "Good Morning";
+            if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+            else if (hour >= 17) greeting = "Good Evening";
+
+            return { sName, sClass, actionWord, greeting };
+        }
+
+        // 🌟 NAYA: When Sir HAS NOT posted (No Subject details)
+        window.askForMissingHW = function(teacherName) {
+            const { sName, sClass, actionWord, greeting } = getStudentContext();
+            const phone = teacherPhones[teacherName] || "916203491210";
+            
+            const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nआपने आज होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // 🌟 NAYA: When Sir HAS posted, asking for notes/photos
+        window.askForNotes = function(teacherName, topic, shortHW) {
+            const { sName, sClass, actionWord, greeting } = getStudentContext();
+            const phone = teacherPhones[teacherName] || "916203491210";
+            let decodedTopic = decodeURIComponent(topic);
+            let decodedShortHW = decodeURIComponent(shortHW);
+            
+            const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\n\n📝 *Topic:* ${decodedTopic}\n🏠 *HW:* ${decodedShortHW}\n\nसर, अगर आपके पास इसका नोट्स या फोटो है तो कृपया भेज दीजिए। 📚`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Modal Logic
+        window.openHomeworkModal = function(encodedHW, teacherName, subject, encodedTopic, encodedShortHW) {
+            document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
+            
+            let decodedHW = decodeURIComponent(encodedHW).trim();
+            let decodedTopic = decodeURIComponent(encodedTopic).trim();
+            let decodedShortHW = decodeURIComponent(encodedShortHW).trim();
+            const modalTextContainer = document.getElementById("modalHWText");
+
+            // Agar Detail (Full HW) nahi dala hai
+            if (!decodedHW || decodedHW === "undefined" || decodedHW === "") {
+                modalTextContainer.innerHTML = `
+                    <div style="text-align:center; padding: 10px 0;">
+                        <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 55px; color: #f59e0b; margin-bottom: 15px;"></i>
+                        <p style="color:#64748b; font-size:14px; margin-bottom:15px;">सर ने लम्बा वाला प्रश्न यहाँ नहीं डाला है।</p>
+                        
+                        <div style="background:#f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: left; margin-bottom: 15px;">
+                            <strong style="color:#0ea5e9;">📝 Topic:</strong> ${decodedTopic}<br>
+                            <strong style="color:#ef4444; margin-top:8px; display:inline-block;">🏠 HW:</strong> ${decodedShortHW}
+                        </div>
+                        
+                        <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn">
+                            <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर नोट्स / फोटो मांगें 🚀
+                        </button>
+                    </div>
+                `;
+                modalTextContainer.style.background = "transparent";
+                modalTextContainer.style.border = "none";
+                modalTextContainer.style.padding = "0";
+            } else {
+                // Agar Detail dalee hai
+                modalTextContainer.innerHTML = `
+                    <div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; text-align:left;">${decodedHW}</div>
+                    
+                    <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn" style="margin-top:0;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर इसका नोट्स / फोटो मांगें 🚀
+                    </button>
+                `;
+                modalTextContainer.style.background = "#f8fafc";
+                modalTextContainer.style.border = "1px solid #e2e8f0";
+                modalTextContainer.style.padding = "18px";
+            }
+            document.getElementById("hwModal").style.display = "flex";
+        }
+
+        window.closeHomeworkModal = function() {
+            document.getElementById("hwModal").style.display = "none";
+        }
+    </script>
+
+    <!-- Firebase System -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -71,73 +179,88 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const studentClass = localStorage.getItem("studentClass") || "All"; 
-        
-        // Teacher Directory
-        const teacherPhones = { "Md Faiyaz": "916203491210", "Md Nijamuddin Sir": "916201799298", "Md Kaish Sir": "917542830148", "Vikash Sir": "917485032599" };
+        const allTeachers = ["Md Faiyaz", "Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir"];
 
-        onSnapshot(query(collection(db, "daily_diary"), orderBy("timestamp", "desc")), (snapshot) => {
+        const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
             const list = document.getElementById("diaryList");
             list.innerHTML = "";
             let hasData = false;
+            
+            // Aaj ki date track karne ke liye
+            const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            let teachersPostedToday = new Set(); // Check karenge kisne aaj dala hai
+
+            let cardsHTML = "";
 
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
                     hasData = true;
-                    list.innerHTML += `
+                    
+                    // Track kis sir ne aaj update kiya
+                    if(data.date === todayStr) {
+                        teachersPostedToday.add(data.teacherName);
+                    }
+
+                    const hwSummary = data.homeworkSummary || data.homework || "कोई जानकारी नहीं";
+                    const fullHW = data.fullHomework || ""; 
+                    const safeHW = encodeURIComponent(fullHW);
+                    const safeTopic = encodeURIComponent(data.classTopic || "");
+                    const safeShortHW = encodeURIComponent(hwSummary || "");
+
+                    cardsHTML += `
                         <div class="update-item">
                             <div class="meta">
-                                <span style="font-weight:800; color:#1e293b; font-size:14px;">${data.subject}</span>
-                                <span>${data.date}</span>
+                                <span style="font-weight:800; color:#1e293b; font-size:14px;"><i class="fa-solid fa-book" style="color:#8b5cf6;"></i> ${data.subject}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${data.date}</span>
                             </div>
                             <span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span>
                             <div class="content-box">
-                                <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}<br>
-                                <strong style="color:#ef4444;">🏠 HW:</strong> ${data.homeworkSummary || data.homework}
+                                <div style="margin-bottom: 8px;">
+                                    <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
+                                </div>
+                                <div>
+                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${hwSummary}</span>
+                                </div>
                             </div>
-                            <button class="btn-view-hw" onclick="openHomeworkModal('${encodeURIComponent(data.fullHomework || data.homework)}', '${data.teacherName}', '${data.subject}')">View Full Homework</button>
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}', '${safeTopic}', '${safeShortHW}')">
+                                <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
+                            </button>
+                            ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
                         </div>
                     `;
                 }
             });
 
-            if (!hasData) {
-                let buttonsHTML = Object.entries(teacherPhones).map(([name, phone]) => `
-                    <a href="${generateMessageLink(name, phone, 'MISSING_ALL')}" target="_blank" class="wa-btn">
-                        <i class="fa-brands fa-whatsapp"></i> मैसेज करें: ${name}
-                    </a>
+            // Pehle cards print karein
+            if (hasData) {
+                list.innerHTML = cardsHTML;
+            } else {
+                list.innerHTML = `<div style="text-align:center; margin-top:40px; color:#94a3b8; font-size:18px; font-weight:bold;">आज का कोई अपडेट नहीं है!</div>`;
+            }
+
+            // 🌟 NAYA: MISSING TEACHERS FINDER 🌟
+            // Wo Sir jinka update aaj nahi aaya hai unke buttons nikalein
+            const missingTeachers = allTeachers.filter(t => !teachersPostedToday.has(t));
+
+            if (missingTeachers.length > 0) {
+                let btnsHTML = missingTeachers.map(t => `
+                    <button class="wa-btn-small" onclick="askForMissingHW('${t}')">
+                        <i class="fa-brands fa-whatsapp"></i> ${t}
+                    </button>
                 `).join('');
 
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <h3 style="color:#1e293b;">आज का कोई होमवर्क नहीं है!</h3>
-                        <p style="color:#64748b;">क्या सर ने होमवर्क डालना भूल गए हैं? नीचे दिए गए सर को मैसेज करें:</p>
-                        <div class="wa-btn-list">${buttonsHTML}</div>
-                    </div>`;
+                list.innerHTML += `
+                    <div class="missing-box">
+                        <p style="color:#475569; font-size:13px; font-weight:bold; margin-top:0;">क्या आज किसी सर ने होमवर्क नहीं डाला? उन्हें याद दिलाएं:</p>
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+                            ${btnsHTML}
+                        </div>
+                    </div>
+                `;
             }
         });
-
-        // 🌟 Message Generator Logic
-        window.generateMessageLink = function(teacherName, phone, type, subject = "") {
-            const sName = localStorage.getItem("studentName") || "Student";
-            const sClass = localStorage.getItem("studentClass") || "All";
-            const nameLower = sName.toLowerCase();
-            
-            let actionWord = (["kumari", "khatoon", "parveen", "bano", "begum", "saba", "fatima", "anjali", "priya"].some(k => nameLower.includes(k))) ? "कर रही हूँ" : "कर रहा हूँ";
-            const hour = new Date().getHours();
-            let greeting = hour < 12 ? "Good Morning" : (hour < 17 ? "Good Afternoon" : "Good Evening");
-
-            let msg = `${greeting} Sir! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nआपने आज होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`;
-            return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-        }
-
-        window.openHomeworkModal = function(encodedHW, teacherName, subject) {
-            document.getElementById("modalSubtitle").innerHTML = `<strong>Subject:</strong> ${subject} | <strong>Teacher:</strong> ${teacherName}`;
-            let decodedHW = decodeURIComponent(encodedHW);
-            document.getElementById("modalHWText").innerText = decodedHW;
-            document.getElementById("hwModal").style.display = "flex";
-        }
-        window.closeHomeworkModal = () => document.getElementById("hwModal").style.display = "none";
     </script>
 </body>
 </html>
