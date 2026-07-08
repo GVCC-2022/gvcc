@@ -318,77 +318,70 @@
         }
     });
 </script>
-                <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
+                    <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
         
-        <i class="fa-solid fa-bell-slash" style="font-size: 60px; color: #ef4444; margin-bottom: 20px;"></i>
-        <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Action Required! 🔔</h2>
-        <p id="permMsg" style="color: #ef4444; font-weight: bold; margin-bottom: 15px;">❌ Aapne Notification BLOCK kar diya hai.</p>
-        
-        <div id="instructionBox" style="display:none; background: #1e293b; border: 1px solid #475569; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 25px; width: 100%; max-width: 300px;">
-            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 14px;"><b>App me ise theek kaise karein?</b></p>
-            <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-                <li>Apne phone ki <b>Settings ⚙️</b> me jayein.</li>
-                <li><b>Apps</b> (ya App Management) par click karein.</li>
-                <li><b>GVCC App</b> khojein aur uspar dabayein.</li>
-                <li><b>Notifications</b> me jaakar use <b>ALLOW</b> karein.</li>
-                <li>Wapas aakar niche wala button dabayein.</li>
-            </ol>
-        </div>
+        <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
+        <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
+        <p id="permMsg" style="color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; font-size: 15px;">
+            Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.
+        </p>
 
-        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px;">
-            Enable Notifications
+        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
+            Enable Notifications 🚀
+        </button>
+
+        <button onclick="document.getElementById('notificationBlocker').style.display='none'" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
+            Skip for now (Enter App) &rarr;
         </button>
     </div>
 
     <script>
         function checkAndForceNotification() {
-            if (!("Notification" in window)) return; 
-
             const blocker = document.getElementById("notificationBlocker");
             const btn = document.getElementById("permBtn");
             const msg = document.getElementById("permMsg");
-            const instructions = document.getElementById("instructionBox");
 
-            // 1. Agar ALLOW hai
+            // Agar browser/webview notification support hi nahi karta
+            if (!("Notification" in window)) {
+                blocker.style.display = "none";
+                return;
+            }
+
+            // 1. Agar pehle se ALLOW hai
             if (Notification.permission === "granted") {
                 blocker.style.display = "none";
             } 
-            // 2. Agar DENY (Block) hai
-            else if (Notification.permission === "denied") {
-                blocker.style.display = "flex";
-                instructions.style.display = "block"; // App wale steps dikhao
-                msg.innerHTML = "❌ Aapne Notification <b>BLOCK</b> kar diya hai.";
-                btn.innerHTML = "🔄 Maine Allow Kar Diya Hai";
-                
-                // 🔥 NAYA: Refresh Button Fix
-                btn.onclick = () => {
-                    if (Notification.permission === "denied") {
-                        alert("⚠️ Abhi bhi Notification OFF hai! Kripya Phone Settings me jaakar GVCC App ka notification chaalu karein.");
-                    } else if (Notification.permission === "granted") {
-                        blocker.style.display = "none";
-                        window.location.reload(); // Allow milne par fresh reload
-                    }
-                }; 
-            } 
-            // 3. Pehli baar aaya hai
+            // 2. Agar DENY hai ya pehli baar aaya hai
             else {
                 blocker.style.display = "flex";
-                instructions.style.display = "none";
-                msg.style.color = "#cbd5e1";
-                msg.style.fontWeight = "normal";
-                msg.innerHTML = "Class ki chhutti aur Test ke updates turant paane ke liye Notifications ko <b>ALLOW</b> karna zaroori hai. 👇";
-                btn.innerHTML = "Click to Allow 🚀";
-                btn.onclick = async () => {
-                    const perm = await Notification.requestPermission(); 
-                    if (perm === "granted") {
-                        blocker.style.display = "none"; 
-                        window.location.reload(); // Allow karte hi ek baar reload zaroori hai token ke liye
-                    } else {
-                        checkAndForceNotification(); // Deny karte hi Block wali screen aayegi
-                    }
-                };
+                
+                if (Notification.permission === "denied") {
+                    msg.innerHTML = "⚠️ Notifications <b>OFF</b> hain.<br>Kripya App Info / Settings me jaakar ALLOW karein taaki koi update miss na ho.";
+                    btn.innerHTML = "I have Allowed (Refresh) 🔄";
+                    
+                    btn.addEventListener("click", () => {
+                        window.location.reload(); // WebView me kai baar reload se hi state update hoti hai
+                    });
+                } else {
+                    // Default state (Pehli baar)
+                    btn.addEventListener("click", async () => {
+                        try {
+                            const perm = await Notification.requestPermission();
+                            if (perm === "granted") {
+                                blocker.style.display = "none";
+                            } else {
+                                window.location.reload(); 
+                            }
+                        } catch(e) {
+                            // Agar WebView permission code block kar de
+                            alert("⚠️ Aapka phone yahan se allow nahi kar raha. Kripya 'Skip' dabayein aur App Settings se on karein.");
+                        }
+                    });
+                }
             }
         }
+        
+        // Page load hone par run karein
         window.addEventListener("load", checkAndForceNotification);
     </script>
 
