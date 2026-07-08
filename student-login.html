@@ -6,333 +6,62 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Gyan Varsha Coaching Center - Student Login</title>
-    <!-- 👇 Google Search और Browser Tab में लोगो दिखाने के लिए 👇 -->
 <link rel="icon" type="image/png" href="20260620_144347.png">
-
-
-<!-- 👇 स्टूडेंट पोर्टल सर्च रिज़ल्ट के लिए नया कोड 👇 -->
 <meta name="description" content="ज्ञान वर्षा कोचिंग सेंटर (GVCC) का स्मार्ट स्टूडेंट पोर्टल। अपने रोल नंबर और पासवर्ड से सुरक्षित लॉगिन करें और अपना डैशबोर्ड देखें।">
-
 <link rel="manifest" href="manifest.json">
-
-<!-- FontAwesome for Premium Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     
 <style>
-/* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
-* {
-    -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
-    -webkit-user-select: none;   /* Text selection ko block karega */
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;           /* Koi text copy nahi kar payega */
-    -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
-}
+* { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+input, textarea { -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; user-select: auto !important; }
+img { -webkit-user-drag: none; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; overflow: hidden; overscroll-behavior-y: none; touch-action: manipulation; }
 
-/* 👇 LOGIN FORM FIX: Input fields me type karne ke liye ise ON rakhna zaroori hai 👇 */
-input, textarea {
-    -webkit-user-select: auto !important;
-    -moz-user-select: auto !important;
-    -ms-user-select: auto !important;
-    user-select: auto !important;
-}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(-5vh); } }
 
-/* Images ko kheenchne (drag) se rokne ke liye */
-img {
-    -webkit-user-drag: none; 
-}
+.login-container { position: relative; width: 85%; max-width: 400px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.logo-glow-wrapper { position: relative; width: 100%; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: -110px; z-index: 10; }
+.logo-glow-wrapper::before { content: ''; position: absolute; width: 190px; height: 190px; margin-top: 25px; margin-left: 10px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.4) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; }
+.logo-glow-wrapper::after { content: ''; position: absolute; width: 120px; height: 120px; margin-top: 25px; margin-left: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); filter: blur(20px); z-index: -1; }
+@keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: white;
-    overflow: hidden;
-    
-    /* 👇 ये 2 लाइनें आपके ऐप को असली एंड्रॉइड ऐप बना देंगी */
-    overscroll-behavior-y: none; /* ऊपर से खींचने वाला लोडिंग रोकेगा */
-    touch-action: manipulation;  /* स्क्रीन ज़ूम होना रोकेगा */
-}
+.login-logo { width: 250px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; left: 10px; pointer-events: none; }
+.login-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 120px 30px 30px 30px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; text-align: center; box-sizing: border-box; position: relative; }
+.title { color: #38bdf8; font-size: 26px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 1px; }
 
+.install-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 14px !important; font-size: 16px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 20px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
+.install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
+.install-btn:active, .btn-login:active:not(:disabled) { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
+.install-btn i { animation: bounce 2s infinite; font-size: 20px; }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(-5vh); }
-}
-
-.login-container {
-    position: relative;
-    width: 85%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* 🌀 Logo and Light Wrapper */
-.logo-glow-wrapper {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: -110px; 
-    z-index: 10;
-}
-
-/* ☀️ सूरज की किरणें (Sun Rays Effect) */
-.logo-glow-wrapper::before {
-    content: '';
-    position: absolute;
-    width: 190px;
-    height: 190px;
-    margin-top: 25px;   
-    margin-left: 10px; 
-    border-radius: 50%;
-    
-    /* 👇 ब्राइटनेस सेट करने की जगह */
-    background: repeating-conic-gradient(
-        from 0deg,
-        rgba(255, 255, 255, 0.4) 0deg 3deg, 
-        transparent 3deg 10deg
-    );
-    
-    -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%);
-    mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%);
-    
-    animation: rotateRays 25s linear infinite;
-    z-index: -1;
-}
-
-/* ☀️ किरणों के बीच का एक्स्ट्रा ग्लो */
-.logo-glow-wrapper::after {
-    content: '';
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    margin-top: 25px;
-    margin-left: 10px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4); 
-    filter: blur(20px);
-    z-index: -1;
-}
-
-@keyframes rotateRays {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* 🎯 Logo Position Adjustments */
-.login-logo {
-    width: 250px;
-    height: auto;
-    filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5));
-    position: relative;
-    z-index: 5;
-    left: 10px; 
-    pointer-events: none; /* 👇 NAYA CODE: Logo par click puri tarah band karega */
-}
-
-/* 📦 Premium Dark Glass Card */
-.login-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    padding: 120px 30px 30px 30px; 
-    border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-    position: relative;
-}
-
-.title {
-    color: #38bdf8;
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    letter-spacing: 1px;
-}
-
-.install-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #0ea5e9, #2563eb) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 14px !important;
-    font-size: 16px !important;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    margin-bottom: 20px !important;
-    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important;
-    animation: pulseGlow 2s infinite alternate;
-}
-
-.install-btn:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; 
-}
-
-/* 👇 NAYA CODE: Button me click effect (jaan dalne) ke liye 👇 */
-.install-btn:active, .btn-login:active:not(:disabled) {
-    transform: scale(0.95) !important; 
-    opacity: 0.8; 
-    transition: all 0.1s ease;
-}
-
-.install-btn i {
-    animation: bounce 2s infinite;
-    font-size: 20px;
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #64748b;
-    font-size: 12px;
-    font-weight: 600;
-    margin: 25px 0;
-}
-.divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+.divider { display: flex; align-items: center; text-align: center; color: #64748b; font-size: 12px; font-weight: 600; margin: 25px 0; }
+.divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 .divider:not(:empty)::before { margin-right: .5em; }
 .divider:not(:empty)::after { margin-left: .5em; }
 
-input {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    margin: 18px auto;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-}
-
+input { display: block; width: 100%; padding: 16px; margin: 18px auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; font-size: 16px; box-sizing: border-box; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.05); color: white; }
 input::placeholder { color: #94a3b8; }
-input:focus {
-    border-color: #38bdf8;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
-    outline: none;
-}
+input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
-.btn-login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: #ffffff;
-    color: #0f172a;
-    padding: 16px;
-    margin: 25px auto 5px auto;
-    width: 100%;
-    border: none;
-    border-radius: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-}
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #0f172a; padding: 16px; margin: 25px auto 5px auto; width: 100%; border: none; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1); }
+.btn-login:hover:not(:disabled) { background: #f1f5f9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2); }
+.btn-login:disabled { background: rgba(255, 255, 255, 0.2); color: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
-.btn-login:hover:not(:disabled) {
-    background: #f1f5f9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
-}
-
-/* Pehle yaha ".btn-login:active" tha, usko upar merge kar diya gaya hai smooth effect ke liye */
-
-.btn-login:disabled {
-    background: rgba(255, 255, 255, 0.2);
-    color: #94a3b8;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.credit-text {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 15px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-.spinner {
-    width: 18px;
-    height: 18px;
-    border: 3px solid rgba(15, 23, 42, 0.3);
-    border-top-color: #0f172a;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    display: none;
-}
-
+.credit-text { font-size: 11px; color: #64748b; margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; }
+.spinner { width: 18px; height: 18px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-4px);} 60% {transform: translateY(-2px);} }
 @keyframes pulseGlow { from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); } to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); } }
 
-#dynamicName {
-    font-size: 14px;
-    color: #4ade80;
-    margin: -10px auto 10px auto;
-    font-weight: 600;
-    width: 100%;
-    text-align: left;
-    height: 18px;
-    opacity: 0;
-    transform: translateY(-5px);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    padding-left: 5px;
-}
-
+#dynamicName { font-size: 14px; color: #4ade80; margin: -10px auto 10px auto; font-weight: 600; width: 100%; text-align: left; height: 18px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
 #dynamicName.show { opacity: 1; transform: translateY(0); }
-
-#msg {
-    font-weight: 600;
-    font-size: 14px;
-    margin-top: 15px;
-    transition: all 0.3s ease;
-}
+#msg { font-weight: 600; font-size: 14px; margin-top: 15px; transition: all 0.3s ease; }
 </style>
 </head>
 <body>
 
 <div class="login-container">
-    <div class="logo-glow-wrapper">
-        <img src="20260620_144347.png" alt="GVCC Logo" class="login-logo">
-    </div>
-
+    <div class="logo-glow-wrapper"><img src="20260620_144347.png" alt="GVCC Logo" class="login-logo"></div>
     <div class="login-card">
         <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
         
@@ -341,14 +70,12 @@ input:focus {
         </button>
 
         <div class="divider">SELECT YOUR LOGIN</div>
-        
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
             <div id="dynamicName"></div>
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit" class="btn-login" id="loginBtn">
-                <span class="spinner" id="btnSpinner"></span>
-                <span id="btnText">Login</span>
+                <span class="spinner" id="btnSpinner"></span><span id="btnText">Login</span>
             </button>
         </form>
         
@@ -359,10 +86,7 @@ input:focus {
 
 <script>
     let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-    });
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
     window.installApp = async function() {
         if (deferredPrompt) {
             deferredPrompt.prompt();
@@ -377,7 +101,8 @@ input:focus {
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -390,14 +115,36 @@ input:focus {
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
+    // 🌟 SMART NOTIFICATION SYSTEM (Student) 🌟
+    const VAPID_KEY = "यहाँ_अपनी_VAPID_KEY_पेस्ट_करें";
+
+    setTimeout(async () => {
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    console.log("🔔 Notification Permission Granted!");
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (token) {
+                        await addDoc(collection(db, "notification_tokens"), {
+                            token: token,
+                            userType: "Student",
+                            timestamp: serverTimestamp()
+                        });
+                        console.log("✅ Device Token Saved!");
+                    }
+                }
+            } catch (error) { console.log("⚠️ Notification Setup Error:", error); }
+        }
+    }, 2000);
+
+    // App Download Tracker
     window.addEventListener('appinstalled', async () => {
         try {
             const statsRef = doc(db, "admin_stats", "app_downloads");
-            await setDoc(statsRef, {
-                total_downloads: increment(1),
-                last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-            }, { merge: true });
+            await setDoc(statsRef, { total_downloads: increment(1), last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) }, { merge: true });
         } catch (e) { console.error("Error updating count:", e); }
     });
 
@@ -424,8 +171,7 @@ input:focus {
             const formattedDate = now.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).replace(/\//g, "-");
             const formattedTime = now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false }).replace(/:/g, "-");
             await setDoc(doc(db, "login_logs", `${rollNumber}_${formattedDate}_${formattedTime}`), {
-                roll: rollNumber, name: studentName,
-                loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), timestamp: now
+                roll: rollNumber, name: studentName, loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), timestamp: now
             });
         } catch (error) { console.error("Error:", error); }
     }
@@ -459,11 +205,9 @@ input:focus {
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
-      .catch(function(error) { console.log("PWA Error:", error); });
+    navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(function(error) { console.log("PWA Error:", error); });
   });
 }
 </script>
-    
 </body>
 </html>
