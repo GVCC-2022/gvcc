@@ -6,125 +6,25 @@
     <title>GVCC - Teacher Portal Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 👇 APP FEELING CODE: Browser features block karne ke liye 👇 */
-        * {
-            -webkit-touch-callout: none; /* Mobile me long-press menu block karega */
-            -webkit-user-select: none;   /* Text selection ko block karega */
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;           /* Koi text copy nahi kar payega */
-            -webkit-tap-highlight-color: transparent; /* Chrome ka blue click color hatayega */
-        }
-
-        /* 👇 LOGIN FORM FIX: Input fields me type karne ke liye ise ON rakhna zaroori hai 👇 */
-        input, textarea {
-            -webkit-user-select: auto !important;
-            -moz-user-select: auto !important;
-            -ms-user-select: auto !important;
-            user-select: auto !important;
-        }
-
-        /* Images ko kheenchne (drag) se rokne ke liye */
-        img {
-            -webkit-user-drag: none; 
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f172a; /* Dark theme matching GVCC */
-            color: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden; /* 👇 Scroll hone se rokega */
-            overscroll-behavior-y: none; /* 👇 Upar se kheenchne wala pull-to-refresh roke ga */
-            touch-action: manipulation;  /* 👇 Screen zoom hona roke ga */
-        }
+        * { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+        input, textarea { -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; user-select: auto !important; }
+        img { -webkit-user-drag: none; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; overscroll-behavior-y: none; touch-action: manipulation; }
         
-        .login-container {
-            background: rgba(30, 41, 59, 0.8);
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 380px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-        .header-icon {
-            font-size: 50px;
-            color: #38bdf8;
-            margin-bottom: 15px;
-            pointer-events: none; /* Icon par long press block */
-        }
-        h2 {
-            margin: 0 0 5px 0;
-            font-size: 24px;
-        }
-        p.subtitle {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #cbd5e1;
-            font-size: 14px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: #0f172a;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
+        .login-container { background: rgba(30, 41, 59, 0.8); padding: 40px 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 100%; max-width: 380px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+        .header-icon { font-size: 50px; color: #38bdf8; margin-bottom: 15px; pointer-events: none; }
+        h2 { margin: 0 0 5px 0; font-size: 24px; }
+        p.subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 25px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: #cbd5e1; font-size: 14px; }
+        .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); background: #0f172a; color: white; font-size: 16px; box-sizing: border-box; }
+        .input-group input:focus { outline: none; border-color: #38bdf8; }
         
-        .login-btn {
-            width: 100%;
-            background: #38bdf8;
-            color: #0f172a;
-            border: none;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .login-btn:hover {
-            background: #0284c7;
-            color: white;
-        }
+        .login-btn { width: 100%; background: #38bdf8; color: #0f172a; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .login-btn:hover { background: #0284c7; color: white; }
+        .login-btn:active { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
 
-        /* 👇 NAYA CODE: Button me click effect (jaan dalne) ke liye 👇 */
-        .login-btn:active {
-            transform: scale(0.95) !important; 
-            opacity: 0.8; 
-            transition: all 0.1s ease;
-        }
-
-        #error-msg {
-            color: #ef4444;
-            font-size: 14px;
-            margin-top: 15px;
-            display: none;
-        }
+        #error-msg { color: #ef4444; font-size: 14px; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -150,7 +50,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -163,7 +64,32 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const messaging = getMessaging(app);
 
+        // 🌟 SMART NOTIFICATION SYSTEM (Teacher) 🌟
+        const VAPID_KEY = "यहाँ_अपनी_VAPID_KEY_पेस्ट_करें";
+
+        setTimeout(async () => {
+            if ("Notification" in window && Notification.permission === "default") {
+                try {
+                    const permission = await Notification.requestPermission();
+                    if (permission === "granted") {
+                        console.log("🔔 Notification Permission Granted!");
+                        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                        if (token) {
+                            await addDoc(collection(db, "notification_tokens"), {
+                                token: token,
+                                userType: "Teacher",
+                                timestamp: serverTimestamp()
+                            });
+                            console.log("✅ Device Token Saved!");
+                        }
+                    }
+                } catch (error) { console.log("⚠️ Notification Setup Error:", error); }
+            }
+        }, 2000);
+
+        // Login Logic
         document.getElementById('loginBtn').addEventListener('click', async () => {
             const tId = document.getElementById('teacherId').value.trim();
             const tPass = document.getElementById('teacherPass').value.trim();
@@ -180,21 +106,15 @@
             errorMsg.style.display = "none";
 
             try {
-                // Firebase mein 'teachers' collection check kar rahe hain
                 const teacherRef = doc(db, "teachers", tId);
                 const teacherSnap = await getDoc(teacherRef);
 
                 if (teacherSnap.exists()) {
                     const data = teacherSnap.data();
-                    
-                    // Password check
                     if (data.password === tPass) {
-                        // Login Success - Session save kar rahe hain
                         sessionStorage.setItem("loggedTeacherId", tId);
                         sessionStorage.setItem("loggedTeacherName", data.name);
                         sessionStorage.setItem("loggedTeacherSubject", data.subject);
-                        
-                        // Teacher Dashboard par bhej do
                         window.location.href = "teacher-dashboard.html";
                     } else {
                         errorMsg.innerText = "Incorrect Password!";
@@ -216,4 +136,3 @@
     </script>
 </body>
 </html>
-
