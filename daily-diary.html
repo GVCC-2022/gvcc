@@ -68,14 +68,15 @@
 
     <!-- 🌟 Smart Logic Engine 🌟 -->
     <script>
+        // 🌟 FIXED: Md Faiyaz Last Position
         const teacherPhones = {
-            "Md Faiyaz": "916203491210",
             "Md Nijamuddin Sir": "916201799298",
             "Md Kaish Sir": "917542830148",
-            "Vikash Sir": "917485032599"
+            "Vikash Sir": "917485032599",
+            "Md Faiyaz": "916203491210"
         };
 
-        // 🌟 Helper: Student Name, Gender & Time Detection
+        // Helper: Student Name, Gender & Time Detection
         function getStudentContext() {
             const sName = localStorage.getItem("studentName") || "Student";
             const sClass = localStorage.getItem("studentClass") || "All";
@@ -93,37 +94,45 @@
             return { sName, sClass, actionWord, greeting };
         }
 
-        // 🌟 NAYA: When Sir HAS NOT posted (No Subject details)
         window.askForMissingHW = function(teacherName) {
             const { sName, sClass, actionWord, greeting } = getStudentContext();
             const phone = teacherPhones[teacherName] || "916203491210";
-            
             const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nआपने आज होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // 🌟 NAYA: When Sir HAS posted, asking for notes/photos
         window.askForNotes = function(teacherName, topic, shortHW) {
             const { sName, sClass, actionWord, greeting } = getStudentContext();
             const phone = teacherPhones[teacherName] || "916203491210";
             let decodedTopic = decodeURIComponent(topic);
             let decodedShortHW = decodeURIComponent(shortHW);
-            
             const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\n\n📝 *Topic:* ${decodedTopic}\n🏠 *HW:* ${decodedShortHW}\n\nसर, अगर आपके पास इसका नोट्स या फोटो है तो कृपया भेज दीजिए। 📚`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // Modal Logic
-        window.openHomeworkModal = function(encodedHW, teacherName, subject, encodedTopic, encodedShortHW) {
+        // 🌟 NAYA: Photo Receive Logic Added Here 🌟
+        window.openHomeworkModal = function(encodedHW, teacherName, subject, encodedTopic, encodedShortHW, encodedImageUrls) {
             document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
             
             let decodedHW = decodeURIComponent(encodedHW).trim();
             let decodedTopic = decodeURIComponent(encodedTopic).trim();
             let decodedShortHW = decodeURIComponent(encodedShortHW).trim();
-            const modalTextContainer = document.getElementById("modalHWText");
+            
+            // Photo Array Process Karna
+            let imageUrls = [];
+            if (encodedImageUrls && encodedImageUrls !== 'undefined') {
+                try {
+                    imageUrls = JSON.parse(decodeURIComponent(encodedImageUrls));
+                } catch(e) {}
+            }
 
-            // Agar Detail (Full HW) nahi dala hai
-            if (!decodedHW || decodedHW === "undefined" || decodedHW === "") {
+            const modalTextContainer = document.getElementById("modalHWText");
+            
+            const hasText = (decodedHW && decodedHW !== "undefined" && decodedHW !== "");
+            const hasImages = (imageUrls.length > 0);
+
+            // Agar na Text hai, na koi Photo hai
+            if (!hasText && !hasImages) {
                 modalTextContainer.innerHTML = `
                     <div style="text-align:center; padding: 10px 0;">
                         <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 55px; color: #f59e0b; margin-bottom: 15px;"></i>
@@ -143,14 +152,38 @@
                 modalTextContainer.style.border = "none";
                 modalTextContainer.style.padding = "0";
             } else {
-                // Agar Detail dalee hai
-                modalTextContainer.innerHTML = `
-                    <div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; text-align:left;">${decodedHW}</div>
+                // 🌟 Agar Text ya Photo dono me se kuch bhi hai
+                let contentHTML = "";
+                
+                // 1. Text Dikhao
+                if (hasText) {
+                    contentHTML += `<div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; text-align:left;">${decodedHW}</div>`;
+                }
+
+                // 2. Photos Dikhao
+                if (hasImages) {
+                    contentHTML += `<div style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">`;
+                    contentHTML += `<p style="font-size:12px; color:#ef4444; margin:0; text-align:center; font-weight:bold;"><i class="fa-solid fa-hand-pointer"></i> (फोटो को बड़ा देखने के लिए उस पर क्लिक करें)</p>`;
                     
-                    <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn" style="margin-top:0;">
-                        <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर इसका नोट्स / फोटो मांगें 🚀
+                    imageUrls.forEach(url => {
+                        contentHTML += `
+                            <img src="${url}" 
+                                 style="width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: zoom-in;" 
+                                 onclick="window.open(this.src, '_blank')" 
+                                 alt="Homework Note">
+                        `;
+                    });
+                    contentHTML += `</div>`;
+                }
+                
+                // 3. Last me WhatsApp wala button 
+                contentHTML += `
+                    <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn" style="margin-top:20px;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर डाउट पूछें / नोट्स मांगें 🚀
                     </button>
                 `;
+
+                modalTextContainer.innerHTML = contentHTML;
                 modalTextContainer.style.background = "#f8fafc";
                 modalTextContainer.style.border = "1px solid #e2e8f0";
                 modalTextContainer.style.padding = "18px";
@@ -179,7 +212,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const studentClass = localStorage.getItem("studentClass") || "All"; 
-        const allTeachers = ["Md Faiyaz", "Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir"];
+        
+        // 🌟 FIXED: Md Faiyaz Last Position
+        const allTeachers = ["Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir", "Md Faiyaz"];
 
         const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
@@ -187,9 +222,8 @@
             list.innerHTML = "";
             let hasData = false;
             
-            // Aaj ki date track karne ke liye
             const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            let teachersPostedToday = new Set(); // Check karenge kisne aaj dala hai
+            let teachersPostedToday = new Set(); 
 
             let cardsHTML = "";
 
@@ -198,7 +232,6 @@
                 if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
                     hasData = true;
                     
-                    // Track kis sir ne aaj update kiya
                     if(data.date === todayStr) {
                         teachersPostedToday.add(data.teacherName);
                     }
@@ -208,6 +241,15 @@
                     const safeHW = encodeURIComponent(fullHW);
                     const safeTopic = encodeURIComponent(data.classTopic || "");
                     const safeShortHW = encodeURIComponent(hwSummary || "");
+                    
+                    // 🌟 NAYA: Extract Image URLs and Convert to String array
+                    let imageUrls = [];
+                    if (data.imageUrls) imageUrls = data.imageUrls;
+                    else if (data.imageUrl) imageUrls = [data.imageUrl];
+                    const safeImageUrls = encodeURIComponent(JSON.stringify(imageUrls));
+
+                    // Show Photo icon on Card if image exists
+                    let photoIcon = imageUrls.length > 0 ? `<i class="fa-solid fa-image" style="color:#f59e0b; margin-left:8px;"></i>` : '';
 
                     cardsHTML += `
                         <div class="update-item">
@@ -221,27 +263,28 @@
                                     <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
                                 </div>
                                 <div>
-                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${hwSummary}</span>
+                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${hwSummary}</span> ${photoIcon}
                                 </div>
                             </div>
-                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}', '${safeTopic}', '${safeShortHW}')">
+                            
+                            <!-- 🌟 FIXED: Passing safeImageUrls into the function -->
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}', '${safeTopic}', '${safeShortHW}', '${safeImageUrls}')">
                                 <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
                             </button>
+                            
                             ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
                         </div>
                     `;
                 }
             });
 
-            // Pehle cards print karein
             if (hasData) {
                 list.innerHTML = cardsHTML;
             } else {
                 list.innerHTML = `<div style="text-align:center; margin-top:40px; color:#94a3b8; font-size:18px; font-weight:bold;">आज का कोई अपडेट नहीं है!</div>`;
             }
 
-            // 🌟 NAYA: MISSING TEACHERS FINDER 🌟
-            // Wo Sir jinka update aaj nahi aaya hai unke buttons nikalein
+            // Missing Teachers List (Faiyaz will automatically be last due to 'allTeachers' array order)
             const missingTeachers = allTeachers.filter(t => !teachersPostedToday.has(t));
 
             if (missingTeachers.length > 0) {
