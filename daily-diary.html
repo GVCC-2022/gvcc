@@ -35,7 +35,6 @@
         
         .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
         
-        /* 🌟 FIXED: Homework Text Box 🌟 */
         .hw-text { 
             display: block; 
             font-size: 15px; 
@@ -53,7 +52,6 @@
             text-align: left; 
         }
 
-        /* 🌟 FIXED: Funny Empty State (Perfect Center) 🌟 */
         .funny-box {
             display: flex;
             flex-direction: column;
@@ -66,12 +64,20 @@
             box-sizing: border-box;
         }
 
-        /* Loading / Empty State Main Page */
+        /* Loading / Empty State */
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .empty-state {
             text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
             border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
             border: 2px dashed #cbd5e1; animation: popIn 0.5s forwards;
+        }
+        
+        /* WhatsApp Button Hover Effect */
+        .wa-btn {
+            background:#f1f5f9; padding:15px; border-radius:12px; border: 1px dashed #cbd5e1; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; text-align: center; min-height: 60px; text-decoration: none; margin-top:15px; transition: 0.2s;
+        }
+        .wa-btn:active {
+            background: #e2e8f0; transform: scale(0.98); border-color: #25D366;
         }
     </style>
 </head>
@@ -176,26 +182,45 @@
         });
     </script>
 
-    <!-- 🌟 Modal Logic -->
+    <!-- 🌟 NAYA: Modal Logic (With WhatsApp Redirection) 🌟 -->
     <script>
+        // 📲 Teacher WhatsApp Numbers Directory
+        const teacherPhones = {
+            "Md Faiyaz": "916203491210",
+            "Md Nijamuddin Sir": "916201799298",
+            "Md Kaish Sir": "917542830148",
+            "Vikash Sir": "917485032599"
+        };
+
         window.openHomeworkModal = function(encodedHW, teacherName, subject) {
             document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
             
             let decodedHW = decodeURIComponent(encodedHW).trim();
             const modalTextContainer = document.getElementById("modalHWText");
 
-            // 🌟 अगर फुल होमवर्क खाली है, तो Funny Box दिखेगा (एकदम सेंटर में) 🌟
+            // 🌟 अगर फुल होमवर्क खाली है, तो Funny Box + WhatsApp Button दिखेगा 🌟
             if (!decodedHW || decodedHW === "undefined" || decodedHW === "") {
+                
+                // Get correct number or default to Faiyaz Sir
+                const phone = teacherPhones[teacherName] || "916203491210"; 
+                
+                // Create GVCC App Special Message
+                const waMessage = encodeURIComponent(`Good Morning Sir! 🙏 मैं GVCC App से मैसेज कर रहा/रही हूँ। आपने आज *${subject}* का पूरा होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`);
+                const waLink = `https://wa.me/${phone}?text=${waMessage}`;
+
                 modalTextContainer.innerHTML = `
                     <div class="funny-box">
                         <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 60px; color: #f59e0b; margin-bottom: 20px;"></i>
                         <h3 style="color:#1e293b; margin-bottom:10px; font-size: 20px;">अरे रे! 😅</h3>
-                        <p style="color:#64748b; font-size:15px; line-height:1.5; margin-bottom:20px;">लगता है सर डिटेल वाले प्रश्न डालना भूल गए हैं या उन्होंने क्लास में ही सब बता दिया है!</p>
+                        <p style="color:#64748b; font-size:15px; line-height:1.5; margin-bottom:10px;">लगता है सर डिटेल वाले प्रश्न डालना भूल गए हैं या उन्होंने क्लास में ही सब बता दिया है!</p>
                         
-                        <!-- 🌟 NAYA FIX: Andar ke box me bhi display: flex daal diya gaya hai taaki text perfect center rahe -->
-                        <div style="background:#f1f5f9; padding:15px; border-radius:12px; border: 1px dashed #cbd5e1; width: 100%; box-sizing: border-box; display: flex; justify-content: center; align-items: center; text-align: center; min-height: 60px;">
-                            <span style="font-size:14px; color:#475569; font-weight:bold;">Md Faiyaz सर को मैसेज करके याद दिलाएं! 🚀</span>
-                        </div>
+                        <!-- 🌟 NAYA FIX: WhatsApp Button Anchor Tag -->
+                        <a href="${waLink}" target="_blank" class="wa-btn">
+                            <span style="font-size:14px; color:#475569; font-weight:bold;">
+                                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 16px;"></i> 
+                                ${teacherName} को मैसेज करके याद दिलाएं! 🚀
+                            </span>
+                        </a>
                     </div>
                 `;
                 // Modal ka background gayab karke white chhod denge taaki clean lage
