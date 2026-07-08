@@ -318,55 +318,68 @@
         }
     });
 </script>
-        <!-- 🛑 MANDATORY NOTIFICATION BLOCKER SCREEN -->
+            <!-- 🛑 MANDATORY NOTIFICATION BLOCKER SCREEN -->
     <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
-        <i class="fa-solid fa-bell-slash fa-bounce" style="font-size: 60px; color: #ef4444; margin-bottom: 25px;"></i>
-        <h2 style="color: #f8fafc; margin-bottom: 15px; font-size: 24px;">Action Required! 🔔</h2>
-        <p id="permMsg" style="color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; font-size: 16px;">
-            GVCC App me login karne ke liye Notifications ko ALLOW karna zaroori hai.
-        </p>
-        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);">
+        
+        <i class="fa-solid fa-bell-slash" style="font-size: 60px; color: #ef4444; margin-bottom: 20px;"></i>
+        <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Action Required! 🔔</h2>
+        <p id="permMsg" style="color: #ef4444; font-weight: bold; margin-bottom: 15px;">❌ Aapne Notification BLOCK kar diya hai.</p>
+        
+        <!-- 📝 Steps for Students -->
+        <div id="instructionBox" style="display:none; background: #1e293b; border: 1px solid #475569; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 25px; width: 100%; max-width: 300px;">
+            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 14px;"><b>Ise theek kaise karein?</b></p>
+            <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+                <li>Upar URL bar me <b>Lock (🔒) icon</b> par click karein.</li>
+                <li><b>Permissions</b> ya <b>Site Settings</b> me jayein.</li>
+                <li>Notifications ko <b>ALLOW</b> karein.</li>
+                <li>Neeche 'Refresh' button dabayein.</li>
+            </ol>
+        </div>
+
+        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px;">
             Enable Notifications
         </button>
     </div>
 
     <script>
         function checkAndForceNotification() {
-            // Agar browser me notification system hi nahi hai (jaise purane phone)
             if (!("Notification" in window)) return; 
 
             const blocker = document.getElementById("notificationBlocker");
             const btn = document.getElementById("permBtn");
             const msg = document.getElementById("permMsg");
+            const instructions = document.getElementById("instructionBox");
 
-            // 1. Agar bache ne ALLOW kar diya hai
+            // 1. Agar ALLOW hai
             if (Notification.permission === "granted") {
-                blocker.style.display = "none"; // App khol do
+                blocker.style.display = "none";
             } 
-            // 2. Agar bache ne DENY (Block) kar diya hai
+            // 2. Agar DENY (Block) hai
             else if (Notification.permission === "denied") {
-                blocker.style.display = "flex"; // App LOCK kar do
-                msg.innerHTML = "❌ Aapne Notification <b>BLOCK</b> kar diya hai.<br><br>App use karne ke liye upar <b>Lock (🔒) icon</b> ya Browser <b>Site Settings</b> me jaakar Notifications ko <b>ALLOW</b> karein.";
-                btn.innerText = "Check Again (Reload)";
-                btn.onclick = () => window.location.reload(); // Reload karke check karega setting badli ya nahi
+                blocker.style.display = "flex";
+                instructions.style.display = "block"; // Steps dikhao
+                msg.innerHTML = "❌ Aapne Notification <b>BLOCK</b> kar diya hai.";
+                btn.innerHTML = "🔄 Refresh & Check";
+                btn.onclick = () => window.location.reload(); 
             } 
-            // 3. Agar abhi tak kuch nahi chuna (Pehli baar aaya hai)
+            // 3. Pehli baar aaya hai
             else {
-                blocker.style.display = "flex"; // App LOCK kar do
+                blocker.style.display = "flex";
+                instructions.style.display = "none"; // Steps mat dikhao
+                msg.style.color = "#cbd5e1";
+                msg.style.fontWeight = "normal";
                 msg.innerHTML = "Class ki chhutti aur Test ke updates turant paane ke liye Notifications ko <b>ALLOW</b> karna zaroori hai. 👇";
-                btn.innerText = "Click to Allow 🚀";
+                btn.innerHTML = "Click to Allow 🚀";
                 btn.onclick = async () => {
-                    const perm = await Notification.requestPermission(); // Browser ka popup layega
+                    const perm = await Notification.requestPermission(); 
                     if (perm === "granted") {
-                        blocker.style.display = "none"; // Allow kiya to hta do
+                        blocker.style.display = "none"; 
                     } else {
-                        checkAndForceNotification(); // Deny kiya to wapas check karo (Block wali screen dega)
+                        checkAndForceNotification(); // Deny karte hi refresh kar dega aur steps dikhayega
                     }
                 };
             }
         }
-
-        // Jaise hi page load ho, turant checking shuru karo
         window.addEventListener("load", checkAndForceNotification);
     </script>
 
