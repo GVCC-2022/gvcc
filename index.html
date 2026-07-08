@@ -318,21 +318,20 @@
         }
     });
 </script>
-            <!-- 🛑 MANDATORY NOTIFICATION BLOCKER SCREEN -->
-    <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
+                <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:30px; color:white; backdrop-filter: blur(10px);">
         
         <i class="fa-solid fa-bell-slash" style="font-size: 60px; color: #ef4444; margin-bottom: 20px;"></i>
         <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Action Required! 🔔</h2>
         <p id="permMsg" style="color: #ef4444; font-weight: bold; margin-bottom: 15px;">❌ Aapne Notification BLOCK kar diya hai.</p>
         
-        <!-- 📝 Steps for Students -->
         <div id="instructionBox" style="display:none; background: #1e293b; border: 1px solid #475569; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 25px; width: 100%; max-width: 300px;">
-            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 14px;"><b>Ise theek kaise karein?</b></p>
+            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 14px;"><b>App me ise theek kaise karein?</b></p>
             <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-                <li>Upar URL bar me <b>Lock (🔒) icon</b> par click karein.</li>
-                <li><b>Permissions</b> ya <b>Site Settings</b> me jayein.</li>
-                <li>Notifications ko <b>ALLOW</b> karein.</li>
-                <li>Neeche 'Refresh' button dabayein.</li>
+                <li>Apne phone ki <b>Settings ⚙️</b> me jayein.</li>
+                <li><b>Apps</b> (ya App Management) par click karein.</li>
+                <li><b>GVCC App</b> khojein aur uspar dabayein.</li>
+                <li><b>Notifications</b> me jaakar use <b>ALLOW</b> karein.</li>
+                <li>Wapas aakar niche wala button dabayein.</li>
             </ol>
         </div>
 
@@ -357,15 +356,24 @@
             // 2. Agar DENY (Block) hai
             else if (Notification.permission === "denied") {
                 blocker.style.display = "flex";
-                instructions.style.display = "block"; // Steps dikhao
+                instructions.style.display = "block"; // App wale steps dikhao
                 msg.innerHTML = "❌ Aapne Notification <b>BLOCK</b> kar diya hai.";
-                btn.innerHTML = "🔄 Refresh & Check";
-                btn.onclick = () => window.location.reload(); 
+                btn.innerHTML = "🔄 Maine Allow Kar Diya Hai";
+                
+                // 🔥 NAYA: Refresh Button Fix
+                btn.onclick = () => {
+                    if (Notification.permission === "denied") {
+                        alert("⚠️ Abhi bhi Notification OFF hai! Kripya Phone Settings me jaakar GVCC App ka notification chaalu karein.");
+                    } else if (Notification.permission === "granted") {
+                        blocker.style.display = "none";
+                        window.location.reload(); // Allow milne par fresh reload
+                    }
+                }; 
             } 
             // 3. Pehli baar aaya hai
             else {
                 blocker.style.display = "flex";
-                instructions.style.display = "none"; // Steps mat dikhao
+                instructions.style.display = "none";
                 msg.style.color = "#cbd5e1";
                 msg.style.fontWeight = "normal";
                 msg.innerHTML = "Class ki chhutti aur Test ke updates turant paane ke liye Notifications ko <b>ALLOW</b> karna zaroori hai. 👇";
@@ -374,14 +382,16 @@
                     const perm = await Notification.requestPermission(); 
                     if (perm === "granted") {
                         blocker.style.display = "none"; 
+                        window.location.reload(); // Allow karte hi ek baar reload zaroori hai token ke liye
                     } else {
-                        checkAndForceNotification(); // Deny karte hi refresh kar dega aur steps dikhayega
+                        checkAndForceNotification(); // Deny karte hi Block wali screen aayegi
                     }
                 };
             }
         }
         window.addEventListener("load", checkAndForceNotification);
     </script>
+
 
 </body>
 </html>
