@@ -23,7 +23,6 @@
         .logout-btn:active { transform: scale(0.95); background: #dc2626; }
         
         .container { max-width: 1000px; margin: 30px auto; padding: 20px; text-align: center; padding-bottom: 50px; }
-        /* 🌟 FIXED: Subject Badge removed, space adjusted */
         .welcome-text { font-size: 28px; margin-bottom: 30px; color: #f8fafc; } 
         
         .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
@@ -50,7 +49,6 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; box-sizing: border-box; font-family: inherit; font-size: 14px; transition: 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
         
-        /* Dropdown Locked Style */
         .form-group select:disabled { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px dashed #475569; cursor: not-allowed; font-weight: bold; -webkit-appearance: none; appearance: none;}
 
         input[type="file"] { padding: 10px; background: #1e293b; color: #f8fafc; border: 2px dashed #38bdf8; cursor: pointer; border-radius: 10px; text-align: center; }
@@ -58,6 +56,7 @@
         
         .submit-btn { width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; padding: 14px; font-weight: bold; font-size: 16px; border-radius: 12px; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); }
         .submit-btn:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3); }
+        .submit-btn:disabled { background: #475569; cursor: not-allowed; box-shadow: none; opacity: 0.7; }
         
         .mic-btn { background: #334155; color: white; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; float: right; transition: 0.3s; }
         .mic-btn.recording { background: #ef4444; border-color: #ef4444; animation: pulse-mic 1s infinite; }
@@ -77,7 +76,6 @@
     </div>
 
     <div class="container">
-        <!-- 🌟 FIXED: Subect name hata diya, bas clean Welcome text -->
         <h1 class="welcome-text">Welcome, <span id="welcomeName">Sir</span></h1>
 
         <div class="cards-grid">
@@ -129,8 +127,6 @@
                         <option value="All">All</option>
                     </select>
                 </div>
-                
-                <!-- 🌟 NAYA: Admin Faiyaz ke liye Dropdown wapas 🌟 -->
                 <div class="form-group">
                     <label>Teacher (Posting As)</label>
                     <select id="diaryTeacher">
@@ -177,7 +173,7 @@
                 
                 <label style="color:#f59e0b; margin-top: 15px; font-size: 13px;"><i class="fa-solid fa-camera"></i> या फिर कॉपी की फोटो अपलोड करें (Max 20):</label>
                 <input type="file" id="diaryImage" accept="image/*" multiple max="20">
-                <small style="color: #94a3b8; display: block; margin-top: 6px; font-size: 11px;">एक साथ कई फोटो सिलेक्ट करने के लिए दबा कर रखें (Long Press)।</small>
+                <small style="color: #94a3b8; display: block; margin-top: 6px; font-size: 11px;">एक साथ कई फोटो सिलेक्ट करने के लिए दबा कर रखें।</small>
             </div>
 
             <div class="form-group">
@@ -308,15 +304,17 @@
 
     <!-- FIREBASE SYSTEM -->
     <script type="module">
+        // 🌟 FIX: Yahan se Firebase Storage hata diya gaya hai!
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
         const firebaseConfig = { apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", authDomain: "gvcc-database.firebaseapp.com", projectId: "gvcc-database", storageBucket: "gvcc-database.firebasestorage.app", messagingSenderId: "1063216875940", appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" };
         
         const app = initializeApp(firebaseConfig); 
         const db = getFirestore(app);
-        const storage = getStorage(app); 
+
+        // 🌟 100% FREE IMGBB API KEY (Yahan Paste Karein 👇) 🌟
+        const IMGBB_API_KEY = "4773a759a0ce1c52c2e433ddb97f5f0d";
 
         const teacherId = sessionStorage.getItem("loggedTeacherId");
         const teacherName = sessionStorage.getItem("loggedTeacherName") || "Unknown Teacher";
@@ -327,19 +325,13 @@
             document.getElementById("displayTeacherName").innerText = teacherName; 
             document.getElementById("welcomeName").innerText = teacherName; 
             
-            // 🌟 ADMIN LOGIC (MD FAIYAZ SUPER POWER) 🌟
             const teacherSelect = document.getElementById("diaryTeacher");
-            
             if (teacherName === "Md Faiyaz") {
-                // Aapke liye dropdown khula rahega!
                 teacherSelect.disabled = false;
                 teacherSelect.value = "Md Faiyaz";
             } else {
-                // Baki sir logon ke liye dropdown lock ho jayega!
                 let optionExists = Array.from(teacherSelect.options).some(opt => opt.value === teacherName);
-                if (!optionExists) {
-                    teacherSelect.add(new Option(teacherName, teacherName));
-                }
+                if (!optionExists) { teacherSelect.add(new Option(teacherName, teacherName)); }
                 teacherSelect.value = teacherName;
                 teacherSelect.disabled = true;
             }
@@ -403,10 +395,9 @@
             });
         }
 
+        // 🌟 FREE IMGBB API UPLOAD LOGIC 🌟
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
-            
-            // 🌟 NAYA: Yahan value drop-down se li jayegi, taaki Faiyaz Sir jise select karein usi ka naam jaye
             const selectedTeacher = document.getElementById("diaryTeacher").value;
             
             let selectedSubject = document.getElementById("diarySubject").value;
@@ -424,19 +415,39 @@
             if (!classTopic || !hwSummary) { alert("Please Topic और Short Homework Summary दोनों भरें!"); return; }
             if (imageFiles.length > 20) { alert("आप अधिकतम 20 फोटो ही सिलेक्ट कर सकते हैं!"); return; }
 
+            // Security check for API Key
+            if (imageFiles.length > 0 && IMGBB_API_KEY === "यहाँ_अपनी_API_KEY_डालें") {
+                alert("⚠️ आपने अभी तक ImgBB API Key नहीं डाली है! कृपया कोड में लाइन 318 पर अपनी Key डालें।");
+                return;
+            }
+
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Processing...";
             btn.disabled = true;
             
             try {
                 let finalImageUrls = [];
+                
+                // One-by-One ImgBB Upload
                 if (imageFiles.length > 0) {
-                    btn.innerHTML = `<i class='fa-solid fa-spinner fa-spin'></i> Uploading ${imageFiles.length} Photo(s)...`;
-                    const uploadPromises = Array.from(imageFiles).map(async (file) => {
-                        const storageRef = ref(storage, 'homework_images/' + Date.now() + '_' + file.name);
-                        await uploadBytes(storageRef, file);
-                        return await getDownloadURL(storageRef);
-                    });
-                    finalImageUrls = await Promise.all(uploadPromises);
+                    for (let i = 0; i < imageFiles.length; i++) {
+                        btn.innerHTML = `<i class='fa-solid fa-spinner fa-spin'></i> Uploading Photo ${i + 1} of ${imageFiles.length}...`;
+                        
+                        const formData = new FormData();
+                        formData.append("image", imageFiles[i]);
+
+                        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                            method: "POST",
+                            body: formData
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            finalImageUrls.push(result.data.url); // ImgBB gives direct image URL
+                        } else {
+                            throw new Error("ImgBB Error: " + result.error.message);
+                        }
+                    }
                 }
 
                 btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Saving Data...";
@@ -462,7 +473,8 @@
                 document.getElementById("diaryImage").value = ""; 
                 closeModals();
             } catch (error) {
-                alert("Failed to publish updates. " + error.message);
+                console.error(error);
+                alert("⚠️ Upload Failed! Error: " + error.message);
             }
             btn.innerHTML = "Publish Update <i class='fa-solid fa-paper-plane'></i>";
             btn.disabled = false;
@@ -472,10 +484,7 @@
             const message = document.getElementById("noticeMessage").value.trim();
             if (!message) return;
             document.getElementById("sendNoticeBtn").innerText = "Sending...";
-            
-            // Notice me login wale sir ka hi naam jayega
             const currentTeacher = sessionStorage.getItem("loggedTeacherName") || "GVCC Faculty";
-
             await addDoc(collection(db, "notices"), { teacherName: currentTeacher, targetClass: document.getElementById("noticeClass").value, message: message, timestamp: serverTimestamp() });
             alert("Notice Sent!"); document.getElementById("noticeMessage").value = ""; closeModals(); document.getElementById("sendNoticeBtn").innerText = "Send Notice";
         });
@@ -485,9 +494,7 @@
             if (!testName || !testCode) return;
             try { JSON.parse(testCode); } catch (e) { return alert("⚠️ Galat JSON format!"); }
             document.getElementById("sendTestBtn").innerText = "Publishing...";
-            
             const currentTeacher = sessionStorage.getItem("loggedTeacherName") || "GVCC Faculty";
-
             await addDoc(collection(db, "active_tests"), { teacherName: currentTeacher, targetClass: document.getElementById("testClass").value, testName: testName, testDate: document.getElementById("testDate").value, testTime: document.getElementById("testTime").value, duration: document.getElementById("testDuration").value, testCode: testCode, timestamp: serverTimestamp() });
             alert("Test Published!"); closeModals(); document.getElementById("sendTestBtn").innerText = "Publish Test";
         });
