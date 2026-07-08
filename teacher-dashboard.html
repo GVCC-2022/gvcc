@@ -10,6 +10,10 @@
         input, textarea, select { -webkit-user-select: auto; user-select: auto; }
         img { -webkit-user-drag: none; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; touch-action: manipulation; }
+        
+        /* 🌟 NAYA: Background Scroll Lock Class 🌟 */
+        body.no-scroll { overflow: hidden; }
+
         .page-exit { animation: zoomOutUp 0.4s forwards !important; }
         @keyframes zoomOutUp { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-10vh) scale(0.95); } }
         .navbar { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #38bdf8; }
@@ -27,14 +31,20 @@
         .card i { font-size: 40px; color: #38bdf8; margin-bottom: 15px; }
         .card h3 { margin: 0 0 10px 0; }
         .card p { color: #94a3b8; font-size: 14px; margin: 0; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #1e293b; padding: 30px; border-radius: 10px; width: 90%; max-width: 450px; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 5px; }
+        
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-row { display: flex; gap: 15px; }
         .form-row .form-group { flex: 1; }
         .form-group label { display: block; margin-bottom: 5px; color: #cbd5e1; font-weight: bold; font-size: 13px;}
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: #0f172a; color: white; box-sizing: border-box; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); background: #0f172a; color: white; box-sizing: border-box; font-family: inherit;}
+        
+        /* Custom File Input Styling */
+        input[type="file"] { padding: 8px; background: #334155; color: #f8fafc; border: 1px dashed #38bdf8; cursor: pointer; }
+        
         .submit-btn { width: 100%; background: #38bdf8; color: #0f172a; border: none; padding: 12px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.1s; }
         .submit-btn:active { transform: scale(0.95); opacity: 0.9; }
         .mic-btn { background: #334155; color: white; border: 1px solid #475569; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; float: right; transition: 0.3s; }
@@ -89,7 +99,6 @@
         </div>
     </div>
 
-    <!-- MODAL: Add Daily Diary -->
     <div class="modal" id="diaryModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -119,7 +128,6 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Subject (विषय)</label>
-                    <!-- 🌟 NAYA: Subject Dropdown updated with onchange event -->
                     <select id="diarySubject" onchange="updateSubSubjects()">
                         <option value="Mathematics">Mathematics</option>
                         <option value="Science">Science</option>
@@ -130,40 +138,39 @@
                         <option value="Urdu">Urdu</option>
                     </select>
                 </div>
-                <!-- 🌟 NAYA: Sub-Subject Dropdown (Physics, History etc.) -->
                 <div class="form-group" id="subSubjectGroup" style="display: none;">
                     <label style="color:#f59e0b;">Sub-Subject</label>
-                    <select id="diarySubSubject">
-                        <!-- Options will be injected by JavaScript -->
-                    </select>
+                    <select id="diarySubSubject"></select>
                 </div>
             </div>
 
             <div class="form-group">
                 <label style="color:#0ea5e9;">📝 आज क्या पढ़ाया गया? (Topic) <button type="button" class="mic-btn" onclick="startVoiceTyping('diaryTopic', this)"><i class="fa-solid fa-microphone"></i> Mic</button></label>
-                <textarea id="diaryTopic" rows="2" placeholder="उदा: History chapter 4"></textarea>
+                <textarea id="diaryTopic" rows="2" placeholder="Ex: History chapter 4 padhaya gaya"></textarea>
             </div>
 
             <div class="form-group">
                 <label style="color:#ef4444;">🏠 होमवर्क क्या है? (Short Summary) <button type="button" class="mic-btn" onclick="startVoiceTyping('diaryHomeworkSummary', this)"><i class="fa-solid fa-microphone"></i> Mic</button></label>
-                <textarea id="diaryHomeworkSummary" rows="2" placeholder="उदा: Objective याद करना है"></textarea>
+                <textarea id="diaryHomeworkSummary" rows="2" placeholder="Ex: Objective yaad karna hai"></textarea>
             </div>
 
-            <div class="form-group">
-                <label style="color:#10b981;">📋 पूरा होमवर्क / प्रश्न (Optional - Copy Paste)</label>
-                <textarea id="diaryFullHomework" rows="4" placeholder="यहाँ लम्बे प्रश्न या नोट्स पेस्ट करें... (अगर नहीं है तो खाली छोड़ दें)"></textarea>
+            <div class="form-group" style="border: 1px dashed rgba(255,255,255,0.2); padding: 10px; border-radius: 8px;">
+                <label style="color:#10b981;">📋 पूरा होमवर्क / प्रश्न (Optional)</label>
+                <textarea id="diaryFullHomework" rows="3" placeholder="Ex: 1. भारत की राजधानी क्या है? (यहाँ लम्बे प्रश्न पेस्ट करें)"></textarea>
+                
+                <label style="color:#f59e0b; margin-top: 10px; font-size: 12px;"><i class="fa-solid fa-camera"></i> या फिर कॉपी की फोटो अपलोड करें (HD):</label>
+                <input type="file" id="diaryImage" accept="image/*">
             </div>
 
             <div class="form-group">
                 <label>🎥 Video Link (Optional)</label>
-                <input type="url" id="diaryVideo" placeholder="Paste YouTube link">
+                <input type="url" id="diaryVideo" placeholder="Ex: https://youtube.com/...">
             </div>
 
             <button class="submit-btn" id="sendDiaryBtn" style="background: #a855f7; color: white;">Publish Update</button>
         </div>
     </div>
 
-    <!-- MODAL: View, Copy & Delete Homework -->
     <div class="modal" id="viewDiaryModal">
         <div class="modal-content" style="background: #1e293b;">
             <span class="close-btn" onclick="closeModals()">&times;</span>
@@ -174,10 +181,88 @@
         </div>
     </div>
 
-    <!-- Notice & Test Modals -->
-    <div class="modal" id="noticeModal"><div class="modal-content"><span class="close-btn" onclick="closeModals()">&times;</span><h2>Send Notice</h2><div class="form-group"><label>Select Class</label><select id="noticeClass"><option value="All">All Classes</option><option value="Class 8">Class 8</option><option value="Class 9">Class 9</option><option value="Class 10">Class 10</option></select></div><div class="form-group"><label>Message</label><textarea id="noticeMessage" rows="4"></textarea></div><button class="submit-btn" id="sendNoticeBtn">Send Notice</button></div></div>
+    <div class="modal" id="noticeModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2>Send Notice</h2>
+            <div class="form-group">
+                <label>Select Class</label>
+                <select id="noticeClass">
+                    <option value="All">All Classes</option>
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="noticeMessage" rows="4" placeholder="Ex: Kal chhutti rahegi..."></textarea>
+            </div>
+            <button class="submit-btn" id="sendNoticeBtn">Send Notice</button>
+        </div>
+    </div>
     
-    <div class="modal" id="testModal"><div class="modal-content"><span class="close-btn" onclick="closeModals()">&times;</span><h2>Publish AI Test</h2><div class="form-group"><label>Select Class</label><select id="testClass"><option value="Class 8">Class 8</option><option value="Class 9">Class 9</option><option value="Class 10">Class 10</option></select></div><div class="form-group"><label>Test Name</label><input type="text" id="testName"></div><div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="testDate"></div><div class="form-group"><label>Time</label><input type="time" id="testTime"></div></div><div class="form-group"><label>Duration (Min)</label><input type="number" id="testDuration"></div><div class="form-group"><label>Paste AI JSON Code:</label><textarea id="testCode" rows="4"></textarea></div><button class="submit-btn" id="sendTestBtn">Publish Test</button></div></div>
+    <div class="modal" id="testModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2>Publish AI Test</h2>
+            <div class="form-group">
+                <label>Select Class</label>
+                <select id="testClass">
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Test Name</label>
+                <input type="text" id="testName" placeholder="Ex: Science Chapter 1 Test">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="testDate">
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" id="testTime">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Duration (Min)</label>
+                <input type="number" id="testDuration" placeholder="Ex: 20">
+            </div>
+            
+            <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <label style="margin-bottom:0;">Paste AI JSON Code:</label>
+                    <button type="button" onclick="document.getElementById('aiHelpModal').style.display='flex'" style="background: #38bdf8; color: #0f172a; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 11px;">
+                        <i class="fa-solid fa-lightbulb"></i> How to get code?
+                    </button>
+                </div>
+                <textarea id="testCode" rows="4" placeholder='Ex: [{"question": "...", "options": ["A","B","C","D"], "answer": "A"}]' style="font-family: monospace; color:#34d399;"></textarea>
+            </div>
+            <button class="submit-btn" id="sendTestBtn">Publish Test</button>
+        </div>
+    </div>
+
+    <div id="aiHelpModal" class="modal" style="z-index: 1100;">
+        <div class="modal-content" style="border: 2px solid #38bdf8;">
+            <h3 style="color:#38bdf8; margin-top:0;"><i class="fa-solid fa-robot"></i> AI Prompt Guide</h3>
+            <p style="font-size:14px; color:#cbd5e1;">ChatGPT या Gemini को यह मैसेज भेजें:</p>
+            <div style="background:#0f172a; padding:15px; border-radius:8px; font-family:monospace; font-size:13px; color:#10b981; margin-bottom:15px; user-select:all;">
+                "मुझे 10th Class के History chapter 1 का 10 MCQ दें। Code बिल्कुल इस JSON Format में होना चाहिए:"<br><br>
+                [<br>
+                &nbsp;&nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"question": "प्रश्न यहाँ?",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"options": ["A", "B", "C", "D"],<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"answer": "A"<br>
+                &nbsp;&nbsp;}<br>
+                ]
+            </div>
+            <button type="button" onclick="document.getElementById('aiHelpModal').style.display='none'" class="submit-btn" style="background:#ef4444; color:white;">Close Guide</button>
+        </div>
+    </div>
 
     <script>
         function navigateWithAnimation(url) { document.body.classList.add('page-exit'); setTimeout(() => { window.location.href = url; }, 300); }
@@ -188,13 +273,11 @@
             navigator.clipboard.writeText(decoded).then(() => alert("✅ Full Homework Text Copied!")).catch(err => alert("⚠️ Copy failed!"));
         }
 
-        // 🌟 NAYA: Sub-Subject Logic
         window.updateSubSubjects = function() {
             const subject = document.getElementById("diarySubject").value;
             const subGroup = document.getElementById("subSubjectGroup");
             const subSelect = document.getElementById("diarySubSubject");
             subSelect.innerHTML = "";
-            
             if (subject === "Science") {
                 subGroup.style.display = "block";
                 subSelect.innerHTML = '<option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Biology">Biology</option>';
@@ -219,14 +302,18 @@
         }
     </script>
 
-    <!-- FIREBASE SYSTEM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        // 🌟 NAYA: deleteDoc, doc import kiya gaya hai
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        
+        // 🌟 NAYA: Firebase Storage Import (Photo Upload Ke Liye) 🌟
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
         const firebaseConfig = { apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", authDomain: "gvcc-database.firebaseapp.com", projectId: "gvcc-database", storageBucket: "gvcc-database.firebasestorage.app", messagingSenderId: "1063216875940", appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" };
-        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+        
+        const app = initializeApp(firebaseConfig); 
+        const db = getFirestore(app);
+        const storage = getStorage(app); // Storage Init
 
         const teacherId = sessionStorage.getItem("loggedTeacherId");
         const teacherName = sessionStorage.getItem("loggedTeacherName") || "Unknown Teacher";
@@ -236,25 +323,29 @@
 
         document.getElementById("logoutBtn").addEventListener("click", () => { document.body.classList.add('page-exit'); setTimeout(() => { sessionStorage.clear(); window.location.replace("index.html"); }, 300); });
 
-        window.closeModals = function() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-        document.getElementById("openNoticeModal").addEventListener("click", () => document.getElementById("noticeModal").style.display = "flex");
-        document.getElementById("openTestModal").addEventListener("click", () => document.getElementById("testModal").style.display = "flex");
-        document.getElementById("openDiaryModal").addEventListener("click", () => document.getElementById("diaryModal").style.display = "flex");
+        // 🌟 NAYA: Modal Scroll Lock Fix 🌟
+        window.closeModals = function() { 
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); 
+            document.body.classList.remove('no-scroll'); // Unlock background
+        }
+        
+        function openModalWithLock(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+            document.body.classList.add('no-scroll'); // Lock background
+        }
+
+        document.getElementById("openNoticeModal").addEventListener("click", () => openModalWithLock("noticeModal"));
+        document.getElementById("openTestModal").addEventListener("click", () => openModalWithLock("testModal"));
+        document.getElementById("openDiaryModal").addEventListener("click", () => openModalWithLock("diaryModal"));
         
         document.getElementById("openViewDiaryModal").addEventListener("click", () => { 
-            document.getElementById("viewDiaryModal").style.display = "flex"; 
+            openModalWithLock("viewDiaryModal"); 
             loadTeacherDiaries();
         });
 
-        // 🌟 NAYA: Delete function for Homework
         window.deleteDiary = async function(docId) {
             if(confirm("⚠️ क्या आप सच में इस होमवर्क को हमेशा के लिए डिलीट करना चाहते हैं?")) {
-                try {
-                    await deleteDoc(doc(db, "daily_diary", docId));
-                    alert("✅ होमवर्क डिलीट हो गया!");
-                } catch(error) {
-                    alert("⚠️ Delete fail: " + error.message);
-                }
+                try { await deleteDoc(doc(db, "daily_diary", docId)); alert("✅ होमवर्क डिलीट हो गया!"); } catch(error) { alert("⚠️ Delete fail: " + error.message); }
             }
         }
 
@@ -267,7 +358,7 @@
                 
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
-                    const docId = docSnap.id; // Yahan se unique ID milta hai delete ke liye
+                    const docId = docSnap.id; 
                     
                     const hwSummary = data.homeworkSummary || data.homework || "N/A";
                     const fullHW = data.fullHomework || data.homework || ""; 
@@ -282,17 +373,13 @@
                             <div style="font-size:13px; color:#cbd5e1; margin-bottom:4px;"><strong>Topic:</strong> ${data.classTopic}</div>
                             <div style="font-size:13px; color:#cbd5e1; margin-bottom:12px;"><strong>HW:</strong> ${hwSummary}</div>
                             
+                            ${data.imageUrl ? '<div style="font-size:12px; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-image"></i> Photo Attached</div>' : ''}
+
                             <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; flex-wrap:wrap; gap:10px;">
                                 <span style="font-size:11px; color:#f59e0b;">👨‍🏫 ${data.teacherName}</span>
-                                
-                                <!-- 🌟 NAYA: Copy aur Delete Button dono yahan hain -->
                                 <div style="display:flex; gap: 8px;">
-                                    <button onclick="deleteDiary('${docId}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                    <button onclick="copyTextToClipboard('${cleanText}')" style="background:#10b981; color:#0f172a; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">
-                                        <i class="fa-regular fa-copy"></i> Copy
-                                    </button>
+                                    <button onclick="deleteDiary('${docId}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;"><i class="fa-solid fa-trash"></i></button>
+                                    <button onclick="copyTextToClipboard('${cleanText}')" style="background:#10b981; color:#0f172a; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;"><i class="fa-regular fa-copy"></i> Copy</button>
                                 </div>
                             </div>
                         </div>
@@ -301,17 +388,16 @@
             });
         }
 
-        // WRITE DAILY DIARY TO DB
+        // 🌟 NAYA: Image Upload & Saving Logic 🌟
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
             const selectedTeacher = document.getElementById("diaryTeacher").value;
             
-            // 🌟 NAYA: Subject aur Sub-Subject ko ek sath milana
             let selectedSubject = document.getElementById("diarySubject").value;
             const subGroupStyle = document.getElementById("subSubjectGroup").style.display;
             if (subGroupStyle === "block") {
                 const subSubject = document.getElementById("diarySubSubject").value;
-                selectedSubject = selectedSubject + " (" + subSubject + ")"; // e.g. "Science (Physics)"
+                selectedSubject = selectedSubject + " (" + subSubject + ")"; 
             }
             
             const classTopic = document.getElementById("diaryTopic").value.trim();
@@ -319,14 +405,28 @@
             const fullHW = document.getElementById("diaryFullHomework").value.trim();
             const videoLink = document.getElementById("diaryVideo").value.trim();
             
+            // Image Input Element
+            const imageFile = document.getElementById("diaryImage").files[0];
             const btn = document.getElementById("sendDiaryBtn");
 
             if (!classTopic || !hwSummary) { alert("Please Topic और Short Homework Summary दोनों भरें!"); return; }
 
             const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            btn.innerHTML = "Publishing...";
             
             try {
+                let finalImageUrl = "";
+                
+                // Agar Photo di gayi hai, toh pehle use Firebase Storage me upload karein
+                if (imageFile) {
+                    btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Uploading Photo (Please wait)...";
+                    const storageRef = ref(storage, 'homework_images/' + Date.now() + '_' + imageFile.name);
+                    await uploadBytes(storageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(storageRef);
+                } else {
+                    btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publishing...";
+                }
+                
+                // Photo ki URL ke sath Data save karein
                 await addDoc(collection(db, "daily_diary"), {
                     teacherName: selectedTeacher,
                     subject: selectedSubject,
@@ -334,24 +434,26 @@
                     classTopic: classTopic,
                     homeworkSummary: hwSummary, 
                     fullHomework: fullHW,       
+                    imageUrl: finalImageUrl, // 📸 Photo URL Here
                     videoLink: videoLink,
                     date: dateStr,
                     timestamp: serverTimestamp()
                 });
+                
                 alert("✅ Daily Diary Live Ho Gayi!");
                 document.getElementById("diaryTopic").value = "";
                 document.getElementById("diaryHomeworkSummary").value = "";
                 document.getElementById("diaryFullHomework").value = "";
+                document.getElementById("diaryImage").value = ""; // Clear file
                 closeModals();
             } catch (error) {
-                alert("Failed to publish updates.");
+                alert("Failed to publish updates. " + error.message);
             }
             btn.innerHTML = "Publish Update";
         });
 
         // Other Modals Logic
         document.getElementById("sendNoticeBtn").addEventListener("click", async () => {
-            /* Logic code */
             const targetClass = document.getElementById("noticeClass").value;
             const message = document.getElementById("noticeMessage").value.trim();
             const btn = document.getElementById("sendNoticeBtn");
@@ -365,7 +467,6 @@
         });
         
         document.getElementById("sendTestBtn").addEventListener("click", async () => {
-            /* Logic code */
             const targetClass = document.getElementById("testClass").value;
             const testName = document.getElementById("testName").value.trim();
             const testDate = document.getElementById("testDate").value; 
@@ -380,7 +481,7 @@
                 await addDoc(collection(db, "active_tests"), { teacherName: teacherName, subject: teacherSubject, targetClass: targetClass, testName: testName, testDate: testDate, testTime: testTime, duration: testDuration, testCode: testCode, timestamp: serverTimestamp() });
                 alert("🚀 Smart AI Test Published Successfully!"); document.getElementById("testName").value = ""; document.getElementById("testDate").value = ""; document.getElementById("testTime").value = ""; document.getElementById("testDuration").value = ""; document.getElementById("testCode").value = ""; closeModals();
             } catch (error) { alert("Failed to publish test."); }
-            btn.innerHTML = "<i class='fa-solid fa-rocket'></i> Publish Smart Test";
+            btn.innerHTML = "Publish Test";
         });
     </script>
 </body>
