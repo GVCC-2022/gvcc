@@ -35,12 +35,12 @@
         
         .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
         
+        /* Modal Container */
         .hw-text { 
             display: block; 
             font-size: 15px; 
             color: #1e293b; 
             line-height: 1.7; 
-            white-space: pre-wrap; 
             margin-top: 10px; 
             background: #f8fafc; 
             padding: 18px; 
@@ -53,18 +53,10 @@
         }
 
         .funny-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;    
-            justify-content: center; 
-            text-align: center;
-            padding: 20px 10px;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center; padding: 20px 10px; width: 100%; height: 100%; box-sizing: border-box;
         }
 
-        /* Loading / Empty State */
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .empty-state {
             text-align: center; margin-top: 40px; padding: 30px 20px; background: white; 
@@ -72,23 +64,21 @@
             border: 2px dashed #cbd5e1; animation: popIn 0.5s forwards;
         }
         
-        /* 🌟 FIXED: WhatsApp Button (100% Center) */
+        /* WhatsApp Button Main */
         .wa-btn {
-            background: #f1f5f9; 
-            padding: 15px; 
-            border-radius: 12px; 
-            border: 1px dashed #cbd5e1; 
-            width: 100%; 
-            box-sizing: border-box; 
-            display: block; /* Flex ki jagah block taaki text-align kaam kare */
-            text-align: center; 
-            text-decoration: none; 
-            margin-top: 15px; 
-            transition: 0.2s;
+            background: #f1f5f9; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1; 
+            width: 100%; box-sizing: border-box; display: block; text-align: center; 
+            text-decoration: none; margin-top: 15px; transition: 0.2s;
         }
-        .wa-btn:active {
-            background: #e2e8f0; transform: scale(0.98); border-color: #25D366;
+        .wa-btn:active { background: #e2e8f0; transform: scale(0.98); border-color: #25D366; }
+
+        /* Small WhatsApp Buttons for Empty State */
+        .wa-btn-small {
+            display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; 
+            padding: 10px 15px; border-radius: 8px; text-decoration: none; font-size: 13px;
+            font-weight: bold; margin: 5px; transition: 0.2s;
         }
+        .wa-btn-small:active { transform: scale(0.95); background: #1da851; }
     </style>
 </head>
 <body>
@@ -117,7 +107,6 @@
             
             <div style="font-size: 13px; color: #64748b; margin-top: 12px;" id="modalSubtitle"></div>
             
-            <!-- Modal Content (Text ya Funny Animation) -->
             <div class="hw-text" id="modalHWText"></div>
             
             <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">
@@ -126,6 +115,109 @@
         </div>
     </div>
 
+    <!-- Smart Logic Engine -->
+    <script>
+        // 📲 Teacher WhatsApp Numbers Directory
+        const teacherPhones = {
+            "Md Faiyaz": "916203491210",
+            "Md Nijamuddin Sir": "916201799298",
+            "Md Kaish Sir": "917542830148",
+            "Vikash Sir": "917485032599"
+        };
+
+        // 🌟 NAYA: GENDER, TIME & MESSAGE GENERATOR 🌟
+        window.getWhatsAppLink = function(teacherName, type, topic = "", shortHW = "") {
+            const sName = localStorage.getItem("studentName") || "Student";
+            const sClass = localStorage.getItem("studentClass") || "All";
+            const nameLower = sName.toLowerCase();
+            
+            // Gender Detection
+            let actionWord = "कर रहा हूँ"; 
+            const girlKeywords = ["kumari", "khatoon", "parveen", "bano", "begum", "saba", "fatima", "anjali", "priya", "neha", "sana", "muskan", "rani", "gajala", "shabnam"];
+            const boyKeywords = ["md", "alam", "kumar", "raj", "soni", "reza", "ali", "faiyaz", "ansari", "hussain", "raja"];
+
+            if (girlKeywords.some(keyword => nameLower.includes(keyword))) {
+                actionWord = "कर रही हूँ"; 
+            } else if (boyKeywords.some(keyword => nameLower.includes(keyword))) {
+                actionWord = "कर रहा हूँ";
+            }
+
+            // Time Detection
+            const hour = new Date().getHours();
+            let greeting = "Good Morning";
+            if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+            else if (hour >= 17) greeting = "Good Evening";
+
+            const phone = teacherPhones[teacherName] || "916203491210";
+            let message = "";
+
+            if (type === "MISSING_ALL") {
+                // Jab Sir ne aaj kuch bhi update nahi kiya ho (From Main Screen)
+                message = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nआपने आज होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`;
+            } else if (type === "ASK_FULL") {
+                // Jab Sir ne update dala ho par bachha details mangna chahe (From View HW)
+                message = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\n\n📝 *Topic:* ${topic}\n🏠 *HW:* ${shortHW}\n\nसर, अगर आपके पास इसका पूरा नोट्स या प्रश्न है तो कृपया भेज दीजिए। 📚`;
+            }
+            
+            return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        }
+
+        window.openWA = function(teacherName, type) {
+            window.open(getWhatsAppLink(teacherName, type), '_blank');
+        }
+
+        window.openHomeworkModal = function(encodedHW, teacherName, subject, encodedTopic, encodedShortHW) {
+            document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
+            
+            let decodedHW = decodeURIComponent(encodedHW).trim();
+            let decodedTopic = decodeURIComponent(encodedTopic).trim();
+            let decodedShortHW = decodeURIComponent(encodedShortHW).trim();
+            
+            const modalTextContainer = document.getElementById("modalHWText");
+            
+            // Generate link for this specific modal
+            const waLink = getWhatsAppLink(teacherName, "ASK_FULL", decodedTopic, decodedShortHW);
+            
+            const waButtonHTML = `
+                <a href="${waLink}" target="_blank" class="wa-btn" style="${decodedHW ? 'margin-top:0;' : ''}">
+                    <span style="font-size:14px; color:#475569; font-weight:bold; display: inline-block;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 16px; margin-right: 4px;"></i> 
+                        ${teacherName} से नोट्स / फोटो मांगें 🚀
+                    </span>
+                </a>
+            `;
+
+            if (!decodedHW || decodedHW === "undefined" || decodedHW === "") {
+                modalTextContainer.innerHTML = `
+                    <div class="funny-box">
+                        <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 60px; color: #f59e0b; margin-bottom: 20px;"></i>
+                        <h3 style="color:#1e293b; margin-bottom:10px; font-size: 20px;">अरे रे! 😅</h3>
+                        <p style="color:#64748b; font-size:15px; line-height:1.5; margin-bottom:10px;">लगता है सर डिटेल वाले प्रश्न डालना भूल गए हैं या उन्होंने क्लास में ही सब बता दिया है!</p>
+                        ${waButtonHTML}
+                    </div>
+                `;
+                modalTextContainer.style.background = "transparent";
+                modalTextContainer.style.border = "none";
+                modalTextContainer.style.padding = "0";
+            } else {
+                modalTextContainer.innerHTML = `
+                    <div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px;">${decodedHW}</div>
+                    ${waButtonHTML}
+                `;
+                modalTextContainer.style.background = "#f8fafc";
+                modalTextContainer.style.border = "1px solid #e2e8f0";
+                modalTextContainer.style.padding = "18px";
+            }
+            
+            document.getElementById("hwModal").style.display = "flex";
+        }
+
+        window.closeHomeworkModal = function() {
+            document.getElementById("hwModal").style.display = "none";
+        }
+    </script>
+
+    <!-- Firebase Connection -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -157,6 +249,8 @@
                     const fullHW = data.fullHomework || ""; 
 
                     const safeHW = encodeURIComponent(fullHW);
+                    const safeTopic = encodeURIComponent(data.classTopic || "");
+                    const safeShortHW = encodeURIComponent(hwSummary || "");
 
                     list.innerHTML += `
                         <div class="update-item">
@@ -175,8 +269,8 @@
                                 </div>
                             </div>
                             
-                            <!-- 🌟 Button for Full HW Modal -->
-                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}')">
+                            <!-- 🌟 Send All Data to Modal -->
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}', '${safeTopic}', '${safeShortHW}')">
                                 <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
                             </button>
 
@@ -186,92 +280,38 @@
                 }
             });
 
+            // 🌟 NAYA: Empty State me Direct Message (Jab koi HW na ho)
             if (!hasData) {
-                list.innerHTML = `<div style="text-align:center; margin-top:40px; color:#94a3b8;">आज का कोई अपडेट नहीं है।</div>`;
-            }
-        });
-    </script>
-
-    <!-- 🌟 NAYA: Smart AI Logic (Gender Detection & Time) 🌟 -->
-    <script>
-        // 📲 Teacher WhatsApp Numbers Directory
-        const teacherPhones = {
-            "Md Faiyaz": "916203491210",
-            "Md Nijamuddin Sir": "916201799298",
-            "Md Kaish Sir": "917542830148",
-            "Vikash Sir": "917485032599"
-        };
-
-        window.openHomeworkModal = function(encodedHW, teacherName, subject) {
-            document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
-            
-            let decodedHW = decodeURIComponent(encodedHW).trim();
-            const modalTextContainer = document.getElementById("modalHWText");
-
-            // 🌟 1. GET STUDENT NAME FROM LOCAL STORAGE
-            const sName = localStorage.getItem("studentName") || "Student";
-            const nameLower = sName.toLowerCase();
-
-            // 🌟 2. GENDER DETECTION LOGIC (BOY OR GIRL)
-            let actionWord = "कर रहा/रही हूँ"; // Default
-            
-            const girlKeywords = ["kumari", "khatoon", "parveen", "bano", "begum", "saba", "fatima", "anjali", "priya", "neha", "sana", "muskan", "rani"];
-            const boyKeywords = ["md", "alam", "kumar", "raj", "soni", "reza", "ali", "faiyaz", "ansari", "hussain", "raja"];
-
-            if (girlKeywords.some(keyword => nameLower.includes(keyword))) {
-                actionWord = "कर रही हूँ"; // Ladki ke liye
-            } else if (boyKeywords.some(keyword => nameLower.includes(keyword))) {
-                actionWord = "कर रहा हूँ"; // Ladke ke liye
-            }
-
-            // 🌟 3. TIME DETECTION (Morning, Afternoon, Evening)
-            const hour = new Date().getHours();
-            let greeting = "Good Morning";
-            if (hour >= 12 && hour < 17) {
-                greeting = "Good Afternoon";
-            } else if (hour >= 17) {
-                greeting = "Good Evening";
-            }
-
-            // 🌟 अगर फुल होमवर्क खाली है, तो Funny Box + WhatsApp Button दिखेगा 🌟
-            if (!decodedHW || decodedHW === "undefined" || decodedHW === "") {
-                
-                const phone = teacherPhones[teacherName] || "916203491210"; 
-                
-                // 🌟 FIXED: Message me ab naam sirf ek baar aayega!
-                const waMessage = encodeURIComponent(`${greeting} Sir! 🙏\nमैं *${sName}* ✨\nGVCC App से मैसेज ${actionWord}।\nआपने आज *${subject}* का पूरा होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`);
-                
-                const waLink = `https://wa.me/${phone}?text=${waMessage}`;
-
-                modalTextContainer.innerHTML = `
-                    <div class="funny-box">
-                        <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 60px; color: #f59e0b; margin-bottom: 20px;"></i>
-                        <h3 style="color:#1e293b; margin-bottom:10px; font-size: 20px;">अरे रे! 😅</h3>
-                        <p style="color:#64748b; font-size:15px; line-height:1.5; margin-bottom:10px;">लगता है सर डिटेल वाले प्रश्न डालना भूल गए हैं या उन्होंने क्लास में ही सब बता दिया है!</p>
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-face-rolling-eyes fa-bounce" style="font-size: 60px; color: #8b5cf6; margin-bottom: 20px;"></i>
+                        <h3 style="color:#1e293b; margin-bottom:10px; font-size: 20px;">सन्नाटा है भाई! 😅</h3>
+                        <p style="color:#64748b; font-size:14px; line-height:1.5; margin-bottom:20px;">
+                            आज ऐप पर कोई अपडेट नहीं है! लगता है सर अपडेट डालना भूल गए हैं।
+                        </p>
                         
-                        <!-- 🌟 FIXED: Perfect Center Button -->
-                        <a href="${waLink}" target="_blank" class="wa-btn">
-                            <span style="font-size:14px; color:#475569; font-weight:bold; display: inline-block;">
-                                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 16px; margin-right: 4px;"></i> 
-                                ${teacherName} को मैसेज करके याद दिलाएं! 🚀
-                            </span>
-                        </a>
+                        <div style="background:#f1f5f9; padding:15px; border-radius:12px; border: 1px dashed #cbd5e1; text-align: center;">
+                            <span style="font-size:13px; color:#475569; font-weight:bold; margin-bottom: 15px; display: block;">सर को मैसेज करके आज का होमवर्क मांगें:</span>
+                            
+                            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+                                <a href="javascript:void(0)" onclick="openWA('Md Faiyaz', 'MISSING_ALL')" class="wa-btn-small">
+                                    <i class="fa-brands fa-whatsapp"></i> Faiyaz Sir
+                                </a>
+                                <a href="javascript:void(0)" onclick="openWA('Md Nijamuddin Sir', 'MISSING_ALL')" class="wa-btn-small">
+                                    <i class="fa-brands fa-whatsapp"></i> Nijamuddin Sir
+                                </a>
+                                <a href="javascript:void(0)" onclick="openWA('Md Kaish Sir', 'MISSING_ALL')" class="wa-btn-small">
+                                    <i class="fa-brands fa-whatsapp"></i> Kaish Sir
+                                </a>
+                                <a href="javascript:void(0)" onclick="openWA('Vikash Sir', 'MISSING_ALL')" class="wa-btn-small">
+                                    <i class="fa-brands fa-whatsapp"></i> Vikash Sir
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 `;
-                modalTextContainer.style.background = "transparent";
-                modalTextContainer.style.border = "none";
-            } else {
-                modalTextContainer.innerText = decodedHW;
-                modalTextContainer.style.background = "#f8fafc";
-                modalTextContainer.style.border = "1px solid #e2e8f0";
             }
-            
-            document.getElementById("hwModal").style.display = "flex";
-        }
-
-        window.closeHomeworkModal = function() {
-            document.getElementById("hwModal").style.display = "none";
-        }
+        });
     </script>
 </body>
 </html>
