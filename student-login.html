@@ -182,15 +182,32 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
         let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
         loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
-        msg.style.color = "#fbbf24"; msg.innerHTML = "🔄 Verifying credentials...";
+        msg.style.color = "#fbbf24"; msg.innerHTML = "🔄 Verifying...";
 
         try {
             const docSnap = await getDoc(doc(db, "students", roll));
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 if (String(data["Password "] || data.Password || data["password "]).trim() === String(password).trim()) {
+                    
+                    // 🌟 NAYA: Login ke baad Notification Token Save karna
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        try {
+                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                            if (token) {
+                                // Token ko student ke hi database record me save kar rahe hain
+                                await setDoc(doc(db, "students", roll), {
+                                    notificationToken: token,
+                                    class: data.class // Yeh ensure karega ki class ka pata chale
+                                }, { merge: true });
+                                console.log("✅ Student Token Updated in DB!");
+                            }
+                        } catch (err) { console.log("Token error:", err); }
+                    }
+
                     msg.style.color = "#4ade80"; msg.innerHTML = "✅ Login Successful!";
                     localStorage.setItem("studentRoll", roll);
+                    localStorage.setItem("studentClass", data.class); // Class bhi save kar li
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
                     msg.innerHTML = "🚀 Redirecting...";
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
@@ -200,6 +217,7 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
 
         function resetButton() { loginBtn.disabled = false; btnSpinner.style.display = "none"; btnText.innerText = "Login"; }
     });
+
 </script>
 
 <script>
