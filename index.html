@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- 👇 NAYA CODE: Logo ko sabse pehle (fast) load karne ke liye 👇 -->
     <link rel="preload" href="20260620_144347.png" as="image">
     
     <title>Gyan Varsha Coaching Center</title>
@@ -16,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 👇 APP FEELING CODE 👇 */
         * {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -53,7 +51,6 @@
             touch-action: manipulation;
         }
 
-        /* 🎯 Entry Animation */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(-8vh); } 
@@ -68,7 +65,6 @@
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* 🎯 Logo Position */
         .landing-logo {
             width: 260px;
             height: auto;
@@ -81,7 +77,6 @@
             pointer-events: none;
         }
 
-        /* 📦 Main Glass Card */
         .landing-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
@@ -110,7 +105,6 @@
             font-weight: 500;
         }
 
-        /* 🚀 Buttons Styling */
         .btn {
             display: flex;
             align-items: center;
@@ -128,7 +122,6 @@
             box-sizing: border-box;
         }
 
-        /* Button Click Effect */
         .btn:active {
             transform: scale(0.95) !important;
             opacity: 0.8; 
@@ -188,7 +181,6 @@
             to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); }
         }
         
-        /* 👇 Page Exit Animation 👇 */
         .page-exit {
             animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
         }
@@ -208,19 +200,16 @@
         <div class="title">GVCC PORTAL</div>
         <div class="subtitle">आपकी सफलता ही हमारी पहचान हैं....!</div>
         
-        <!-- 📲 Install App Button -->
         <button class="btn btn-install" onclick="installApp()">
             <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
         </button>
 
         <div class="divider">SELECT YOUR LOGIN</div>
         
-        <!-- Student Button -->
         <button class="btn btn-student" onclick="openPortal('student-login.html')">
             <i class="fa-solid fa-user-graduate"></i> छात्र के लिए
         </button>
 
-        <!-- Teacher Button -->
         <button class="btn btn-teacher" onclick="openPortal('teacher-login.html')">
             <i class="fa-solid fa-chalkboard-user" style="color: #38bdf8;"></i> शिक्षक के लिए
         </button>
@@ -228,9 +217,9 @@
 </div>
 
 <script type="module">
-    // 🚀 Background App Download Tracker
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -243,7 +232,35 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
+    // 🌟 SMART NOTIFICATION SYSTEM 🌟
+    // 👇 Yahan apni VAPID Key jarur dalein 👇
+    const VAPID_KEY = "यहाँ_अपनी_VAPID_KEY_पेस्ट_करें";
+
+    setTimeout(async () => {
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    console.log("🔔 Notification Permission Granted!");
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (token) {
+                        await addDoc(collection(db, "notification_tokens"), {
+                            token: token,
+                            userType: "Index Visitor",
+                            timestamp: serverTimestamp()
+                        });
+                        console.log("✅ Device Token Saved!");
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ Notification Setup Error:", error);
+            }
+        }
+    }, 2000); // 2 Second baad notification aayega
+
+    // App Download Tracker
     window.addEventListener('appinstalled', async () => {
         try {
             const statsRef = doc(db, "admin_stats", "app_downloads");
@@ -258,7 +275,6 @@
 </script>
 
 <script>
-    // 📲 Smart Install Logic
     let deferredPrompt;
     
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -276,7 +292,6 @@
         }
     };
 
-    // PWA Service Worker 
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", function() {
             navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
@@ -284,24 +299,16 @@
         });
     }
 
-    // 👇 NAYA CODE FIX: Button freeze problem solved 👇
+    // 🌟 FIXED: Ab yahan purani permission logic nahi hai, siraf smooth animation hai
     function openPortal(url) {
-        // Notification permission background me mangega, page ko rukega nahi
-        if ("Notification" in window && Notification.permission === "default") {
-            Notification.requestPermission().catch(e => console.log(e));
-        }
-
-        // Animation chalao
         const container = document.querySelector('.landing-container');
         container.classList.add('page-exit');
         
-        // 400ms ke baad page change karo (No waiting for notification)
         setTimeout(() => {
             window.location.href = url;
         }, 400); 
     }
 
-    // 👇 MOBILE BACK BUTTON FIX 👇
     window.addEventListener('pageshow', function(event) {
         if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
             const container = document.querySelector('.landing-container');
