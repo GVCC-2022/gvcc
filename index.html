@@ -318,77 +318,88 @@
         }
     });
 </script>
-                        <!-- 🛑 SMART NOTIFICATION SCREEN (FAIL-SAFE) -->
-    <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
-        
-        <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
-        <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
-        
-        <!-- 🛠️ यहाँ डिज़ाइन फिक्स किया गया है (width, max-width और margin: 0 auto) -->
-        <p id="permMsg" style="color: #cbd5e1; margin: 0 auto 25px auto; line-height: 1.6; font-size: 15px; width: 100%; max-width: 320px; word-wrap: break-word; text-align: center;">
-            Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.
-        </p>
+                        <!-- 🔔 HEADER NOTIFICATION ICON (इसे वेबसाइट के हेडर में या ऊपर कहीं लगा दें) -->
+<button id="showNotificationUiBtn" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 10px;">
+    🔔
+</button>
 
-        <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
-            Enable Notifications 🚀
-        </button>
+<!-- 🛑 SMART NOTIFICATION SCREEN (अब यह अपने आप नहीं खुलेगा, क्लिक करने पर आएगा) -->
+<div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
+    
+    <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
+    <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
+    
+    <p id="permMsg" style="color: #cbd5e1; margin: 0 auto 25px auto; line-height: 1.6; font-size: 15px; width: 100%; max-width: 320px; word-wrap: break-word; text-align: center;">
+        Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.
+    </p>
 
-        <!-- 🔥 EMERGENCY BYPASS BUTTON -->
-        <button onclick="document.getElementById('notificationBlocker').style.display='none'" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
-            Skip for now (Enter App) &rarr;
-        </button>
-    </div>
+    <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
+        Enable Notifications 🚀
+    </button>
 
+    <!-- 🔥 CLOSE/SKIP BUTTON -->
+    <button id="closeNotificationUiBtn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
+        Skip for now (Enter App) &rarr;
+    </button>
+</div>
 
-    <script>
-        function checkAndForceNotification() {
-            const blocker = document.getElementById("notificationBlocker");
-            const btn = document.getElementById("permBtn");
-            const msg = document.getElementById("permMsg");
+<!-- ⚙️ JAVASCRIPT LOGIC -->
+<script>
+    const blocker = document.getElementById("notificationBlocker");
+    const btn = document.getElementById("permBtn");
+    const msg = document.getElementById("permMsg");
+    const showBtn = document.getElementById("showNotificationUiBtn");
+    const closeBtn = document.getElementById("closeNotificationUiBtn");
 
-            // Agar browser/webview notification support hi nahi karta
-            if (!("Notification" in window)) {
-                blocker.style.display = "none";
-                return;
-            }
+    // 1. जब बच्चा 🔔 घंटी पर क्लिक करेगा
+    showBtn.addEventListener("click", () => {
+        if (!("Notification" in window)) {
+            alert("⚠️ Aapka browser notifications support nahi karta.");
+            return;
+        }
 
-            // 1. Agar pehle se ALLOW hai
-            if (Notification.permission === "granted") {
-                blocker.style.display = "none";
-            } 
-            // 2. Agar DENY hai ya pehli baar aaya hai
-            else {
-                blocker.style.display = "flex";
-                
-                if (Notification.permission === "denied") {
-                    msg.innerHTML = "⚠️ Notifications <b>OFF</b> hain.<br>Kripya App Info / Settings me jaakar ALLOW karein taaki koi update miss na ho.";
-                    btn.innerHTML = "I have Allowed (Refresh) 🔄";
-                    
-                    btn.addEventListener("click", () => {
-                        window.location.reload(); // WebView me kai baar reload se hi state update hoti hai
-                    });
+        if (Notification.permission === "granted") {
+            alert("✅ Aapne pehle se hi Notifications ON kar rakhe hain!");
+            return;
+        }
+
+        // स्क्रीन दिखाना
+        blocker.style.display = "flex";
+
+        if (Notification.permission === "denied") {
+            msg.innerHTML = "⚠️ Notifications <b>OFF</b> hain.<br>Kripya App Info / Settings me jaakar ALLOW karein taaki koi update miss na ho.";
+            btn.innerHTML = "I have Allowed (Refresh) 🔄";
+        } else {
+            msg.innerHTML = "Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.";
+            btn.innerHTML = "Enable Notifications 🚀";
+        }
+    });
+
+    // 2. जब बच्चा 'Enable Notifications' पर क्लिक करेगा
+    btn.addEventListener("click", async () => {
+        if (Notification.permission === "denied") {
+            window.location.reload(); 
+        } else {
+            try {
+                const perm = await Notification.requestPermission();
+                if (perm === "granted") {
+                    blocker.style.display = "none";
+                    alert("🎉 Notifications ON ho gaye!");
                 } else {
-                    // Default state (Pehli baar)
-                    btn.addEventListener("click", async () => {
-                        try {
-                            const perm = await Notification.requestPermission();
-                            if (perm === "granted") {
-                                blocker.style.display = "none";
-                            } else {
-                                window.location.reload(); 
-                            }
-                        } catch(e) {
-                            // Agar WebView permission code block kar de
-                            alert("⚠️ Aapka phone yahan se allow nahi kar raha. Kripya 'Skip' dabayein aur App Settings se on karein.");
-                        }
-                    });
+                    blocker.style.display = "none";
                 }
+            } catch(e) {
+                alert("⚠️ Aapka phone yahan se allow nahi kar raha. Kripya 'Skip' dabayein aur App Settings se on karein.");
             }
         }
-        
-        // Page load hone par run karein
-        window.addEventListener("load", checkAndForceNotification);
-    </script>
+    });
+
+    // 3. जब बच्चा 'Skip' दबाएगा
+    closeBtn.addEventListener("click", () => {
+        blocker.style.display = "none";
+    });
+</script>
+
 
 
 </body>
