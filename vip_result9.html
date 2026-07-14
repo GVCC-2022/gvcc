@@ -39,7 +39,7 @@
             width: 1080px;
             height: 1920px;
             position: relative;
-            background-color: #ffffff; /* Pure Paper White */
+            background-color: #ffffff; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,12 +49,11 @@
             font-family: 'Arial', sans-serif; 
         }
 
-        /* VIP Official Borders (Blue & Gold) */
         #resultCard::before {
             content: "";
             position: absolute;
             inset: 30px;
-            border: 12px solid #1e3a8a; /* Dark Blue Formal Border */
+            border: 12px solid #1e3a8a; 
             pointer-events: none;
             z-index: 10;
         }
@@ -62,7 +61,7 @@
             content: "";
             position: absolute;
             inset: 48px;
-            border: 4px solid #d4af37; /* Thin Gold Inner Border */
+            border: 4px solid #d4af37; 
             pointer-events: none;
             z-index: 10;
         }
@@ -89,20 +88,20 @@
         .school-name {
             font-size: 60px;
             font-weight: 900;
-            color: #1e3a8a; /* Blue */
+            color: #1e3a8a;
             margin: 0;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
         }
         .school-address {
             font-size: 30px;
-            color: #dc2626; /* Red */
+            color: #dc2626; 
             font-weight: bold;
             margin: 10px 0;
         }
         .school-tagline {
             font-size: 32px;
-            color: #1e3a8a; /* Blue */
+            color: #1e3a8a; 
             font-weight: 900;
             margin: 10px 0;
             text-shadow: 2px 2px 0px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
@@ -148,7 +147,7 @@
             text-transform: uppercase;
         }
 
-        /* MARKS BOX */
+        /* MAIN MARKS BOX */
         .marks-container {
             display: flex;
             width: 100%;
@@ -183,7 +182,7 @@
         .val-total { color: #0f172a; }
         .val-obtained { color: #dc2626; }
 
-        /* 🔥 NEW: MARKS BREAKDOWN TABLE 🔥 */
+        /* BREAKDOWN TABLE */
         .breakdown-title {
             font-size: 28px;
             font-weight: bold;
@@ -268,7 +267,7 @@
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
             <button class="btn" onclick="verifyResult()">Fetch Result Sheet 📄</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold;">
-                ⚠️ Record Not Found!
+                ⚠️ Invalid Code! (Ya code galat hai, ya kisi aur ka hai)
             </p>
         </div>
 
@@ -286,10 +285,8 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- WATERMARK LOGO -->
             <img src="20260620_144347.png" class="watermark">
 
-            <!-- HEADER (Matching 1000069378.png) -->
             <div class="header">
                 <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
                 <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
@@ -297,14 +294,13 @@
                 <hr style="border: 1px solid #1e3a8a; width: 100%; margin-top: 15px;">
             </div>
 
-            <!-- TITLE -->
             <div class="document-title">Mera HISTORY ka result - Class 9th</div>
 
-            <!-- STUDENT TABLE -->
             <table class="details-table">
                 <tr>
                     <td class="td-label">STUDENT NAME</td>
-                    <td class="td-value" id="hdName">GAUTAM KUMAR</td>
+                    <!-- Yahan placeholder diya hai, JS ise dynamically replace karega -->
+                    <td class="td-value" id="hdName">STUDENT NAME</td>
                 </tr>
                 <tr>
                     <td class="td-label">SUBJECT</td>
@@ -316,7 +312,6 @@
                 </tr>
             </table>
 
-            <!-- MAIN MARKS BOX -->
             <div class="marks-container">
                 <div class="mark-box total">
                     <div class="mark-label">MAXIMUM MARKS</div>
@@ -328,7 +323,6 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW: MARKS BREAKDOWN SECTION 🔥 -->
             <div class="breakdown-title">Marks Breakdown:</div>
             <table class="breakdown-table">
                 <tr>
@@ -343,12 +337,10 @@
                 </tr>
             </table>
 
-            <!-- REMARKS -->
             <div id="performanceBadge" class="remarks-box">
                 REMARKS: OUTSTANDING 🌟
             </div>
 
-            <!-- GOLD SEAL -->
             <div class="gold-seal">
                 <div class="seal-text">GVCC</div>
                 <div class="seal-sub">VERIFIED</div>
@@ -358,33 +350,61 @@
     </div>
 
     <script>
-        // 👇 YAHAN PAR AAPKO DETAILS UPDATE KARNI HAIN 👇
+        // Pura Database with calculated Objective, Short & Long marks (Total == marks)
         const resultDatabase = {
             "901": { code: "GVCC-P9R0A1", set: "A", marks: "34", obj: "20", short: "10", long: "4" },
             "902": { code: "GVCC-M9K0B2", set: "B", marks: "35", obj: "20", short: "10", long: "5" },
             "903": { code: "GVCC-L9X0C3", set: "C", marks: "25", obj: "15", short: "6", long: "4" },
-            // Example entry formats aap yahan aage add kar sakte hain
+            "904": { code: "GVCC-V9T0D4", set: "D", marks: "24", obj: "15", short: "5", long: "4" },
+            "905": { code: "GVCC-M9R0A5", set: "A", marks: "32", obj: "20", short: "8", long: "4" },
+            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "35", obj: "20", short: "10", long: "5" },
+            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "23", obj: "14", short: "6", long: "3" },
+            "908": { code: "GVCC-C9W0A8", set: "A", marks: "35", obj: "20", short: "10", long: "5" },
+            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "34", obj: "20", short: "9", long: "5" },
+            "910": { code: "GVCC-J9F1C0", set: "C", marks: "25", obj: "15", short: "7", long: "3" },
+            "911": { code: "GVCC-T9R1D1", set: "D", marks: "26", obj: "16", short: "6", long: "4" },
+            "912": { code: "GVCC-D9M1E2", set: "E", marks: "14", obj: "8", short: "4", long: "2" },
+            "913": { code: "GVCC-G9K1F3", set: "F", marks: "09", obj: "5", short: "3", long: "1" },
+            "915": { code: "GVCC-W9V1A5", set: "A", marks: "23", obj: "15", short: "5", long: "3" },
+            "916": { code: "GVCC-F9P1B6", set: "B", marks: "13", obj: "8", short: "3", long: "2" },
+            "917": { code: "GVCC-H9X1C7", set: "C", marks: "14", obj: "9", short: "3", long: "2" },
+            "918": { code: "GVCC-S9N1D8", set: "D", marks: "23", obj: "14", short: "6", long: "3" },
+            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23", obj: "15", short: "5", long: "3" },
+            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "35", obj: "20", short: "10", long: "5" },
+            "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16", obj: "10", short: "4", long: "2" },
+            "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21", obj: "12", short: "6", long: "3" },
+            "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20", obj: "12", short: "5", long: "3" }
         };
 
         function verifyResult() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
-            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo") || "901"; 
             
-            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name") || "GVCC Student";
-            let studentData = resultDatabase[loggedInRoll];
+            // Yahan se hardcoded "901" hata diya, ab strictly local storage check karega
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+            
             let errorMsg = document.getElementById("codeError");
+
+            if (!loggedInRoll || !loggedInName) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            let studentData = resultDatabase[loggedInRoll];
             
+            // STRICT VALIDATION: Code must exactly match the currently logged-in student's code
             if (studentData && enteredCode === studentData.code) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Name, Set, Total Marks
+                // Dynamically injecting Name, Set, Total Marks
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("hdObtained").innerText = studentData.marks;
 
-                // 🔥 Breakdown Marks Injection 🔥
+                // Dynamically injecting Breakdown Marks
                 document.getElementById("hdObj").innerText = studentData.obj;
                 document.getElementById("hdShort").innerText = studentData.short;
                 document.getElementById("hdLong").innerText = studentData.long;
