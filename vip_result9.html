@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - History Test Result</title>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 🔥 Image Generate karne ke liye html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -37,34 +35,497 @@
         }
         .share-btn:active { transform: scale(0.95); }
 
-        /* 👑🔥 AAPKA DIYA HUA HD VIP CSS 🔥👑 */
+        /* ===========================
+              PREMIUM RESULT CARD
+        =========================== */
         #resultCard {
             width: 1080px;
             height: 1920px;
-            background: linear-gradient(180deg,#081426,#111827);
-            border: 8px solid #d4af37;
-            border-radius: 45px;
             position: relative;
             overflow: hidden;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-radius: 55px;
+            background: radial-gradient(circle at top, #1f355e 0%, #081426 40%, #050b14 100%);
             text-align: center;
         }
+
+        #resultCard::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 8px solid #d4af37;
+            border-radius: 45px;
+            box-shadow: 0 0 40px rgba(255,215,0,.45), inset 0 0 30px rgba(255,215,0,.18);
+            pointer-events: none;
+        }
+
+        #resultCard::after {
+            content: "";
+            position: absolute;
+            inset: 42px;
+            border: 2px solid rgba(255,255,255,.18);
+            border-radius: 35px;
+            pointer-events: none;
+        }
+
+        /* Base Glows & Lines */
+        .goldGlow {
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(255,215,0,.25), transparent 70%);
+            top: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(50px);
+        }
+
+        .bottomGlow {
+            position: absolute;
+            width: 1000px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,170,0,.12), transparent 75%);
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .line1 {
+            position: absolute;
+            top: 180px;
+            left: 90px;
+            width: 900px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, gold, transparent);
+            opacity: .35;
+        }
+
+        .line2 {
+            position: absolute;
+            bottom: 220px;
+            left: 90px;
+            width: 900px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, gold, transparent);
+            opacity: .35;
+        }
+
+        /* Shine Effect */
+        .shine {
+            position: absolute;
+            top: -250px;
+            left: -450px;
+            width: 320px;
+            height: 2500px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+            transform: rotate(25deg);
+            animation: shineMove 6s linear infinite;
+        }
+
+        @keyframes shineMove {
+            100% { left: 1600px; }
+        }
+
+        /* Gold Particles */
+        .particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particles span {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 12px gold, 0 0 25px gold;
+            animation: floatParticle linear infinite;
+        }
+
+        .particles span:nth-child(1) { left: 8%; top: 85%; animation-duration: 8s; }
+        .particles span:nth-child(2) { left: 20%; top: 92%; animation-duration: 9s; }
+        .particles span:nth-child(3) { left: 35%; top: 80%; animation-duration: 7s; }
+        .particles span:nth-child(4) { left: 50%; top: 90%; animation-duration: 10s; }
+        .particles span:nth-child(5) { left: 62%; top: 88%; animation-duration: 8s; }
+        .particles span:nth-child(6) { left: 74%; top: 95%; animation-duration: 11s; }
+        .particles span:nth-child(7) { left: 82%; top: 82%; animation-duration: 7s; }
+        .particles span:nth-child(8) { left: 90%; top: 93%; animation-duration: 10s; }
+        .particles span:nth-child(9) { left: 15%; top: 70%; animation-duration: 12s; }
+        .particles span:nth-child(10) { left: 55%; top: 72%; animation-duration: 9s; }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) scale(.6); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-1800px) scale(1.4); opacity: 0; }
+        }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            width: 100%;
+            top: 260px;
+            pointer-events: none;
+        }
+
+        .stars span {
+            position: absolute;
+            font-size: 26px;
+            color: #FFD700;
+            animation: blink 2s infinite alternate;
+        }
+
+        .stars span:nth-child(1) { left: 12%; }
+        .stars span:nth-child(2) { left: 28%; }
+        .stars span:nth-child(3) { left: 50%; }
+        .stars span:nth-child(4) { left: 72%; }
+        .stars span:nth-child(5) { left: 88%; }
+
+        @keyframes blink {
+            from { opacity: .25; transform: scale(.7); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Royal Crown SVG */
+        .crownSVG {
+            width: 180px;
+            height: 80px;
+            margin: 40px auto 20px;
+            position: relative;
+            background: linear-gradient(#FFD84D, #B8860B);
+            clip-path: polygon(0% 100%, 15% 30%, 30% 100%, 50% 0, 70% 100%, 85% 30%, 100% 100%);
+            box-shadow: 0 0 30px gold;
+            z-index: 10;
+        }
+
+        .crownSVG::after {
+            content: "";
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            width: 100%;
+            height: 18px;
+            background: #D4AF37;
+        }
+
+        .peak {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 15px gold;
+        }
+
+        .p1 { left: 18%; top: 18px; }
+        .p2 { left: 46%; top: -10px; }
+        .p3 { right: 18%; top: 18px; }
+
+        /* Laurel */
+        .laurelLeft, .laurelRight {
+            position: absolute;
+            top: 140px;
+            width: 140px;
+            height: 500px;
+            opacity: .35;
+            pointer-events: none;
+        }
+
+        .laurelLeft {
+            left: 70px;
+            border-left: 5px solid gold;
+            border-radius: 100px;
+            transform: rotate(-15deg);
+        }
+
+        .laurelRight {
+            right: 70px;
+            border-right: 5px solid gold;
+            border-radius: 100px;
+            transform: rotate(15deg);
+        }
+
+        /* LOGO */
         .logo {
-            width: 260px;
-            height: 260px;
-            object-fit: contain;
+            width: 250px;
+            height: 250px;
             display: block;
             margin: auto;
-            margin-top: 80px;
-            filter: drop-shadow(0 0 30px gold);
+            margin-top: 20px;
+            object-fit: contain;
+            position: relative;
+            z-index: 5;
+            filter: drop-shadow(0 0 25px gold) drop-shadow(0 0 60px rgba(255,215,0,.55));
+            animation: logoFloat 4s ease-in-out infinite;
         }
+
+        @keyframes logoFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Academy Name */
+        .academyName {
+            margin-top: 25px;
+            font-size: 74px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,255,255,.3), 0 0 30px gold;
+        }
+
+        .academySub {
+            margin-top: 10px;
+            font-size: 34px;
+            letter-spacing: 14px;
+            color: #d4af37;
+            text-align: center;
+        }
+
+        /* Gold Ribbon */
+        .goldRibbon {
+            width: 760px;
+            margin: 45px auto;
+            padding: 22px 0;
+            background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(0,0,0,.45), 0 0 20px rgba(255,215,0,.45);
+            position: relative;
+        }
+
+        .goldRibbon span {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #111;
+        }
+
+        .goldRibbon::before, .goldRibbon::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 40px;
+            height: 100%;
+            background: #8b6508;
+        }
+
+        .goldRibbon::before {
+            left: -25px;
+            clip-path: polygon(100% 0, 0 50%, 100% 100%);
+        }
+
+        .goldRibbon::after {
+            right: -25px;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+        }
+
+        /* Glass Card */
+        .glassCard {
+            width: 900px;
+            margin: 70px auto 0;
+            padding: 45px;
+            border-radius: 35px;
+            background: rgba(255,255,255,.07);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,215,0,.25);
+            box-shadow: 0 0 40px rgba(255,215,0,.12), inset 0 0 20px rgba(255,255,255,.05);
+            overflow: hidden;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .glassCard::before {
+            content: "";
+            position: absolute;
+            left: -220px;
+            top: 0;
+            width: 180px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+            transform: skewX(-20deg);
+            animation: glassMove 5s linear infinite;
+        }
+
+        @keyframes glassMove {
+            100% { left: 1200px; }
+        }
+
+        .studentTitle {
+            font-size: 28px;
+            letter-spacing: 4px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .studentName {
+            font-size: 82px;
+            font-weight: 900;
+            background: linear-gradient(#FFF, #FFE27A, #C99A00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+
+        /* Info Row */
+        .infoRow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 45px;
+            margin-top: 60px;
+        }
+
+        .infoBox {
+            width: 260px;
+            height: 260px;
+            border-radius: 30px;
+            background: rgba(255,255,255,.05);
+            border: 2px solid rgba(255,215,0,.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .infoTitle {
+            font-size: 28px;
+            letter-spacing: 3px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .setCircle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid gold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 58px;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 0 25px gold;
+        }
+
+        .totalMarks {
+            font-size: 90px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px gold;
+        }
+
+        /* Medal Box */
+        .medalBox {
+            font-size: 140px;
+            filter: drop-shadow(0 0 20px gold);
+            animation: floatMedal 3s ease-in-out infinite;
+        }
+
+        @keyframes floatMedal {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Score Card */
+        .scoreCard {
+            width: 900px;
+            margin: 70px auto;
+            padding: 55px;
+            border-radius: 40px;
+            background: linear-gradient(180deg, #172554, #0f172a);
+            border: 3px solid gold;
+            box-shadow: 0 0 45px rgba(255,215,0,.18);
+            box-sizing: border-box;
+        }
+
+        .scoreTitle {
+            font-size: 34px;
+            letter-spacing: 6px;
+            color: #d4af37;
+            margin-bottom: 25px;
+        }
+
+        .scoreNumber {
+            font-size: 180px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .scoreNumber small {
+            font-size: 90px;
+            color: #ffd700;
+        }
+
+        /* Performance Badge */
+        .performanceBadge {
+            display: inline-block;
+            padding: 22px 60px;
+            border-radius: 100px;
+            background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
+            color: #111;
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            box-shadow: 0 0 25px gold;
+            margin-bottom: 50px;
+        }
+
+        /* Certificate Seal */
+        .certificateSeal {
+            margin: 45px auto 0;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #FFD700, #A86F00);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 65px;
+            color: #111;
+            font-weight: bold;
+            box-shadow: 0 0 35px gold;
+        }
+
+        .sealText {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        /* Footer Box */
+        .footerBox {
+            position: absolute;
+            bottom: 70px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .footerTitle {
+            font-size: 34px;
+            letter-spacing: 5px;
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .footerSub {
+            margin-top: 12px;
+            font-size: 28px;
+            letter-spacing: 3px;
+            color: #bbb;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- 🔙 Back Button -->
         <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 
         <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> History Test Result</h2>
@@ -75,7 +536,6 @@
             <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.</p>
         </div>
 
-        <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
             <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna VIP Question Code daalein</p>
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
@@ -85,7 +545,6 @@
             </p>
         </div>
 
-        <!-- 📱 MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
                 <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold);">
@@ -98,7 +557,6 @@
                 </div>
             </div>
 
-            <!-- 🔥 Download HD Image Button 🔥 -->
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
                 <i class="fa-solid fa-download"></i> Download HD Poster
             </button>
@@ -106,52 +564,77 @@
 
     </div>
 
-    <!-- 🏆🔥 SECRET HD CARD (1080x1920) FOR HTML2CANVAS 🔥🏆 -->
-    <!-- यह डब्बा स्क्रीन के बाहर छिपा रहेगा ताकि फोन की स्क्रीन खराब ना हो, लेकिन डाउनलोड फुल HD में होगा! -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
-            <!-- आपका लोगो -->
+            <div class="goldGlow"></div>
+            <div class="particles">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="shine"></div>
+            <div class="bottomGlow"></div>
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+
+            <div class="crownSVG">
+                <div class="peak p1"></div>
+                <div class="peak p2"></div>
+                <div class="peak p3"></div>
+            </div>
+
+            <div class="laurelLeft"></div>
+            <div class="laurelRight"></div>
+
             <img src="20260620_144347.png" class="logo">
             
-            <p style="color: #d4af37; font-size: 45px; letter-spacing: 15px; font-weight: bold; margin: 50px 0 0 0;">CLASS 9TH</p>
-            <h1 style="color: white; font-size: 120px; font-weight: 900; letter-spacing: 5px; margin: 10px 0;">HISTORY TEST</h1>
-            
-            <div style="background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b); display: inline-block; padding: 15px 80px; font-size: 40px; font-weight: 900; color: black; border-radius: 10px; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                ★ TEST RESULT ★
+            <div class="academyName">GYAN VARSHA</div>
+            <div class="academySub">COACHING CENTER</div>
+
+            <div class="goldRibbon">
+                <span>★ PREMIUM TEST RESULT ★</span>
             </div>
 
-            <!-- Name Box -->
-            <div style="border: 4px solid rgba(212, 175, 55, 0.5); border-radius: 20px; margin: 80px 80px 0 80px; padding: 40px; background: rgba(0,0,0,0.3);">
-                <p style="color: #d4af37; font-size: 35px; margin: 0 0 10px 0;">Student Name</p>
-                <h2 id="hdName" style="color: #ffd700; font-size: 80px; margin: 0; text-transform: uppercase; letter-spacing: 3px;">STUDENT NAME</h2>
+            <div class="glassCard">
+                <div class="studentTitle">★ STUDENT OF EXCELLENCE ★</div>
+                <div id="hdName" class="studentName">STUDENT NAME</div>
             </div>
 
-            <!-- Set & Total Marks -->
-            <div style="display: flex; margin: 40px 80px 0 80px; border: 4px solid rgba(212, 175, 55, 0.5); border-radius: 20px; padding: 40px; background: rgba(0,0,0,0.3);">
-                <div style="flex: 1; border-right: 4px solid rgba(212, 175, 55, 0.3);">
-                    <p style="color: #d4af37; font-size: 35px; margin: 0 0 20px 0;">Test Set Code</p>
-                    <div id="hdSet" style="width: 120px; height: 120px; border: 6px solid #d4af37; border-radius: 50%; margin: auto; display: flex; align-items: center; justify-content: center; color: #ffd700; font-size: 70px; font-weight: bold;">A</div>
+            <div class="infoRow">
+                <div class="infoBox">
+                    <div class="infoTitle">TEST SET</div>
+                    <div id="hdSet" class="setCircle">A</div>
                 </div>
-                <div style="flex: 1;">
-                    <p style="color: #d4af37; font-size: 35px; margin: 0 0 20px 0;">Total Marks</p>
-                    <p style="color: #ffd700; font-size: 90px; font-weight: bold; margin: 10px 0 0 0;">35</p>
-                </div>
-            </div>
-
-            <!-- Obtained Marks -->
-            <div style="border: 4px solid #d4af37; border-radius: 30px; margin: 40px 80px 0 80px; padding: 60px; background: rgba(0,0,0,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                <p style="color: #d4af37; font-size: 40px; margin: 0 0 30px 0;">━ MARKS SCORED ━</p>
-                <div style="display: flex; justify-content: center; align-items: baseline; gap: 30px;">
-                    <span id="hdObtained" style="color: white; font-size: 250px; font-weight: 900; line-height: 1;">--</span>
-                    <span style="color: #d4af37; font-size: 180px;">/</span>
-                    <span style="color: #ffd700; font-size: 180px; font-weight: 900;">35</span>
+                <div class="medalBox">🏅</div>
+                <div class="infoBox">
+                    <div class="infoTitle">TOTAL</div>
+                    <div class="totalMarks">35</div>
                 </div>
             </div>
 
-            <!-- Footer Quote -->
-            <p style="position: absolute; bottom: 50px; width: 100%; color: #d4af37; font-size: 40px; font-style: italic;">
-                ★ Keep Learning, Keep Growing, Keep Shining! ★
-            </p>
+            <div class="scoreCard">
+                <div class="scoreTitle">MARKS SCORED</div>
+                <div class="scoreNumber">
+                    <span id="hdObtained">35</span>
+                    <small>/35</small>
+                </div>
+            </div>
+
+            <div id="performanceBadge" class="performanceBadge">
+                ★ EXCELLENT PERFORMANCE ★
+            </div>
+
+            <div class="certificateSeal">
+                🏅
+                <div class="sealText">GVCC</div>
+            </div>
+
+            <div class="footerBox">
+                <div class="footerTitle">KEEP LEARNING • KEEP GROWING</div>
+                <div class="footerSub">Gyan Varsha Coaching Center</div>
+            </div>
         </div>
     </div>
 
@@ -220,6 +703,20 @@
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("hdObtained").innerText = studentData.marks;
 
+                // Performance Badge Logic
+                const marks = parseInt(studentData.marks);
+                const badge = document.getElementById("performanceBadge");
+
+                if(marks >= 30){
+                    badge.innerHTML = "🏆 EXCELLENT PERFORMANCE";
+                }
+                else if(marks >= 20){
+                    badge.innerHTML = "⭐ GOOD PERFORMANCE";
+                }
+                else{
+                    badge.innerHTML = "💪 KEEP IMPROVING";
+                }
+
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
                 errorMsg.style.display = "block";
@@ -227,7 +724,7 @@
             }
         }
 
-        // 📸 AAPKA DIYA HUA PRO HTML2CANVAS LOGIC
+        // 📸 PRO HTML2CANVAS LOGIC
         function generateAndShareImage() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
