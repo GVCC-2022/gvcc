@@ -79,7 +79,9 @@
         }
         @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
 
-        .preview-logo { width: 75px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5)); }
+        /* PREVIEW LOGO KA SIZE YAHAN BADA KIYA HAI (120px) */
+        .preview-logo { width: 120px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        
         .preview-class { margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
         .preview-subject { color: #ffffff; font-size: 26px; margin: 8px 0 20px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .preview-name { color: #ffd700; font-size: 24px; margin: 10px 0; font-weight: bold; letter-spacing: 1px; }
@@ -115,21 +117,19 @@
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* 🔥 SIDE TEXT FIX (Perfect Alignment) 🔥 */
-        .side-text { 
+        /* 🔥 SIDE TEXT FIX (Moved to Left: 70px to stay inside border) 🔥 */
+        .side-text-container {
             position: absolute;
-            left: 48px; /* Safe space between yellow border and table */
-            bottom: 300px; /* Exact height from bottom */
+            left: 70px; /* Safe space andar ki taraf border cross nahi karega */
+            bottom: 300px;
             transform-origin: left bottom;
             transform: rotate(-90deg);
-            font-size: 26px; 
-            color: #64748b; 
-            font-weight: bold; 
-            letter-spacing: 3px; 
-            text-transform: uppercase; 
-            font-family: 'Segoe UI', sans-serif;
-            white-space: nowrap; /* Tute ga nahi */
             z-index: 20;
+        }
+        .side-text { 
+            font-size: 26px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
+            text-transform: uppercase; font-family: 'Segoe UI', sans-serif;
+            white-space: nowrap; /* Tute ga nahi */
         }
 
         /* 🪶 WATERMARK */
@@ -207,6 +207,7 @@
         <!-- 📱 VIP MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
+                <!-- PREVIEW LOGO -->
                 <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
                 <h3 class="preview-class">CLASS 9TH</h3>
                 <h2 class="preview-subject">HISTORY RESULT</h2>
@@ -227,7 +228,9 @@
         <div id="resultCard">
             
             <!-- Side Text Fix Here -->
-            <div class="side-text">Monthly Test : 2026-07-15</div>
+            <div class="side-text-container">
+                <div class="side-text">Monthly Test : 2026-07-15</div>
+            </div>
             
             <img src="20260620_144347.png" class="watermark">
 
