@@ -11,46 +11,99 @@
     
     <style>
         /* ===========================
-             MAIN UI (DASHBOARD)
+             🔥 ULTRA-PREMIUM UI DASHBOARD 🔥
         =========================== */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; }
-        .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6); border: 1px solid #334155; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: radial-gradient(circle at top, #1e293b, #090e17); 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
+        }
+        
+        .container { 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 420px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
         .hidden { display: none; }
         
-        .btn { background: linear-gradient(135deg, #29438e, #1e3a8a); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.4); }
-        .btn:active { transform: scale(0.95); }
-        
-        .input-box { width: 90%; padding: 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; text-transform: uppercase; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
-        .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: bold; display: block; text-align: left; margin-bottom: 20px; transition: 0.2s; }
-        .back-link:hover { color: white; }
-
-        /* 🔥 MOBILE PREVIEW CARD (NEW THEME MATCHED) 🔥 */
-        .mobile-preview-card {
-            margin-top: 20px; padding: 25px; background: #f4f7f6; border-radius: 12px;
-            border: 2px solid #29438e; box-shadow: 0 0 15px rgba(255,255,255,0.1);
-            position: relative; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center; color: #111;
+        /* Premium Buttons */
+        .btn { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+            color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
+            border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; 
+            margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
         }
-        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
+        .btn:active { transform: translateY(1px); }
         
-        .preview-logo { width: 60px; margin-bottom: 5px; }
-        .preview-class { margin: 0; color: #29438e; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
-        .preview-subject { color: #ed3237; font-size: 22px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; }
-        .preview-name { color: #000; font-size: 20px; margin: 10px 0; font-weight: bold; }
-        .preview-marks-box { border: 2px solid #29438e; border-radius: 8px; padding: 15px; margin-top: 15px; background: #fff; }
-        .preview-marks-label { margin: 0; color: #475569; font-size: 12px; letter-spacing: 1px; font-weight: bold; }
-        .preview-marks-value { margin: 5px 0 0 0; color: #e32726; font-weight: 900; font-size: 38px; }
+        /* Sleek Input Box */
+        .input-box { 
+            width: 90%; padding: 16px; border-radius: 10px; 
+            border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
+            color: #f8fafc; font-size: 16px; text-transform: uppercase; 
+            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+            box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
+        }
+        .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
+        .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
+        
+        /* Back Link */
+        .back-link { 
+            color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
+        }
+        .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
+
+        /* 🔥 VIP MOBILE PREVIEW CARD (DIGITAL GOLD THEME) 🔥 */
+        .mobile-preview-card {
+            margin-top: 25px; padding: 30px 20px; 
+            background: linear-gradient(145deg, #1e3a8a, #0f172a); 
+            border-radius: 16px; border: 2px solid #d4af37; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.15);
+            position: relative; overflow: hidden;
+            animation: cardReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; color: white;
+        }
+        @keyframes cardReveal { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        /* Card Sparkle Effect */
+        .mobile-preview-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .preview-logo { width: 75px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5)); }
+        .preview-class { margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
+        .preview-subject { color: #ffffff; font-size: 26px; margin: 8px 0 20px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .preview-name { color: #ffd700; font-size: 24px; margin: 10px 0; font-weight: bold; letter-spacing: 1px; }
+        
+        .preview-marks-box { 
+            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; 
+            padding: 20px; margin-top: 20px; background: rgba(0,0,0,0.4); 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 13px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .preview-marks-value { margin: 10px 0 0 0; color: #ffffff; font-weight: 900; font-size: 45px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
         .share-btn {
-            background: linear-gradient(135deg, #f5c518, #fbc02d); color: #000; border: none; 
-            padding: 14px 20px; font-size: 16px; font-weight: 900; border-radius: 8px; 
-            cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; 
-            box-shadow: 0 4px 15px rgba(245, 197, 24, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
+            padding: 16px 20px; font-size: 17px; font-weight: 900; border-radius: 10px; 
+            cursor: pointer; width: 100%; margin-top: 25px; transition: all 0.3s ease; 
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
         }
-        .share-btn:active { transform: scale(0.95); }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6); }
+        .share-btn:active { transform: translateY(1px); }
 
         /* ===========================
-          HD PAPER MARKSHEET (1080x1920)
+          HD PAPER MARKSHEET (HIDDEN - 1080x1920)
         =========================== */
         #resultCard {
             width: 1080px; height: 1920px; position: relative; background-color: #f4f7f6; 
@@ -58,58 +111,39 @@
             box-sizing: border-box; color: #000000; font-family: 'Arial', sans-serif; 
         }
 
-        /* 🟦 EXACT BORDERS FROM 1000069401.png */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* ⬅️ SIDE TEXT */
-        .side-text {
-            position: absolute; left: -100px; bottom: 350px;
-            transform: rotate(-90deg); transform-origin: 0 0;
-            font-size: 30px; color: #64748b; font-weight: bold; letter-spacing: 2px;
-        }
-
-        /* 🪶 WATERMARK */
+        .side-text { position: absolute; left: -100px; bottom: 350px; transform: rotate(-90deg); transform-origin: 0 0; font-size: 30px; color: #64748b; font-weight: bold; letter-spacing: 2px; }
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
 
-        /* 🏫 HEADER */
         .header { width: 100%; text-align: center; z-index: 5; margin-top: 20px; margin-bottom: 30px; }
         .school-name { font-size: 55px; font-weight: 900; color: #ed3237; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; text-shadow: 2px 2px 0px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
 
-        /* 📜 TITLE BOX */
         .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #000; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        /* 📋 DETAILS TABLE */
         .details-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 38px; margin-bottom: 40px; background: #fff; }
         .details-table td { border: 3px solid #000; padding: 20px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 📊 MARKS BOX */
         .marks-container { display: flex; width: 95%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 15px; margin-bottom: 30px; background: #fff; box-shadow: 0 5px 15px rgba(41, 67, 142, 0.1); }
         .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
         .mark-box.total { border-right: 3px solid #29438e; }
         .mark-label { font-size: 28px; font-weight: normal; color: #000; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* Large Number Styling with Faint Shadow Effect */
         .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -5px; }
         .val-total { color: #29438e; text-shadow: 12px 12px 0px #e2e8f0; }
         .val-obtained { color: #e32726; text-shadow: 12px 12px 0px #e2e8f0; }
 
-        /* 📝 BREAKDOWN TABLE (Theme Matched) */
         .breakdown-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 30px; margin-bottom: 40px; text-align: center; background: #fff; }
         .breakdown-table th { border: 3px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
         .breakdown-table td { border: 3px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
 
-        /* ⭐ REMARKS */
         .remarks-box { font-size: 40px; font-weight: 900; padding: 15px 50px; border-radius: 12px; z-index: 5; border: 4px solid #f5c518; background: #fff; color: #e91e63; box-shadow: 0 5px 15px rgba(245, 197, 24, 0.15); margin-bottom: auto; }
 
-        /* 🟢 GREEN SEAL LOGO (1000069402.png) */
         .footer-logo { width: 300px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
-        
-        /* 🌐 WEBSITE TEXT */
         .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; }
 
     </style>
@@ -117,20 +151,26 @@
 <body>
 
     <div class="container">
-        <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
-        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-file-contract"></i> History Test Result</h2>
+        <!-- 🔙 Back Button -->
+        <div style="text-align: left;">
+            <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        
+        <h2 style="color: #60a5fa; margin-top: 0; font-size: 26px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
+            <i class="fa-solid fa-file-contract" style="color: #3b82f6;"></i> History Result
+        </h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 30px;">Verify and download your official marksheet.</p>
 
         <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection">
-            <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna Exam Roll / Code daalein</p>
-            <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
-            <button class="btn" onclick="verifyResult()">Fetch Result Sheet 📄</button>
-            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold;">
-                ⚠️ Invalid Code! (Ya code galat hai, ya kisi aur ka hai)
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-X9...)">
+            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
+            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
             </p>
         </div>
 
-        <!-- 📱 WAPAS LAYA GAYA MOBILE PREVIEW UI -->
+        <!-- 📱 VIP MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
                 <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
@@ -138,35 +178,31 @@
                 <h2 class="preview-subject">HISTORY RESULT</h2>
                 <h2 class="preview-name" id="resNamePrev">Student Name</h2>
                 <div class="preview-marks-box">
-                    <p class="preview-marks-label">MARKS SCORED</p>
+                    <p class="preview-marks-label">Marks Obtained</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/35</p>
                 </div>
             </div>
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
-                <i class="fa-solid fa-download"></i> Download HD Marksheet
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download Marksheet
             </button>
         </div>
     </div>
 
-    <!-- 🏆🔥 SECRET HD PAPER MARKSHEET (DESIGNED FROM 1000069401.png) 🔥🏆 -->
+    <!-- 🏆🔥 SECRET HD PAPER MARKSHEET 🔥🏆 -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- Side Text & Watermark -->
             <div class="side-text">Monthly Test : 26-07-2026</div>
             <img src="20260620_144347.png" class="watermark">
 
-            <!-- Header -->
             <div class="header">
                 <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
                 <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
                 <h3 class="school-tagline">आपकी सफलता ही मेरी पहचान है...!</h3>
             </div>
 
-            <!-- Title Box -->
             <div class="document-title">History Result - Class 9th</div>
 
-            <!-- Details Table -->
             <table class="details-table">
                 <tr>
                     <td class="td-label">STUDENT NAME</td>
@@ -182,7 +218,6 @@
                 </tr>
             </table>
 
-            <!-- Marks Container -->
             <div class="marks-container">
                 <div class="mark-box total">
                     <div class="mark-label">MAXIMUM MARKS</div>
@@ -194,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- Marks Breakdown Table -->
             <table class="breakdown-table">
                 <tr>
                     <th>Objective</th>
@@ -208,12 +242,11 @@
                 </tr>
             </table>
 
-            <!-- Remarks Badge -->
             <div id="performanceBadge" class="remarks-box">
                 Remarks: Outstanding 🌟
             </div>
 
-            <!-- Green Footer Logo (1000069402.png) -->
+            <!-- Ensure this file (1000069402.png) is uploaded to your server/folder! -->
             <img src="1000069402.png" class="footer-logo">
             
             <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
@@ -267,21 +300,21 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Set data to Preview Card
+                // VIP Mobile Preview
                 document.getElementById("resNamePrev").innerText = loggedInName;
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
 
-                // Set data to HD Print Card
+                // HD Background Print Card
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("hdObtained").innerText = studentData.marks;
 
-                // Breakdown Marks 
+                // Breakdown Marks
                 document.getElementById("hdObj").innerText = studentData.obj;
                 document.getElementById("hdShort").innerText = studentData.short;
                 document.getElementById("hdLong").innerText = studentData.long;
 
-                // Dynamic Remarks Design
+                // Badge logic
                 const marks = parseInt(studentData.marks);
                 const badge = document.getElementById("performanceBadge");
 
@@ -308,14 +341,14 @@
         function generateAndShareImage() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating Document...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
 
             html2canvas(document.querySelector("#resultCard"), {
                 scale: 2,           
                 useCORS: true,
-                backgroundColor: "#f4f7f6", // Match background color
+                backgroundColor: "#f4f7f6",
                 logging: false
             }).then(canvas => {
                 const imageData = canvas.toDataURL("image/png", 1.0);
