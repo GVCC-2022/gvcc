@@ -6,7 +6,7 @@
     <title>GVCC - History Test Result</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 🔥 Image Generate karne ke liye html2canvas (VVI) -->
+    <!-- 🔥 Image Generate karne ke liye html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -21,36 +21,44 @@
         .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: bold; display: block; text-align: left; margin-bottom: 20px; transition: 0.2s; }
         .back-link:hover { color: white; }
 
-        /* 🔥 VIP GOLDEN CARD (Jiski Image Banegi) 🔥 */
-        .vip-card {
-            margin-top: 20px; 
-            padding: 30px 20px; 
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-            border-radius: 15px; 
-            border: 2px solid #fbbf24; 
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.3); 
-            position: relative; 
-            overflow: hidden;
-            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* मोबाइल स्क्रीन पर दिखने वाला छोटा कार्ड */
+        .mobile-preview-card {
+            margin-top: 20px; padding: 20px; background: linear-gradient(180deg,#081426,#111827); 
+            border-radius: 15px; border: 2px solid #d4af37; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); 
+            position: relative; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .gold-text {
-            background: linear-gradient(to right, #fde047, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-        }
-
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* WhatsApp / Download Button */
         .share-btn {
-            background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; 
-            padding: 14px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; 
+            background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
+            padding: 14px 20px; font-size: 16px; font-weight: 900; border-radius: 8px; 
             cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; 
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
         }
         .share-btn:active { transform: scale(0.95); }
+
+        /* 👑🔥 AAPKA DIYA HUA HD VIP CSS 🔥👑 */
+        #resultCard {
+            width: 1080px;
+            height: 1920px;
+            background: linear-gradient(180deg,#081426,#111827);
+            border: 8px solid #d4af37;
+            border-radius: 45px;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+        }
+        .logo {
+            width: 260px;
+            height: 260px;
+            object-fit: contain;
+            display: block;
+            margin: auto;
+            margin-top: 80px;
+            filter: drop-shadow(0 0 30px gold);
+        }
     </style>
 </head>
 <body>
@@ -61,81 +69,116 @@
 
         <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> History Test Result</h2>
 
-        <!-- 🛑 ERROR BOX -->
         <div id="classErrorBox" class="hidden" style="background: rgba(220, 38, 38, 0.1); border: 1px solid #dc2626; padding: 15px; border-radius: 10px; margin-top: 20px;">
             <i class="fa-solid fa-lock" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
             <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
-            <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">
-                Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.
-            </p>
+            <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.</p>
         </div>
 
         <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
             <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna VIP Question Code daalein</p>
-            
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
             <button class="btn" onclick="verifyResult()">Unlock Result 🚀</button>
-
-            <!-- Error -->
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold;">
                 ⚠️ Invalid Code! (Ya code galat hai, ya kisi aur ka hai)
             </p>
         </div>
 
-        <!-- 🏆 🔥 VIP IMAGE CARD (यह हिस्सा इमेज में कन्वर्ट होगा) 🔥 🏆 -->
+        <!-- 📱 MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
-            
-            <div id="captureArea" class="vip-card">
-                <!-- GVCC LOGO -->
-                <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; height: auto; margin-bottom: 10px; drop-shadow: 0 4px 6px rgba(0,0,0,0.5);">
-                
-                <h3 style="margin: 0 0 5px 0; color: #cbd5e1; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Class 9th History Test</h3>
-                <h2 class="gold-text" style="font-size: 28px; margin: 10px 0 20px 0;" id="resName">Student Name</h2>
-                
-                <div style="background: rgba(0, 0, 0, 0.4); border-radius: 10px; padding: 15px; border: 1px solid rgba(251, 191, 36, 0.3);">
-                    <p style="margin: 0; color: #94a3b8; font-size: 13px;">Test Set Code: <span id="resSet" style="color: white; font-weight: bold;">-</span></p>
-                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #475569;">
-                        <p style="margin: 0; color: #cbd5e1; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Marks Scored</p>
-                        <p style="margin: 5px 0 0 0; color: #10b981; font-weight: 900; font-size: 42px; text-shadow: 0 0 15px rgba(16,185,129,0.5);" id="resMarks">--/--</p>
-                    </div>
+            <div class="mobile-preview-card">
+                <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold);">
+                <h3 style="margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 2px;">CLASS 9TH</h3>
+                <h2 style="color: white; font-size: 24px; margin: 5px 0 15px 0;">HISTORY TEST</h2>
+                <h2 style="color: #ffd700; font-size: 22px; margin: 10px 0;" id="resNamePrev">Student Name</h2>
+                <div style="border: 1px solid #d4af37; border-radius: 8px; padding: 10px; margin-top: 15px;">
+                    <p style="margin: 0; color: #cbd5e1; font-size: 14px;">MARKS SCORED</p>
+                    <p style="margin: 5px 0 0 0; color: white; font-weight: bold; font-size: 35px;" id="resMarksPrev">--/35</p>
                 </div>
-                <p style="margin: 15px 0 0 0; font-size: 10px; color: #64748b; font-weight: bold;">Gyan Varsha Coaching Center</p>
             </div>
 
-            <!-- 🔥 Download / Share Button (यह इमेज में नहीं आएगा) 🔥 -->
+            <!-- 🔥 Download HD Image Button 🔥 -->
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
-                <i class="fa-solid fa-camera"></i> Share to Status / Download
+                <i class="fa-solid fa-download"></i> Download HD Poster
             </button>
-            <p style="font-size: 12px; color: #94a3b8; margin: 10px 0 0 0;">(Button par click karein, Image save ho jayegi!)</p>
         </div>
 
     </div>
 
+    <!-- 🏆🔥 SECRET HD CARD (1080x1920) FOR HTML2CANVAS 🔥🏆 -->
+    <!-- यह डब्बा स्क्रीन के बाहर छिपा रहेगा ताकि फोन की स्क्रीन खराब ना हो, लेकिन डाउनलोड फुल HD में होगा! -->
+    <div style="position: absolute; top: -9999px; left: -9999px;">
+        <div id="resultCard">
+            <!-- आपका लोगो -->
+            <img src="20260620_144347.png" class="logo">
+            
+            <p style="color: #d4af37; font-size: 45px; letter-spacing: 15px; font-weight: bold; margin: 50px 0 0 0;">CLASS 9TH</p>
+            <h1 style="color: white; font-size: 120px; font-weight: 900; letter-spacing: 5px; margin: 10px 0;">HISTORY TEST</h1>
+            
+            <div style="background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b); display: inline-block; padding: 15px 80px; font-size: 40px; font-weight: 900; color: black; border-radius: 10px; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                ★ TEST RESULT ★
+            </div>
+
+            <!-- Name Box -->
+            <div style="border: 4px solid rgba(212, 175, 55, 0.5); border-radius: 20px; margin: 80px 80px 0 80px; padding: 40px; background: rgba(0,0,0,0.3);">
+                <p style="color: #d4af37; font-size: 35px; margin: 0 0 10px 0;">Student Name</p>
+                <h2 id="hdName" style="color: #ffd700; font-size: 80px; margin: 0; text-transform: uppercase; letter-spacing: 3px;">STUDENT NAME</h2>
+            </div>
+
+            <!-- Set & Total Marks -->
+            <div style="display: flex; margin: 40px 80px 0 80px; border: 4px solid rgba(212, 175, 55, 0.5); border-radius: 20px; padding: 40px; background: rgba(0,0,0,0.3);">
+                <div style="flex: 1; border-right: 4px solid rgba(212, 175, 55, 0.3);">
+                    <p style="color: #d4af37; font-size: 35px; margin: 0 0 20px 0;">Test Set Code</p>
+                    <div id="hdSet" style="width: 120px; height: 120px; border: 6px solid #d4af37; border-radius: 50%; margin: auto; display: flex; align-items: center; justify-content: center; color: #ffd700; font-size: 70px; font-weight: bold;">A</div>
+                </div>
+                <div style="flex: 1;">
+                    <p style="color: #d4af37; font-size: 35px; margin: 0 0 20px 0;">Total Marks</p>
+                    <p style="color: #ffd700; font-size: 90px; font-weight: bold; margin: 10px 0 0 0;">35</p>
+                </div>
+            </div>
+
+            <!-- Obtained Marks -->
+            <div style="border: 4px solid #d4af37; border-radius: 30px; margin: 40px 80px 0 80px; padding: 60px; background: rgba(0,0,0,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <p style="color: #d4af37; font-size: 40px; margin: 0 0 30px 0;">━ MARKS SCORED ━</p>
+                <div style="display: flex; justify-content: center; align-items: baseline; gap: 30px;">
+                    <span id="hdObtained" style="color: white; font-size: 250px; font-weight: 900; line-height: 1;">--</span>
+                    <span style="color: #d4af37; font-size: 180px;">/</span>
+                    <span style="color: #ffd700; font-size: 180px; font-weight: 900;">35</span>
+                </div>
+            </div>
+
+            <!-- Footer Quote -->
+            <p style="position: absolute; bottom: 50px; width: 100%; color: #d4af37; font-size: 40px; font-style: italic;">
+                ★ Keep Learning, Keep Growing, Keep Shining! ★
+            </p>
+        </div>
+    </div>
+
     <script>
         const resultDatabase = {
-            "901": { code: "GVCC-P9R0A1", set: "A", marks: "34/35" },
-            "902": { code: "GVCC-M9K0B2", set: "B", marks: "45/35" },
-            "903": { code: "GVCC-L9X0C3", set: "C", marks: "45/35" },
-            "904": { code: "GVCC-V9T0D4", set: "D", marks: "24/35" },
-            "905": { code: "GVCC-M9R0A5", set: "A", marks: "32/35" },
-            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "56/35" },
-            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "23/35" },
-            "908": { code: "GVCC-C9W0A8", set: "A", marks: "56/35" },
-            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "34/35" },
-            "910": { code: "GVCC-J9F1C0", set: "C", marks: "25/35" },
-            "911": { code: "GVCC-T9R1D1", set: "D", marks: "26/35" },
-            "912": { code: "GVCC-D9M1E2", set: "E", marks: "14/35" },
-            "913": { code: "GVCC-G9K1F3", set: "F", marks: "09/35" },
-            "915": { code: "GVCC-W9V1A5", set: "A", marks: "23/35" },
-            "916": { code: "GVCC-F9P1B6", set: "B", marks: "13/35" },
-            "917": { code: "GVCC-H9X1C7", set: "C", marks: "14/35" },
-            "918": { code: "GVCC-S9N1D8", set: "D", marks: "23/35" },
-            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23/35" },
-            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "56/35" },
-            "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16/35" },
-            "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21/35" },
-            "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20/35" }
+            "901": { code: "GVCC-P9R0A1", set: "A", marks: "34" },
+            "902": { code: "GVCC-M9K0B2", set: "B", marks: "35" },
+            "903": { code: "GVCC-L9X0C3", set: "C", marks: "25" },
+            "904": { code: "GVCC-V9T0D4", set: "D", marks: "24" },
+            "905": { code: "GVCC-M9R0A5", set: "A", marks: "32" },
+            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "35" },
+            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "23" },
+            "908": { code: "GVCC-C9W0A8", set: "A", marks: "35" },
+            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "34" },
+            "910": { code: "GVCC-J9F1C0", set: "C", marks: "25" },
+            "911": { code: "GVCC-T9R1D1", set: "D", marks: "26" },
+            "912": { code: "GVCC-D9M1E2", set: "E", marks: "14" },
+            "913": { code: "GVCC-G9K1F3", set: "F", marks: "09" },
+            "915": { code: "GVCC-W9V1A5", set: "A", marks: "23" },
+            "916": { code: "GVCC-F9P1B6", set: "B", marks: "13" },
+            "917": { code: "GVCC-H9X1C7", set: "C", marks: "14" },
+            "918": { code: "GVCC-S9N1D8", set: "D", marks: "23" },
+            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23" },
+            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "35" },
+            "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16" },
+            "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21" },
+            "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20" }
         };
 
         window.onload = function() {
@@ -166,71 +209,79 @@
             if (studentData && enteredCode === studentData.code) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
-                document.getElementById("cardWrapper").style.display = "block"; // Card dikhao
+                document.getElementById("cardWrapper").style.display = "block";
                 
-                document.getElementById("resName").innerText = loggedInName;
-                document.getElementById("resSet").innerText = studentData.set;
-                document.getElementById("resMarks").innerText = studentData.marks;
+                // Mobile Preview Update
+                document.getElementById("resNamePrev").innerText = loggedInName;
+                document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
+
+                // 🔥 SECRET HD CARD UPDATE 🔥
+                document.getElementById("hdName").innerText = loggedInName;
+                document.getElementById("hdSet").innerText = studentData.set;
+                document.getElementById("hdObtained").innerText = studentData.marks;
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
-
             } else {
                 errorMsg.style.display = "block";
                 document.getElementById("cardWrapper").style.display = "none";
             }
         }
 
-        // 📸 IMAGE GENERATE AUR SHARE KARNE KA MAGIC FUNCTION
-        async function generateAndShareImage() {
+        // 📸 AAPKA DIYA HUA PRO HTML2CANVAS LOGIC
+        function generateAndShareImage() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating Card...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating HD Poster...';
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
 
-            const captureElement = document.getElementById("captureArea");
-            
-            try {
-                // html2canvas library se card ki photo kheench rahe hain
-                const canvas = await html2canvas(captureElement, {
-                    scale: 3, // High Quality HD Image
-                    backgroundColor: "#0f172a", // Dark background maintain rakhega
-                    useCORS: true // Logo properly load ho jayega
-                });
+            // html2canvas calling on the massive hidden card
+            html2canvas(document.querySelector("#resultCard"), {
+                scale: 4,           // 🔥 HD Quality
+                useCORS: true,
+                backgroundColor: null,
+                logging: false
+            }).then(canvas => {
+                const imageData = canvas.toDataURL("image/png", 1.0);
+                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Result.png`;
 
-                // Image ko PNG Data URL me badalna
-                const imageData = canvas.toDataURL("image/png");
-                
-                // Blob me convert karna (Sharing ke liye zaroori hai)
-                const blob = await (await fetch(imageData)).blob();
-                const file = new File([blob], "GVCC_History_Result.png", { type: blob.type });
-
-                // Check karna ki kya phone Image direct WhatsApp par share support karta hai
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        title: 'My History Result',
-                        text: 'Mera GVCC Class 9th History Test ka result aa gaya hai! 🚀',
-                        files: [file]
+                // 1. WhatsApp / Share Attempt
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], fileName, { type: blob.type });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                title: 'My GVCC Result',
+                                text: 'Mera GVCC Class 9th History Test ka HD result! 🚀',
+                                files: [file]
+                            }).catch(err => forceDownload(imageData, fileName)); // If share fails, download
+                        } else {
+                            forceDownload(imageData, fileName);
+                        }
                     });
-                } else {
-                    // Agar phone support nahi karta, toh seedha HD Image Download kara do
-                    const downloadLink = document.createElement("a");
-                    downloadLink.href = imageData;
-                    downloadLink.download = "GVCC_History_Result.png";
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                    
-                    alert("🎉 Aapka VIP Result Card Gallery me save ho gaya hai. Ab aap ise WhatsApp Status par laga sakte hain!");
-                }
-            } catch (error) {
-                console.error("Error creating image:", error);
-                alert("⚠️ Image generate karne mein koi problem aayi. Kripya normal Screenshot le lijiye.");
-            } finally {
+
+                // Reset Button
                 btn.innerHTML = originalText;
                 btn.style.opacity = "1";
                 btn.style.pointerEvents = "auto";
-            }
+            }).catch(err => {
+                alert("⚠️ Image generate karne mein problem aayi.");
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            });
+        }
+
+        // 2. Direct Download Fallback
+        function forceDownload(imageData, fileName) {
+            const link = document.createElement("a");
+            link.download = fileName;
+            link.href = imageData;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert("🎉 Aapka Premium VIP Result Poster HD me Download ho gaya hai! Ab ise Status par lagaiye.");
         }
     </script>
 </body>
