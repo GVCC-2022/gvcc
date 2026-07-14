@@ -318,13 +318,7 @@
         }
     });
 </script>
-                        <!-- 🔔 HEADER NOTIFICATION ICON (इसे वेबसाइट के हेडर में या ऊपर कहीं लगा दें) -->
-<button id="showNotificationUiBtn" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 10px;">
-    🔔
-</button>
-
-<!-- 🛑 SMART NOTIFICATION SCREEN (अब यह अपने आप नहीं खुलेगा, क्लिक करने पर आएगा) -->
-<div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
+                        <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
     
     <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
     <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
@@ -337,70 +331,53 @@
         Enable Notifications 🚀
     </button>
 
-    <!-- 🔥 CLOSE/SKIP BUTTON -->
     <button id="closeNotificationUiBtn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
         Skip for now (Enter App) &rarr;
     </button>
 </div>
 
-<!-- ⚙️ JAVASCRIPT LOGIC -->
 <script>
     const blocker = document.getElementById("notificationBlocker");
     const btn = document.getElementById("permBtn");
-    const msg = document.getElementById("permMsg");
-    const showBtn = document.getElementById("showNotificationUiBtn");
     const closeBtn = document.getElementById("closeNotificationUiBtn");
 
-    // 1. जब बच्चा 🔔 घंटी पर क्लिक करेगा
-    showBtn.addEventListener("click", () => {
-        if (!("Notification" in window)) {
-            alert("⚠️ Aapka browser notifications support nahi karta.");
-            return;
+    // 🎯 फंक्शन: जो स्क्रीन पर टच करते ही पॉप-अप दिखाएगा
+    function showPopupOnFirstTouch() {
+        // अगर परमिशन पहले से डिसाइड हो चुकी है या यूज़र पहले ही SKIP कर चुका है, तो कुछ मत करो
+        if (!("Notification" in window) || Notification.permission !== "default" || localStorage.getItem("gvcc_notif_seen")) {
+            return; 
         }
-
-        if (Notification.permission === "granted") {
-            alert("✅ Aapne pehle se hi Notifications ON kar rakhe hain!");
-            return;
-        }
-
-        // स्क्रीन दिखाना
+        
+        // पॉप-अप दिखाओ
         blocker.style.display = "flex";
 
-        if (Notification.permission === "denied") {
-            msg.innerHTML = "⚠️ Notifications <b>OFF</b> hain.<br>Kripya App Info / Settings me jaakar ALLOW karein taaki koi update miss na ho.";
-            btn.innerHTML = "I have Allowed (Refresh) 🔄";
-        } else {
-            msg.innerHTML = "Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.";
-            btn.innerHTML = "Enable Notifications 🚀";
-        }
-    });
+        // स्क्रीन से टच वाला सेंसर हटा दो ताकि हर टच पर यह कोड बार-बार ना चले
+        document.removeEventListener("click", showPopupOnFirstTouch);
+        document.removeEventListener("touchstart", showPopupOnFirstTouch);
+    }
 
-    // 2. जब बच्चा 'Enable Notifications' पर क्लिक करेगा
+    // 📱 स्क्रीन पर कहीं भी टच या क्लिक होने का इंतज़ार
+    document.addEventListener("click", showPopupOnFirstTouch);
+    document.addEventListener("touchstart", showPopupOnFirstTouch);
+
+    // ✅ जब बच्चा 'Enable Notifications' दबायेगा
     btn.addEventListener("click", async () => {
-        if (Notification.permission === "denied") {
-            window.location.reload(); 
-        } else {
-            try {
-                const perm = await Notification.requestPermission();
-                if (perm === "granted") {
-                    blocker.style.display = "none";
-                    alert("🎉 Notifications ON ho gaye!");
-                } else {
-                    blocker.style.display = "none";
-                }
-            } catch(e) {
-                alert("⚠️ Aapka phone yahan se allow nahi kar raha. Kripya 'Skip' dabayein aur App Settings se on karein.");
-            }
+        try {
+            const perm = await Notification.requestPermission();
+            blocker.style.display = "none";
+            // फोन की मेमोरी में सेव कर लो कि बच्चा जवाब दे चुका है
+            localStorage.setItem("gvcc_notif_seen", "true"); 
+        } catch(e) {
+            alert("⚠️ Kripya apne phone ki Settings se allow karein.");
         }
     });
 
-    // 3. जब बच्चा 'Skip' दबाएगा
+    // ❌ जब बच्चा 'Skip' दबायेगा
     closeBtn.addEventListener("click", () => {
         blocker.style.display = "none";
+        // इसे भी मेमोरी में सेव कर लो ताकि पेज रिफ्रेश होने पर दोबारा परेशान ना करे
+        localStorage.setItem("gvcc_notif_seen", "true");
     });
 </script>
-
-
-
 </body>
 </html>
