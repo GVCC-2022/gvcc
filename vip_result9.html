@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - History Test Result</title>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 🔥 html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -36,7 +38,7 @@
         .share-btn:active { transform: scale(0.95); }
 
         /* ===========================
-              PREMIUM RESULT CARD
+              PREMIUM RESULT CARD (FIXED LAYOUT)
         =========================== */
         #resultCard {
             width: 1080px;
@@ -45,7 +47,14 @@
             overflow: hidden;
             border-radius: 55px;
             background: radial-gradient(circle at top, #1f355e 0%, #081426 40%, #050b14 100%);
-            text-align: center;
+            
+            /* Flex layout taaki overlap na ho */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 70px;
+            box-sizing: border-box;
         }
 
         #resultCard::before {
@@ -56,6 +65,7 @@
             border-radius: 45px;
             box-shadow: 0 0 40px rgba(255,215,0,.45), inset 0 0 30px rgba(255,215,0,.18);
             pointer-events: none;
+            z-index: 1;
         }
 
         #resultCard::after {
@@ -65,308 +75,100 @@
             border: 2px solid rgba(255,255,255,.18);
             border-radius: 35px;
             pointer-events: none;
+            z-index: 1;
         }
 
         /* Base Glows & Lines */
-        .goldGlow {
-            position: absolute;
-            width: 900px;
-            height: 900px;
-            background: radial-gradient(circle, rgba(255,215,0,.25), transparent 70%);
-            top: -260px;
-            left: 50%;
-            transform: translateX(-50%);
-            filter: blur(50px);
-        }
-
-        .bottomGlow {
-            position: absolute;
-            width: 1000px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255,170,0,.12), transparent 75%);
-            bottom: -260px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .line1 {
-            position: absolute;
-            top: 180px;
-            left: 90px;
-            width: 900px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, gold, transparent);
-            opacity: .35;
-        }
-
-        .line2 {
-            position: absolute;
-            bottom: 220px;
-            left: 90px;
-            width: 900px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, gold, transparent);
-            opacity: .35;
-        }
-
+        .goldGlow { position: absolute; width: 900px; height: 900px; background: radial-gradient(circle, rgba(255,215,0,.25), transparent 70%); top: -260px; left: 50%; transform: translateX(-50%); filter: blur(50px); pointer-events: none; }
+        .bottomGlow { position: absolute; width: 1000px; height: 500px; background: radial-gradient(circle, rgba(255,170,0,.12), transparent 75%); bottom: -260px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+        
         /* Shine Effect */
-        .shine {
-            position: absolute;
-            top: -250px;
-            left: -450px;
-            width: 320px;
-            height: 2500px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
-            transform: rotate(25deg);
-            animation: shineMove 6s linear infinite;
-        }
+        .shine { position: absolute; top: -250px; left: -450px; width: 320px; height: 2500px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); transform: rotate(25deg); animation: shineMove 6s linear infinite; pointer-events: none; z-index: 2; }
+        @keyframes shineMove { 100% { left: 1600px; } }
 
-        @keyframes shineMove {
-            100% { left: 1600px; }
-        }
+        /* Stars & Laurels */
+        .stars { position: absolute; width: 100%; top: 220px; pointer-events: none; z-index: 2;}
+        .stars span { position: absolute; font-size: 26px; color: #FFD700; animation: blink 2s infinite alternate; }
+        .stars span:nth-child(1) { left: 12%; } .stars span:nth-child(2) { left: 28%; } .stars span:nth-child(3) { left: 50%; } .stars span:nth-child(4) { left: 72%; } .stars span:nth-child(5) { left: 88%; }
+        @keyframes blink { from { opacity: .25; transform: scale(.7); } to { opacity: 1; transform: scale(1.2); } }
 
-        /* Gold Particles */
-        .particles {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
+        .laurelLeft, .laurelRight { position: absolute; top: 120px; width: 140px; height: 450px; opacity: .35; pointer-events: none; z-index: 2; }
+        .laurelLeft { left: 70px; border-left: 5px solid gold; border-radius: 100px; transform: rotate(-15deg); }
+        .laurelRight { right: 70px; border-right: 5px solid gold; border-radius: 100px; transform: rotate(15deg); }
 
-        .particles span {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #FFD700;
-            border-radius: 50%;
-            box-shadow: 0 0 12px gold, 0 0 25px gold;
-            animation: floatParticle linear infinite;
-        }
-
-        .particles span:nth-child(1) { left: 8%; top: 85%; animation-duration: 8s; }
-        .particles span:nth-child(2) { left: 20%; top: 92%; animation-duration: 9s; }
-        .particles span:nth-child(3) { left: 35%; top: 80%; animation-duration: 7s; }
-        .particles span:nth-child(4) { left: 50%; top: 90%; animation-duration: 10s; }
-        .particles span:nth-child(5) { left: 62%; top: 88%; animation-duration: 8s; }
-        .particles span:nth-child(6) { left: 74%; top: 95%; animation-duration: 11s; }
-        .particles span:nth-child(7) { left: 82%; top: 82%; animation-duration: 7s; }
-        .particles span:nth-child(8) { left: 90%; top: 93%; animation-duration: 10s; }
-        .particles span:nth-child(9) { left: 15%; top: 70%; animation-duration: 12s; }
-        .particles span:nth-child(10) { left: 55%; top: 72%; animation-duration: 9s; }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(0) scale(.6); opacity: 0; }
-            20% { opacity: 1; }
-            100% { transform: translateY(-1800px) scale(1.4); opacity: 0; }
-        }
-
-        /* Stars */
-        .stars {
-            position: absolute;
-            width: 100%;
-            top: 260px;
-            pointer-events: none;
-        }
-
-        .stars span {
-            position: absolute;
-            font-size: 26px;
-            color: #FFD700;
-            animation: blink 2s infinite alternate;
-        }
-
-        .stars span:nth-child(1) { left: 12%; }
-        .stars span:nth-child(2) { left: 28%; }
-        .stars span:nth-child(3) { left: 50%; }
-        .stars span:nth-child(4) { left: 72%; }
-        .stars span:nth-child(5) { left: 88%; }
-
-        @keyframes blink {
-            from { opacity: .25; transform: scale(.7); }
-            to { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Royal Crown SVG */
-        .crownSVG {
-            width: 180px;
-            height: 80px;
-            margin: 40px auto 20px;
-            position: relative;
-            background: linear-gradient(#FFD84D, #B8860B);
-            clip-path: polygon(0% 100%, 15% 30%, 30% 100%, 50% 0, 70% 100%, 85% 30%, 100% 100%);
-            box-shadow: 0 0 30px gold;
+        /* 🔥 FIXED CROWN (Safe for Image Generation) */
+        .safeCrown {
+            font-size: 80px;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 15px gold);
             z-index: 10;
-        }
-
-        .crownSVG::after {
-            content: "";
-            position: absolute;
-            bottom: -18px;
-            left: 0;
-            width: 100%;
-            height: 18px;
-            background: #D4AF37;
-        }
-
-        .peak {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 0 15px gold;
-        }
-
-        .p1 { left: 18%; top: 18px; }
-        .p2 { left: 46%; top: -10px; }
-        .p3 { right: 18%; top: 18px; }
-
-        /* Laurel */
-        .laurelLeft, .laurelRight {
-            position: absolute;
-            top: 140px;
-            width: 140px;
-            height: 500px;
-            opacity: .35;
-            pointer-events: none;
-        }
-
-        .laurelLeft {
-            left: 70px;
-            border-left: 5px solid gold;
-            border-radius: 100px;
-            transform: rotate(-15deg);
-        }
-
-        .laurelRight {
-            right: 70px;
-            border-right: 5px solid gold;
-            border-radius: 100px;
-            transform: rotate(15deg);
         }
 
         /* LOGO */
         .logo {
-            width: 250px;
-            height: 250px;
-            display: block;
-            margin: auto;
-            margin-top: 20px;
+            width: 180px; /* Thoda chota kiya taaki height bache */
+            height: 180px;
             object-fit: contain;
             position: relative;
             z-index: 5;
-            filter: drop-shadow(0 0 25px gold) drop-shadow(0 0 60px rgba(255,215,0,.55));
-            animation: logoFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0); }
+            filter: drop-shadow(0 0 25px gold) drop-shadow(0 0 40px rgba(255,215,0,.4));
         }
 
         /* Academy Name */
         .academyName {
-            margin-top: 25px;
-            font-size: 74px;
+            margin-top: 15px;
+            font-size: 65px; /* Thoda chota kiya */
             font-weight: 900;
-            letter-spacing: 10px;
+            letter-spacing: 8px;
             color: #fff;
             text-align: center;
             text-shadow: 0 0 10px rgba(255,255,255,.3), 0 0 30px gold;
+            z-index: 5;
         }
 
         .academySub {
-            margin-top: 10px;
-            font-size: 34px;
-            letter-spacing: 14px;
+            margin-top: 5px;
+            font-size: 28px;
+            letter-spacing: 12px;
             color: #d4af37;
             text-align: center;
+            z-index: 5;
         }
 
         /* Gold Ribbon */
         .goldRibbon {
-            width: 760px;
-            margin: 45px auto;
-            padding: 22px 0;
+            width: 700px;
+            margin: 30px auto;
+            padding: 18px 0;
             background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
-            border-radius: 18px;
-            box-shadow: 0 12px 35px rgba(0,0,0,.45), 0 0 20px rgba(255,215,0,.45);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.4), 0 0 15px rgba(255,215,0,.4);
             position: relative;
+            z-index: 5;
         }
+        .goldRibbon span { font-size: 32px; font-weight: 900; letter-spacing: 4px; color: #111; }
 
-        .goldRibbon span {
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            color: #111;
-        }
-
-        .goldRibbon::before, .goldRibbon::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            width: 40px;
-            height: 100%;
-            background: #8b6508;
-        }
-
-        .goldRibbon::before {
-            left: -25px;
-            clip-path: polygon(100% 0, 0 50%, 100% 100%);
-        }
-
-        .goldRibbon::after {
-            right: -25px;
-            clip-path: polygon(0 0, 100% 50%, 0 100%);
-        }
-
-        /* Glass Card */
+        /* 🔥 FIXED GLASS CARD & TEXT OVERLAP */
         .glassCard {
-            width: 900px;
-            margin: 70px auto 0;
-            padding: 45px;
-            border-radius: 35px;
+            width: 850px;
+            padding: 35px;
+            border-radius: 30px;
             background: rgba(255,255,255,.07);
-            backdrop-filter: blur(15px);
             border: 2px solid rgba(255,215,0,.25);
-            box-shadow: 0 0 40px rgba(255,215,0,.12), inset 0 0 20px rgba(255,255,255,.05);
-            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,215,0,.12), inset 0 0 20px rgba(255,255,255,.05);
             position: relative;
-            box-sizing: border-box;
+            z-index: 5;
         }
-
-        .glassCard::before {
-            content: "";
-            position: absolute;
-            left: -220px;
-            top: 0;
-            width: 180px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
-            transform: skewX(-20deg);
-            animation: glassMove 5s linear infinite;
-        }
-
-        @keyframes glassMove {
-            100% { left: 1200px; }
-        }
-
-        .studentTitle {
-            font-size: 28px;
-            letter-spacing: 4px;
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-
+        .studentTitle { font-size: 24px; letter-spacing: 4px; color: #d4af37; margin-bottom: 10px; }
+        
+        /* Gradient text hatakar pure Gold solid fill kiya image error se bachne ke liye */
         .studentName {
-            font-size: 82px;
+            font-size: 75px;
             font-weight: 900;
-            background: linear-gradient(#FFF, #FFE27A, #C99A00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFD700;
             letter-spacing: 2px;
-            text-shadow: none;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 2px 2px 4px rgba(0,0,0,0.8);
+            margin: 5px 0;
         }
 
         /* Info Row */
@@ -374,158 +176,80 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 45px;
-            margin-top: 60px;
+            gap: 40px;
+            margin-top: 35px;
+            z-index: 5;
         }
-
         .infoBox {
-            width: 260px;
-            height: 260px;
-            border-radius: 30px;
+            width: 220px;
+            height: 220px;
+            border-radius: 25px;
             background: rgba(255,255,255,.05);
             border: 2px solid rgba(255,215,0,.25);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        .infoTitle {
-            font-size: 28px;
-            letter-spacing: 3px;
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-
-        .setCircle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 5px solid gold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 58px;
-            font-weight: 900;
-            color: #fff;
-            box-shadow: 0 0 25px gold;
-        }
-
-        .totalMarks {
-            font-size: 90px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 20px gold;
-        }
-
-        /* Medal Box */
-        .medalBox {
-            font-size: 140px;
-            filter: drop-shadow(0 0 20px gold);
-            animation: floatMedal 3s ease-in-out infinite;
-        }
-
-        @keyframes floatMedal {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0); }
-        }
+        .infoTitle { font-size: 24px; letter-spacing: 3px; color: #d4af37; margin-bottom: 15px; }
+        .setCircle { width: 100px; height: 100px; border-radius: 50%; border: 4px solid gold; display: flex; justify-content: center; align-items: center; font-size: 50px; font-weight: 900; color: #fff; box-shadow: 0 0 20px gold; }
+        .totalMarks { font-size: 80px; font-weight: 900; color: #fff; text-shadow: 0 0 15px gold; }
+        .medalBox { font-size: 110px; filter: drop-shadow(0 0 15px gold); }
 
         /* Score Card */
         .scoreCard {
-            width: 900px;
-            margin: 70px auto;
-            padding: 55px;
-            border-radius: 40px;
+            width: 850px;
+            margin: 35px auto;
+            padding: 45px;
+            border-radius: 35px;
             background: linear-gradient(180deg, #172554, #0f172a);
             border: 3px solid gold;
-            box-shadow: 0 0 45px rgba(255,215,0,.18);
-            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(255,215,0,.18);
+            z-index: 5;
         }
-
-        .scoreTitle {
-            font-size: 34px;
-            letter-spacing: 6px;
-            color: #d4af37;
-            margin-bottom: 25px;
-        }
-
-        .scoreNumber {
-            font-size: 180px;
-            font-weight: 900;
-            color: #fff;
-            line-height: 1;
-        }
-
-        .scoreNumber small {
-            font-size: 90px;
-            color: #ffd700;
-        }
+        .scoreTitle { font-size: 30px; letter-spacing: 6px; color: #d4af37; margin-bottom: 15px; }
+        .scoreNumber { font-size: 160px; font-weight: 900; color: #fff; line-height: 1; }
+        .scoreNumber small { font-size: 80px; color: #ffd700; }
 
         /* Performance Badge */
         .performanceBadge {
             display: inline-block;
-            padding: 22px 60px;
+            padding: 18px 50px;
             border-radius: 100px;
             background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
             color: #111;
-            font-size: 34px;
+            font-size: 28px;
             font-weight: 900;
             letter-spacing: 3px;
-            box-shadow: 0 0 25px gold;
-            margin-bottom: 50px;
+            box-shadow: 0 0 20px gold;
+            margin-bottom: 40px; /* Space from Footer */
+            z-index: 5;
         }
 
-        /* Certificate Seal */
+        /* Certificate Seal & Footer (Flow Layout me theek kiya) */
         .certificateSeal {
-            margin: 45px auto 0;
-            width: 170px;
-            height: 170px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: radial-gradient(circle, #FFD700, #A86F00);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            font-size: 65px;
-            color: #111;
-            font-weight: bold;
-            box-shadow: 0 0 35px gold;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            font-size: 50px; color: #111; font-weight: bold; box-shadow: 0 0 25px gold;
+            margin-bottom: 25px;
+            z-index: 5;
         }
+        .sealText { font-size: 20px; letter-spacing: 2px; margin-top: 4px; }
 
-        .sealText {
-            font-size: 24px;
-            letter-spacing: 2px;
-            margin-top: 4px;
-        }
-
-        /* Footer Box */
         .footerBox {
-            position: absolute;
-            bottom: 70px;
-            width: 100%;
             text-align: center;
+            z-index: 5;
+            margin-bottom: 20px;
         }
-
-        .footerTitle {
-            font-size: 34px;
-            letter-spacing: 5px;
-            color: #FFD700;
-            font-weight: 700;
-        }
-
-        .footerSub {
-            margin-top: 12px;
-            font-size: 28px;
-            letter-spacing: 3px;
-            color: #bbb;
-        }
+        .footerTitle { font-size: 30px; letter-spacing: 4px; color: #FFD700; font-weight: 700; }
+        .footerSub { margin-top: 8px; font-size: 24px; letter-spacing: 3px; color: #bbb; }
 
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 🔙 Back Button -->
         <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 
         <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> History Test Result</h2>
@@ -536,6 +260,7 @@
             <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.</p>
         </div>
 
+        <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
             <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna VIP Question Code daalein</p>
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
@@ -545,6 +270,7 @@
             </p>
         </div>
 
+        <!-- 📱 MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
                 <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold);">
@@ -564,38 +290,25 @@
 
     </div>
 
+    <!-- 🏆🔥 SECRET HD CARD FOR HTML2CANVAS 🔥🏆 -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
+            <!-- Background Elements -->
             <div class="goldGlow"></div>
-            <div class="particles">
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
             <div class="shine"></div>
             <div class="bottomGlow"></div>
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="stars">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-            </div>
-
-            <div class="crownSVG">
-                <div class="peak p1"></div>
-                <div class="peak p2"></div>
-                <div class="peak p3"></div>
-            </div>
-
+            <div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
             <div class="laurelLeft"></div>
             <div class="laurelRight"></div>
 
+            <!-- Content Elements (Now in Flex Flow to prevent overlap) -->
+            <div class="safeCrown">👑</div>
             <img src="20260620_144347.png" class="logo">
             
             <div class="academyName">GYAN VARSHA</div>
             <div class="academySub">COACHING CENTER</div>
 
-            <div class="goldRibbon">
-                <span>★ PREMIUM TEST RESULT ★</span>
-            </div>
+            <div class="goldRibbon"><span>★ PREMIUM TEST RESULT ★</span></div>
 
             <div class="glassCard">
                 <div class="studentTitle">★ STUDENT OF EXCELLENCE ★</div>
@@ -616,20 +329,12 @@
 
             <div class="scoreCard">
                 <div class="scoreTitle">MARKS SCORED</div>
-                <div class="scoreNumber">
-                    <span id="hdObtained">35</span>
-                    <small>/35</small>
-                </div>
+                <div class="scoreNumber"><span id="hdObtained">35</span><small>/35</small></div>
             </div>
 
-            <div id="performanceBadge" class="performanceBadge">
-                ★ EXCELLENT PERFORMANCE ★
-            </div>
+            <div id="performanceBadge" class="performanceBadge">★ EXCELLENT PERFORMANCE ★</div>
 
-            <div class="certificateSeal">
-                🏅
-                <div class="sealText">GVCC</div>
-            </div>
+            <div class="certificateSeal">🏅<div class="sealText">GVCC</div></div>
 
             <div class="footerBox">
                 <div class="footerTitle">KEEP LEARNING • KEEP GROWING</div>
@@ -694,28 +399,19 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Mobile Preview Update
                 document.getElementById("resNamePrev").innerText = loggedInName;
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
 
-                // 🔥 SECRET HD CARD UPDATE 🔥
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("hdObtained").innerText = studentData.marks;
 
-                // Performance Badge Logic
                 const marks = parseInt(studentData.marks);
                 const badge = document.getElementById("performanceBadge");
 
-                if(marks >= 30){
-                    badge.innerHTML = "🏆 EXCELLENT PERFORMANCE";
-                }
-                else if(marks >= 20){
-                    badge.innerHTML = "⭐ GOOD PERFORMANCE";
-                }
-                else{
-                    badge.innerHTML = "💪 KEEP IMPROVING";
-                }
+                if(marks >= 30){ badge.innerHTML = "🏆 EXCELLENT PERFORMANCE"; }
+                else if(marks >= 20){ badge.innerHTML = "⭐ GOOD PERFORMANCE"; }
+                else{ badge.innerHTML = "💪 KEEP IMPROVING"; }
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
@@ -724,7 +420,6 @@
             }
         }
 
-        // 📸 PRO HTML2CANVAS LOGIC
         function generateAndShareImage() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
@@ -732,9 +427,9 @@
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
 
-            // html2canvas calling on the massive hidden card
+            // 🔥 Scale kam karke '2' kar diya, taki Phone Hang na ho aur quality bhi HD rahe
             html2canvas(document.querySelector("#resultCard"), {
-                scale: 4,           // 🔥 HD Quality
+                scale: 2,           
                 useCORS: true,
                 backgroundColor: null,
                 logging: false
@@ -742,7 +437,6 @@
                 const imageData = canvas.toDataURL("image/png", 1.0);
                 const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Result.png`;
 
-                // 1. WhatsApp / Share Attempt
                 fetch(imageData)
                     .then(res => res.blob())
                     .then(blob => {
@@ -752,13 +446,12 @@
                                 title: 'My GVCC Result',
                                 text: 'Mera GVCC Class 9th History Test ka HD result! 🚀',
                                 files: [file]
-                            }).catch(err => forceDownload(imageData, fileName)); // If share fails, download
+                            }).catch(err => forceDownload(imageData, fileName));
                         } else {
                             forceDownload(imageData, fileName);
                         }
                     });
 
-                // Reset Button
                 btn.innerHTML = originalText;
                 btn.style.opacity = "1";
                 btn.style.pointerEvents = "auto";
@@ -770,7 +463,6 @@
             });
         }
 
-        // 2. Direct Download Fallback
         function forceDownload(imageData, fileName) {
             const link = document.createElement("a");
             link.download = fileName;
