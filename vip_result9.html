@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GVCC - Class 9th VIP Result</title>
+    <title>GVCC - History Test Result</title>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 🔥 Image Generate karne ke liye html2canvas (VVI) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; }
         .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
@@ -17,15 +21,14 @@
         .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: bold; display: block; text-align: left; margin-bottom: 20px; transition: 0.2s; }
         .back-link:hover { color: white; }
 
-        /* 🔥 VIP GOLDEN CARD STYLES 🔥 */
+        /* 🔥 VIP GOLDEN CARD (Jiski Image Banegi) 🔥 */
         .vip-card {
-            display: none; 
-            margin-top: 30px; 
+            margin-top: 20px; 
             padding: 30px 20px; 
-            background: linear-gradient(135deg, #111827 0%, #1e293b 100%); 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
             border-radius: 15px; 
             border: 2px solid #fbbf24; 
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.3), inset 0 0 15px rgba(251, 191, 36, 0.1); 
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.3); 
             position: relative; 
             overflow: hidden;
             animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -38,22 +41,14 @@
             font-weight: 900;
         }
 
-        .shine-effect {
-            position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
-            background: linear-gradient(90deg, transparent, rgba(251,191,36,0.2), transparent); 
-            transform: skewX(-20deg); animation: shine 3s infinite;
-        }
-
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* WhatsApp Share Button */
+        /* WhatsApp / Download Button */
         .share-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E); color: white; border: none; 
-            padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; 
+            background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; 
+            padding: 14px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; 
             cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; 
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
         }
         .share-btn:active { transform: scale(0.95); }
     </style>
@@ -64,15 +59,14 @@
         <!-- 🔙 Back Button -->
         <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 
-        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> Offline Test Result</h2>
+        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> History Test Result</h2>
 
         <!-- 🛑 ERROR BOX -->
         <div id="classErrorBox" class="hidden" style="background: rgba(220, 38, 38, 0.1); border: 1px solid #dc2626; padding: 15px; border-radius: 10px; margin-top: 20px;">
             <i class="fa-solid fa-lock" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
             <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
             <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">
-                Abhi sirf <strong>Class 9th</strong> ka result upload hua hai. <br><br>
-                Jab aapki class ka test hoga, tab aapka result yahan dikhega. Kripya intezaar karein!
+                Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.
             </p>
         </div>
 
@@ -89,28 +83,31 @@
             </p>
         </div>
 
-        <!-- 🏆 🔥 VIP STATUS CARD (यह डिज़ाइन स्टेटस के लिए है) 🔥 🏆 -->
-        <div id="marksCard" class="vip-card">
-            <div class="shine-effect"></div>
+        <!-- 🏆 🔥 VIP IMAGE CARD (यह हिस्सा इमेज में कन्वर्ट होगा) 🔥 🏆 -->
+        <div id="cardWrapper" style="display: none;">
             
-            <i class="fa-solid fa-trophy" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; animation: float 3s ease-in-out infinite; text-shadow: 0 0 20px rgba(251,191,36,0.6);"></i>
-            
-            <h3 style="margin: 0 0 5px 0; color: #cbd5e1; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Certificate of Achievement</h3>
-            <h2 class="gold-text" style="font-size: 26px; margin: 5px 0 20px 0;" id="resName">Student Name</h2>
-            
-            <div style="background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 15px; border: 1px solid rgba(251, 191, 36, 0.2);">
-                <p style="margin: 0; color: #94a3b8; font-size: 13px;">Test Set Code: <span id="resSet" style="color: white; font-weight: bold;">-</span></p>
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #475569;">
-                    <p style="margin: 0; color: #cbd5e1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Marks Scored</p>
-                    <p style="margin: 5px 0 0 0; color: #10b981; font-weight: 900; font-size: 40px; text-shadow: 0 0 15px rgba(16,185,129,0.4);" id="resMarks">--/--</p>
+            <div id="captureArea" class="vip-card">
+                <!-- GVCC LOGO -->
+                <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; height: auto; margin-bottom: 10px; drop-shadow: 0 4px 6px rgba(0,0,0,0.5);">
+                
+                <h3 style="margin: 0 0 5px 0; color: #cbd5e1; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Class 9th History Test</h3>
+                <h2 class="gold-text" style="font-size: 28px; margin: 10px 0 20px 0;" id="resName">Student Name</h2>
+                
+                <div style="background: rgba(0, 0, 0, 0.4); border-radius: 10px; padding: 15px; border: 1px solid rgba(251, 191, 36, 0.3);">
+                    <p style="margin: 0; color: #94a3b8; font-size: 13px;">Test Set Code: <span id="resSet" style="color: white; font-weight: bold;">-</span></p>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #475569;">
+                        <p style="margin: 0; color: #cbd5e1; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;">Marks Scored</p>
+                        <p style="margin: 5px 0 0 0; color: #10b981; font-weight: 900; font-size: 42px; text-shadow: 0 0 15px rgba(16,185,129,0.5);" id="resMarks">--/--</p>
+                    </div>
                 </div>
+                <p style="margin: 15px 0 0 0; font-size: 10px; color: #64748b; font-weight: bold;">Gyan Varsha Coaching Center</p>
             </div>
 
-            <!-- WhatsApp Share / Screenshot Button -->
-            <button class="share-btn" onclick="shareOnWhatsApp()">
-                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Share on Status
+            <!-- 🔥 Download / Share Button (यह इमेज में नहीं आएगा) 🔥 -->
+            <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
+                <i class="fa-solid fa-camera"></i> Share to Status / Download
             </button>
-            <p style="font-size: 11px; color: #64748b; margin: 10px 0 0 0;">📸 Screenshot lijiye aur apne doston ko dikhaiye!</p>
+            <p style="font-size: 12px; color: #94a3b8; margin: 10px 0 0 0;">(Button par click karein, Image save ho jayegi!)</p>
         </div>
 
     </div>
@@ -162,45 +159,77 @@
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
             
-            // 🔥 Yahan hum Login Profile se Asli Naam utha rahe hain! 🔥
             let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name") || "GVCC Student";
-
             let studentData = resultDatabase[loggedInRoll];
             let errorMsg = document.getElementById("codeError");
-            let resultCard = document.getElementById("marksCard");
-
+            
             if (studentData && enteredCode === studentData.code) {
                 errorMsg.style.display = "none";
-                document.getElementById("resultSection").style.display = "none"; // Code daalne wala dabba hata do taaki card accha dikhe
-                resultCard.style.display = "block";
+                document.getElementById("resultSection").style.display = "none"; 
+                document.getElementById("cardWrapper").style.display = "block"; // Card dikhao
                 
-                // Set the dynamic name and marks
                 document.getElementById("resName").innerText = loggedInName;
                 document.getElementById("resSet").innerText = studentData.set;
                 document.getElementById("resMarks").innerText = studentData.marks;
 
-                // Ek chhota sa success sound 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
 
             } else {
                 errorMsg.style.display = "block";
-                resultCard.style.display = "none";
+                document.getElementById("cardWrapper").style.display = "none";
             }
         }
 
-        // 📲 Status par share karne ka logic
-        function shareOnWhatsApp() {
-            let marks = document.getElementById("resMarks").innerText;
-            let shareText = `🎉 *Yeh dekho mera GVCC Offline Test ka VIP Result!* 🏆\n\n🎯 *My Score:* ${marks}\n\nAap bhi 'Gyan Varsha Coaching Center' app par judkar padhai karein! 🚀`;
+        // 📸 IMAGE GENERATE AUR SHARE KARNE KA MAGIC FUNCTION
+        async function generateAndShareImage() {
+            const btn = document.getElementById("shareBtnObj");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating Card...';
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+
+            const captureElement = document.getElementById("captureArea");
             
-            if (navigator.share) {
-                navigator.share({
-                    title: 'My GVCC Result',
-                    text: shareText
-                }).catch(console.error);
-            } else {
-                // Agar phone support nahi karta, to seedha WhatsApp khol dega
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`);
+            try {
+                // html2canvas library se card ki photo kheench rahe hain
+                const canvas = await html2canvas(captureElement, {
+                    scale: 3, // High Quality HD Image
+                    backgroundColor: "#0f172a", // Dark background maintain rakhega
+                    useCORS: true // Logo properly load ho jayega
+                });
+
+                // Image ko PNG Data URL me badalna
+                const imageData = canvas.toDataURL("image/png");
+                
+                // Blob me convert karna (Sharing ke liye zaroori hai)
+                const blob = await (await fetch(imageData)).blob();
+                const file = new File([blob], "GVCC_History_Result.png", { type: blob.type });
+
+                // Check karna ki kya phone Image direct WhatsApp par share support karta hai
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: 'My History Result',
+                        text: 'Mera GVCC Class 9th History Test ka result aa gaya hai! 🚀',
+                        files: [file]
+                    });
+                } else {
+                    // Agar phone support nahi karta, toh seedha HD Image Download kara do
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = imageData;
+                    downloadLink.download = "GVCC_History_Result.png";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    
+                    alert("🎉 Aapka VIP Result Card Gallery me save ho gaya hai. Ab aap ise WhatsApp Status par laga sakte hain!");
+                }
+            } catch (error) {
+                console.error("Error creating image:", error);
+                alert("⚠️ Image generate karne mein koi problem aayi. Kripya normal Screenshot le lijiye.");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
             }
         }
     </script>
