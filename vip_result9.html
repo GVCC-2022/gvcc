@@ -20,10 +20,11 @@
             min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
         }
         
+        /* Container ko thoda chhota aur compact kiya gaya hai */
         .container { 
             background: rgba(15, 23, 42, 0.7); 
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 420px; 
+            padding: 30px 20px; border-radius: 20px; width: 90%; max-width: 400px; 
             text-align: center; 
             box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
@@ -55,14 +56,14 @@
         /* Back Link */
         .back-link { 
             color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
-            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; transition: 0.2s; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; 
             background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
         }
         .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
 
-        /* 🔥 VIP MOBILE PREVIEW CARD 🔥 */
+        /* 🔥 VIP MOBILE PREVIEW CARD (COMPACT SIZE + BIG LOGO) 🔥 */
         .mobile-preview-card {
-            margin-top: 25px; padding: 30px 20px; 
+            margin-top: 15px; padding: 25px 15px; 
             background: linear-gradient(145deg, #1e3a8a, #0f172a); 
             border-radius: 16px; border: 2px solid #d4af37; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.15);
@@ -79,25 +80,25 @@
         }
         @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
 
-        /* 🔥 PREVIEW LOGO BADA KIYA HAI (150px) 🔥 */
-        .preview-logo { width: 150px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        /* PREVIEW LOGO BADA KIYA HAI AUR CARD CHHOTA */
+        .preview-logo { width: 130px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
         
-        .preview-class { margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
-        .preview-subject { color: #ffffff; font-size: 26px; margin: 8px 0 20px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .preview-name { color: #ffd700; font-size: 24px; margin: 10px 0; font-weight: bold; letter-spacing: 1px; }
+        .preview-class { margin: 0; color: #d4af37; font-size: 13px; letter-spacing: 3px; font-weight: 900; }
+        .preview-subject { color: #ffffff; font-size: 22px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .preview-name { color: #ffd700; font-size: 20px; margin: 5px 0; font-weight: bold; letter-spacing: 1px; }
         
         .preview-marks-box { 
             border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; 
-            padding: 20px; margin-top: 20px; background: rgba(0,0,0,0.4); 
+            padding: 15px; margin-top: 15px; background: rgba(0,0,0,0.4); 
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
         }
-        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 13px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
-        .preview-marks-value { margin: 10px 0 0 0; color: #ffffff; font-weight: 900; font-size: 45px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 11px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .preview-marks-value { margin: 5px 0 0 0; color: #ffffff; font-weight: 900; font-size: 38px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
         .share-btn {
             background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
-            padding: 16px 20px; font-size: 17px; font-weight: 900; border-radius: 10px; 
-            cursor: pointer; width: 100%; margin-top: 25px; transition: all 0.3s ease; 
+            padding: 15px 20px; font-size: 16px; font-weight: 900; border-radius: 10px; 
+            cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; 
             box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
         }
         .share-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6); }
@@ -117,19 +118,20 @@
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* 🔥 SIDE TEXT FIX (Neeche kiya gaya hai - bottom: 120px) 🔥 */
+        /* 🔥 SIDE TEXT FIX (Andar ki taraf safely lock kar diya gaya hai) 🔥 */
         .side-text-container {
             position: absolute;
-            left: 70px; 
-            bottom: 120px; /* Pehle 300px tha, ab aur neeche shift kar diya */
+            left: 60px; /* Ab ye blue border par kabhi nahi chadhega */
+            bottom: 120px; 
             transform-origin: left bottom;
             transform: rotate(-90deg);
             z-index: 20;
         }
         .side-text { 
-            font-size: 26px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
+            font-size: 24px; /* Thoda chhota kiya taki perfect set ho */
+            color: #64748b; font-weight: bold; letter-spacing: 3px; 
             text-transform: uppercase; font-family: 'Segoe UI', sans-serif;
-            white-space: nowrap; /* Tute ga nahi */
+            white-space: nowrap; 
         }
 
         /* 🪶 WATERMARK */
@@ -193,7 +195,7 @@
         <h2 style="color: #60a5fa; margin-top: 0; font-size: 26px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
             <i class="fa-solid fa-file-contract" style="color: #3b82f6;"></i> History Result
         </h2>
-        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 30px;">Verify and download your official marksheet.</p>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
         <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection">
@@ -207,7 +209,7 @@
         <!-- 📱 VIP MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
-                <!-- PREVIEW LOGO (AB 150px HAI) -->
+                <!-- PREVIEW LOGO (AB BADA AUR HIGHLIGHTED HAI) -->
                 <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
                 <h3 class="preview-class">CLASS 9TH</h3>
                 <h2 class="preview-subject">HISTORY RESULT</h2>
@@ -227,7 +229,7 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- Side Text (Neeche shift kiya gaya hai) -->
+            <!-- Safe Side Text Container -->
             <div class="side-text-container">
                 <div class="side-text">Monthly Test : 2026-07-15</div>
             </div>
@@ -401,7 +403,7 @@
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
                             navigator.share({
                                 title: 'GVCC Formal Marksheet',
-                                text: 'Mera GVCC Class 9th History ka Official Marksheet. 📄',
+                                text: 'Mera GVCC Class 9th History ka Monthly Test ka Result. 📄',
                                 files: [file]
                             }).catch(err => forceDownload(imageData, fileName));
                         } else {
