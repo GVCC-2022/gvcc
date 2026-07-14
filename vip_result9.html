@@ -6,22 +6,67 @@
     <title>GVCC - Class 9th VIP Result</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; }
-        .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; }
+        .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
         .hidden { display: none; }
-        .btn { background: #3b82f6; color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-        .input-box { width: 90%; padding: 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; text-transform: uppercase; text-align: center; margin-bottom: 20px; }
+        
+        .btn { background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .btn:active { transform: scale(0.95); }
+        
+        .input-box { width: 90%; padding: 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; text-transform: uppercase; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
         .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: bold; display: block; text-align: left; margin-bottom: 20px; transition: 0.2s; }
         .back-link:hover { color: white; }
+
+        /* 🔥 VIP GOLDEN CARD STYLES 🔥 */
+        .vip-card {
+            display: none; 
+            margin-top: 30px; 
+            padding: 30px 20px; 
+            background: linear-gradient(135deg, #111827 0%, #1e293b 100%); 
+            border-radius: 15px; 
+            border: 2px solid #fbbf24; 
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.3), inset 0 0 15px rgba(251, 191, 36, 0.1); 
+            position: relative; 
+            overflow: hidden;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gold-text {
+            background: linear-gradient(to right, #fde047, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        .shine-effect {
+            position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
+            background: linear-gradient(90deg, transparent, rgba(251,191,36,0.2), transparent); 
+            transform: skewX(-20deg); animation: shine 3s infinite;
+        }
+
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* WhatsApp Share Button */
+        .share-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E); color: white; border: none; 
+            padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; 
+            cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .share-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 🔙 Back Button -->
         <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 
-        <h2 style="color: #3b82f6; margin-top: 0;">📊 Offline Test Result</h2>
+        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> Offline Test Result</h2>
 
+        <!-- 🛑 ERROR BOX -->
         <div id="classErrorBox" class="hidden" style="background: rgba(220, 38, 38, 0.1); border: 1px solid #dc2626; padding: 15px; border-radius: 10px; margin-top: 20px;">
             <i class="fa-solid fa-lock" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
             <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
@@ -31,60 +76,72 @@
             </p>
         </div>
 
+        <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
             <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna VIP Question Code daalein</p>
             
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
-            <button class="btn" onclick="verifyResult()">Get Result 🚀</button>
+            <button class="btn" onclick="verifyResult()">Unlock Result 🚀</button>
 
+            <!-- Error -->
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold;">
                 ⚠️ Invalid Code! (Ya code galat hai, ya kisi aur ka hai)
             </p>
+        </div>
 
-            <div id="marksCard" style="display: none; margin-top: 25px; padding: 20px; background: #0f172a; border-radius: 10px; border: 1px solid #10b981;">
-                <h3 style="margin: 0 0 15px 0; color: #10b981;">🎉 Result Found!</h3>
-                <p style="margin: 8px 0; color: #cbd5e1; font-size: 15px;">Name: <span id="resName" style="color: white; font-weight: bold;">-</span></p>
-                <p style="margin: 8px 0; color: #cbd5e1; font-size: 15px;">Set Code: <span id="resSet" style="color: white; font-weight: bold;">-</span></p>
-                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #334155;">
-                    <p style="margin: 0; color: #cbd5e1; font-size: 15px;">Marks Scored</p>
-                    <p style="margin: 5px 0 0 0; color: #10b981; font-weight: bold; font-size: 28px;" id="resMarks">-</p>
+        <!-- 🏆 🔥 VIP STATUS CARD (यह डिज़ाइन स्टेटस के लिए है) 🔥 🏆 -->
+        <div id="marksCard" class="vip-card">
+            <div class="shine-effect"></div>
+            
+            <i class="fa-solid fa-trophy" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; animation: float 3s ease-in-out infinite; text-shadow: 0 0 20px rgba(251,191,36,0.6);"></i>
+            
+            <h3 style="margin: 0 0 5px 0; color: #cbd5e1; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Certificate of Achievement</h3>
+            <h2 class="gold-text" style="font-size: 26px; margin: 5px 0 20px 0;" id="resName">Student Name</h2>
+            
+            <div style="background: rgba(15, 23, 42, 0.6); border-radius: 10px; padding: 15px; border: 1px solid rgba(251, 191, 36, 0.2);">
+                <p style="margin: 0; color: #94a3b8; font-size: 13px;">Test Set Code: <span id="resSet" style="color: white; font-weight: bold;">-</span></p>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #475569;">
+                    <p style="margin: 0; color: #cbd5e1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Marks Scored</p>
+                    <p style="margin: 5px 0 0 0; color: #10b981; font-weight: 900; font-size: 40px; text-shadow: 0 0 15px rgba(16,185,129,0.4);" id="resMarks">--/--</p>
                 </div>
             </div>
+
+            <!-- WhatsApp Share / Screenshot Button -->
+            <button class="share-btn" onclick="shareOnWhatsApp()">
+                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Share on Status
+            </button>
+            <p style="font-size: 11px; color: #64748b; margin: 10px 0 0 0;">📸 Screenshot lijiye aur apne doston ko dikhaiye!</p>
         </div>
 
     </div>
 
     <script>
-        // 🗄️ रिज़ल्ट डेटाबेस (पूरे 22 बच्चों की लिस्ट)
-        // जब टेस्ट हो जाए, तो "--/15" को हटाकर असली नंबर लिख दीजिएगा।
         const resultDatabase = {
-            "901": { name: "Prince Raj", code: "GVCC-P9R0A1", set: "A", marks: "34/35" },
-            "902": { name: "Avinash Kumar", code: "GVCC-M9K0B2", set: "B", marks: "45/35" },
-            "903": { name: "Shyam Kumar", code: "GVCC-L9X0C3", set: "C", marks: "45/35" },
-            "904": { name: "Kajal Kumari", code: "GVCC-V9T0D4", set: "D", marks: "24/35" },
-            "905": { name: "Nuzhat Parveen", code: "GVCC-M9R0A5", set: "A", marks: "32/35" },
-            "906": { name: "Sneha Kumari", code: "GVCC-B9Y0E6", set: "E", marks: "56/35" },
-            "907": { name: "Aditya Soni", code: "GVCC-Z9H0F7", set: "F", marks: "23/35" },
-            "908": { name: "Gautam", code: "GVCC-C9W0A8", set: "A", marks: "56/35" },
-            "909": { name: "Mamta Kumari", code: "GVCC-N9Q0B9", set: "B", marks: "34/35" },
-            "910": { name: "Priya Kumari", code: "GVCC-J9F1C0", set: "C", marks: "25/35" },
-            "911": { name: "Muskan Khatoon", code: "GVCC-T9R1D1", set: "D", marks: "26/35" },
-            "912": { name: "Abhishek Kumar", code: "GVCC-D9M1E2", set: "E", marks: "14/35" },
-            "913": { name: "Rahul Kumar", code: "GVCC-G9K1F3", set: "F", marks: "09/35" },
-            "915": { name: "Prince Kumar", code: "GVCC-W9V1A5", set: "A", marks: "23/35" },
-            "916": { name: "Ritik Raushan", code: "GVCC-F9P1B6", set: "B", marks: "13/35" },
-            "917": { name: "Manish Kumar", code: "GVCC-H9X1C7", set: "C", marks: "14/35" },
-            "918": { name: "Altamash", code: "GVCC-S9N1D8", set: "D", marks: "23/35" },
-            "919": { name: "Pawan Kumar", code: "GVCC-K9L1B9", set: "B", marks: "23/35" },
-            "920": { name: "Kanchan Kumari", code: "GVCC-K9Z2E0", set: "E", marks: "56/35" },
-            "921": { name: "Puja Kumari", code: "GVCC-Y9L2F1", set: "F", marks: "16/35" },
-            "922": { name: "Uzma Khatoon", code: "GVCC-T9Q2A2", set: "A", marks: "21/35" },
-            "924": { name: "Radhe Syam", code: "GVCC-W9Z2B4", set: "B", marks: "20/35" }
+            "901": { code: "GVCC-P9R0A1", set: "A", marks: "34/35" },
+            "902": { code: "GVCC-M9K0B2", set: "B", marks: "45/35" },
+            "903": { code: "GVCC-L9X0C3", set: "C", marks: "45/35" },
+            "904": { code: "GVCC-V9T0D4", set: "D", marks: "24/35" },
+            "905": { code: "GVCC-M9R0A5", set: "A", marks: "32/35" },
+            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "56/35" },
+            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "23/35" },
+            "908": { code: "GVCC-C9W0A8", set: "A", marks: "56/35" },
+            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "34/35" },
+            "910": { code: "GVCC-J9F1C0", set: "C", marks: "25/35" },
+            "911": { code: "GVCC-T9R1D1", set: "D", marks: "26/35" },
+            "912": { code: "GVCC-D9M1E2", set: "E", marks: "14/35" },
+            "913": { code: "GVCC-G9K1F3", set: "F", marks: "09/35" },
+            "915": { code: "GVCC-W9V1A5", set: "A", marks: "23/35" },
+            "916": { code: "GVCC-F9P1B6", set: "B", marks: "13/35" },
+            "917": { code: "GVCC-H9X1C7", set: "C", marks: "14/35" },
+            "918": { code: "GVCC-S9N1D8", set: "D", marks: "23/35" },
+            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23/35" },
+            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "56/35" },
+            "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16/35" },
+            "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21/35" },
+            "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20/35" }
         };
 
-        // 🔍 पेज खुलते ही चेक करो कि बच्चा किस क्लास का है
         window.onload = function() {
-            // लॉगिन वाले सिस्टम से क्लास और रोल नंबर उठाना
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
 
@@ -94,35 +151,56 @@
                 return;
             }
 
-            // 🛑 क्लास फिल्टर लॉजिक
             if (loggedInClass.includes("9")) {
-                // अगर 9th का है तो कोड डालने वाला डब्बा दिखाओ
                 document.getElementById("resultSection").classList.remove("hidden");
             } else {
-                // अगर 8th या 10th का है तो ताला (Lock) वाला मैसेज दिखाओ
                 document.getElementById("classErrorBox").classList.remove("hidden");
             }
         };
 
-        // 🎯 रिज़ल्ट चेक करने का फंक्शन (सिर्फ 9th वालों के लिए चलेगा)
         function verifyResult() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
             
+            // 🔥 Yahan hum Login Profile se Asli Naam utha rahe hain! 🔥
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name") || "GVCC Student";
+
             let studentData = resultDatabase[loggedInRoll];
             let errorMsg = document.getElementById("codeError");
             let resultCard = document.getElementById("marksCard");
 
             if (studentData && enteredCode === studentData.code) {
                 errorMsg.style.display = "none";
+                document.getElementById("resultSection").style.display = "none"; // Code daalne wala dabba hata do taaki card accha dikhe
                 resultCard.style.display = "block";
                 
-                document.getElementById("resName").innerText = studentData.name;
+                // Set the dynamic name and marks
+                document.getElementById("resName").innerText = loggedInName;
                 document.getElementById("resSet").innerText = studentData.set;
                 document.getElementById("resMarks").innerText = studentData.marks;
+
+                // Ek chhota sa success sound 
+                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+
             } else {
                 errorMsg.style.display = "block";
                 resultCard.style.display = "none";
+            }
+        }
+
+        // 📲 Status par share karne ka logic
+        function shareOnWhatsApp() {
+            let marks = document.getElementById("resMarks").innerText;
+            let shareText = `🎉 *Yeh dekho mera GVCC Offline Test ka VIP Result!* 🏆\n\n🎯 *My Score:* ${marks}\n\nAap bhi 'Gyan Varsha Coaching Center' app par judkar padhai karein! 🚀`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My GVCC Result',
+                    text: shareText
+                }).catch(console.error);
+            } else {
+                // Agar phone support nahi karta, to seedha WhatsApp khol dega
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`);
             }
         }
     </script>
