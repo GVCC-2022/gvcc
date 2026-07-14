@@ -60,7 +60,7 @@
         }
         .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
 
-        /* 🔥 VIP MOBILE PREVIEW CARD (DIGITAL GOLD THEME) 🔥 */
+        /* 🔥 VIP MOBILE PREVIEW CARD 🔥 */
         .mobile-preview-card {
             margin-top: 25px; padding: 30px 20px; 
             background: linear-gradient(145deg, #1e3a8a, #0f172a); 
@@ -72,7 +72,6 @@
         }
         @keyframes cardReveal { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
         
-        /* Card Sparkle Effect */
         .mobile-preview-card::before {
             content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
@@ -103,48 +102,81 @@
         .share-btn:active { transform: translateY(1px); }
 
         /* ===========================
-          HD PAPER MARKSHEET (HIDDEN - 1080x1920)
+          HD PAPER MARKSHEET (1080x1920)
         =========================== */
         #resultCard {
             width: 1080px; height: 1920px; position: relative; background-color: #f4f7f6; 
             display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
-            box-sizing: border-box; color: #000000; font-family: 'Arial', sans-serif; 
+            box-sizing: border-box; color: #000000; 
+            /* Changed to Professional Official Fonts */
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
+        /* EXACT BORDERS */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        .side-text { position: absolute; left: -100px; bottom: 350px; transform: rotate(-90deg); transform-origin: 0 0; font-size: 30px; color: #64748b; font-weight: bold; letter-spacing: 2px; }
+        /* ⬅️ SIDE TEXT FIX */
+        .side-text-container {
+            position: absolute;
+            left: -130px; 
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            z-index: 5;
+        }
+        .side-text { 
+            font-size: 28px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
+            text-transform: uppercase; font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* 🪶 WATERMARK */
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
 
+        /* 🏫 HEADER */
         .header { width: 100%; text-align: center; z-index: 5; margin-top: 20px; margin-bottom: 30px; }
-        .school-name { font-size: 55px; font-weight: 900; color: #ed3237; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
+        .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
-        .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; text-shadow: 2px 2px 0px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
+        .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
 
-        .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #000; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* 📜 TITLE BOX */
+        .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 2px solid #000; border-radius: 12px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
+        /* 📋 DETAILS TABLE (Fixed Subject Spacing) */
         .details-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 38px; margin-bottom: 40px; background: #fff; }
-        .details-table td { border: 3px solid #000; padding: 20px 30px; }
+        .details-table td { border: 2px solid #000; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        .marks-container { display: flex; width: 95%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 15px; margin-bottom: 30px; background: #fff; box-shadow: 0 5px 15px rgba(41, 67, 142, 0.1); }
+        /* 📊 MARKS BOX */
+        .marks-container { display: flex; width: 95%; border: 2px solid #29438e; z-index: 5; overflow: hidden; border-radius: 15px; margin-bottom: 30px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
         .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
-        .mark-box.total { border-right: 3px solid #29438e; }
-        .mark-label { font-size: 28px; font-weight: normal; color: #000; text-transform: uppercase; letter-spacing: 1px; }
-        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -5px; }
-        .val-total { color: #29438e; text-shadow: 12px 12px 0px #e2e8f0; }
-        .val-obtained { color: #e32726; text-shadow: 12px 12px 0px #e2e8f0; }
+        .mark-box.total { border-right: 2px solid #29438e; }
+        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
+        
+        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        .val-total { color: #29438e; }
+        .val-obtained { color: #e32726; }
 
-        .breakdown-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 30px; margin-bottom: 40px; text-align: center; background: #fff; }
-        .breakdown-table th { border: 3px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
-        .breakdown-table td { border: 3px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
+        /* 📝 BREAKDOWN TABLE */
+        .breakdown-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
+        .breakdown-table th { border: 2px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
+        .breakdown-table td { border: 2px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
 
-        .remarks-box { font-size: 40px; font-weight: 900; padding: 15px 50px; border-radius: 12px; z-index: 5; border: 4px solid #f5c518; background: #fff; color: #e91e63; box-shadow: 0 5px 15px rgba(245, 197, 24, 0.15); margin-bottom: auto; }
+        /* ⭐ VIP REMARKS BOX (Tute hue border wala professional look) */
+        .remarks-box { 
+            font-size: 40px; font-weight: 900; padding: 18px 60px; 
+            border-radius: 12px; z-index: 5; background: #fffde7; 
+            color: #e32726; margin-bottom: auto; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            /* JS se iska border aur color control hoga, by default dashed hai */
+            border: 4px dashed #f5c518; 
+        }
 
-        .footer-logo { width: 300px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
-        .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; }
+        /* 🟢 GREEN SEAL LOGO (Aapka naya file name) */
+        .footer-logo { width: 260px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
+        
+        /* 🌐 WEBSITE TEXT */
+        .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
 
     </style>
 </head>
@@ -192,7 +224,11 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <div class="side-text">Monthly Test : 26-07-2026</div>
+            <!-- Exact Left Side Text Fix -->
+            <div class="side-text-container">
+                <div class="side-text">Monthly Test : 2026-07-15</div>
+            </div>
+            
             <img src="20260620_144347.png" class="watermark">
 
             <div class="header">
@@ -209,12 +245,13 @@
                     <td class="td-value" id="hdName">STUDENT NAME</td>
                 </tr>
                 <tr>
-                    <td class="td-label" style="letter-spacing: 5px;">S U B J E C T</td>
+                    <!-- SUBJECT properly formatted so it stays in one line -->
+                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
                     <td class="td-value">HISTORY</td>
                 </tr>
                 <tr>
                     <td class="td-label">QUESTION SET CODE</td>
-                    <td class="td-value" id="hdSet" style="font-size: 55px;">A</td>
+                    <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
                 </tr>
             </table>
 
@@ -246,7 +283,7 @@
                 Remarks: Outstanding 🌟
             </div>
 
-            <!-- Ensure this file (20260714_163333.png) is uploaded to your server/folder! -->
+            <!-- NAYA GREEN SEAL LOGO KA FILE NAME -->
             <img src="20260714_163333.png" class="footer-logo">
             
             <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
@@ -300,35 +337,38 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // VIP Mobile Preview
                 document.getElementById("resNamePrev").innerText = loggedInName;
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
 
-                // HD Background Print Card
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("hdObtained").innerText = studentData.marks;
 
-                // Breakdown Marks
                 document.getElementById("hdObj").innerText = studentData.obj;
                 document.getElementById("hdShort").innerText = studentData.short;
                 document.getElementById("hdLong").innerText = studentData.long;
 
-                // Badge logic
+                // VIP Broken Line Dashed Colors setup
                 const marks = parseInt(studentData.marks);
                 const badge = document.getElementById("performanceBadge");
 
                 if(marks >= 30){ 
                     badge.innerHTML = "Remarks: Outstanding 🌟"; 
-                    badge.style.color = "#e91e63"; badge.style.borderColor = "#f5c518";
+                    badge.style.color = "#e32726"; // Red Text
+                    badge.style.border = "4px dashed #f5c518"; // Yellow VIP dashed
+                    badge.style.background = "#fffde7"; 
                 }
                 else if(marks >= 20){ 
                     badge.innerHTML = "Remarks: Good Progress 👍"; 
-                    badge.style.color = "#1e88e5"; badge.style.borderColor = "#f5c518";
+                    badge.style.color = "#29438e"; // Blue Text
+                    badge.style.border = "4px dashed #29438e"; // Blue VIP dashed
+                    badge.style.background = "#eef2ff"; 
                 }
                 else{ 
                     badge.innerHTML = "Remarks: Needs Improvement 📖"; 
-                    badge.style.color = "#d32f2f"; badge.style.borderColor = "#f5c518";
+                    badge.style.color = "#d32f2f"; // Dark Red Text
+                    badge.style.border = "4px dashed #d32f2f"; // Red VIP dashed
+                    badge.style.background = "#fef2f2"; 
                 }
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
