@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - Final Result Sheet</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -108,7 +108,6 @@
             width: 1080px; height: 1920px; position: relative; background-color: #f4f7f6; 
             display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
             box-sizing: border-box; color: #000000; 
-            /* Changed to Professional Official Fonts */
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
@@ -116,17 +115,21 @@
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* ⬅️ SIDE TEXT FIX */
-        .side-text-container {
-            position: absolute;
-            left: -130px; 
-            top: 50%;
-            transform: translateY(-50%) rotate(-90deg);
-            z-index: 5;
-        }
+        /* 🔥 SIDE TEXT FIX (Perfect Alignment) 🔥 */
         .side-text { 
-            font-size: 28px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
-            text-transform: uppercase; font-family: 'Segoe UI', sans-serif;
+            position: absolute;
+            left: 48px; /* Safe space between yellow border and table */
+            bottom: 300px; /* Exact height from bottom */
+            transform-origin: left bottom;
+            transform: rotate(-90deg);
+            font-size: 26px; 
+            color: #64748b; 
+            font-weight: bold; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            font-family: 'Segoe UI', sans-serif;
+            white-space: nowrap; /* Tute ga nahi */
+            z-index: 20;
         }
 
         /* 🪶 WATERMARK */
@@ -141,7 +144,7 @@
         /* 📜 TITLE BOX */
         .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 2px solid #000; border-radius: 12px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        /* 📋 DETAILS TABLE (Fixed Subject Spacing) */
+        /* 📋 DETAILS TABLE */
         .details-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 38px; margin-bottom: 40px; background: #fff; }
         .details-table td { border: 2px solid #000; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; }
@@ -162,17 +165,16 @@
         .breakdown-table th { border: 2px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
         .breakdown-table td { border: 2px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
 
-        /* ⭐ VIP REMARKS BOX (Tute hue border wala professional look) */
+        /* ⭐ VIP REMARKS BOX */
         .remarks-box { 
             font-size: 40px; font-weight: 900; padding: 18px 60px; 
             border-radius: 12px; z-index: 5; background: #fffde7; 
             color: #e32726; margin-bottom: auto; letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            /* JS se iska border aur color control hoga, by default dashed hai */
             border: 4px dashed #f5c518; 
         }
 
-        /* 🟢 GREEN SEAL LOGO (Aapka naya file name) */
+        /* 🟢 GREEN SEAL LOGO */
         .footer-logo { width: 260px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
         
         /* 🌐 WEBSITE TEXT */
@@ -224,10 +226,8 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- Exact Left Side Text Fix -->
-            <div class="side-text-container">
-                <div class="side-text">Monthly Test : 2026-07-15</div>
-            </div>
+            <!-- Side Text Fix Here -->
+            <div class="side-text">Monthly Test : 2026-07-15</div>
             
             <img src="20260620_144347.png" class="watermark">
 
@@ -245,7 +245,6 @@
                     <td class="td-value" id="hdName">STUDENT NAME</td>
                 </tr>
                 <tr>
-                    <!-- SUBJECT properly formatted so it stays in one line -->
                     <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
                     <td class="td-value">HISTORY</td>
                 </tr>
@@ -283,7 +282,6 @@
                 Remarks: Outstanding 🌟
             </div>
 
-            <!-- NAYA GREEN SEAL LOGO KA FILE NAME -->
             <img src="20260714_163333.png" class="footer-logo">
             
             <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
@@ -348,26 +346,25 @@
                 document.getElementById("hdShort").innerText = studentData.short;
                 document.getElementById("hdLong").innerText = studentData.long;
 
-                // VIP Broken Line Dashed Colors setup
                 const marks = parseInt(studentData.marks);
                 const badge = document.getElementById("performanceBadge");
 
                 if(marks >= 30){ 
                     badge.innerHTML = "Remarks: Outstanding 🌟"; 
-                    badge.style.color = "#e32726"; // Red Text
-                    badge.style.border = "4px dashed #f5c518"; // Yellow VIP dashed
+                    badge.style.color = "#e32726"; 
+                    badge.style.border = "4px dashed #f5c518"; 
                     badge.style.background = "#fffde7"; 
                 }
                 else if(marks >= 20){ 
                     badge.innerHTML = "Remarks: Good Progress 👍"; 
-                    badge.style.color = "#29438e"; // Blue Text
-                    badge.style.border = "4px dashed #29438e"; // Blue VIP dashed
+                    badge.style.color = "#29438e"; 
+                    badge.style.border = "4px dashed #29438e"; 
                     badge.style.background = "#eef2ff"; 
                 }
                 else{ 
                     badge.innerHTML = "Remarks: Needs Improvement 📖"; 
-                    badge.style.color = "#d32f2f"; // Dark Red Text
-                    badge.style.border = "4px dashed #d32f2f"; // Red VIP dashed
+                    badge.style.color = "#d32f2f"; 
+                    badge.style.border = "4px dashed #d32f2f"; 
                     badge.style.background = "#fef2f2"; 
                 }
 
