@@ -79,8 +79,8 @@
         }
         @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
 
-        /* PREVIEW LOGO KA SIZE YAHAN BADA KIYA HAI (120px) */
-        .preview-logo { width: 120px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        /* 🔥 PREVIEW LOGO BADA KIYA HAI (150px) 🔥 */
+        .preview-logo { width: 150px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
         
         .preview-class { margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
         .preview-subject { color: #ffffff; font-size: 26px; margin: 8px 0 20px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
@@ -117,11 +117,11 @@
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* 🔥 SIDE TEXT FIX (Moved to Left: 70px to stay inside border) 🔥 */
+        /* 🔥 SIDE TEXT FIX (Neeche kiya gaya hai - bottom: 120px) 🔥 */
         .side-text-container {
             position: absolute;
-            left: 70px; /* Safe space andar ki taraf border cross nahi karega */
-            bottom: 300px;
+            left: 70px; 
+            bottom: 120px; /* Pehle 300px tha, ab aur neeche shift kar diya */
             transform-origin: left bottom;
             transform: rotate(-90deg);
             z-index: 20;
@@ -207,7 +207,7 @@
         <!-- 📱 VIP MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
-                <!-- PREVIEW LOGO -->
+                <!-- PREVIEW LOGO (AB 150px HAI) -->
                 <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
                 <h3 class="preview-class">CLASS 9TH</h3>
                 <h2 class="preview-subject">HISTORY RESULT</h2>
@@ -227,7 +227,7 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- Side Text Fix Here -->
+            <!-- Side Text (Neeche shift kiya gaya hai) -->
             <div class="side-text-container">
                 <div class="side-text">Monthly Test : 2026-07-15</div>
             </div>
