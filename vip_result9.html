@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GVCC - History Test Result</title>
-    <!-- FontAwesome -->
+    <title>GVCC - Formal Test Result</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 🔥 html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
+        /* ===========================
+             MAIN UI (DARK DASHBOARD)
+        =========================== */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; }
-        .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+        .container { background: #1e293b; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6); border: 1px solid #334155; }
         .hidden { display: none; }
         
-        .btn { background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .btn { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
         .btn:active { transform: scale(0.95); }
         
         .input-box { width: 90%; padding: 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; text-transform: uppercase; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
         .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: bold; display: block; text-align: left; margin-bottom: 20px; transition: 0.2s; }
         .back-link:hover { color: white; }
 
-        /* मोबाइल स्क्रीन पर दिखने वाला छोटा कार्ड */
+        /* मोबाइल स्क्रीन पर दिखने वाला छोटा कार्ड (अब Paper Style में) */
         .mobile-preview-card {
-            margin-top: 20px; padding: 20px; background: linear-gradient(180deg,#081426,#111827); 
-            border-radius: 15px; border: 2px solid #d4af37; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); 
+            margin-top: 20px; padding: 20px; background: #fdfcf8; 
+            border-radius: 10px; border: 2px solid #1e3a8a; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); 
             position: relative; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #111; font-family: 'Times New Roman', serif;
         }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -38,308 +40,335 @@
         .share-btn:active { transform: scale(0.95); }
 
         /* ===========================
-              PREMIUM RESULT CARD (FIXED LAYOUT)
+          HD PAPER MARKSHEET (1080x1920)
         =========================== */
         #resultCard {
             width: 1080px;
             height: 1920px;
             position: relative;
-            overflow: hidden;
-            border-radius: 55px;
-            background: radial-gradient(circle at top, #1f355e 0%, #081426 40%, #050b14 100%);
+            background-color: #ffffff; /* Pure Paper White */
             
-            /* Flex layout taaki overlap na ho */
+            /* Halka Paper Texture Design */
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,0,0,0.03) 50px);
+            
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 70px;
+            padding: 90px;
             box-sizing: border-box;
+            color: #000000;
+            font-family: 'Georgia', serif; /* Formal School Font */
         }
 
+        /* VIP Official Borders */
         #resultCard::before {
             content: "";
             position: absolute;
-            inset: 18px;
-            border: 8px solid #d4af37;
-            border-radius: 45px;
-            box-shadow: 0 0 40px rgba(255,215,0,.45), inset 0 0 30px rgba(255,215,0,.18);
+            inset: 30px;
+            border: 15px solid #1e3a8a; /* Dark Blue Formal Border */
+            border-radius: 5px;
             pointer-events: none;
-            z-index: 1;
+            z-index: 10;
         }
-
         #resultCard::after {
             content: "";
             position: absolute;
-            inset: 42px;
-            border: 2px solid rgba(255,255,255,.18);
-            border-radius: 35px;
+            inset: 55px;
+            border: 4px solid #d4af37; /* Thin Gold Inner Border */
+            border-radius: 2px;
             pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Base Glows & Lines */
-        .goldGlow { position: absolute; width: 900px; height: 900px; background: radial-gradient(circle, rgba(255,215,0,.25), transparent 70%); top: -260px; left: 50%; transform: translateX(-50%); filter: blur(50px); pointer-events: none; }
-        .bottomGlow { position: absolute; width: 1000px; height: 500px; background: radial-gradient(circle, rgba(255,170,0,.12), transparent 75%); bottom: -260px; left: 50%; transform: translateX(-50%); pointer-events: none; }
-        
-        /* Shine Effect */
-        .shine { position: absolute; top: -250px; left: -450px; width: 320px; height: 2500px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); transform: rotate(25deg); animation: shineMove 6s linear infinite; pointer-events: none; z-index: 2; }
-        @keyframes shineMove { 100% { left: 1600px; } }
-
-        /* Stars & Laurels */
-        .stars { position: absolute; width: 100%; top: 220px; pointer-events: none; z-index: 2;}
-        .stars span { position: absolute; font-size: 26px; color: #FFD700; animation: blink 2s infinite alternate; }
-        .stars span:nth-child(1) { left: 12%; } .stars span:nth-child(2) { left: 28%; } .stars span:nth-child(3) { left: 50%; } .stars span:nth-child(4) { left: 72%; } .stars span:nth-child(5) { left: 88%; }
-        @keyframes blink { from { opacity: .25; transform: scale(.7); } to { opacity: 1; transform: scale(1.2); } }
-
-        .laurelLeft, .laurelRight { position: absolute; top: 120px; width: 140px; height: 450px; opacity: .35; pointer-events: none; z-index: 2; }
-        .laurelLeft { left: 70px; border-left: 5px solid gold; border-radius: 100px; transform: rotate(-15deg); }
-        .laurelRight { right: 70px; border-right: 5px solid gold; border-radius: 100px; transform: rotate(15deg); }
-
-        /* 🔥 FIXED CROWN (Safe for Image Generation) */
-        .safeCrown {
-            font-size: 80px;
-            margin-bottom: 5px;
-            filter: drop-shadow(0 0 15px gold);
             z-index: 10;
         }
 
-        /* LOGO */
-        .logo {
-            width: 180px; /* Thoda chota kiya taaki height bache */
-            height: 180px;
+        /* 🔥 WATERMARK (Background Logo in Low Opacity) 🔥 */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 750px;
+            opacity: 0.08; /* Ye raha aapka "Capacity" (Opacity) effect! */
+            z-index: 1;
+            pointer-events: none;
+            filter: grayscale(100%); /* Optional: Agar color rakhna ho to line hata dena */
+        }
+
+        /* HEADER SECTION */
+        .header {
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+            border-bottom: 4px solid #1e3a8a;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+        .small-logo {
+            width: 150px;
+            height: 150px;
             object-fit: contain;
-            position: relative;
-            z-index: 5;
-            filter: drop-shadow(0 0 25px gold) drop-shadow(0 0 40px rgba(255,215,0,.4));
         }
-
-        /* Academy Name */
-        .academyName {
-            margin-top: 15px;
-            font-size: 65px; /* Thoda chota kiya */
-            font-weight: 900;
-            letter-spacing: 8px;
-            color: #fff;
+        .school-name-box {
             text-align: center;
-            text-shadow: 0 0 10px rgba(255,255,255,.3), 0 0 30px gold;
-            z-index: 5;
         }
-
-        .academySub {
-            margin-top: 5px;
-            font-size: 28px;
-            letter-spacing: 12px;
-            color: #d4af37;
-            text-align: center;
-            z-index: 5;
-        }
-
-        /* Gold Ribbon */
-        .goldRibbon {
-            width: 700px;
-            margin: 30px auto;
-            padding: 18px 0;
-            background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,.4), 0 0 15px rgba(255,215,0,.4);
-            position: relative;
-            z-index: 5;
-        }
-        .goldRibbon span { font-size: 32px; font-weight: 900; letter-spacing: 4px; color: #111; }
-
-        /* 🔥 FIXED GLASS CARD & TEXT OVERLAP */
-        .glassCard {
-            width: 850px;
-            padding: 35px;
-            border-radius: 30px;
-            background: rgba(255,255,255,.07);
-            border: 2px solid rgba(255,215,0,.25);
-            box-shadow: 0 0 30px rgba(255,215,0,.12), inset 0 0 20px rgba(255,255,255,.05);
-            position: relative;
-            z-index: 5;
-        }
-        .studentTitle { font-size: 24px; letter-spacing: 4px; color: #d4af37; margin-bottom: 10px; }
-        
-        /* Gradient text hatakar pure Gold solid fill kiya image error se bachne ke liye */
-        .studentName {
-            font-size: 75px;
+        .school-name {
+            font-size: 65px;
             font-weight: 900;
-            color: #FFD700;
+            color: #1e3a8a;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 2px 2px 4px rgba(0,0,0,0.8);
-            margin: 5px 0;
+            margin: 0;
+            font-family: 'Arial Black', sans-serif;
+        }
+        .school-address {
+            font-size: 26px;
+            color: #4b5563;
+            letter-spacing: 3px;
+            margin-top: 5px;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
         }
 
-        /* Info Row */
-        .infoRow {
+        /* TITLE */
+        .document-title {
+            font-size: 45px;
+            font-weight: bold;
+            color: #1e3a8a;
+            background: #f1f5f9;
+            padding: 15px 50px;
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            z-index: 5;
+            margin-bottom: 50px;
+            letter-spacing: 4px;
+        }
+
+        /* STUDENT DETAILS TABLE */
+        .details-table {
+            width: 100%;
+            z-index: 5;
+            border-collapse: collapse;
+            font-family: 'Arial', sans-serif;
+            font-size: 32px;
+            margin-bottom: 50px;
+            background: #fff;
+        }
+        .details-table td {
+            border: 3px solid #cbd5e1;
+            padding: 20px 30px;
+        }
+        .td-label {
+            width: 30%;
+            font-weight: bold;
+            color: #1e3a8a;
+            background: #f8fafc;
+            text-transform: uppercase;
+        }
+        .td-value {
+            font-weight: 900;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        /* MARKS BOX */
+        .marks-container {
+            display: flex;
+            width: 100%;
+            border: 5px solid #1e3a8a;
+            border-radius: 10px;
+            z-index: 5;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+        }
+        .mark-box {
+            flex: 1;
+            text-align: center;
+            padding: 40px 20px;
+            background: #ffffff;
+        }
+        .mark-box.total {
+            border-right: 5px solid #1e3a8a;
+            background: #f8fafc;
+        }
+        .mark-label {
+            font-size: 30px;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .mark-value {
+            font-size: 140px;
+            font-weight: 900;
+            margin-top: 10px;
+        }
+        .val-total { color: #0f172a; }
+        .val-obtained { color: #dc2626; } /* Dark Red for Obtained Marks */
+
+        /* REMARKS / BADGE */
+        .remarks-box {
+            font-size: 35px;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            padding: 15px 40px;
+            border-radius: 5px;
+            z-index: 5;
+            border: 3px dashed #1e3a8a;
+            color: #1e3a8a;
+        }
+
+        /* SIGNATURE SECTION */
+        .signature-row {
+            position: absolute;
+            bottom: 120px;
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            z-index: 5;
+            font-family: 'Arial', sans-serif;
+        }
+        .sign-line {
+            width: 300px;
+            border-top: 3px solid #000;
+            text-align: center;
+            padding-top: 15px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #111;
+        }
+        
+        /* Official Gold Seal */
+        .gold-seal {
+            position: absolute;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
-            margin-top: 35px;
+            flex-direction: column;
+            border: 4px dashed #fff;
+            box-shadow: 0 0 0 8px #d4af37, 0 5px 15px rgba(0,0,0,0.3);
             z-index: 5;
+            color: #fff;
+            font-weight: bold;
         }
-        .infoBox {
-            width: 220px;
-            height: 220px;
-            border-radius: 25px;
-            background: rgba(255,255,255,.05);
-            border: 2px solid rgba(255,215,0,.25);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .infoTitle { font-size: 24px; letter-spacing: 3px; color: #d4af37; margin-bottom: 15px; }
-        .setCircle { width: 100px; height: 100px; border-radius: 50%; border: 4px solid gold; display: flex; justify-content: center; align-items: center; font-size: 50px; font-weight: 900; color: #fff; box-shadow: 0 0 20px gold; }
-        .totalMarks { font-size: 80px; font-weight: 900; color: #fff; text-shadow: 0 0 15px gold; }
-        .medalBox { font-size: 110px; filter: drop-shadow(0 0 15px gold); }
-
-        /* Score Card */
-        .scoreCard {
-            width: 850px;
-            margin: 35px auto;
-            padding: 45px;
-            border-radius: 35px;
-            background: linear-gradient(180deg, #172554, #0f172a);
-            border: 3px solid gold;
-            box-shadow: 0 0 35px rgba(255,215,0,.18);
-            z-index: 5;
-        }
-        .scoreTitle { font-size: 30px; letter-spacing: 6px; color: #d4af37; margin-bottom: 15px; }
-        .scoreNumber { font-size: 160px; font-weight: 900; color: #fff; line-height: 1; }
-        .scoreNumber small { font-size: 80px; color: #ffd700; }
-
-        /* Performance Badge */
-        .performanceBadge {
-            display: inline-block;
-            padding: 18px 50px;
-            border-radius: 100px;
-            background: linear-gradient(90deg, #7a5a00, #ffd700, #7a5a00);
-            color: #111;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            box-shadow: 0 0 20px gold;
-            margin-bottom: 40px; /* Space from Footer */
-            z-index: 5;
-        }
-
-        /* Certificate Seal & Footer (Flow Layout me theek kiya) */
-        .certificateSeal {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #FFD700, #A86F00);
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            font-size: 50px; color: #111; font-weight: bold; box-shadow: 0 0 25px gold;
-            margin-bottom: 25px;
-            z-index: 5;
-        }
-        .sealText { font-size: 20px; letter-spacing: 2px; margin-top: 4px; }
-
-        .footerBox {
-            text-align: center;
-            z-index: 5;
-            margin-bottom: 20px;
-        }
-        .footerTitle { font-size: 30px; letter-spacing: 4px; color: #FFD700; font-weight: 700; }
-        .footerSub { margin-top: 8px; font-size: 24px; letter-spacing: 3px; color: #bbb; }
+        .seal-text { font-size: 22px; font-family: 'Arial Black', sans-serif; }
+        .seal-sub { font-size: 14px; letter-spacing: 2px; }
 
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- 🔙 Back Button -->
         <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 
-        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-ranking-star"></i> History Test Result</h2>
+        <h2 style="color: #3b82f6; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-file-contract"></i> History Test Result</h2>
 
         <div id="classErrorBox" class="hidden" style="background: rgba(220, 38, 38, 0.1); border: 1px solid #dc2626; padding: 15px; border-radius: 10px; margin-top: 20px;">
             <i class="fa-solid fa-lock" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
             <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
-            <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin: 0;">Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.</p>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Abhi sirf <strong>Class 9th</strong> ka result upload hua hai.</p>
         </div>
 
-        <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
-            <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna VIP Question Code daalein</p>
+            <p style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">Apna Exam Roll / Code daalein</p>
             <input type="text" id="questionCodeInput" class="input-box" placeholder="e.g. GVCC-X9K0A8">
-            <button class="btn" onclick="verifyResult()">Unlock Result 🚀</button>
+            <button class="btn" onclick="verifyResult()">Fetch Result Sheet 📄</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold;">
-                ⚠️ Invalid Code! (Ya code galat hai, ya kisi aur ka hai)
+                ⚠️ Record Not Found!
             </p>
         </div>
 
-        <!-- 📱 MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
-                <img src="20260620_144347.png" alt="GVCC Logo" style="width: 80px; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold);">
-                <h3 style="margin: 0; color: #d4af37; font-size: 14px; letter-spacing: 2px;">CLASS 9TH</h3>
-                <h2 style="color: white; font-size: 24px; margin: 5px 0 15px 0;">HISTORY TEST</h2>
-                <h2 style="color: #ffd700; font-size: 22px; margin: 10px 0;" id="resNamePrev">Student Name</h2>
-                <div style="border: 1px solid #d4af37; border-radius: 8px; padding: 10px; margin-top: 15px;">
-                    <p style="margin: 0; color: #cbd5e1; font-size: 14px;">MARKS SCORED</p>
-                    <p style="margin: 5px 0 0 0; color: white; font-weight: bold; font-size: 35px;" id="resMarksPrev">--/35</p>
+                <div style="text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 15px;">
+                    <img src="20260620_144347.png" alt="Logo" style="width: 50px; margin-bottom: 5px;">
+                    <h3 style="margin: 0; color: #1e3a8a; font-size: 16px; font-family: 'Arial Black', sans-serif;">GYAN VARSHA COACHING CENTER</h3>
+                </div>
+                <h4 style="margin: 5px 0; color: #4b5563;">Statement of Marks</h4>
+                <h2 style="color: #000; font-size: 22px; margin: 10px 0; text-transform: uppercase;" id="resNamePrev">Student Name</h2>
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 5px; padding: 15px; margin-top: 15px;">
+                    <p style="margin: 0; color: #64748b; font-size: 12px; font-family: Arial, sans-serif; font-weight: bold;">MARKS OBTAINED</p>
+                    <p style="margin: 5px 0 0 0; color: #dc2626; font-weight: 900; font-size: 35px; font-family: Arial, sans-serif;" id="resMarksPrev">--/35</p>
                 </div>
             </div>
 
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
-                <i class="fa-solid fa-download"></i> Download HD Poster
+                <i class="fa-solid fa-download"></i> Download Marksheet
             </button>
         </div>
 
     </div>
 
-    <!-- 🏆🔥 SECRET HD CARD FOR HTML2CANVAS 🔥🏆 -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
-            <!-- Background Elements -->
-            <div class="goldGlow"></div>
-            <div class="shine"></div>
-            <div class="bottomGlow"></div>
-            <div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <div class="laurelLeft"></div>
-            <div class="laurelRight"></div>
-
-            <!-- Content Elements (Now in Flex Flow to prevent overlap) -->
-            <div class="safeCrown">👑</div>
-            <img src="20260620_144347.png" class="logo">
             
-            <div class="academyName">GYAN VARSHA</div>
-            <div class="academySub">COACHING CENTER</div>
+            <img src="20260620_144347.png" class="watermark">
 
-            <div class="goldRibbon"><span>★ PREMIUM TEST RESULT ★</span></div>
-
-            <div class="glassCard">
-                <div class="studentTitle">★ STUDENT OF EXCELLENCE ★</div>
-                <div id="hdName" class="studentName">STUDENT NAME</div>
-            </div>
-
-            <div class="infoRow">
-                <div class="infoBox">
-                    <div class="infoTitle">TEST SET</div>
-                    <div id="hdSet" class="setCircle">A</div>
-                </div>
-                <div class="medalBox">🏅</div>
-                <div class="infoBox">
-                    <div class="infoTitle">TOTAL</div>
-                    <div class="totalMarks">35</div>
+            <div class="header">
+                <div class="header-top">
+                    <img src="20260620_144347.png" class="small-logo">
+                    <div class="school-name-box">
+                        <h1 class="school-name">GYAN VARSHA</h1>
+                        <h2 class="school-name" style="font-size: 45px; margin-top: 5px;">COACHING CENTER</h2>
+                        <div class="school-address">Hirauta, Sheohar</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="scoreCard">
-                <div class="scoreTitle">MARKS SCORED</div>
-                <div class="scoreNumber"><span id="hdObtained">35</span><small>/35</small></div>
+            <div class="document-title">STATEMENT OF MARKS - CLASS 9TH</div>
+
+            <table class="details-table">
+                <tr>
+                    <td class="td-label">Student Name</td>
+                    <td class="td-value" id="hdName">STUDENT NAME</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Subject</td>
+                    <td class="td-value">HISTORY</td>
+                </tr>
+                <tr>
+                    <td class="td-label">Question Set Code</td>
+                    <td class="td-value" id="hdSet">A</td>
+                </tr>
+            </table>
+
+            <div class="marks-container">
+                <div class="mark-box total">
+                    <div class="mark-label">Maximum Marks</div>
+                    <div class="mark-value val-total">35</div>
+                </div>
+                <div class="mark-box obtained">
+                    <div class="mark-label">Marks Obtained</div>
+                    <div class="mark-value val-obtained" id="hdObtained">--</div>
+                </div>
             </div>
 
-            <div id="performanceBadge" class="performanceBadge">★ EXCELLENT PERFORMANCE ★</div>
-
-            <div class="certificateSeal">🏅<div class="sealText">GVCC</div></div>
-
-            <div class="footerBox">
-                <div class="footerTitle">KEEP LEARNING • KEEP GROWING</div>
-                <div class="footerSub">Gyan Varsha Coaching Center</div>
+            <div id="performanceBadge" class="remarks-box">
+                REMARKS: EXCELLENT
             </div>
+
+            <div class="signature-row">
+                <div class="sign-line">Class Teacher</div>
+                <div class="sign-line">Director / Evaluator</div>
+            </div>
+
+            <div class="gold-seal">
+                <div class="seal-text">GVCC</div>
+                <div class="seal-sub">VERIFIED</div>
+            </div>
+
         </div>
     </div>
 
@@ -409,9 +438,21 @@
                 const marks = parseInt(studentData.marks);
                 const badge = document.getElementById("performanceBadge");
 
-                if(marks >= 30){ badge.innerHTML = "🏆 EXCELLENT PERFORMANCE"; }
-                else if(marks >= 20){ badge.innerHTML = "⭐ GOOD PERFORMANCE"; }
-                else{ badge.innerHTML = "💪 KEEP IMPROVING"; }
+                if(marks >= 30){ 
+                    badge.innerHTML = "REMARKS: OUTSTANDING 🌟"; 
+                    badge.style.color = "#15803d"; // Green
+                    badge.style.borderColor = "#15803d";
+                }
+                else if(marks >= 20){ 
+                    badge.innerHTML = "REMARKS: GOOD PROGRESS 👍"; 
+                    badge.style.color = "#1e3a8a"; // Blue
+                    badge.style.borderColor = "#1e3a8a";
+                }
+                else{ 
+                    badge.innerHTML = "REMARKS: NEEDS IMPROVEMENT 📖"; 
+                    badge.style.color = "#b45309"; // Orange
+                    badge.style.borderColor = "#b45309";
+                }
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
@@ -423,19 +464,18 @@
         function generateAndShareImage() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating HD Poster...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating Document...';
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
 
-            // 🔥 Scale kam karke '2' kar diya, taki Phone Hang na ho aur quality bhi HD rahe
             html2canvas(document.querySelector("#resultCard"), {
                 scale: 2,           
                 useCORS: true,
-                backgroundColor: null,
+                backgroundColor: "#ffffff",
                 logging: false
             }).then(canvas => {
                 const imageData = canvas.toDataURL("image/png", 1.0);
-                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Result.png`;
+                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet.png`;
 
                 fetch(imageData)
                     .then(res => res.blob())
@@ -443,8 +483,8 @@
                         const file = new File([blob], fileName, { type: blob.type });
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
                             navigator.share({
-                                title: 'My GVCC Result',
-                                text: 'Mera GVCC Class 9th History Test ka HD result! 🚀',
+                                title: 'GVCC Formal Marksheet',
+                                text: 'Mera GVCC Class 9th History ka Official Marksheet. 📄',
                                 files: [file]
                             }).catch(err => forceDownload(imageData, fileName));
                         } else {
@@ -456,7 +496,7 @@
                 btn.style.opacity = "1";
                 btn.style.pointerEvents = "auto";
             }).catch(err => {
-                alert("⚠️ Image generate karne mein problem aayi.");
+                alert("⚠️ Document generate karne mein problem aayi.");
                 btn.innerHTML = originalText;
                 btn.style.opacity = "1";
                 btn.style.pointerEvents = "auto";
@@ -470,7 +510,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            alert("🎉 Aapka Premium VIP Result Poster HD me Download ho gaya hai! Ab ise Status par lagaiye.");
+            alert("✅ Aapka Formal Marksheet Download ho gaya hai!");
         }
     </script>
 </body>
