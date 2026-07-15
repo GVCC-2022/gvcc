@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - Final Result Sheet</title>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 🔥 html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -108,16 +106,16 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
-        /* 🔥 EXACT BORDERS FIX (Purani jagah par wapas) 🔥 */
+        /* EXACT BORDERS */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* 🏆 SIDE TEXT INSIDE GOLDEN LINE 🏆 */
+        /* SIDE TEXT INSIDE GOLDEN LINE */
         .side-text-container {
             position: absolute;
             top: 0;
-            left: 45px; /* Golden border (40px) ke theek andar */
-            width: 35px; /* Golden border (40px) aur andar ke content (80px) ke beech ka gap */
+            left: 45px; 
+            width: 35px; 
             height: 1920px; 
             display: flex;
             align-items: center; 
@@ -175,6 +173,7 @@
             color: #e32726; margin-bottom: auto; letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             border: 4px dashed #f5c518; 
+            width: 70%; text-align: center;
         }
 
         /* 🟢 GREEN SEAL LOGO */
@@ -188,7 +187,6 @@
 <body>
 
     <div class="container">
-        <!-- 🔙 Back Button -->
         <div style="text-align: left;">
             <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
         </div>
@@ -198,7 +196,6 @@
         </h2>
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
-        <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection">
             <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-X9...)">
             <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
@@ -207,7 +204,6 @@
             </p>
         </div>
 
-        <!-- 📱 VIP MOBILE PREVIEW UI -->
         <div id="cardWrapper" style="display: none;">
             <div class="mobile-preview-card">
                 <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
@@ -217,6 +213,7 @@
                 <div class="preview-marks-box">
                     <p class="preview-marks-label">Marks Obtained</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/35</p>
+                    <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
                 </div>
             </div>
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
@@ -225,11 +222,9 @@
         </div>
     </div>
 
-    <!-- 🏆🔥 SECRET HD PAPER MARKSHEET 🔥🏆 -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- 🔥 PERFECTLY CENTERED SIDE TEXT (INSIDE GOLDEN LINE) 🔥 -->
             <div class="side-text-container">
                 <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-15</div>
             </div>
@@ -239,7 +234,7 @@
             <div class="header">
                 <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
                 <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
-                <h3 class="school-tagline">आपकी सफलता ही मेरी पहचान है...!</h3>
+                <h3 class="school-tagline">आपकी सफलता ही हमारी पहचान है...!</h3>
             </div>
 
             <div class="document-title">History Result - Class 9th</div>
@@ -256,6 +251,10 @@
                 <tr>
                     <td class="td-label">QUESTION SET CODE</td>
                     <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
+                </tr>
+                <tr>
+                    <td class="td-label">RESULT STATUS</td>
+                    <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
                 </tr>
             </table>
 
@@ -312,19 +311,34 @@
             "916": { code: "GVCC-F9P1B6", set: "B", marks: "13", obj: "8", short: "3", long: "2" },
             "917": { code: "GVCC-H9X1C7", set: "C", marks: "14", obj: "9", short: "3", long: "2" },
             "918": { code: "GVCC-S9N1D8", set: "D", marks: "23", obj: "14", short: "6", long: "3" },
-            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23", obj: "15", short: "5", long: "3" },
-            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "35", obj: "20", short: "10", long: "5" },
+            "919": { code: "GVCC-K9L1B9", set: "B", marks: "23", obj: "15", short: "5", long: "3" }, // Cheating
+            "920": { code: "GVCC-K9Z2E0", set: "E", marks: "35", obj: "20", short: "10", long: "5" }, // Cheating
             "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16", obj: "10", short: "4", long: "2" },
             "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21", obj: "12", short: "6", long: "3" },
             "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20", obj: "12", short: "5", long: "3" }
         };
 
+        window.onload = function() {
+            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            if (!loggedInRoll || !loggedInClass) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            if (loggedInClass.includes("9")) {
+                document.getElementById("resultSection").classList.remove("hidden");
+            } else {
+                document.getElementById("classErrorBox").classList.remove("hidden");
+            }
+        };
+
         function verifyResult() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
-            
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
             let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
-            
             let errorMsg = document.getElementById("codeError");
 
             if (!loggedInRoll || !loggedInName) {
@@ -340,40 +354,81 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                document.getElementById("resNamePrev").innerText = loggedInName;
-                document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
-
+                // Common Details
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentData.set;
-                document.getElementById("hdObtained").innerText = studentData.marks;
+                document.getElementById("resNamePrev").innerText = loggedInName;
 
-                document.getElementById("hdObj").innerText = studentData.obj;
-                document.getElementById("hdShort").innerText = studentData.short;
-                document.getElementById("hdLong").innerText = studentData.long;
+                // 🚨 STAGE 1: CHEATING CASE HANDLING (ROLL NO 919 & 920)
+                if (loggedInRoll === "919" || loggedInRoll === "920") {
+                    // Mobile View Settings
+                    document.getElementById("resMarksPrev").innerText = "WITHHELD (DISQUALIFIED)";
+                    document.getElementById("resMarksPrev").style.color = "#dc2626";
+                    document.getElementById("resMarksPrev").style.fontSize = "22px";
+                    document.getElementById("resStatusPrev").innerText = "Status: DISQUALIFIED";
+                    document.getElementById("resStatusPrev").style.color = "#dc2626";
 
-                const marks = parseInt(studentData.marks);
-                const badge = document.getElementById("performanceBadge");
+                    // HD Card Settings
+                    document.getElementById("hdStatus").innerText = "WITHHELD (CHEATING)";
+                    document.getElementById("hdStatus").style.color = "#e32726";
+                    
+                    document.getElementById("hdObtained").innerText = "WH";
+                    document.getElementById("hdObtained").style.color = "#e32726";
+                    document.getElementById("hdObtained").style.fontSize = "150px";
 
-                if(marks >= 30){ 
-                    badge.innerHTML = "Remarks: Outstanding 🌟"; 
-                    badge.style.color = "#e32726"; 
-                    badge.style.border = "4px dashed #f5c518"; 
-                    badge.style.background = "#fffde7"; 
+                    document.getElementById("hdObj").innerText = "DISQ";
+                    document.getElementById("hdShort").innerText = "DISQ";
+                    document.getElementById("hdLong").innerText = "DISQ";
+
+                    const badge = document.getElementById("performanceBadge");
+                    badge.innerHTML = "❌ Result Withheld: Disqualified for Cheating! 🚨";
+                    badge.style.color = "#ffffff";
+                    badge.style.border = "4px solid #e32726";
+                    badge.style.background = "#e32726";
+
+                    try { new Audio('https://assets.mixkit.co/active_storage/sfx/2658/2658-preview.mp3').play(); } catch(e){}
+                } 
+                // 🟢 STAGE 2: NORMAL PASSED / FAILED CASE HANDLING
+                else {
+                    let marksInt = parseInt(studentData.marks);
+                    let isPassed = marksInt >= 14; // Passing Mark is set to 14 out of 35 (40%)
+
+                    // Mobile View Preview Setup
+                    document.getElementById("resMarksPrev").innerText = studentData.marks + "/35";
+                    document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
+                    document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
+
+                    // HD Marksheet Setup
+                    document.getElementById("hdObtained").innerText = studentData.marks;
+                    document.getElementById("hdObj").innerText = studentData.obj;
+                    document.getElementById("hdShort").innerText = studentData.short;
+                    document.getElementById("hdLong").innerText = studentData.long;
+                    
+                    document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
+                    document.getElementById("hdStatus").style.color = isPassed ? "#29438e" : "#e32726";
+
+                    const badge = document.getElementById("performanceBadge");
+                    if (isPassed) {
+                        if(marksInt >= 30) {
+                            badge.innerHTML = "Remarks: Outstanding 🌟";
+                            badge.style.color = "#e32726";
+                            badge.style.border = "4px dashed #f5c518";
+                            badge.style.background = "#fffde7";
+                        } else {
+                            badge.innerHTML = "Remarks: Good Progress 👍";
+                            badge.style.color = "#29438e";
+                            badge.style.border = "4px dashed #29438e";
+                            badge.style.background = "#eef2ff";
+                        }
+                    } else {
+                        badge.innerHTML = "Remarks: Needs Improvement 📖";
+                        badge.style.color = "#d32f2f";
+                        badge.style.border = "4px dashed #d32f2f";
+                        badge.style.background = "#fef2f2";
+                    }
+
+                    try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
                 }
-                else if(marks >= 20){ 
-                    badge.innerHTML = "Remarks: Good Progress 👍"; 
-                    badge.style.color = "#29438e"; 
-                    badge.style.border = "4px dashed #29438e"; 
-                    badge.style.background = "#eef2ff"; 
-                }
-                else{ 
-                    badge.innerHTML = "Remarks: Needs Improvement 📖"; 
-                    badge.style.color = "#d32f2f"; 
-                    badge.style.border = "4px dashed #d32f2f"; 
-                    badge.style.background = "#fef2f2"; 
-                }
-
-                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
                 errorMsg.style.display = "block";
                 document.getElementById("cardWrapper").style.display = "none";
@@ -403,7 +458,7 @@
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
                             navigator.share({
                                 title: 'GVCC Formal Marksheet',
-                                text: 'Mera GVCC Class 9th History ka Monthly Test ka Result. 📄✨',
+                                text: 'Mera GVCC Class 9th History ka Monthly Test ka Result. 📄',
                                 files: [file]
                             }).catch(err => forceDownload(imageData, fileName));
                         } else {
