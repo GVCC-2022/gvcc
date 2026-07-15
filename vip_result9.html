@@ -108,28 +108,26 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
-        /* 🔥 EXACT BORDERS FIX 🔥 */
-        /* ब्लू बॉर्डर 18px अंदर है */
-        #resultCard::before { content: ""; position: absolute; inset: 18px; border: 6px solid #29438e; pointer-events: none; z-index: 10; }
-        /* येलो बॉर्डर 60px अंदर है */
-        #resultCard::after { content: ""; position: absolute; inset: 60px; border: 3px solid #f5c518; pointer-events: none; z-index: 10; }
+        /* 🔥 EXACT BORDERS FIX (Purani jagah par wapas) 🔥 */
+        #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
+        #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* 🏆 SIDE TEXT MASTER FIX 🏆 */
+        /* 🏆 SIDE TEXT INSIDE GOLDEN LINE 🏆 */
         .side-text-container {
             position: absolute;
             top: 0;
-            left: 24px; /* ब्लू बॉर्डर (18+6=24) से शुरू होकर */
-            width: 36px; /* येलो बॉर्डर (60) तक का एग्जैक्ट गैप (60-24=36) */
-            height: 1920px; /* पूरे कार्ड की लम्बाई */
-            display: flex; /* Flexbox की मदद से ऑटोमैटिक सेंटर */
+            left: 45px; /* Golden border (40px) ke theek andar */
+            width: 35px; /* Golden border (40px) aur andar ke content (80px) ke beech ka gap */
+            height: 1920px; 
+            display: flex;
             align-items: center; 
             justify-content: center;
             z-index: 20;
         }
         .side-text { 
-            transform: rotate(-90deg); /* टेक्स्ट को घुमा दिया */
+            transform: rotate(-90deg); 
             font-size: 24px; 
-            color: #29438e; /* इमेज की तरह ब्लू कलर */
+            color: #29438e; 
             font-weight: 900; 
             letter-spacing: 5px; 
             text-transform: uppercase; 
@@ -149,7 +147,7 @@
         /* 📜 TITLE BOX */
         .document-title { font-size: 55px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        /* 📋 DETAILS TABLE (Border Color changed to Blue like Image) */
+        /* 📋 DETAILS TABLE */
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
         .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
@@ -165,7 +163,7 @@
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
-        /* 📝 BREAKDOWN TABLE (Border and Header Color changed to Blue) */
+        /* 📝 BREAKDOWN TABLE */
         .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
         .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 15px; font-weight: 900; font-size: 30px; }
         .breakdown-table td { border: 3px solid #29438e; padding: 15px; font-size: 45px; font-weight: 900; color: #e32726; }
@@ -231,7 +229,7 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
-            <!-- 🔥 PERFECTLY CENTERED SIDE TEXT 🔥 -->
+            <!-- 🔥 PERFECTLY CENTERED SIDE TEXT (INSIDE GOLDEN LINE) 🔥 -->
             <div class="side-text-container">
                 <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-15</div>
             </div>
