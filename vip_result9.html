@@ -293,30 +293,31 @@
     </div>
 
     <script>
-        const resultDatabase = {
-            "901": { code: "GVCC-P9R0A1", set: "A", marks: "34", obj: "20", short: "10", long: "4" },
-            "902": { code: "GVCC-M9K0B2", set: "B", marks: "35", obj: "20", short: "10", long: "5" },
-            "903": { code: "GVCC-L9X0C3", set: "C", marks: "25", obj: "15", short: "6", long: "4" },
-            "904": { code: "GVCC-V9T0D4", set: "D", marks: "24", obj: "15", short: "5", long: "4" },
-            "905": { code: "GVCC-M9R0A5", set: "A", marks: "32", obj: "20", short: "8", long: "4" },
-            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "35", obj: "20", short: "10", long: "5" },
-            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "23", obj: "14", short: "6", long: "3" },
-            "908": { code: "GVCC-C9W0A8", set: "A", marks: "35", obj: "20", short: "10", long: "5" },
-            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "34", obj: "20", short: "9", long: "5" },
-            "910": { code: "GVCC-J9F1C0", set: "C", marks: "25", obj: "15", short: "7", long: "3" },
-            "911": { code: "GVCC-T9R1D1", set: "D", marks: "26", obj: "16", short: "6", long: "4" },
-            "912": { code: "GVCC-D9M1E2", set: "E", marks: "14", obj: "8", short: "4", long: "2" },
-            "913": { code: "GVCC-G9K1F3", set: "F", marks: "09", obj: "5", short: "3", long: "1" },
+                const resultDatabase = {
+            "901": { code: "GVCC-P9R0A1", set: "A", marks: "34", obj: "14", short: "10", long: "10" },
+            "902": { code: "GVCC-M9K0B2", set: "B", marks: "32", obj: "14", short: "8", long: "10" },
+            "903": { code: "GVCC-L9X0C3", set: "C", marks: "32.5", obj: "13", short: "9.5", long: "10" },
+            "904": { code: "GVCC-V9T0D4", set: "D", marks: "26", obj: "14", short: "4", long: "8" },
+            "905": { code: "GVCC-M9R0A5", set: "A", marks: "31", obj: "13", short: "8", long: "10" },
+            "906": { code: "GVCC-B9Y0E6", set: "E", marks: "31", obj: "14", short: "8", long: "9" },
+            "907": { code: "GVCC-Z9H0F7", set: "F", marks: "14", obj: "13", short: "01", long: "00" },
+            "908": { code: "GVCC-C9W0A8", set: "A", marks: "20.5", obj: "12", short: "4.5", long: "04" },
+            "909": { code: "GVCC-N9Q0B9", set: "B", marks: "00", obj: "00", short: "00", long: "00" },
+            "910": { code: "GVCC-J9F1C0", set: "C", marks: "10", obj: "10", short: "00", long: "00" },
+            "911": { code: "GVCC-T9R1D1", set: "D", marks: "08", obj: "07", short: "01", long: "00" },
+            "912": { code: "GVCC-D9M1E2", set: "E", marks: "7.5", obj: "07", short: "0.5", long: "00" },
+            "913": { code: "GVCC-G9K1F3", set: "F", marks: "12", obj: "12", short: "00", long: "00" },
             "915": { code: "GVCC-W9V1A5", set: "A", marks: "23", obj: "15", short: "5", long: "3" },
             "916": { code: "GVCC-F9P1B6", set: "B", marks: "13", obj: "8", short: "3", long: "2" },
-            "917": { code: "GVCC-H9X1C7", set: "C", marks: "14", obj: "9", short: "3", long: "2" },
-            "918": { code: "GVCC-S9N1D8", set: "D", marks: "23", obj: "14", short: "6", long: "3" },
+            "917": { code: "GVCC-H9X1C7", set: "C", marks: "10", obj: "10", short: "00", long: "00" },
+            "918": { code: "GVCC-S9N1D8", set: "D", marks: "14.5", obj: "12", short: "2.5", long: "00" },
             "919": { code: "GVCC-K9L1B9", set: "B", marks: "23", obj: "15", short: "5", long: "3" }, // Cheating
             "920": { code: "GVCC-K9Z2E0", set: "E", marks: "35", obj: "20", short: "10", long: "5" }, // Cheating
             "921": { code: "GVCC-Y9L2F1", set: "F", marks: "16", obj: "10", short: "4", long: "2" },
             "922": { code: "GVCC-T9Q2A2", set: "A", marks: "21", obj: "12", short: "6", long: "3" },
             "924": { code: "GVCC-W9Z2B4", set: "B", marks: "20", obj: "12", short: "5", long: "3" }
         };
+
 
         window.onload = function() {
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
@@ -374,7 +375,7 @@
                     
                     document.getElementById("hdObtained").innerText = "WH";
                     document.getElementById("hdObtained").style.color = "#e32726";
-                    document.getElementById("hdObtained").style.fontSize = "150px";
+                    document.getElementById("hdObtained").style.fontSize = "140px";
 
                     document.getElementById("hdObj").innerText = "DISQ";
                     document.getElementById("hdShort").innerText = "DISQ";
@@ -390,7 +391,7 @@
                 } 
                 // 🟢 STAGE 2: NORMAL PASSED / FAILED CASE HANDLING
                 else {
-                    let marksInt = parseInt(studentData.marks);
+                    let marksInt = parseFloat(studentData.marks);
                     let isPassed = marksInt >= 14; // Passing Mark is set to 14 out of 35 (40%)
 
                     // Mobile View Preview Setup
