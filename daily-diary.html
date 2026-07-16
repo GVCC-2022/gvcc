@@ -214,7 +214,7 @@
         const studentClass = localStorage.getItem("studentClass") || "All"; 
         
         // 🌟 FIXED: Md Faiyaz Last Position
-        const allTeachers = ["Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir", "Md Faiyaz"];
+        const allTeachers = ["Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir", "Md Faiyaz Sir"];
 
         const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
