@@ -73,7 +73,7 @@
             "Md Nijamuddin Sir": "916201799298",
             "Md Kaish Sir": "917542830148",
             "Vikash Sir": "917485032599",
-            "Md Faiyaz Sir": "916203491210"
+            "Md Faiyaz Bhai-G": "916203491210"
         };
 
         // Helper: Student Name, Gender & Time Detection
@@ -214,7 +214,7 @@
         const studentClass = localStorage.getItem("studentClass") || "All"; 
         
         // 🌟 FIXED: Md Faiyaz Last Position
-        const allTeachers = ["Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir", "Md Faiyaz Sir"];
+        const allTeachers = ["Md Nijamuddin Sir", "Md Kaish Sir", "Vikash Sir", "Md Faiyaz Bhai-G"];
 
         const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
