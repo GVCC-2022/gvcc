@@ -165,15 +165,25 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
         } else { nameDiv.classList.remove("show"); }
     });
 
+    // 🚀 SMART OVERWRITE LOGIC 🚀
     async function saveLoginLog(rollNumber, studentName) {
         try {
             const now = new Date();
+            // Sirf date nikal rahe hain ID ke liye (jaise: 16-7-2026)
             const formattedDate = now.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).replace(/\//g, "-");
-            const formattedTime = now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false }).replace(/:/g, "-");
-            await setDoc(doc(db, "login_logs", `${rollNumber}_${formattedDate}_${formattedTime}`), {
-                roll: rollNumber, name: studentName, loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), timestamp: now
-            });
-        } catch (error) { console.error("Error:", error); }
+            
+            // Document ID ab sirf "RollNumber_Date" hogi (Time hata diya)
+            const docId = `${rollNumber}_${formattedDate}`; 
+            
+            await setDoc(doc(db, "login_logs", docId), {
+                roll: rollNumber, 
+                name: studentName, 
+                date: formattedDate,
+                lastLoginTime: now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }), // Sirf aakhri login ka time update hoga
+                loginCount: increment(1), // Har login par count +1 ho jayega
+                timestamp: serverTimestamp()
+            }, { merge: true }); // 'merge: true' ensures purana data delete nahi hoga
+        } catch (error) { console.error("Error saving log:", error); }
     }
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
@@ -190,15 +200,13 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
                 let data = docSnap.data();
                 if (String(data["Password "] || data.Password || data["password "]).trim() === String(password).trim()) {
                     
-                    // 🌟 NAYA: Login ke baad Notification Token Save karna
                     if ("Notification" in window && Notification.permission === "granted") {
                         try {
                             const token = await getToken(messaging, { vapidKey: VAPID_KEY });
                             if (token) {
-                                // Token ko student ke hi database record me save kar rahe hain
                                 await setDoc(doc(db, "students", roll), {
                                     notificationToken: token,
-                                    class: data.class // Yeh ensure karega ki class ka pata chale
+                                    class: data.class 
                                 }, { merge: true });
                                 console.log("✅ Student Token Updated in DB!");
                             }
@@ -207,8 +215,11 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
 
                     msg.style.color = "#4ade80"; msg.innerHTML = "✅ Login Successful!";
                     localStorage.setItem("studentRoll", roll);
-                    localStorage.setItem("studentClass", data.class); // Class bhi save kar li
+                    localStorage.setItem("studentClass", data.class); 
+                    
+                    // Call new Smart Login Log function
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
+                    
                     msg.innerHTML = "🚀 Redirecting...";
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
                 } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Wrong Password"; resetButton(); }
