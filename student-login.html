@@ -166,13 +166,12 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
         } else { nameDiv.classList.remove("show"); }
     });
 
-    // 🚀 SMART LOGGING: Ek document mein pura data
+    // // 🚀 SMART LOGGING: Ek document mein pura data
     async function saveLoginLog(rollNumber, studentName) {
         try {
             const now = new Date();
             const logRef = doc(db, "login_logs", rollNumber); // Document ID sirf Roll Number hai
             
-            // Yahan firebase.firestore.FieldValue.arrayUnion ki jagah sirf arrayUnion likhna tha
             await setDoc(logRef, {
                 roll: rollNumber,
                 name: studentName,
@@ -180,11 +179,14 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
                 lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
                 history: arrayUnion({
                     loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                    timestamp: serverTimestamp()
+                    // 🚀 FIX: serverTimestamp() Array me allowed nahi hai, isliye now.getTime() use kiya hai
+                    timestamp: now.getTime()
                 })
             }, { merge: true });
 
-        } catch (error) { console.error("Error saving log:", error); }
+        } catch (error) { 
+            console.error("Error saving log:", error); 
+        }
     }
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
