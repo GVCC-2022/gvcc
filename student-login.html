@@ -100,8 +100,9 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
 </script>
 
 <script type="module">
+    // Yahan arrayUnion add kiya gaya hai
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, increment, collection, addDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -165,21 +166,19 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
         } else { nameDiv.classList.remove("show"); }
     });
 
-        // 🚀 SMART LOGGING: Ek document mein pura data
+    // 🚀 SMART LOGGING: Ek document mein pura data
     async function saveLoginLog(rollNumber, studentName) {
         try {
             const now = new Date();
             const logRef = doc(db, "login_logs", rollNumber); // Document ID sirf Roll Number hai
             
-            // Firebase field-value array union use karenge taaki history bani rahe
-            // Agar pehli baar hai, toh document ban jayega, agar nahi hai toh update hoga
+            // Yahan firebase.firestore.FieldValue.arrayUnion ki jagah sirf arrayUnion likhna tha
             await setDoc(logRef, {
                 roll: rollNumber,
                 name: studentName,
                 totalLoginCount: increment(1), // Life-time total login count
                 lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                // Yeh array mein naya login session add kar dega
-                history: firebase.firestore.FieldValue.arrayUnion({
+                history: arrayUnion({
                     loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
                     timestamp: serverTimestamp()
                 })
@@ -187,7 +186,6 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
 
         } catch (error) { console.error("Error saving log:", error); }
     }
-
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
