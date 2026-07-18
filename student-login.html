@@ -165,26 +165,29 @@ input:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.1); box-s
         } else { nameDiv.classList.remove("show"); }
     });
 
-    // 🚀 SMART OVERWRITE LOGIC 🚀
+        // 🚀 SMART LOGGING: Ek document mein pura data
     async function saveLoginLog(rollNumber, studentName) {
         try {
             const now = new Date();
-            // Sirf date nikal rahe hain ID ke liye (jaise: 16-7-2026)
-            const formattedDate = now.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).replace(/\//g, "-");
+            const logRef = doc(db, "login_logs", rollNumber); // Document ID sirf Roll Number hai
             
-            // Document ID ab sirf "RollNumber_Date" hogi (Time hata diya)
-            const docId = `${rollNumber}_${formattedDate}`; 
-            
-            await setDoc(doc(db, "login_logs", docId), {
-                roll: rollNumber, 
-                name: studentName, 
-                date: formattedDate,
-                lastLoginTime: now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }), // Sirf aakhri login ka time update hoga
-                loginCount: increment(1), // Har login par count +1 ho jayega
-                timestamp: serverTimestamp()
-            }, { merge: true }); // 'merge: true' ensures purana data delete nahi hoga
+            // Firebase field-value array union use karenge taaki history bani rahe
+            // Agar pehli baar hai, toh document ban jayega, agar nahi hai toh update hoga
+            await setDoc(logRef, {
+                roll: rollNumber,
+                name: studentName,
+                totalLoginCount: increment(1), // Life-time total login count
+                lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                // Yeh array mein naya login session add kar dega
+                history: firebase.firestore.FieldValue.arrayUnion({
+                    loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    timestamp: serverTimestamp()
+                })
+            }, { merge: true });
+
         } catch (error) { console.error("Error saving log:", error); }
     }
+
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
