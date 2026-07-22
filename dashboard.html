@@ -310,29 +310,5 @@ iv class="profile-card">
         }
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
     </script>
-<script>
-    function goToVIPResult() {
-        let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class");
-
-        if (!loggedInClass) {
-            alert("⚠️ Please login first!");
-            return;
-        }
-
-        // अगर क्लास 8th है, तो 8th वाले पेज पर भेजो
-        if (loggedInClass.includes("8")) {
-            window.location.href = "vip_result8.html";
-        } 
-        // अगर क्लास 9th है, तो 9th वाले पेज पर भेजो
-        else if (loggedInClass.includes("9")) {
-            window.location.href = "vip_result9.html";
-        } 
-        // अगर कोई और क्लास है जिसका रिजल्ट अभी नहीं बना
-        else {
-            alert("⚠️ Abhi aapki class ka VIP Result upload nahi hua hai.");
-        }
-    }
-</script>
-
 </body>
 </html>
