@@ -282,8 +282,8 @@
         </div>
     </div>
 
-        <script>
-        // ✅ CLASS 8TH DATABASE - NAMES ADDED & NO "O" USED IN CODES
+    <script>
+        // ✅ CLASS 8TH DATABASE - REAL NAMES ADDED & NO "O" USED
         const resultDatabase = {
             "801": { name: "Anamika Kumari", code: "GVCC-N8F0A1", set: "A", marks: "28", obj: "14", short: "10", long: "4" },
             "802": { name: "Radhika Kumari", code: "GVCC-M8K0B2", set: "B", marks: "25", obj: "13", short: "8", long: "4" },
@@ -310,23 +310,20 @@
         };
 
         window.onload = function() {
-            // 👇 TESTING KE LIYE 801 (Anamika) KO LOGIN KAR RAHI HAI 👇
-            // Jab real me website live karein, tab in 3 lines ko hata dijiyega
-            localStorage.setItem("studentRoll", "801");
-            localStorage.setItem("studentClass", "Class 8th");
-
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
 
-            if (!loggedInRoll || !loggedInClass) {
-                alert("⚠️ Kripya pehle Dashboard se login karein!");
-                window.location.href = "dashboard.html";
-                return;
+            // 🔥 AUTO-FIX FOR TESTING: Agar koi 8th ka data nahi hai ya 9th ka data fasa hai, toh yeh zabardasti 801 ka login bana dega
+            if (!loggedInRoll || !loggedInClass || loggedInClass.includes("9")) {
+                localStorage.setItem("studentRoll", "801");
+                localStorage.setItem("studentClass", "Class 8th");
+                loggedInRoll = "801";
+                loggedInClass = "Class 8th";
             }
 
-            // 🔒 SECURITY CHECK: Only allow Class 8th
             if (loggedInClass.includes("8")) {
                 document.getElementById("resultSection").classList.remove("hidden");
+                document.getElementById("classErrorBox").classList.add("hidden");
             } else {
                 document.getElementById("classErrorBox").classList.remove("hidden");
                 document.getElementById("resultSection").classList.add("hidden");
@@ -340,14 +337,15 @@
             let errorMsg = document.getElementById("codeError");
             let studentData = resultDatabase[loggedInRoll];
             
+            // Security Check: Code match hona zaroori hai aur student ka data database mein hona zaroori hai
             if (studentData && enteredCode === studentData.code) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // DATA SE DIRECT NAAM UTHA RAHA HAI
+                // Naam seedha database (list) se utha raha hai
                 document.getElementById("resNamePrev").innerText = studentData.name;
-                document.getElementById("resMarksPrev").innerText = studentData.marks + "/30"; 
+                document.getElementById("resMarksPrev").innerText = studentData.marks + "/30";
 
                 document.getElementById("hdName").innerText = studentData.name;
                 document.getElementById("hdSet").innerText = studentData.set;
