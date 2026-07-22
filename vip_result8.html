@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - Class 8th Maths Result</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 🔥 html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* ===========================
+             🔥 ULTRA-PREMIUM UI DASHBOARD 🔥
+        =========================== */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: radial-gradient(circle at top, #1e293b, #090e17); 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
+        }
+        
+        .container { 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 30px 20px; border-radius: 20px; width: 90%; max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Premium Buttons */
+        .btn { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+            color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
+            border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; 
+            margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
+        .btn:active { transform: translateY(1px); }
+        
+        /* Sleek Input Box */
+        .input-box { 
+            width: 90%; padding: 16px; border-radius: 10px; 
+            border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
+            color: #f8fafc; font-size: 16px; text-transform: uppercase; 
+            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+            box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
+        }
+        .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
+        .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
+        
+        /* Back Link */
+        .back-link { 
+            color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
+        }
+        .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
+
+        /* 🔥 VIP MOBILE PREVIEW CARD 🔥 */
+        .mobile-preview-card {
+            margin-top: 15px; padding: 25px 15px; 
+            background: linear-gradient(145deg, #1e3a8a, #0f172a); 
+            border-radius: 16px; border: 2px solid #d4af37; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.15);
+            position: relative; overflow: hidden;
+            animation: cardReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; color: white;
+        }
+        @keyframes cardReveal { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .mobile-preview-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .preview-logo { width: 130px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        
+        .preview-class { margin: 0; color: #d4af37; font-size: 13px; letter-spacing: 3px; font-weight: 900; }
+        .preview-subject { color: #ffffff; font-size: 22px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .preview-name { color: #ffd700; font-size: 20px; margin: 5px 0; font-weight: bold; letter-spacing: 1px; }
+        
+        .preview-marks-box { 
+            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; 
+            padding: 15px; margin-top: 15px; background: rgba(0,0,0,0.4); 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 11px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .preview-marks-value { margin: 5px 0 0 0; color: #ffffff; font-weight: 900; font-size: 38px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+
+        .share-btn {
+            background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
+            padding: 15px 20px; font-size: 16px; font-weight: 900; border-radius: 10px; 
+            cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; 
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6); }
+        .share-btn:active { transform: translateY(1px); }
+
+        /* ===========================
+          HD PAPER MARKSHEET (1080x1920)
+        =========================== */
+        #resultCard {
+            width: 1080px; height: 1920px; position: relative; background-color: #f4f7f6; 
+            display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
+            box-sizing: border-box; color: #000000; 
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
+        #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
+
+        .side-text-container {
+            position: absolute;
+            left: 60px; 
+            bottom: 120px; 
+            transform-origin: left bottom;
+            transform: rotate(-90deg);
+            z-index: 20;
+        }
+        .side-text { 
+            font-size: 24px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
+            text-transform: uppercase; font-family: 'Segoe UI', sans-serif; white-space: nowrap; 
+        }
+
+        .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
+
+        .header { width: 100%; text-align: center; z-index: 5; margin-top: 20px; margin-bottom: 30px; }
+        .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
+        .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
+        .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
+
+        .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 2px solid #000; border-radius: 12px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .details-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 38px; margin-bottom: 40px; background: #fff; }
+        .details-table td { border: 2px solid #000; padding: 22px 30px; }
+        .td-label { width: 40%; font-weight: 900; color: #29438e; }
+        .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
+
+        .marks-container { display: flex; width: 95%; border: 2px solid #29438e; z-index: 5; overflow: hidden; border-radius: 15px; margin-bottom: 30px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
+        .mark-box.total { border-right: 2px solid #29438e; }
+        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
+        
+        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        .val-total { color: #29438e; }
+        .val-obtained { color: #e32726; }
+
+        .breakdown-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
+        .breakdown-table th { border: 2px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
+        .breakdown-table td { border: 2px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
+
+        .remarks-box { 
+            font-size: 40px; font-weight: 900; padding: 18px 60px; 
+            border-radius: 12px; z-index: 5; background: #fffde7; 
+            color: #e32726; margin-bottom: auto; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 4px dashed #f5c518; 
+        }
+
+        .footer-logo { width: 260px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
+        .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 🔙 Back Button -->
+        <div style="text-align: left;">
+            <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        
+        <h2 style="color: #60a5fa; margin-top: 0; font-size: 26px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
+            <i class="fa-solid fa-file-contract" style="color: #3b82f6;"></i> Maths Result
+        </h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
+
+        <!-- 🔒 SECURITY ERROR BOX -->
+        <div id="classErrorBox" class="hidden" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <i class="fa-solid fa-lock" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
+            <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
+            <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Yeh result sirf <strong>Class 8th</strong> ke liye hai.</p>
+        </div>
+
+        <!-- ✅ RESULT INPUT SECTION -->
+        <div id="resultSection">
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-N8...)">
+            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
+            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
+            </p>
+        </div>
+
+        <!-- 📱 VIP MOBILE PREVIEW UI -->
+        <div id="cardWrapper" style="display: none;">
+            <div class="mobile-preview-card">
+                <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
+                <h3 class="preview-class">CLASS 8TH</h3>
+                <h2 class="preview-subject">MATHEMATICS</h2>
+                <h2 class="preview-name" id="resNamePrev">Student Name</h2>
+                <div class="preview-marks-box">
+                    <p class="preview-marks-label">Marks Obtained</p>
+                    <p class="preview-marks-value" id="resMarksPrev">--/30</p>
+                </div>
+            </div>
+            <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download Marksheet
+            </button>
+        </div>
+    </div>
+
+    <!-- 🏆🔥 SECRET HD PAPER MARKSHEET 🔥🏆 -->
+    <div style="position: absolute; top: -9999px; left: -9999px;">
+        <div id="resultCard">
+            
+            <div class="side-text-container">
+                <div class="side-text">Monthly Test : 2026-08-15</div>
+            </div>
+            
+            <img src="20260620_144347.png" class="watermark">
+
+            <div class="header">
+                <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
+                <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
+                <h3 class="school-tagline">आपकी सफलता ही मेरी पहचान है...!</h3>
+            </div>
+
+            <div class="document-title">Mathematics Result - Class 8th</div>
+
+            <table class="details-table">
+                <tr>
+                    <td class="td-label">STUDENT NAME</td>
+                    <td class="td-value" id="hdName">STUDENT NAME</td>
+                </tr>
+                <tr>
+                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
+                    <td class="td-value">MATHEMATICS</td>
+                </tr>
+                <tr>
+                    <td class="td-label">QUESTION SET CODE</td>
+                    <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
+                </tr>
+            </table>
+
+            <div class="marks-container">
+                <div class="mark-box total">
+                    <div class="mark-label">MAXIMUM MARKS</div>
+                    <div class="mark-value val-total">30</div>
+                </div>
+                <div class="mark-box obtained">
+                    <div class="mark-label">MARKS OBTAINED</div>
+                    <div class="mark-value val-obtained" id="hdObtained">--</div>
+                </div>
+            </div>
+
+            <table class="breakdown-table">
+                <tr>
+                    <th>Objective</th>
+                    <th>Short Answer</th>
+                    <th>Long Answer</th>
+                </tr>
+                <tr>
+                    <td id="hdObj">--</td>
+                    <td id="hdShort">--</td>
+                    <td id="hdLong">--</td>
+                </tr>
+            </table>
+
+            <div id="performanceBadge" class="remarks-box">
+                Remarks: Outstanding 🌟
+            </div>
+
+            <img src="20260714_163333.png" class="footer-logo">
+            
+            <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
+        </div>
+    </div>
+
+    <script>
+        // ✅ CLASS 8TH DATABASE - NEW 9TH STYLE FORMAT, NO LETTER "O" USED
+        const resultDatabase = {
+            "801": { code: "GVCC-N8F0A1", set: "A", marks: "28", obj: "14", short: "10", long: "4" },
+            "802": { code: "GVCC-M8K0B2", set: "B", marks: "25", obj: "13", short: "8", long: "4" },
+            "803": { code: "GVCC-L8X0C3", set: "C", marks: "22", obj: "10", short: "8", long: "4" },
+            "804": { code: "GVCC-V8T0D4", set: "D", marks: "29", obj: "15", short: "9", long: "5" },
+            "805": { code: "GVCC-P8R0E5", set: "E", marks: "18", obj: "10", short: "5", long: "3" },
+            "806": { code: "GVCC-B8Y0F6", set: "F", marks: "30", obj: "15", short: "10", long: "5" },
+            "807": { code: "GVCC-Z8H0A7", set: "A", marks: "24", obj: "12", short: "8", long: "4" },
+            "808": { code: "GVCC-C8W0B8", set: "B", marks: "21", obj: "11", short: "7", long: "3" },
+            "809": { code: "GVCC-X8Q0C9", set: "C", marks: "27", obj: "14", short: "9", long: "4" },
+            "810": { code: "GVCC-J8F1D0", set: "D", marks: "15", obj: "8", short: "5", long: "2" },
+            "811": { code: "GVCC-T8R1E1", set: "E", marks: "19", obj: "10", short: "6", long: "3" },
+            "812": { code: "GVCC-D8M1F2", set: "F", marks: "12", obj: "6", short: "4", long: "2" },
+            "813": { code: "GVCC-G8K1A3", set: "A", marks: "26", obj: "13", short: "9", long: "4" },
+            "814": { code: "GVCC-W8V1B4", set: "B", marks: "23", obj: "11", short: "9", long: "3" },
+            "815": { code: "GVCC-F8P1C5", set: "C", marks: "20", obj: "10", short: "7", long: "3" },
+            "816": { code: "GVCC-H8X1D6", set: "D", marks: "17", obj: "8", short: "6", long: "3" },
+            "817": { code: "GVCC-S8N1E7", set: "E", marks: "28", obj: "14", short: "9", long: "5" },
+            "818": { code: "GVCC-K8L1F8", set: "F", marks: "14", obj: "7", short: "5", long: "2" },
+            "819": { code: "GVCC-R8Z1A9", set: "A", marks: "29", obj: "15", short: "10", long: "4" },
+            "820": { code: "GVCC-Y8L2B0", set: "B", marks: "25", obj: "12", short: "9", long: "4" },
+            "821": { code: "GVCC-T8Q2C1", set: "C", marks: "24", obj: "13", short: "8", long: "3" },
+            "822": { code: "GVCC-W8Z2D2", set: "D", marks: "26", obj: "12", short: "10", long: "4" }
+        };
+
+        window.onload = function() {
+            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            if (!loggedInRoll || !loggedInClass) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            // 🔒 SECURITY CHECK: Only allow Class 8th
+            if (loggedInClass.includes("8")) {
+                document.getElementById("resultSection").classList.remove("hidden");
+            } else {
+                document.getElementById("classErrorBox").classList.remove("hidden");
+                document.getElementById("resultSection").classList.add("hidden");
+            }
+        };
+
+        function verifyResult() {
+            let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
+            
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+            
+            let errorMsg = document.getElementById("codeError");
+
+            let studentData = resultDatabase[loggedInRoll];
+            
+            if (studentData && enteredCode === studentData.code) {
+                errorMsg.style.display = "none";
+                document.getElementById("resultSection").style.display = "none"; 
+                document.getElementById("cardWrapper").style.display = "block";
+                
+                document.getElementById("resNamePrev").innerText = loggedInName;
+                document.getElementById("resMarksPrev").innerText = studentData.marks + "/30"; // Total 30 for Maths
+
+                document.getElementById("hdName").innerText = loggedInName;
+                document.getElementById("hdSet").innerText = studentData.set;
+                document.getElementById("hdObtained").innerText = studentData.marks;
+
+                document.getElementById("hdObj").innerText = studentData.obj;
+                document.getElementById("hdShort").innerText = studentData.short;
+                document.getElementById("hdLong").innerText = studentData.long;
+
+                // Adjusting Remarks for 30 marks
+                const marks = parseInt(studentData.marks);
+                const badge = document.getElementById("performanceBadge");
+
+                if(marks >= 25){ 
+                    badge.innerHTML = "Remarks: Outstanding 🌟"; 
+                    badge.style.color = "#e32726"; 
+                    badge.style.border = "4px dashed #f5c518"; 
+                    badge.style.background = "#fffde7"; 
+                }
+                else if(marks >= 15){ 
+                    badge.innerHTML = "Remarks: Good Progress 👍"; 
+                    badge.style.color = "#29438e"; 
+                    badge.style.border = "4px dashed #29438e"; 
+                    badge.style.background = "#eef2ff"; 
+                }
+                else{ 
+                    badge.innerHTML = "Remarks: Needs Improvement 📖"; 
+                    badge.style.color = "#d32f2f"; 
+                    badge.style.border = "4px dashed #d32f2f"; 
+                    badge.style.background = "#fef2f2"; 
+                }
+
+                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+            } else {
+                errorMsg.style.display = "block";
+                document.getElementById("cardWrapper").style.display = "none";
+            }
+        }
+
+        function generateAndShareImage() {
+            const btn = document.getElementById("shareBtnObj");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+
+            html2canvas(document.querySelector("#resultCard"), {
+                scale: 2,           
+                useCORS: true,
+                backgroundColor: "#f4f7f6",
+                logging: false
+            }).then(canvas => {
+                const imageData = canvas.toDataURL("image/png", 1.0);
+                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet_Maths.png`;
+
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], fileName, { type: blob.type });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                title: 'GVCC Formal Marksheet',
+                                text: 'Mera GVCC Class 8th Maths ka Official Marksheet. 📄',
+                                files: [file]
+                            }).catch(err => forceDownload(imageData, fileName));
+                        } else {
+                            forceDownload(imageData, fileName);
+                        }
+                    });
+
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }).catch(err => {
+                alert("⚠️ Document generate karne mein problem aayi.");
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            });
+        }
+
+        function forceDownload(imageData, fileName) {
+            const link = document.createElement("a");
+            link.download = fileName;
+            link.href = imageData;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert("✅ Aapka HD Marksheet Download ho gaya hai!");
+        }
+    </script>
+</body>
+</html>
