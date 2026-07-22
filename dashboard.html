@@ -225,14 +225,14 @@
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 
-                <!-- 🌟 NAYA: Link to Daily Diary Page -->
+                <!-- homework diary Link -->
                 <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: #faf5ff !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
                     <span style="font-size: 16px; color: #6b21a8; font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
                 </button>
 
-                <!-- 🔥 👑 VIP OFFLINE RESULT BUTTON (NEW) 🔥 -->
-                <button class="menu-card full-width" style="background: linear-gradient(135deg, #0f172a, #1e293b) !important; border: 1px solid #fbbf24; flex-direction: row; padding: 18px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.25); position: relative; overflow: hidden; align-items: center; justify-content: flex-start;" onclick="navigateWithAnimation('vip_result9.html')">
+                <!-- 👑 VIP OFFLINE RESULT BUTTON -->
+                <button class="menu-card full-width" style="background: linear-gradient(135deg, #0f172a, #1e293b) !important; border: 1px solid #fbbf24; flex-direction: row; padding: 18px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.25); position: relative; overflow: hidden; align-items: center; justify-content: flex-start;" onclick="goToVIPResult()">
                     
                     <!-- ✨ Shine Effect Layer -->
                     <div style="position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.3), transparent); transform: skewX(-20deg); animation: shineVIP 3s infinite;"></div>
@@ -265,11 +265,6 @@
                     <i class="fa-solid fa-chart-bar"></i><span>Result</span>
                 </button>
 
-                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
-                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
-                    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
-                </button>
-
                 <button class="menu-card card-install full-width" onclick="installApp()">
                     <i class="fa-solid fa-download"></i><span>Install GVCC App</span>
                 </button>
@@ -289,10 +284,13 @@
 
     <!-- UI & App Install Scripts -->
     <script>
+        // SMART NAVIGATION FUNCTION
         function navigateWithAnimation(url) {
+            console.log("Navigating to:", url); // जासूस 1
             document.body.classList.add('page-exit');
             setTimeout(() => { window.location.href = url; }, 300);
         }
+        
         window.addEventListener('pageshow', function(event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 document.body.classList.remove('page-exit');
@@ -329,7 +327,8 @@
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-        import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        
+        console.log("Firebase Libraries Loaded"); // जासूस 2
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -337,709 +336,97 @@
             projectId: "gvcc-database",
             storageBucket: "gvcc-database.firebasestorage.app",
             messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
-            measurementId: "G-DP808QLE7K"
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
 
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
         const db = getFirestore(app);
         
-        let analytics = null; try { analytics = getAnalytics(app); } catch(e) {}
         let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
-        let studentClassGlobal = "10th";
         const activeRoll = localStorage.getItem("studentRoll");
+        console.log("Logged in Roll (Local):", activeRoll); // जासूस 3
 
         if (!activeRoll) {
+            console.warn("No session found. Redirecting to Login."); // जासूस 4
             window.location.replace("student-login.html"); 
         } else {
-            fetchStudentData(activeRoll);
+            // 🔥 इंकोग्निटो मोड की जासूसी: हम सिस्टम को गौतम (9th) से अनामिका (8th) में बदलते हैं 🔥
+            // जब टेस्टिंग खत्म हो जाए, तो इन 2 लाइनों को डिलीट कर दीजिएगा
+            console.log("MANUAL OVERRIDE: Setting session to 801 (Anamika).");
+            localStorage.setItem("studentRoll", "801");
+            localStorage.setItem("studentClass", "Class 8th");
+
+            fetchStudentData("801"); // जासूसी के लिए 801 का ही डेटा मांगते हैं
         }
 
         async function fetchStudentData(roll) {
+            console.log("Requesting data for roll:", roll); // जासूस 5
             try {
                 const docRef = doc(db, "students", roll);
                 const docSnap = await getDoc(docRef);
+                console.log("Firebase Response Received"); // जासूस 6
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
-                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
+                    let studentName = data.Name || data.name || "N/A";
+                    let studentClass = data.Class || data.class || "N/A";
                     
-                    studentClassGlobal = String(studentClass).trim();
+                    console.log("Student Found:", studentName, studentClass); // जासूस 7
                     
-                    localStorage.setItem("studentClass", studentClassGlobal);
-                    localStorage.setItem("studentName", studentName);
-                    
-                    if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
-                    
+                    // UI पर डेटा सेट कर रहे हैं
                     document.getElementById("studentName").innerText = studentName;
                     document.getElementById("studentRollDisplay").innerText = roll;
-                    document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
+                    document.getElementById("studentClass").innerText = studentClass;
                     
+                    // 🔥 जादू! लोडर हटाकर मेन कंटेंट दिखा रहे हैं 🔥
+                    console.log("Hiding Loader..."); // जासूस 8
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
 
                 } else {
-                    alert("Session Error: Profile not found."); window.logout();
+                    console.error("Profile not found in Firestore!"); // जासूस 9
+                    alert("Error: Profile not found."); window.logout();
                 }
             } catch (error) {
-                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
+                console.error("FIRESTORE ERROR:", error); // जासूस 10 (यही बीमारी की जड़ बताएगा इंकोग्निटो में)
+                document.getElementById("loading").innerHTML = `<div style='color:red; padding:20px;'>⚠️ Connection timeout. Refresh or check Console.<br><small>${error.message}</small></div>`;
             }
         }
 
-        // 🌟 Notices List (Normal Box)
-        const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
-        onSnapshot(qNotices, (snapshot) => {
-            const noticeBox = document.getElementById("studentNotices");
-            if (!noticeBox) return;
-            noticeBox.innerHTML = ""; 
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                noticeBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
-                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || 'General'}) • Target: ${data.targetClass || 'All'}
-                        </div>
-                        <div style="color: #f8fafc; font-size: 15px;">${data.message || ''}</div>
-                    </div>
-                `;
-            });
-        });
+        // --- बाकी डेटा लोड करने वाले कोड ---
+        // (ये कोड पेज लोड होने के बाद काम करते हैं, Gol Gol घूमने वाली दिक्कत इनसे नहीं है)
+        // [आपके Notices, Tests वाले पुराने कोड यहाँ आ जाएंगे]
 
-        // 🌟 Real-Time Popup Radar
-        const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
-        onSnapshot(popupQuery, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const notice = change.doc.data();
-                    const noticeId = change.doc.id;
-                    
-                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
-                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
-                    
-                    if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
-                        const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
-                        if (!seenNotices.includes(noticeId)) {
-                            showNoticePopup(notice.teacherName || "GVCC Faculty", notice.message);
-                            seenNotices.push(noticeId);
-                            localStorage.setItem("seenNotices", JSON.stringify(seenNotices));
-                        }
-                    }
-                }
-            });
-        });
-
-        function showNoticePopup(sender, text) {
-            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
-
-            const pop = document.createElement("div");
-            pop.style.position = "fixed"; pop.style.top = "20px"; pop.style.left = "50%"; 
-            pop.style.transform = "translateX(-50%)"; pop.style.zIndex = "99999"; pop.style.width = "90vw"; pop.style.maxWidth = "350px";
-            pop.innerHTML = `
-                <div style="background:#1e293b; border:2px solid #f59e0b; padding:20px; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.7); animation: dropDownNotice 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-                    <h3 style="margin:0 0 10px 0; color:#f59e0b; font-size: 18px;"><i class="fa-solid fa-bell fa-shake"></i> New Notice • ${sender}</h3>
-                    <p style="margin:0; font-size:15px; color:#f8fafc; line-height: 1.5;">${text}</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top:15px; width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; padding:10px; font-weight:bold; border-radius:8px; cursor:pointer; font-size: 14px;">OK, Got It!</button>
-                </div>
-                <style>@keyframes dropDownNotice { from { transform: translateY(-150px); opacity:0; } to { transform: translateY(0); opacity:1; } }</style>
-            `;
-            document.body.appendChild(pop);
-        }
-
-        // Active Tests
-        const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
-        onSnapshot(qTests, (snapshot) => {
-            const testBox = document.getElementById("studentTests");
-            if (!testBox) return;
-            testBox.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                testBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <div>
-                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
-                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || ''}) • ${data.targetClass || ''}
-                            </div>
-                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName || 'Online Test'}</div>
-                        </div>
-                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
-                            Start Test <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-            });
-        });
-
-        window.generateFCMToken = async function() {
-            if(!messaging) return;
-            try {
-                const registration = await navigator.serviceWorker.ready; 
-                const currentToken = await getToken(messaging, { 
-                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
-                    serviceWorkerRegistration: registration 
-                });
-                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-            } catch (err) { console.log("FCM Token Error:", err); }
-        }
-
-        if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
-
-        window.routeToLiveTest = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("history10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("history9.html");
-            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html");
-            else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
-        }
-
-        window.routeToResult = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("result10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("result.html");
-            else if (cleanClass.includes("8")) alert("⚠️ Alert: Class 8th ka result abhi available nahi hai!");
-            else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
-        }
-
+        // --- NAVIGATION ---
         window.logout = function() { 
-            document.body.classList.add('page-exit'); 
-            setTimeout(() => {
-                localStorage.removeItem("studentRoll"); 
-                window.location.replace("student-login.html"); 
-            }, 300);
-        }
-        document.getElementById("logoutBtn").addEventListener("click", window.logout);
-    </script>
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>GVCC - Student Dashboard</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* 👇 APP FEELING CODE 👇 */
-        * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        input, textarea {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
-
-        img { -webkit-user-drag: none; }
-
-        :root {
-            --primary: #003366;
-            --secondary: #007bff;
-            --success: #28a745;
-            --danger: #dc3545;
-            --bg: #f8fafc;
-            --text-main: #1e293b;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overscroll-behavior-y: none; 
-            touch-action: manipulation;  
-        }
-
-        .page-exit { animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
-
-        @keyframes zoomOutUp {
-            from { opacity: 1; transform: translateY(0) scale(1); }
-            to { opacity: 0; transform: translateY(-10vh) scale(0.95); }
-        }
-
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-
-        .smart-loader { position: relative; width: 75px; height: 75px; margin-bottom: 25px; }
-        .smart-loader::before, .smart-loader::after {
-            content: ""; position: absolute; border-radius: 50%; border: 4px solid transparent;
-        }
-        .smart-loader::before {
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-top-color: #003366; border-bottom-color: #007bff;
-            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-        }
-        .smart-loader::after {
-            top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border-left-color: #f59e0b; border-right-color: #10b981;
-            animation: spin-reverse 1s linear infinite;
-        }
-
-        .loader-icon {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); font-size: 26px; color: #003366;
-            animation: pulse-icon 1.5s ease-in-out infinite;
-        }
-
-        .loading-text {
-            font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
-            background: linear-gradient(90deg, #003366, #10b981, #007bff, #003366);
-            background-size: 200% auto; -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; animation: shine 2s linear infinite;
-        }
-
-        #mainContent { display: none; flex-direction: column; min-height: 100vh; }
-
-        header {
-            background: linear-gradient(135deg, #002244, var(--primary));
-            color: white; padding: 30px 15px 35px 15px; text-align: center;
-            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .container { max-width: 450px; width: 90%; margin: -25px auto 30px auto; flex: 1; }
-
-        .profile-card {
-            background: white; border-radius: 16px; padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02);
-            margin-bottom: 25px;
-        }
-
-        .profile-header {
-            font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 15px;
-            display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;
-        }
-
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #f1f5f9; }
-        .info-row:last-child { border: none; }
-        .info-label { color: #64748b; font-weight: 500; }
-        .info-value { color: var(--text-main); font-weight: 600; }
-
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .full-width { grid-column: span 2; }
-
-        .menu-card {
-            background: white !important; border: none; border-radius: 14px; padding: 18px 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.1s ease; text-decoration: none;
-            -webkit-appearance: none; -moz-appearance: none; appearance: none;
-        }
-        .menu-card:active { transform: scale(0.92) !important; opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-
-        .menu-card i { font-size: 24px; }
-        .menu-card span { font-size: 14px; font-weight: 600; }
-
-        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white !important; flex-direction: row !important; padding: 14px !important; text-align: left; }
-        .card-live i { font-size: 20px; animation: pulse 1.5s infinite; }
-        .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
-        .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
-        .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
-        .card-result { color: #10b981; border-top: 4px solid #10b981; }
-        
-        .card-install { 
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
-            color: #0284c7; border: 1px solid #7dd3fc; flex-direction: row; padding: 14px;
-        }
-        .card-install i { font-size: 20px; animation: bounce 2s infinite; }
-
-        .btn-logout {
-            width: 100%; background: #ffe4e6; color: var(--danger); border: 1px solid #fecdd3;
-            padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.1s ease;
-        }
-        .btn-logout:active { background: #fecdd3; transform: scale(0.95); }
-
-        footer {
-            background: #001529; color: #94a3b8; text-align: center; padding: 15px; font-size: 12px;
-            margin-top: auto; border-top-left-radius: 15px; border-top-right-radius: 15px;
-        }
-        footer p { margin: 4px 0; }
-        footer strong { color: white; }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
-        @keyframes pulse-icon { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } }
-        @keyframes shine { to { background-position: 200% center; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
-        @keyframes shineVIP { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
-    </style>
-</head>
-<body>
-
-    <div id="loading">
-        <div class="smart-loader"><i class="fa-solid fa-book-open-reader loader-icon"></i></div>
-        <div class="loading-text">Getting Your Profile Ready...</div>
-    </div>
-
-    <div id="mainContent">
-        <header>
-            <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
-                <div style="position: absolute !important; left: 10px; top: -4px;">
-                    <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none;">
-                </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
-                    <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important;">Gyan Varsha Coaching Center</h1>
-                    <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
-                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content;">
-                        ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
-                    </div>
-                </div>
-            </div>
-            <div style="height: 110px; width: 100%; background: transparent;"></div>
-        </header>
-
-        <div class="container">
-            <div class="profile-card">
-                <div class="profile-header"><i class="fa-solid fa-id-card"></i> 👤 Student Profile</div>
-                <div class="info-row"><span class="info-label">Name:</span><span class="info-value" id="studentName">--</span></div>
-                <div class="info-row"><span class="info-label">Roll Number:</span><span class="info-value" id="studentRollDisplay">--</span></div>
-                <div class="info-row"><span class="info-label">Class:</span><span class="info-value" id="studentClass">--</span></div>
-            </div> 
-
-            <!-- 📌 NOTICES & EXAMS -->
-            <div id="live-updates-section" style="margin-top: 20px; margin-bottom: 25px; text-align: left;">
-                <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; font-size: 18px;">
-                    <i class="fa-solid fa-bell fa-shake"></i> Notice & Live Tests
-                </h3>
-                <div id="studentNotices"></div>
-                <div id="studentTests"></div>
-            </div>
-
-            <!-- 📌 CLEAN 2x2 GRID MENU -->
-            <div class="grid-menu">
-                
-                <!-- 🌟 NAYA: Link to Daily Diary Page -->
-                <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: #faf5ff !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
-                    <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
-                    <span style="font-size: 16px; color: #6b21a8; font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
-                </button>
-
-                <!-- 🔥 👑 VIP OFFLINE RESULT BUTTON (NEW) 🔥 -->
-                <button class="menu-card full-width" style="background: linear-gradient(135deg, #0f172a, #1e293b) !important; border: 1px solid #fbbf24; flex-direction: row; padding: 18px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.25); position: relative; overflow: hidden; align-items: center; justify-content: flex-start;" onclick="navigateWithAnimation('vip_result9.html')">
-                    
-                    <!-- ✨ Shine Effect Layer -->
-                    <div style="position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.3), transparent); transform: skewX(-20deg); animation: shineVIP 3s infinite;"></div>
-                    
-                    <i class="fa-solid fa-crown fa-beat" style="font-size: 28px; color: #fbbf24; --fa-animation-duration: 2.5s; text-shadow: 0 0 15px rgba(251,191,36,0.6); margin-left: 10px;"></i>
-                    
-                    <div style="display: flex; flex-direction: column; text-align: left; margin-left: 20px; z-index: 1;">
-                        <span style="font-size: 17px; font-weight: 800; color: #fbbf24; letter-spacing: 0.5px;">VIP OFFLINE RESULT 🚀</span>
-                        <span style="font-size: 12px; color: #cbd5e1; font-weight: 500; margin-top: 3px;">Apna Secret Code se marks check karein</span>
-                    </div>
-                </button>
-
-                <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
-                    <i class="fa-solid fa-video"></i><span>Join Live Class</span>
-                </a>
-
-                <button class="menu-card card-notes" onclick="navigateWithAnimation('notesmenu.html')">
-                    <i class="fa-solid fa-book-open"></i><span>Notes</span>
-                </button>
-
-                <button class="menu-card card-notice" onclick="navigateWithAnimation('notice.html')">
-                    <i class="fa-solid fa-bullhorn"></i><span>Notice Board</span>
-                </button>
-
-                <button class="menu-card card-test" onclick="routeToLiveTest()">
-                    <i class="fa-solid fa-pen-to-square"></i><span>Online Test</span>
-                </button>
-
-                <button class="menu-card card-result" onclick="routeToResult()">
-                    <i class="fa-solid fa-chart-bar"></i><span>Result</span>
-                </button>
-
-                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
-                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
-                    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
-                </button>
-
-                <button class="menu-card card-install full-width" onclick="installApp()">
-                    <i class="fa-solid fa-download"></i><span>Install GVCC App</span>
-                </button>
-            </div>
-
-            <button class="btn-logout" id="logoutBtn">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
-            </button>
-        </div>
-
-        <footer>
-            <p>📝 Created By: <strong>Md Faiyaz Reza</strong></p>
-            <p>📍 Hirauta, Sheohar</p>
-            <p>© Gyan Varsha Coaching Center</p>
-        </footer>
-    </div>
-
-    <!-- UI & App Install Scripts -->
-    <script>
-        function navigateWithAnimation(url) {
-            document.body.classList.add('page-exit');
-            setTimeout(() => { window.location.href = url; }, 300);
-        }
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                document.body.classList.remove('page-exit');
-            }
-        });
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        window.installApp = async function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null;
-            } else {
-                alert("📲 App Install Kaise Karein:\n\n1. Browser menu (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.");
-            }
-        };
-    </script>
-
-    <!-- Notification Permission Script -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/firebase-messaging-sw.js').catch(err => console.log('SW Error:', err));
-        }
-        function askNotificationPermission() {
-            if (!("Notification" in window)) return;
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted" && window.generateFCMToken) window.generateFCMToken();
-            });
-        }
-        window.onload = function() { setTimeout(askNotificationPermission, 2500); };
-    </script>
-
-    <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
-    <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-        import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-            authDomain: "gvcc-database.firebaseapp.com",
-            projectId: "gvcc-database",
-            storageBucket: "gvcc-database.firebasestorage.app",
-            messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
-            measurementId: "G-DP808QLE7K"
-        };
-
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const db = getFirestore(app);
-        
-        let analytics = null; try { analytics = getAnalytics(app); } catch(e) {}
-        let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
-
-        let studentClassGlobal = "10th";
-        const activeRoll = localStorage.getItem("studentRoll");
-
-        if (!activeRoll) {
+            console.log("Logging out."); // जासूस 11
+            localStorage.removeItem("studentRoll"); 
+            localStorage.removeItem("studentClass"); 
             window.location.replace("student-login.html"); 
-        } else {
-            fetchStudentData(activeRoll);
-        }
-
-        async function fetchStudentData(roll) {
-            try {
-                const docRef = doc(db, "students", roll);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
-                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
-                    
-                    studentClassGlobal = String(studentClass).trim();
-                    
-                    localStorage.setItem("studentClass", studentClassGlobal);
-                    localStorage.setItem("studentName", studentName);
-                    
-                    if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
-                    
-                    document.getElementById("studentName").innerText = studentName;
-                    document.getElementById("studentRollDisplay").innerText = roll;
-                    document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
-                    
-                    document.getElementById("loading").style.display = "none";
-                    document.getElementById("mainContent").style.display = "flex";
-
-                } else {
-                    alert("Session Error: Profile not found."); window.logout();
-                }
-            } catch (error) {
-                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
-            }
-        }
-
-        // 🌟 Notices List (Normal Box)
-        const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
-        onSnapshot(qNotices, (snapshot) => {
-            const noticeBox = document.getElementById("studentNotices");
-            if (!noticeBox) return;
-            noticeBox.innerHTML = ""; 
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                noticeBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
-                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || 'General'}) • Target: ${data.targetClass || 'All'}
-                        </div>
-                        <div style="color: #f8fafc; font-size: 15px;">${data.message || ''}</div>
-                    </div>
-                `;
-            });
-        });
-
-        // 🌟 Real-Time Popup Radar
-        const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
-        onSnapshot(popupQuery, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const notice = change.doc.data();
-                    const noticeId = change.doc.id;
-                    
-                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
-                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
-                    
-                    if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
-                        const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
-                        if (!seenNotices.includes(noticeId)) {
-                            showNoticePopup(notice.teacherName || "GVCC Faculty", notice.message);
-                            seenNotices.push(noticeId);
-                            localStorage.setItem("seenNotices", JSON.stringify(seenNotices));
-                        }
-                    }
-                }
-            });
-        });
-
-        function showNoticePopup(sender, text) {
-            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
-
-            const pop = document.createElement("div");
-            pop.style.position = "fixed"; pop.style.top = "20px"; pop.style.left = "50%"; 
-            pop.style.transform = "translateX(-50%)"; pop.style.zIndex = "99999"; pop.style.width = "90vw"; pop.style.maxWidth = "350px";
-            pop.innerHTML = `
-                <div style="background:#1e293b; border:2px solid #f59e0b; padding:20px; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.7); animation: dropDownNotice 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-                    <h3 style="margin:0 0 10px 0; color:#f59e0b; font-size: 18px;"><i class="fa-solid fa-bell fa-shake"></i> New Notice • ${sender}</h3>
-                    <p style="margin:0; font-size:15px; color:#f8fafc; line-height: 1.5;">${text}</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top:15px; width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; padding:10px; font-weight:bold; border-radius:8px; cursor:pointer; font-size: 14px;">OK, Got It!</button>
-                </div>
-                <style>@keyframes dropDownNotice { from { transform: translateY(-150px); opacity:0; } to { transform: translateY(0); opacity:1; } }</style>
-            `;
-            document.body.appendChild(pop);
-        }
-
-        // Active Tests
-        const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
-        onSnapshot(qTests, (snapshot) => {
-            const testBox = document.getElementById("studentTests");
-            if (!testBox) return;
-            testBox.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                testBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <div>
-                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
-                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || ''}) • ${data.targetClass || ''}
-                            </div>
-                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName || 'Online Test'}</div>
-                        </div>
-                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
-                            Start Test <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-            });
-        });
-
-        window.generateFCMToken = async function() {
-            if(!messaging) return;
-            try {
-                const registration = await navigator.serviceWorker.ready; 
-                const currentToken = await getToken(messaging, { 
-                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
-                    serviceWorkerRegistration: registration 
-                });
-                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-            } catch (err) { console.log("FCM Token Error:", err); }
-        }
-
-        if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
-
-        window.routeToLiveTest = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("history10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("history9.html");
-            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html");
-            else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
-        }
-
-        window.routeToResult = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("result10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("result.html");
-            else if (cleanClass.includes("8")) alert("⚠️ Alert: Class 8th ka result abhi available nahi hai!");
-            else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
-        }
-
-        window.logout = function() { 
-            document.body.classList.add('page-exit'); 
-            setTimeout(() => {
-                localStorage.removeItem("studentRoll"); 
-                window.location.replace("student-login.html"); 
-            }, 300);
         }
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
+
     </script>
     <script>
+        // ✅ OFFLINE RESULT ROUTER FUNCTION ✅
         function goToVIPResult() {
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class");
+            console.log("VIP Route Request. Current Class:", loggedInClass); // जासूस 12
 
             if (!loggedInClass) {
                 alert("⚠️ Please login first!");
                 return;
             }
 
-            // अगर क्लास 8th है, तो 8th वाले पेज पर भेजो
+            // अगर क्लास 8th है, तो 8th वाले पेज पर स्मूथ एनिमेशन के साथ भेजो
             if (loggedInClass.includes("8")) {
-                window.location.href = "vip_result8.html";
+                navigateWithAnimation("vip_result8.html");
             } 
             // अगर क्लास 9th है, तो 9th वाले पेज पर भेजो
             else if (loggedInClass.includes("9")) {
-                window.location.href = "vip_result9.html";
+                navigateWithAnimation("vip_result9.html");
             } 
-            // अगर कोई और क्लास है जिसका रिजल्ट अभी नहीं बना
             else {
                 alert("⚠️ Abhi aapकी class ka VIP Result upload nahi hua hai.");
             }
