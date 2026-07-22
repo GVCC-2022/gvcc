@@ -31,7 +31,6 @@
         
         .hidden { display: none !important; }
         
-        /* Premium Buttons */
         .btn { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); 
             color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
@@ -41,7 +40,6 @@
         .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
         .btn:active { transform: translateY(1px); }
         
-        /* Sleek Input Box */
         .input-box { 
             width: 90%; padding: 16px; border-radius: 10px; 
             border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
@@ -52,7 +50,6 @@
         .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
         .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
         
-        /* Back Link */
         .back-link { 
             color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
             display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; 
@@ -193,7 +190,7 @@
             <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-N8...)">
             <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
-                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Please check your code.
             </p>
         </div>
 
@@ -283,7 +280,6 @@
     </div>
 
     <script>
-        // ✅ CLASS 8TH DATABASE - REAL NAMES ADDED & NO "O" USED
         const resultDatabase = {
             "801": { name: "Anamika Kumari", code: "GVCC-N8F0A1", set: "A", marks: "28", obj: "14", short: "10", long: "4" },
             "802": { name: "Radhika Kumari", code: "GVCC-M8K0B2", set: "B", marks: "25", obj: "13", short: "8", long: "4" },
@@ -310,52 +306,48 @@
         };
 
         window.onload = function() {
+            // Dashboard Check logic
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
-            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
 
-            // 🔥 AUTO-FIX FOR TESTING: Agar koi 8th ka data nahi hai ya 9th ka data fasa hai, toh yeh zabardasti 801 ka login bana dega
-            if (!loggedInRoll || !loggedInClass || loggedInClass.includes("9")) {
-                localStorage.setItem("studentRoll", "801");
-                localStorage.setItem("studentClass", "Class 8th");
-                loggedInRoll = "801";
-                loggedInClass = "Class 8th";
-            }
-
-            if (loggedInClass.includes("8")) {
-                document.getElementById("resultSection").classList.remove("hidden");
-                document.getElementById("classErrorBox").classList.add("hidden");
-            } else {
-                document.getElementById("classErrorBox").classList.remove("hidden");
-                document.getElementById("resultSection").classList.add("hidden");
+            // Agar student directly result page kholta hai ya testing kar raha hai, allow testing gracefully
+            if (!loggedInClass || !loggedInClass.includes("8")) {
+                // Warning hatakar testing mode active kar diya
+                console.log("Testing Mode or Non-8th Class Logged In. Code Lookup is Active.");
             }
         };
 
         function verifyResult() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
-            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
-            
             let errorMsg = document.getElementById("codeError");
-            let studentData = resultDatabase[loggedInRoll];
             
-            // Security Check: Code match hona zaroori hai aur student ka data database mein hona zaroori hai
-            if (studentData && enteredCode === studentData.code) {
+            let studentFound = null;
+
+            // 🔥 THE ULTIMATE FIX: Ab ye local storage me nahi, balki seedha DATABASE me Code dhoondega!
+            for (let roll in resultDatabase) {
+                if (resultDatabase[roll].code === enteredCode) {
+                    studentFound = resultDatabase[roll];
+                    break;
+                }
+            }
+            
+            // Agar code sahi hai toh result show karo
+            if (studentFound) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Naam seedha database (list) se utha raha hai
-                document.getElementById("resNamePrev").innerText = studentData.name;
-                document.getElementById("resMarksPrev").innerText = studentData.marks + "/30";
+                document.getElementById("resNamePrev").innerText = studentFound.name;
+                document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30"; 
 
-                document.getElementById("hdName").innerText = studentData.name;
-                document.getElementById("hdSet").innerText = studentData.set;
-                document.getElementById("hdObtained").innerText = studentData.marks;
+                document.getElementById("hdName").innerText = studentFound.name;
+                document.getElementById("hdSet").innerText = studentFound.set;
+                document.getElementById("hdObtained").innerText = studentFound.marks;
 
-                document.getElementById("hdObj").innerText = studentData.obj;
-                document.getElementById("hdShort").innerText = studentData.short;
-                document.getElementById("hdLong").innerText = studentData.long;
+                document.getElementById("hdObj").innerText = studentFound.obj;
+                document.getElementById("hdShort").innerText = studentFound.short;
+                document.getElementById("hdLong").innerText = studentFound.long;
 
-                const marks = parseInt(studentData.marks);
+                const marks = parseInt(studentFound.marks);
                 const badge = document.getElementById("performanceBadge");
 
                 if(marks >= 25){ 
