@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - Class 8th Maths Result</title>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 🔥 html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -29,7 +27,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08); 
         }
         
-        .hidden { display: none !important; }
+        .hidden { display: none; }
         
         .btn { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); 
@@ -77,7 +75,6 @@
         @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
 
         .preview-logo { width: 130px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
-        
         .preview-class { margin: 0; color: #d4af37; font-size: 13px; letter-spacing: 3px; font-weight: 900; }
         .preview-subject { color: #ffffff; font-size: 22px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .preview-name { color: #ffd700; font-size: 20px; margin: 5px 0; font-weight: bold; letter-spacing: 1px; }
@@ -103,64 +100,86 @@
           HD PAPER MARKSHEET (1080x1920)
         =========================== */
         #resultCard {
-            width: 1080px; height: 1920px; position: relative; background-color: #f4f7f6; 
+            width: 1080px; height: 1920px; position: relative; background-color: #f8fafc; 
             display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
             box-sizing: border-box; color: #000000; 
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
+        /* EXACT BORDERS (CLASS 9TH STYLE) */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
+        /* SIDE TEXT INSIDE GOLDEN LINE (CLASS 9TH EXACT ALIGNMENT) */
         .side-text-container {
             position: absolute;
-            left: 60px; 
-            bottom: 120px; 
-            transform-origin: left bottom;
-            transform: rotate(-90deg);
+            top: 0;
+            left: 45px; 
+            width: 35px; 
+            height: 1920px; 
+            display: flex;
+            align-items: center; 
+            justify-content: center;
             z-index: 20;
         }
         .side-text { 
-            font-size: 24px; color: #64748b; font-weight: bold; letter-spacing: 3px; 
-            text-transform: uppercase; font-family: 'Segoe UI', sans-serif; white-space: nowrap; 
+            transform: rotate(-90deg); 
+            font-size: 24px; 
+            color: #29438e; 
+            font-weight: 900; 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            white-space: nowrap; 
         }
 
+        /* 🪶 WATERMARK */
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
 
-        .header { width: 100%; text-align: center; z-index: 5; margin-top: 20px; margin-bottom: 30px; }
+        /* 🏫 HEADER */
+        .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
         .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
 
-        .document-title { font-size: 55px; font-weight: bold; color: #29438e; background: #ffffff; padding: 25px 50px; border: 2px solid #000; border-radius: 12px; z-index: 5; margin-bottom: 40px; width: 85%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* 📜 TITLE BOX (CLASS 9TH 82% WIDTH) */
+        .document-title { font-size: 55px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        .details-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 38px; margin-bottom: 40px; background: #fff; }
-        .details-table td { border: 2px solid #000; padding: 22px 30px; }
-        .td-label { width: 40%; font-weight: 900; color: #29438e; }
+        /* 📋 DETAILS TABLE (CLASS 9TH 82% WIDTH) */
+        .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
+        .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
+        .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        .marks-container { display: flex; width: 95%; border: 2px solid #29438e; z-index: 5; overflow: hidden; border-radius: 15px; margin-bottom: 30px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        /* 📊 MARKS BOX (CLASS 9TH 82% WIDTH) */
+        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
         .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
-        .mark-box.total { border-right: 2px solid #29438e; }
+        .mark-box.total { border-right: 3px solid #29438e; }
         .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
         
         .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
-        .breakdown-table { width: 95%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
-        .breakdown-table th { border: 2px solid #000; color: #29438e; padding: 15px; font-weight: 900; }
-        .breakdown-table td { border: 2px solid #000; padding: 15px; font-size: 45px; font-weight: bold; color: #e32726; }
+        /* 📝 BREAKDOWN TABLE (CLASS 9TH 82% WIDTH) */
+        .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
+        .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 15px; font-weight: 900; font-size: 30px; }
+        .breakdown-table td { border: 3px solid #29438e; padding: 15px; font-size: 45px; font-weight: 900; color: #e32726; }
 
+        /* ⭐ VIP REMARKS BOX */
         .remarks-box { 
             font-size: 40px; font-weight: 900; padding: 18px 60px; 
             border-radius: 12px; z-index: 5; background: #fffde7; 
             color: #e32726; margin-bottom: auto; letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             border: 4px dashed #f5c518; 
+            width: 70%; text-align: center;
         }
 
-        .footer-logo { width: 260px; object-fit: contain; z-index: 5; margin-bottom: 20px; }
+        /* 🟢 GREEN SEAL LOGO */
+        .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
+        
+        /* 🌐 WEBSITE TEXT */
         .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
 
     </style>
@@ -197,6 +216,8 @@
                 <div class="preview-marks-box">
                     <p class="preview-marks-label">Marks Obtained</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/30</p>
+                    <!-- 🔥 PASS / FAIL STATUS IN MOBILE (CLASS 9TH STYLE) -->
+                    <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
                 </div>
             </div>
             <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
@@ -210,7 +231,7 @@
         <div id="resultCard">
             
             <div class="side-text-container">
-                <div class="side-text">Monthly Test : 2026-07-22</div>
+                <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-22</div>
             </div>
             
             <img src="20260620_144347.png" class="watermark">
@@ -218,7 +239,7 @@
             <div class="header">
                 <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
                 <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
-                <h3 class="school-tagline">आपकी सफलता ही मेरी पहचान है...!</h3>
+                <h3 class="school-tagline">आपकी सफलता ही हमारी पहचान है...!</h3>
             </div>
 
             <div class="document-title">Mathematics Result - Class 8th</div>
@@ -235,6 +256,11 @@
                 <tr>
                     <td class="td-label">QUESTION SET CODE</td>
                     <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
+                </tr>
+                <!-- 🔥 PASS / FAIL STATUS IN HD CARD (CLASS 9TH STYLE) -->
+                <tr>
+                    <td class="td-label">RESULT STATUS</td>
+                    <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
                 </tr>
             </table>
 
@@ -300,7 +326,6 @@
         };
 
         function verifyResult() {
-            // Box mein dala gaya code la rahe hain
             let rawCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             
             // 🔥 SUPER FIX: Agar bache ne galti se letter 'O' daala, toh ye usko number '0' bana dega
@@ -309,7 +334,6 @@
             let errorMsg = document.getElementById("codeError");
             let studentFound = null;
 
-            // Seedha database me se code match karega (No login dependency)
             for (let roll in resultDatabase) {
                 if (resultDatabase[roll].code === enteredCode) {
                     studentFound = resultDatabase[roll];
@@ -317,17 +341,24 @@
                 }
             }
             
-            // Agar code kisi bache se match hua...
             if (studentFound) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
+                // PASS / FAIL Logic (40% of 30 = 12 marks to pass)
+                let marksInt = parseFloat(studentFound.marks);
+                let isPassed = marksInt >= 12;
+
                 // Set data to Preview Card
                 document.getElementById("resNamePrev").innerText = studentFound.name;
                 document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30";
+                
+                // Mobile View Status
+                document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
+                document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
 
-                // Set data to Print Card
+                // Set data to HD Print Card
                 document.getElementById("hdName").innerText = studentFound.name;
                 document.getElementById("hdSet").innerText = studentFound.set;
                 document.getElementById("hdObtained").innerText = studentFound.marks;
@@ -335,23 +366,26 @@
                 document.getElementById("hdObj").innerText = studentFound.obj;
                 document.getElementById("hdShort").innerText = studentFound.short;
                 document.getElementById("hdLong").innerText = studentFound.long;
+                
+                // HD View Status
+                document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
+                document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
 
-                const marks = parseInt(studentFound.marks);
                 const badge = document.getElementById("performanceBadge");
 
-                if(marks >= 25){ 
-                    badge.innerHTML = "Remarks: Outstanding 🌟"; 
-                    badge.style.color = "#e32726"; 
-                    badge.style.border = "4px dashed #f5c518"; 
-                    badge.style.background = "#fffde7"; 
-                }
-                else if(marks >= 15){ 
-                    badge.innerHTML = "Remarks: Good Progress 👍"; 
-                    badge.style.color = "#29438e"; 
-                    badge.style.border = "4px dashed #29438e"; 
-                    badge.style.background = "#eef2ff"; 
-                }
-                else{ 
+                if (isPassed) {
+                    if (marksInt >= 25) { 
+                        badge.innerHTML = "Remarks: Outstanding 🌟"; 
+                        badge.style.color = "#e32726"; 
+                        badge.style.border = "4px dashed #f5c518"; 
+                        badge.style.background = "#fffde7"; 
+                    } else { 
+                        badge.innerHTML = "Remarks: Good Progress 👍"; 
+                        badge.style.color = "#29438e"; 
+                        badge.style.border = "4px dashed #29438e"; 
+                        badge.style.background = "#eef2ff"; 
+                    }
+                } else { 
                     badge.innerHTML = "Remarks: Needs Improvement 📖"; 
                     badge.style.color = "#d32f2f"; 
                     badge.style.border = "4px dashed #d32f2f"; 
@@ -360,7 +394,6 @@
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
-                // Agar match nahi hua toh error!
                 errorMsg.style.display = "block";
                 document.getElementById("cardWrapper").style.display = "none";
             }
@@ -376,7 +409,7 @@
             html2canvas(document.querySelector("#resultCard"), {
                 scale: 2,           
                 useCORS: true,
-                backgroundColor: "#f4f7f6",
+                backgroundColor: "#f8fafc",
                 logging: false
             }).then(canvas => {
                 const imageData = canvas.toDataURL("image/png", 1.0);
