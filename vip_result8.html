@@ -151,13 +151,15 @@
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 📊 MARKS BOX (CLASS 9TH 82% WIDTH) */
+        /* 📊 MARKS BOX (FIXED PADDING AND HEIGHT) */
         .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
-        .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
+        .mark-box { flex: 1; text-align: center; padding: 40px 20px; } /* Increased vertical padding to avoid cutting */
         .mark-box.total { border-right: 3px solid #29438e; }
         .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
         
-        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        /* 🔥 FIXED MARK VALUE SIZE SO IT DOESN'T CLIP 🔥 */
+        .mark-value { font-size: 130px; font-weight: 900; margin-top: 15px; margin-bottom: 10px; line-height: 1.1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;} 
+        
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
