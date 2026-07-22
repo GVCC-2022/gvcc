@@ -225,13 +225,12 @@
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 
-                <!-- homework diary Link -->
                 <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: #faf5ff !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
                     <span style="font-size: 16px; color: #6b21a8; font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
                 </button>
 
-                <!-- 👑 VIP OFFLINE RESULT BUTTON -->
+                <!-- 🔥 👑 VIP OFFLINE RESULT BUTTON 🔥 -->
                 <button class="menu-card full-width" style="background: linear-gradient(135deg, #0f172a, #1e293b) !important; border: 1px solid #fbbf24; flex-direction: row; padding: 18px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.25); position: relative; overflow: hidden; align-items: center; justify-content: flex-start;" onclick="goToVIPResult()">
                     
                     <!-- ✨ Shine Effect Layer -->
@@ -265,6 +264,11 @@
                     <i class="fa-solid fa-chart-bar"></i><span>Result</span>
                 </button>
 
+                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
+                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
+                    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
+                </button>
+
                 <button class="menu-card card-install full-width" onclick="installApp()">
                     <i class="fa-solid fa-download"></i><span>Install GVCC App</span>
                 </button>
@@ -284,13 +288,10 @@
 
     <!-- UI & App Install Scripts -->
     <script>
-        // SMART NAVIGATION FUNCTION
         function navigateWithAnimation(url) {
-            console.log("Navigating to:", url); // जासूस 1
             document.body.classList.add('page-exit');
             setTimeout(() => { window.location.href = url; }, 300);
         }
-        
         window.addEventListener('pageshow', function(event) {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 document.body.classList.remove('page-exit');
@@ -327,8 +328,7 @@
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-        
-        console.log("Firebase Libraries Loaded"); // जासूस 2
+        import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -336,96 +336,206 @@
             projectId: "gvcc-database",
             storageBucket: "gvcc-database.firebasestorage.app",
             messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
+            measurementId: "G-DP808QLE7K"
         };
 
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
         const db = getFirestore(app);
         
+        let analytics = null; try { analytics = getAnalytics(app); } catch(e) {}
         let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
+        let studentClassGlobal = "10th";
+        
+        // 🔒 असली रोल नंबर ही चेक होगा
         const activeRoll = localStorage.getItem("studentRoll");
-        console.log("Logged in Roll (Local):", activeRoll); // जासूस 3
 
-       if (!activeRoll) {
-            console.warn("No session found. Redirecting to Login."); // जासूस 4
-            // अगर लॉगिन नहीं है, तो लॉगिन पेज पर भेजें
+        if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
-            console.log("Session found. Loading data for:", activeRoll); // जासूस 3.1
-            // अब सिस्टम असली लॉगिन रोल नंबर का ही डेटा मांगेगा!
-            fetchStudentData(activeRoll); 
+            fetchStudentData(activeRoll);
         }
 
         async function fetchStudentData(roll) {
-            console.log("Requesting data for roll:", roll); // जासूस 5
             try {
                 const docRef = doc(db, "students", roll);
                 const docSnap = await getDoc(docRef);
-                console.log("Firebase Response Received"); // जासूस 6
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let studentName = data.Name || data.name || "N/A";
-                    let studentClass = data.Class || data.class || "N/A";
+                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
+                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
                     
-                    console.log("Student Found:", studentName, studentClass); // जासूस 7
+                    studentClassGlobal = String(studentClass).trim();
                     
-                    // UI पर डेटा सेट कर रहे हैं
+                    localStorage.setItem("studentClass", studentClassGlobal);
+                    localStorage.setItem("studentName", studentName);
+                    
+                    if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
+                    
                     document.getElementById("studentName").innerText = studentName;
                     document.getElementById("studentRollDisplay").innerText = roll;
-                    document.getElementById("studentClass").innerText = studentClass;
+                    document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
                     
-                    // 🔥 जादू! लोडर हटाकर मेन कंटेंट दिखा रहे हैं 🔥
-                    console.log("Hiding Loader..."); // जासूस 8
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("mainContent").style.display = "flex";
 
                 } else {
-                    console.error("Profile not found in Firestore!"); // जासूस 9
-                    alert("Error: Profile not found."); window.logout();
+                    alert("Session Error: Profile not found."); window.logout();
                 }
             } catch (error) {
-                console.error("FIRESTORE ERROR:", error); // जासूस 10 (यही बीमारी की जड़ बताएगा इंकोग्निटो में)
-                document.getElementById("loading").innerHTML = `<div style='color:red; padding:20px;'>⚠️ Connection timeout. Refresh or check Console.<br><small>${error.message}</small></div>`;
+                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
         }
 
-        // --- बाकी डेटा लोड करने वाले कोड ---
-        // (ये कोड पेज लोड होने के बाद काम करते हैं, Gol Gol घूमने वाली दिक्कत इनसे नहीं है)
-        // [आपके Notices, Tests वाले पुराने कोड यहाँ आ जाएंगे]
+        // 🌟 Notices List (Normal Box)
+        const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
+        onSnapshot(qNotices, (snapshot) => {
+            const noticeBox = document.getElementById("studentNotices");
+            if (!noticeBox) return;
+            noticeBox.innerHTML = ""; 
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                noticeBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
+                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || 'General'}) • Target: ${data.targetClass || 'All'}
+                        </div>
+                        <div style="color: #f8fafc; font-size: 15px;">${data.message || ''}</div>
+                    </div>
+                `;
+            });
+        });
 
-        // --- NAVIGATION ---
+        // 🌟 Real-Time Popup Radar
+        const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
+        onSnapshot(popupQuery, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const notice = change.doc.data();
+                    const noticeId = change.doc.id;
+                    
+                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
+                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
+                    
+                    if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
+                        const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
+                        if (!seenNotices.includes(noticeId)) {
+                            showNoticePopup(notice.teacherName || "GVCC Faculty", notice.message);
+                            seenNotices.push(noticeId);
+                            localStorage.setItem("seenNotices", JSON.stringify(seenNotices));
+                        }
+                    }
+                }
+            });
+        });
+
+        function showNoticePopup(sender, text) {
+            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
+
+            const pop = document.createElement("div");
+            pop.style.position = "fixed"; pop.style.top = "20px"; pop.style.left = "50%"; 
+            pop.style.transform = "translateX(-50%)"; pop.style.zIndex = "99999"; pop.style.width = "90vw"; pop.style.maxWidth = "350px";
+            pop.innerHTML = `
+                <div style="background:#1e293b; border:2px solid #f59e0b; padding:20px; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.7); animation: dropDownNotice 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <h3 style="margin:0 0 10px 0; color:#f59e0b; font-size: 18px;"><i class="fa-solid fa-bell fa-shake"></i> New Notice • ${sender}</h3>
+                    <p style="margin:0; font-size:15px; color:#f8fafc; line-height: 1.5;">${text}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top:15px; width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; padding:10px; font-weight:bold; border-radius:8px; cursor:pointer; font-size: 14px;">OK, Got It!</button>
+                </div>
+                <style>@keyframes dropDownNotice { from { transform: translateY(-150px); opacity:0; } to { transform: translateY(0); opacity:1; } }</style>
+            `;
+            document.body.appendChild(pop);
+        }
+
+        // Active Tests
+        const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
+        onSnapshot(qTests, (snapshot) => {
+            const testBox = document.getElementById("studentTests");
+            if (!testBox) return;
+            testBox.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                testBox.innerHTML += `
+                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
+                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || ''}) • ${data.targetClass || ''}
+                            </div>
+                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName || 'Online Test'}</div>
+                        </div>
+                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
+                            Start Test <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+            });
+        });
+
+        window.generateFCMToken = async function() {
+            if(!messaging) return;
+            try {
+                const registration = await navigator.serviceWorker.ready; 
+                const currentToken = await getToken(messaging, { 
+                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
+                    serviceWorkerRegistration: registration 
+                });
+                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
+            } catch (err) { console.log("FCM Token Error:", err); }
+        }
+
+        if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
+
+        // 🌟 NAYA LOGIC: ROLL NUMBER KE BASE PAR REDIRECT HOGA 🌟
+        window.routeToLiveTest = function() {
+            let roll = localStorage.getItem("studentRoll") || "";
+            if (roll.startsWith("10") || roll.startsWith("1")) navigateWithAnimation("history10.html");
+            else if (roll.startsWith("9")) navigateWithAnimation("history9.html");
+            else if (roll.startsWith("8")) navigateWithAnimation("math8.html");
+            else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
+        }
+
+        window.routeToResult = function() {
+            let roll = localStorage.getItem("studentRoll") || "";
+            if (roll.startsWith("10") || roll.startsWith("1")) navigateWithAnimation("result10.html");
+            else if (roll.startsWith("9")) navigateWithAnimation("result.html");
+            else if (roll.startsWith("8")) alert("⚠️ Alert: Class 8th ka online result abhi available nahi hai!");
+            else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
+        }
+
         window.logout = function() { 
-            console.log("Logging out."); // जासूस 11
-            localStorage.removeItem("studentRoll"); 
-            localStorage.removeItem("studentClass"); 
-            window.location.replace("student-login.html"); 
+            document.body.classList.add('page-exit'); 
+            setTimeout(() => {
+                localStorage.removeItem("studentRoll"); 
+                localStorage.removeItem("studentClass"); 
+                window.location.replace("student-login.html"); 
+            }, 300);
         }
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
-
     </script>
-    <script>
-        // ✅ OFFLINE RESULT ROUTER FUNCTION ✅
-        function goToVIPResult() {
-            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class");
-            console.log("VIP Route Request. Current Class:", loggedInClass); // जासूस 12
 
-            if (!loggedInClass) {
+    <!-- 🚀 VIP RESULT MASTER ROUTER 🚀 -->
+    <script>
+        function goToVIPResult() {
+            // 🔥 अब क्लास का नाम नहीं, सीधा ROLL NUMBER चेक कर रहे हैं! 🔥
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            if (!loggedInRoll) {
                 alert("⚠️ Please login first!");
                 return;
             }
 
-            // अगर क्लास 8th है, तो 8th वाले पेज पर स्मूथ एनिमेशन के साथ भेजो
-            if (loggedInClass.includes("8")) {
+            // अगर रोल नंबर 8 से शुरू होता है (801, 822), तो 8th वाले पेज पर भेजो
+            if (loggedInRoll.startsWith("8")) {
                 navigateWithAnimation("vip_result8.html");
             } 
-            // अगर क्लास 9th है, तो 9th वाले पेज पर भेजो
-            else if (loggedInClass.includes("9")) {
+            // अगर रोल नंबर 9 से शुरू होता है (901, 924), तो 9th वाले पेज पर भेजो
+            else if (loggedInRoll.startsWith("9")) {
                 navigateWithAnimation("vip_result9.html");
             } 
+            // अगर कोई और क्लास है
             else {
-                alert("⚠️ Abhi aapकी class ka VIP Result upload nahi hua hai.");
+                alert("⚠️ Abhi aapki class ka VIP Result upload nahi hua hai.");
             }
         }
     </script>
