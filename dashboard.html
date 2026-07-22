@@ -1,4 +1,98 @@
-iv class="profile-card">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - Student Dashboard</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: radial-gradient(circle at top, #1e293b, #090e17); 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
+        }
+        
+        .container { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 30px 20px; border-radius: 20px; width: 90%; max-width: 420px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+
+        /* 👤 Profile Card Styles */
+        .profile-card {
+            background: linear-gradient(135deg, rgba(30,58,138,0.5), rgba(15,23,42,0.8));
+            border: 2px solid #3b82f6; border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: left;
+        }
+        .profile-header {
+            font-size: 16px; font-weight: bold; color: #60a5fa; margin-bottom: 12px;
+            border-bottom: 1px solid rgba(96,165,250,0.3); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;
+        }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .info-label { color: #94a3b8; font-weight: 600; }
+        .info-value { color: #f8fafc; font-weight: bold; text-transform: uppercase; }
+
+        /* Grid Menu Styles */
+        .grid-menu { display: flex; flex-direction: column; gap: 12px; }
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 15px; display: flex; align-items: center;
+            gap: 15px; text-decoration: none; color: white; transition: 0.3s; cursor: pointer; width: 100%; box-sizing: border-box;
+        }
+        .menu-card:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; transform: translateY(-2px); }
+        .menu-card i { font-size: 20px; color: #3b82f6; width: 25px; text-align: center; }
+        .menu-card span { font-size: 16px; font-weight: 700; }
+        
+        .card-live i { color: #ef4444; }
+        .card-notes i { color: #f59e0b; }
+        .card-notice i { color: #10b981; }
+        .card-test i { color: #6366f1; }
+        .card-result i { color: #ec4899; }
+        .card-install i { color: #06b6d4; }
+
+        /* Logout Button */
+        .btn-logout {
+            background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; border: none;
+            padding: 14px; font-size: 15px; font-weight: bold; border-radius: 10px; cursor: pointer;
+            width: 100%; margin-top: 20px; transition: 0.3s; box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-logout:hover { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        /* Footer */
+        footer { margin-top: 20px; font-size: 12px; color: #64748b; line-height: 1.4; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+
+        /* Animation class */
+        .page-exit { opacity: 0; transform: scale(0.95); transition: 0.3s ease-in-out; }
+
+        @keyframes shineVIP {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- ⏳ Loading Screen -->
+        <div id="loading" style="padding: 40px 0;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 40px; color: #3b82f6; margin-bottom: 15px;"></i>
+            <p style="color: #94a3b8; font-size: 15px; margin: 0;">Loading Student Profile...</p>
+        </div>
+
+        <!-- 🚀 Main Content (Starts hidden until loaded) -->
+        <div id="mainContent" style="display: none;">
+            
+            <!-- 👤 Student Profile Box -->
+            <div class="profile-card">
                 <div class="profile-header"><i class="fa-solid fa-id-card"></i> 👤 Student Profile</div>
                 <div class="info-row"><span class="info-label">Name:</span><span class="info-value" id="studentName">--</span></div>
                 <div class="info-row"><span class="info-label">Roll Number:</span><span class="info-value" id="studentRollDisplay">--</span></div>
@@ -58,7 +152,7 @@ iv class="profile-card">
                 </button>
 
                 <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
-                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
+                    <i class="fa-solid fa-photo-film" style="font-size: 24px;"></i>
                     <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
                 </button>
 
@@ -70,13 +164,13 @@ iv class="profile-card">
             <button class="btn-logout" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
             </button>
-        </div>
 
-        <footer>
-            <p>📝 Created By: <strong>Md Faiyaz Reza</strong></p>
-            <p>📍 Hirauta, Sheohar</p>
-            <p>© Gyan Varsha Coaching Center</p>
-        </footer>
+            <footer>
+                <p>📝 Created By: <strong>Md Faiyaz Reza</strong></p>
+                <p>📍 Hirauta, Sheohar</p>
+                <p>© Gyan Varsha Coaching Center</p>
+            </footer>
+        </div>
     </div>
 
     <!-- UI & App Install Scripts -->
@@ -117,9 +211,8 @@ iv class="profile-card">
     </script>
 
     <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
-        <script type="module">
+    <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        // 👇 NAYA: Yahan maine 'limit' ko import me add kar diya hai
         import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
         import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
@@ -141,7 +234,7 @@ iv class="profile-card">
         let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
 
         let studentClassGlobal = "10th";
-        const activeRoll = localStorage.getItem("studentRoll");
+        const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
 
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
@@ -163,6 +256,7 @@ iv class="profile-card">
                     
                     localStorage.setItem("studentClass", studentClassGlobal);
                     localStorage.setItem("studentName", studentName);
+                    localStorage.setItem("studentRoll", roll);
                 
                     if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
                     
@@ -171,20 +265,22 @@ iv class="profile-card">
                     document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
                     
                     document.getElementById("loading").style.display = "none";
-                    document.getElementById("mainContent").style.display = "flex";
+                    document.getElementById("mainContent").style.display = "block";
 
                 } else {
                     alert("Session Error: Profile not found."); window.logout();
                 }
             } catch (error) {
+                console.error(error);
                 document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
             }
         }
 
-        // 🌟 1. PURANA: Notices List (Jo box me dikhta hai)
+        // 🌟 Notices List
         const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
         onSnapshot(qNotices, (snapshot) => {
             const noticeBox = document.getElementById("studentNotices");
+            if(!noticeBox) return;
             noticeBox.innerHTML = ""; 
             snapshot.forEach((doc) => {
                 const data = doc.data();
@@ -199,7 +295,7 @@ iv class="profile-card">
             });
         });
 
-        // 🌟 2. NAYA: 1-5 Second Real-Time Popup Radar (Class by Class)
+        // 🌟 Real-Time Popup Radar
         const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
         onSnapshot(popupQuery, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
@@ -207,20 +303,13 @@ iv class="profile-card">
                     const notice = change.doc.data();
                     const noticeId = change.doc.id;
                     
-                    // Smart Class Matcher ("Class 10" vs "10th" problem solved)
-                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, ""); // Sirf number nikalega (ex: 10)
-                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, ""); // Sirf number nikalega
+                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
+                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
                     
                     if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
-                        
                         const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
-                        
-                        // Check karega ki bache ne ye notice pehle to nahi dekh liya
                         if (!seenNotices.includes(noticeId)) {
-                            // 🔔 NAYA NOTICE AAYA! Bell bajao aur popup dikhao
                             showNoticePopup(notice.teacherName || "GVCC Faculty", notice.message);
-                            
-                            // History me save kar do taaki dobara popup na aaye
                             seenNotices.push(noticeId);
                             localStorage.setItem("seenNotices", JSON.stringify(seenNotices));
                         }
@@ -229,9 +318,7 @@ iv class="profile-card">
             });
         });
 
-        // 🎇 Beautiful Pop-up UI & Sound
         function showNoticePopup(sender, text) {
-            // Chhoti si Bell Sound (Optional)
             try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
 
             const pop = document.createElement("div");
@@ -252,6 +339,7 @@ iv class="profile-card">
         const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
         onSnapshot(qTests, (snapshot) => {
             const testBox = document.getElementById("studentTests");
+            if(!testBox) return;
             testBox.innerHTML = "";
             snapshot.forEach((doc) => {
                 const data = doc.data();
@@ -304,7 +392,7 @@ iv class="profile-card">
         window.logout = function() { 
             document.body.classList.add('page-exit'); 
             setTimeout(() => {
-                localStorage.removeItem("studentRoll"); 
+                localStorage.clear(); 
                 window.location.replace("student-login.html"); 
             }, 300);
         }
