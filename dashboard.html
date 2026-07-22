@@ -347,17 +347,14 @@
         const activeRoll = localStorage.getItem("studentRoll");
         console.log("Logged in Roll (Local):", activeRoll); // जासूस 3
 
-        if (!activeRoll) {
+       if (!activeRoll) {
             console.warn("No session found. Redirecting to Login."); // जासूस 4
+            // अगर लॉगिन नहीं है, तो लॉगिन पेज पर भेजें
             window.location.replace("student-login.html"); 
         } else {
-            // 🔥 इंकोग्निटो मोड की जासूसी: हम सिस्टम को गौतम (9th) से अनामिका (8th) में बदलते हैं 🔥
-            // जब टेस्टिंग खत्म हो जाए, तो इन 2 लाइनों को डिलीट कर दीजिएगा
-            console.log("MANUAL OVERRIDE: Setting session to 801 (Anamika).");
-            localStorage.setItem("studentRoll", "801");
-            localStorage.setItem("studentClass", "Class 8th");
-
-            fetchStudentData("801"); // जासूसी के लिए 801 का ही डेटा मांगते हैं
+            console.log("Session found. Loading data for:", activeRoll); // जासूस 3.1
+            // अब सिस्टम असली लॉगिन रोल नंबर का ही डेटा मांगेगा!
+            fetchStudentData(activeRoll); 
         }
 
         async function fetchStudentData(roll) {
