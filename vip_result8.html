@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+TYPE <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -132,13 +132,13 @@
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 🔥 BUG FIX: Removed overflow:hidden entirely! Applied explicit paddings. 🔥 */
+        /* 🔥 FINAL BALANCED MARKS BOX FIX 🔥 */
         .marks-container { 
             display: flex; 
             width: 82%; 
             border: 3px solid #29438e; 
             z-index: 5; 
-            /* OVERFLOW HIDDEN REMOVED SO TEXT NEVER CLIPS */
+            overflow: hidden; /* Wapas lagaya taaki side ki golai (radius) perfect aaye */
             border-radius: 20px; 
             margin-bottom: 35px; 
             background: #fff; 
@@ -147,16 +147,11 @@
         .mark-box { 
             flex: 1; 
             text-align: center; 
-            padding: 30px 20px 40px 20px; /* Top aur bottom padding set ki hai */
+            padding: 25px 20px 25px 20px; /* Padding kam kardi gayi hai taaki dabbe ka size perfect rahe */
             box-sizing: border-box;
         } 
-        .mark-box.total { 
-            border-right: 3px solid #29438e; 
-            border-radius: 17px 0 0 17px; 
-        }
-        .mark-box.obtained { 
-            border-radius: 0 17px 17px 0; 
-        }
+        .mark-box.total { border-right: 3px solid #29438e; }
+        
         .mark-label { 
             font-size: 26px; 
             font-weight: 600; 
@@ -164,17 +159,16 @@
             text-transform: uppercase; 
             letter-spacing: 1px; 
             font-family: 'Segoe UI', sans-serif;
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Title aur marks ke beech ka gap chota kiya */
         }
         .mark-value { 
-            font-size: 130px; 
+            font-size: 135px; 
             font-weight: 900; 
             margin: 0; 
-            line-height: 1.2; 
+            line-height: 1.1; /* Line height tightly adjust ki gayi hai */
             letter-spacing: -2px; 
-            font-family: Arial, sans-serif; /* Arial Black ki wajah se bhi bug aata hai, isliye Arial Bold kiya */
-            display: inline-block;
-            padding-bottom: 20px; /* EXTRA SPACE DI HAI KI KATE NAHI */
+            font-family: Arial, sans-serif; 
+            display: block; 
         }
         
         .val-total { color: #29438e; }
