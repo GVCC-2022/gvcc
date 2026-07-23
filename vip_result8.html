@@ -1,4 +1,4 @@
-TYPE <!DOCTYPE html>
+!<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -138,7 +138,7 @@ TYPE <!DOCTYPE html>
             width: 82%; 
             border: 3px solid #29438e; 
             z-index: 5; 
-            overflow: hidden; /* Wapas lagaya taaki side ki golai (radius) perfect aaye */
+            overflow: hidden; 
             border-radius: 20px; 
             margin-bottom: 35px; 
             background: #fff; 
@@ -147,7 +147,7 @@ TYPE <!DOCTYPE html>
         .mark-box { 
             flex: 1; 
             text-align: center; 
-            padding: 25px 20px 25px 20px; /* Padding kam kardi gayi hai taaki dabbe ka size perfect rahe */
+            padding: 25px 20px 30px 20px; /* Thoda sa aur space diya niche ki taraf */
             box-sizing: border-box;
         } 
         .mark-box.total { border-right: 3px solid #29438e; }
@@ -159,16 +159,17 @@ TYPE <!DOCTYPE html>
             text-transform: uppercase; 
             letter-spacing: 1px; 
             font-family: 'Segoe UI', sans-serif;
-            margin-bottom: 5px; /* Title aur marks ke beech ka gap chota kiya */
+            margin-bottom: 5px; 
         }
         .mark-value { 
-            font-size: 135px; 
+            font-size: 130px; /* Font size safe rakha hai */
             font-weight: 900; 
             margin: 0; 
-            line-height: 1.1; /* Line height tightly adjust ki gayi hai */
+            line-height: 1; /* Tightest line height */
+            padding-bottom: 10px; /* 🔥 YEH TRICK KABHI BHI NUMBER KO KATNE NAHI DEGI 🔥 */
             letter-spacing: -2px; 
             font-family: Arial, sans-serif; 
-            display: block; 
+            display: inline-block; /* Inline-block zaroori hai padding properly render hone ke liye */
         }
         
         .val-total { color: #29438e; }
@@ -242,7 +243,8 @@ TYPE <!DOCTYPE html>
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             <div class="side-text-container">
-                <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-22</div>
+                <!-- 🔥 Date Updated Here 🔥 -->
+                <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-23</div>
             </div>
             <img src="20260620_144347.png" class="watermark">
             <div class="header">
