@@ -125,7 +125,6 @@
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
 
-        /* 🔥 TITLE BOX FIX (Font size 45px & nowrap so it fits in 1 line) 🔥 */
         .document-title { font-size: 45px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 20px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); white-space: nowrap; }
 
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
@@ -133,12 +132,12 @@
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 🔥 MARKS BOX FIX (Exactly like Class 9th) 🔥 */
+        /* 🔥 MARKS BOX FIX (Numbers Clipping Issue Solved) 🔥 */
         .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
-        .mark-box { flex: 1; text-align: center; padding: 30px 20px; } 
+        .mark-box { flex: 1; text-align: center; padding: 30px 20px 45px 20px; } /* 🔥 Bottom padding badha di taaki pair na kate */
         .mark-box.total { border-right: 3px solid #29438e; }
         .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
-        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;} 
+        .mark-value { font-size: 150px; font-weight: 900; margin-top: 15px; margin-bottom: 0px; line-height: 1.1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif; display: inline-block; } /* 🔥 Line-height aur display theek kiya */
         
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
@@ -294,7 +293,8 @@
             "821": { name: "Sajda Khatoon", code: "GVCC-T8Q2C1", set: "C", marks: "00", obj: "00", short: "00", long: "00" },
             "822": { name: "Abdul Samad", code: "GVCC-W8Z2D2", set: "D", marks: "11", obj: "07", short: "04", long: "00" }
         };
-        const isResultPublished = true; // Result block karne ke liye ise 'false' kar dein
+
+        const isResultPublished = true; 
 
         window.onload = function() {
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
@@ -343,7 +343,6 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Backup Name Logic (Agar Firebase name N/A ho toh)
                 if (!loggedInName || loggedInName === "N/A" || loggedInName.trim() === "") {
                     loggedInName = studentFound.name;
                 }
@@ -360,7 +359,6 @@
                 document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentFound.set;
                 
-                // 🔥 NAYA FIX: Single digit ko double digit banana (eg: 6 ko 06 karna)
                 document.getElementById("hdObtained").innerText = marksInt < 10 ? "0" + marksInt : marksInt;
 
                 document.getElementById("hdObj").innerText = parseInt(studentFound.obj) < 10 ? "0" + parseInt(studentFound.obj) : studentFound.obj;
