@@ -27,7 +27,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08); 
         }
         
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         
         .btn { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); 
@@ -106,69 +106,45 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
-        /* EXACT BORDERS (CLASS 9TH STYLE) */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* SIDE TEXT INSIDE GOLDEN LINE (CLASS 9TH EXACT ALIGNMENT) */
         .side-text-container {
-            position: absolute;
-            top: 0;
-            left: 45px; 
-            width: 35px; 
-            height: 1920px; 
-            display: flex;
-            align-items: center; 
-            justify-content: center;
-            z-index: 20;
+            position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; 
+            display: flex; align-items: center; justify-content: center; z-index: 20;
         }
         .side-text { 
-            transform: rotate(-90deg); 
-            font-size: 24px; 
-            color: #29438e; 
-            font-weight: 900; 
-            letter-spacing: 5px; 
-            text-transform: uppercase; 
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            white-space: nowrap; 
+            transform: rotate(-90deg); font-size: 24px; color: #29438e; font-weight: 900; 
+            letter-spacing: 5px; text-transform: uppercase; font-family: 'Segoe UI', Tahoma, sans-serif; white-space: nowrap; 
         }
 
-        /* 🪶 WATERMARK */
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
 
-        /* 🏫 HEADER */
         .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
         .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
 
-        /* 📜 TITLE BOX (CLASS 9TH 82% WIDTH) */
         .document-title { font-size: 55px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        /* 📋 DETAILS TABLE (CLASS 9TH 82% WIDTH) */
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
         .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 📊 MARKS BOX (PERFECT FIT - INCREASED BOTTOM PADDING) */
         .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
         .mark-box { flex: 1; text-align: center; padding: 25px 20px 45px 20px; } 
         .mark-box.total { border-right: 3px solid #29438e; }
         .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
-        
-        /* 🔥 MARKS NUMBER (FIXED SIZE AND LINE HEIGHT) 🔥 */
         .mark-value { font-size: 110px; font-weight: 900; margin-top: 10px; margin-bottom: 0; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif; display: block;} 
         
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
-        /* 📝 BREAKDOWN TABLE (CLASS 9TH 82% WIDTH) */
         .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
         .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 15px; font-weight: 900; font-size: 30px; }
         .breakdown-table td { border: 3px solid #29438e; padding: 15px; font-size: 45px; font-weight: 900; color: #e32726; }
 
-        /* ⭐ VIP REMARKS BOX */
         .remarks-box { 
             font-size: 40px; font-weight: 900; padding: 18px 60px; 
             border-radius: 12px; z-index: 5; background: #fffde7; 
@@ -178,10 +154,7 @@
             width: 70%; text-align: center;
         }
 
-        /* 🟢 GREEN SEAL LOGO */
         .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
-        
-        /* 🌐 WEBSITE TEXT */
         .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
 
     </style>
@@ -199,8 +172,13 @@
         </h2>
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
+        <!-- 🛑 ERROR BOX FOR WRONG CLASS OR PENDING RESULT -->
+        <div id="classErrorBox" class="hidden" style="margin-top: 20px; background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 12px; border: 1px solid #ef4444;">
+            <!-- Message injected by JS -->
+        </div>
+
         <!-- ✅ RESULT INPUT SECTION -->
-        <div id="resultSection">
+        <div id="resultSection" class="hidden">
             <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-N8...)">
             <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
@@ -218,7 +196,6 @@
                 <div class="preview-marks-box">
                     <p class="preview-marks-label">Marks Obtained</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/30</p>
-                    <!-- 🔥 PASS / FAIL STATUS IN MOBILE (CLASS 9TH STYLE) -->
                     <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
                 </div>
             </div>
@@ -231,21 +208,16 @@
     <!-- 🏆🔥 SECRET HD PAPER MARKSHEET 🔥🏆 -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
-            
             <div class="side-text-container">
                 <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-07-22</div>
             </div>
-            
             <img src="20260620_144347.png" class="watermark">
-
             <div class="header">
                 <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
                 <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
                 <h3 class="school-tagline">आपकी सफलता ही हमारी पहचान है...!</h3>
             </div>
-
             <div class="document-title">Mathematics Result - Class 8th</div>
-
             <table class="details-table">
                 <tr>
                     <td class="td-label">STUDENT NAME</td>
@@ -259,13 +231,11 @@
                     <td class="td-label">QUESTION SET CODE</td>
                     <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
                 </tr>
-                <!-- 🔥 PASS / FAIL STATUS IN HD CARD (CLASS 9TH STYLE) -->
                 <tr>
                     <td class="td-label">RESULT STATUS</td>
                     <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
                 </tr>
             </table>
-
             <div class="marks-container">
                 <div class="mark-box total">
                     <div class="mark-label">MAXIMUM MARKS</div>
@@ -276,7 +246,6 @@
                     <div class="mark-value val-obtained" id="hdObtained">--</div>
                 </div>
             </div>
-
             <table class="breakdown-table">
                 <tr>
                     <th>Objective</th>
@@ -289,13 +258,10 @@
                     <td id="hdLong">--</td>
                 </tr>
             </table>
-
             <div id="performanceBadge" class="remarks-box">
                 Remarks: Outstanding 🌟
             </div>
-
             <img src="20260714_163333.png" class="footer-logo">
-            
             <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
         </div>
     </div>
@@ -327,41 +293,75 @@
             "822": { name: "Abdul Samad", code: "GVCC-W8Z2D2", set: "D", marks: "26", obj: "12", short: "10", long: "4" }
         };
 
+        const isResultPublished = true; // Result block karne ke liye ise 'false' kar dein
+
+        // 🔥 NAYA: Page load hote hi Security Check 🔥
+        window.onload = function() {
+            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            // Check 1: Kya student logged in hai?
+            if (!loggedInRoll || !loggedInClass) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            // Check 2: Kya result open hai?
+            if (!isResultPublished) {
+                document.getElementById("classErrorBox").classList.remove("hidden");
+                document.getElementById("classErrorBox").innerHTML = `
+                    <i class="fa-solid fa-clock" style="font-size: 30px; color: #f59e0b; margin-bottom: 10px;"></i>
+                    <h3 style="color: #f59e0b; margin: 0 0 10px 0;">Result Coming Soon!</h3>
+                    <p style="color: #cbd5e1; font-size: 14px;">Abhi Class 8th Maths ka result publish nahi hua hai. Kripya thoda intezaar karein!</p>
+                `;
+                return;
+            }
+
+            // Check 3: Kya ye Class 8th ka student hai?
+            if (String(loggedInClass).includes("8")) {
+                document.getElementById("resultSection").classList.remove("hidden"); // Sahi class walo ke liye input box kholo
+            } else {
+                document.getElementById("classErrorBox").classList.remove("hidden");
+                document.getElementById("classErrorBox").innerHTML = `
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
+                    <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
+                    <p style="color: #cbd5e1; font-size: 14px;">Aap Class ${loggedInClass} ke student hain. Ye result sirf Class 8th ke liye hai.</p>
+                `;
+            }
+        };
+
         function verifyResult() {
             let rawCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
-            
-            // 🔥 SUPER FIX: Agar bache ne galti se letter 'O' daala, toh ye usko number '0' bana dega
             let enteredCode = rawCode.replace(/O/g, '0');
-            
             let errorMsg = document.getElementById("codeError");
-            let studentFound = null;
-
-            for (let roll in resultDatabase) {
-                if (resultDatabase[roll].code === enteredCode) {
-                    studentFound = resultDatabase[roll];
-                    break;
-                }
-            }
             
-            if (studentFound) {
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+
+            // 🔥 SUPER FIX: Bachha sirf apna hi result dekh sakta hai
+            let studentFound = resultDatabase[loggedInRoll];
+            
+            if (studentFound && studentFound.code === enteredCode) {
                 errorMsg.style.display = "none";
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // PASS / FAIL Logic (40% of 30 = 12 marks to pass)
+                // Backup Name Logic (Agar Firebase name N/A ho toh)
+                if (!loggedInName || loggedInName === "N/A" || loggedInName.trim() === "") {
+                    loggedInName = studentFound.name;
+                }
+
                 let marksInt = parseFloat(studentFound.marks);
                 let isPassed = marksInt >= 12;
 
-                // Set data to Preview Card
-                document.getElementById("resNamePrev").innerText = studentFound.name;
+                document.getElementById("resNamePrev").innerText = loggedInName;
                 document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30";
                 
-                // Mobile View Status
                 document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
                 document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
 
-                // Set data to HD Print Card
-                document.getElementById("hdName").innerText = studentFound.name;
+                document.getElementById("hdName").innerText = loggedInName;
                 document.getElementById("hdSet").innerText = studentFound.set;
                 document.getElementById("hdObtained").innerText = studentFound.marks;
 
@@ -369,7 +369,6 @@
                 document.getElementById("hdShort").innerText = studentFound.short;
                 document.getElementById("hdLong").innerText = studentFound.long;
                 
-                // HD View Status
                 document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
                 document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
 
