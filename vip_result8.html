@@ -132,12 +132,48 @@
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 🔥 MARKS BOX FIX (Numbers Clipping Issue Solved) 🔥 */
-        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
-        .mark-box { flex: 1; text-align: center; padding: 30px 20px 65px 20px; } /* 🔥 Bottom padding badhai taaki number proper render ho */
+        /* 🔥 BULLETPROOF MARKS BOX FIX 🔥 */
+        .marks-container { 
+            display: flex; 
+            width: 82%; 
+            border: 3px solid #29438e; 
+            z-index: 5; 
+            overflow: hidden; /* Rounded corners keep sharp */
+            border-radius: 20px; 
+            margin-bottom: 35px; 
+            background: #fff; 
+            box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); 
+        }
+        .mark-box { 
+            flex: 1; 
+            text-align: center; 
+            padding: 20px; 
+            min-height: 280px; /* 🔥 Dabba hamesha bada rahega */
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; /* 🔥 Text ko bilkul center mein lock kar dega */
+            align-items: center;
+        } 
         .mark-box.total { border-right: 3px solid #29438e; }
-        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
-        .mark-value { font-size: 135px; font-weight: 900; margin-top: 15px; margin-bottom: 0px; line-height: 1.2; letter-spacing: -2px; font-family: 'Arial Black', sans-serif; display: block; padding-bottom: 5px; } /* 🔥 Font adjust kiya aur display block kiya */
+        .mark-label { 
+            font-size: 26px; 
+            font-weight: 600; 
+            color: #000; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-family: 'Segoe UI', sans-serif;
+            margin-bottom: 15px; /* Thoda gap label aur number ke beech */
+            margin-top: 0;
+        }
+        .mark-value { 
+            font-size: 140px; 
+            font-weight: 900; 
+            margin: 0; 
+            line-height: 1; 
+            letter-spacing: -2px; 
+            font-family: 'Arial Black', sans-serif; 
+        }
         
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
