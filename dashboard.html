@@ -479,36 +479,58 @@
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
-        // 🔥 VIP Result Routing Logic
+                // 🔥 VIP Result Routing Logic (Roll Number Base Par)
         window.routeToVIPResult = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("9")) {
-                navigateWithAnimation("vip_result9.html");
-            } else if (cleanClass.includes("8")) {
+            let roll = localStorage.getItem("studentRoll") || "";
+
+            if (!roll) {
+                alert("⚠️ Please login first!");
+                return;
+            }
+
+            if (roll.startsWith("8")) {
                 navigateWithAnimation("vip_result8.html");
-            } else if (cleanClass.includes("10")) {
-                alert("⚠️ Alert: Class 10th ka VIP Offline Result abhi nahi aaya hai!");
+            } else if (roll.startsWith("9")) {
+                navigateWithAnimation("vip_result9.html");
+            } else if (roll.startsWith("10") || roll === "2356") {
+                // 10th वालों को और 2356 को उनके VIP रिजल्ट पर भेजेगा
+                navigateWithAnimation("vip_result10.html");
             } else {
                 alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai.");
             }
         }
 
+        // 🔥 Online Live Test Routing Logic (Roll Number Base Par)
         window.routeToLiveTest = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("history10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("history9.html");
-            else if (cleanClass.includes("8")) navigateWithAnimation("math8.html");
-            else alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
+            let roll = localStorage.getItem("studentRoll") || "";
+            
+            if (roll.startsWith("10") || roll === "2356") {
+                navigateWithAnimation("history10.html");
+            } else if (roll.startsWith("9")) {
+                navigateWithAnimation("history9.html");
+            } else if (roll.startsWith("8")) {
+                navigateWithAnimation("math8.html");
+            } else {
+                alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
+            }
         }
 
+        // 🔥 Online Result Routing Logic (Roll Number Base Par)
         window.routeToResult = function() {
-            let cleanClass = String(studentClassGlobal).toLowerCase();
-            if (cleanClass.includes("10")) navigateWithAnimation("result10.html");
-            else if (cleanClass.includes("9")) navigateWithAnimation("result.html");
-            else if (cleanClass.includes("8")) alert("⚠️ Alert: Class 8th ka result abhi available nahi hai!");
-            else alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
+            let roll = localStorage.getItem("studentRoll") || "";
+            
+            if (roll.startsWith("10") || roll === "2356") {
+                navigateWithAnimation("result10.html");
+            } else if (roll.startsWith("9")) {
+                navigateWithAnimation("result.html");
+            } else if (roll.startsWith("8")) {
+                alert("⚠️ Alert: Class 8th ka online result abhi available nahi hai!");
+            } else {
+                alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
+            }
         }
 
+        // 🔥 Logout Logic (Pura Data Clean Karega)
         window.logout = function() { 
             document.body.classList.add('page-exit'); 
             setTimeout(() => {
@@ -519,5 +541,6 @@
         }
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
     </script>
+
 </body>
 </html>
