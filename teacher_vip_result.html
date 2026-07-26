@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - Teacher's Master Result Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #0f172a; margin: 0; color: white; 
+            display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; padding: 20px; box-sizing: border-box;
+        }
+
+        .header-box {
+            text-align: center; margin-bottom: 25px; width: 100%; max-width: 900px;
+        }
+        
+        .header-box h1 {
+            color: #fbbf24; margin: 0 0 5px 0; font-size: 28px; text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+        }
+        .header-box p { color: #94a3b8; font-size: 14px; margin: 0; }
+
+        .back-link { 
+            color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; 
+            background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
+            align-self: flex-start; margin-left: auto; margin-right: auto; max-width: 900px; width: 100%; box-sizing: border-box;
+        }
+        .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
+
+        .dashboard-container {
+            background: #1e293b; width: 100%; max-width: 900px; 
+            border-radius: 16px; padding: 25px; box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* 🗂️ TABS STYLING */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn {
+            background: #334155; color: #cbd5e1; border: none; padding: 12px 25px; 
+            border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; 
+            font-size: 15px; transition: all 0.3s ease; white-space: nowrap;
+        }
+        .tab-btn:hover { background: #475569; color: white; }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        /* 📊 TABLE STYLING */
+        .table-wrapper { overflow-x: auto; background: #0f172a; border-radius: 12px; border: 1px solid #334155; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
+        th { background: #0f172a; color: #94a3b8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; padding: 15px; border-bottom: 2px solid #334155; }
+        td { padding: 15px; border-bottom: 1px solid #1e293b; color: #f8fafc; font-size: 15px; font-weight: 500; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #1e293b; }
+
+        .status-pass { color: #10b981; font-weight: bold; background: rgba(16, 185, 129, 0.1); padding: 5px 10px; border-radius: 5px; font-size: 13px; }
+        .status-fail { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 5px 10px; border-radius: 5px; font-size: 13px; }
+        .status-wh { color: #f59e0b; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 5px 10px; border-radius: 5px; font-size: 13px; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .dashboard-container { padding: 15px; }
+            th, td { padding: 10px; font-size: 13px; }
+            .header-box h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="teacher_dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+    <div class="header-box">
+        <h1><i class="fa-solid fa-chess-king"></i> VIP Result Master Database</h1>
+        <p>Confidential portal for GVCC Faculty</p>
+    </div>
+
+    <div class="dashboard-container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showClass('10th')"><i class="fa-solid fa-graduation-cap"></i> Class 10th</button>
+            <button class="tab-btn" onclick="showClass('9th')"><i class="fa-solid fa-book"></i> Class 9th</button>
+            <button class="tab-btn" onclick="showClass('8th')"><i class="fa-solid fa-pencil"></i> Class 8th</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No.</th>
+                        <th>Student Name</th>
+                        <th>Set</th>
+                        <th>Exam Code</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="resultTableBody">
+                    <!-- Data will be injected here via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // 🗄️ MASTER DATABASES FOR TEACHERS
+        // ==========================================
+
+        const class10Data = [
+            { roll: "1001", name: "Saloni Kumari", set: "A", code: "GVCC-M1N0D0A1", marks: 85, max: 100, passMark: 30 },
+            { roll: "1002", name: "Rupa Kumari", set: "B", code: "GVCC-P1R0K0B2", marks: 64, max: 100, passMark: 30 },
+            { roll: "1003", name: "Kajal Kumari", set: "C", code: "GVCC-W1T0V0C3", marks: 72, max: 100, passMark: 30 },
+            { roll: "1004", name: "Md Noor Alam", set: "D", code: "GVCC-L1B0J0D4", marks: 45, max: 100, passMark: 30 },
+            { roll: "1005", name: "Aasmin Khatoon", set: "E", code: "GVCC-H1F0G0E5", marks: 89, max: 100, passMark: 30 },
+            { roll: "1006", name: "Shruti Kumari", set: "F", code: "GVCC-K1X0Y0F6", marks: 68, max: 100, passMark: 30 },
+            { roll: "1007", name: "Shivani Kumari", set: "A", code: "GVCC-Z1V0W0A7", marks: 77, max: 100, passMark: 30 },
+            { roll: "1008", name: "Rahnaz Khatoon", set: "B", code: "GVCC-T1M0N0B8", marks: 55, max: 100, passMark: 30 },
+            { roll: "1009", name: "Saniya Kumari", set: "C", code: "GVCC-X1Y0Z0C9", marks: 91, max: 100, passMark: 30 },
+            { roll: "1010", name: "Priti Kumari", set: "D", code: "GVCC-P1R0K1D0", marks: 48, max: 100, passMark: 30 },
+            { roll: "1011", name: "Rounak Parveen", set: "E", code: "GVCC-M1N0V1E1", marks: 62, max: 100, passMark: 30 },
+            { roll: "1012", name: "Anu Kumari", set: "F", code: "GVCC-W1T0D1F2", marks: 51, max: 100, passMark: 30 },
+            { roll: "1013", name: "Anjali Kumari", set: "A", code: "GVCC-L1B0J1A3", marks: 88, max: 100, passMark: 30 },
+            { roll: "1014", name: "Sajan Kumar", set: "B", code: "GVCC-H1F0G1B4", marks: 35, max: 100, passMark: 30 },
+            { roll: "1015", name: "Kajal Kumari", set: "C", code: "GVCC-K1X0Y1C5", marks: 65, max: 100, passMark: 30 },
+            { roll: "1016", name: "Mustara Khatoon", set: "D", code: "GVCC-Z1V0W1D6", marks: 59, max: 100, passMark: 30 },
+            { roll: "1017", name: "Nitam Kumari", set: "E", code: "GVCC-T1M0N1E7", marks: 82, max: 100, passMark: 30 },
+            { roll: "1018", name: "Shivani Kumari", set: "F", code: "GVCC-X1Y0Z1F8", marks: 70, max: 100, passMark: 30 },
+            { roll: "1019", name: "Priyanshu Kumari", set: "A", code: "GVCC-P1R0K1A9", marks: 41, max: 100, passMark: 30 },
+            { roll: "1020", name: "Afsana Khatoon", set: "B", code: "GVCC-M1N0V2B0", marks: 28, max: 100, passMark: 30 },
+            { roll: "1021", name: "Sajiya Parveen", set: "C", code: "GVCC-W1T0D2C1", marks: 79, max: 100, passMark: 30 },
+            { roll: "1022", name: "Ishrat Khatoon", set: "D", code: "GVCC-L1B0J2D2", marks: 33, max: 100, passMark: 30 },
+            { roll: "1023", name: "Raziya Tabassum", set: "E", code: "GVCC-H1F0G2E3", marks: 50, max: 100, passMark: 30 },
+            { roll: "2356", name: "Md Faiyaz", set: "F", code: "GVCC-K2X3Y5F6", marks: 98, max: 100, passMark: 30 }
+        ];
+
+        const class9Data = [
+            { roll: "901", name: "Student 901", set: "A", code: "GVCC-P9R0A1", marks: 34, max: 35, passMark: 14 },
+            { roll: "902", name: "Student 902", set: "B", code: "GVCC-M9K0B2", marks: 32, max: 35, passMark: 14 },
+            { roll: "919", name: "Student 919", set: "B", code: "GVCC-K9L1B9", marks: "WH", max: 35, passMark: 14, isCheating: true },
+            { roll: "920", name: "Student 920", set: "E", code: "GVCC-K9Z2E0", marks: "WH", max: 35, passMark: 14, isCheating: true }
+            // Note: Baki 9th ke baccho ka data aap yahan line se add kar sakte hain
+        ];
+
+        const class8Data = [
+            { roll: "801", name: "Anamika Kumari", set: "A", code: "GVCC-N8F0A1", marks: "--", max: 50, passMark: 20 },
+            { roll: "802", name: "Radhika Kumari", set: "B", code: "GVCC-M8K0B2", marks: "--", max: 50, passMark: 20 }
+            // Note: Baki 8th ke baccho ka data aap yahan add kar sakte hain
+        ];
+
+        // ==========================================
+        // ⚙️ LOGIC TO RENDER TABLE
+        // ==========================================
+
+        function showClass(className) {
+            // Update Active Tab UI
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const tbody = document.getElementById('resultTableBody');
+            tbody.innerHTML = ''; // Clear purana table
+
+            let currentData = [];
+            if (className === '10th') currentData = class10Data;
+            else if (className === '9th') currentData = class9Data;
+            else if (className === '8th') currentData = class8Data;
+
+            if (currentData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b;">No data available yet.</td></tr>`;
+                return;
+            }
+
+            // Populate Table
+            currentData.forEach(student => {
+                let statusHtml = '';
+                
+                if (student.isCheating || student.marks === "WH") {
+                    statusHtml = `<span class="status-wh"><i class="fa-solid fa-triangle-exclamation"></i> WITHHELD</span>`;
+                } 
+                else if (student.marks === "--") {
+                    statusHtml = `<span style="color: #64748b;">PENDING</span>`;
+                }
+                else {
+                    let isPassed = parseFloat(student.marks) >= student.passMark;
+                    if (isPassed) {
+                        statusHtml = `<span class="status-pass"><i class="fa-solid fa-check"></i> PASS</span>`;
+                    } else {
+                        statusHtml = `<span class="status-fail"><i class="fa-solid fa-xmark"></i> FAIL</span>`;
+                    }
+                }
+
+                let row = `
+                    <tr>
+                        <td style="color: #fbbf24; font-weight: bold;">${student.roll}</td>
+                        <td>${student.name}</td>
+                        <td style="font-weight: 900; color: #38bdf8;">${student.set}</td>
+                        <td style="font-family: monospace; letter-spacing: 1px; color: #94a3b8;">${student.code}</td>
+                        <td><strong style="color: white; font-size: 16px;">${student.marks}</strong> <span style="color: #64748b; font-size: 12px;">/ ${student.max}</span></td>
+                        <td>${statusHtml}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Window load hone par by default 10th ka result open hoga
+        window.onload = function() {
+            showClass('10th');
+        };
+    </script>
+</body>
+</html>
