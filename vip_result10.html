@@ -134,20 +134,15 @@
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 📊 MARKS BOX */
-        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
-        .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
+        /* 📊 MARKS BOX (UPDATED FOR OBJECTIVE) */
+        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 50px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        .mark-box { flex: 1; text-align: center; padding: 40px 20px; }
         .mark-box.total { border-right: 3px solid #29438e; }
-        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
+        .mark-label { font-size: 28px; font-weight: 800; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
         
-        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        .mark-value { font-size: 180px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
-
-        /* 📝 BREAKDOWN TABLE (OBJECTIVE ONLY) */
-        .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
-        .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 18px; font-weight: 900; font-size: 30px; text-transform: uppercase; }
-        .breakdown-table td { border: 3px solid #29438e; padding: 18px; font-size: 45px; font-weight: 900; color: #e32726; }
 
         /* ⭐ VIP REMARKS BOX */
         .remarks-box { 
@@ -177,11 +172,11 @@
         <h2 style="color: #60a5fa; margin-top: 0; font-size: 24px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
             <i class="fa-solid fa-medal" style="color: #3b82f6;"></i> History Objective Result
         </h2>
-        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Class 10th - Verify your official marksheet.</p>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Class 10th - Verify your official OMR marksheet.</p>
 
         <div id="resultSection">
             <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-M1...)">
-            <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
+            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
                 <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
             </p>
@@ -194,7 +189,8 @@
                 <h2 class="preview-subject">HISTORY (OBJECTIVE)</h2>
                 <h2 class="preview-name" id="resNamePrev">Student Name</h2>
                 <div class="preview-marks-box">
-                    <p class="preview-marks-label">Marks Obtained</p>
+                    <!-- 🔥 YAHAN CHANGE HUA HAIN 🔥 -->
+                    <p class="preview-marks-label">Correct Answers</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/100</p>
                     <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
                 </div>
@@ -209,7 +205,7 @@
         <div id="resultCard">
             
             <div class="side-text-container">
-                <div class="side-text" id="dynamicDateText">MONTHLY OBJECTIVE TEST : 2026-07-26</div>
+                <div class="side-text" id="dynamicDateText">MONTHLY OBJECTIVE TEST : 2026-07-28</div>
             </div>
             
             <img src="20260620_144347.png" class="watermark">
@@ -242,28 +238,16 @@
             </table>
 
             <div class="marks-container">
+                <!-- 🔥 YAHAN CHANGE HUA HAIN 🔥 -->
                 <div class="mark-box total">
-                    <div class="mark-label">MAXIMUM MARKS</div>
+                    <div class="mark-label">TOTAL QUESTIONS</div>
                     <div class="mark-value val-total">100</div>
                 </div>
                 <div class="mark-box obtained">
-                    <div class="mark-label">MARKS OBTAINED</div>
+                    <div class="mark-label">CORRECT ANSWERS</div>
                     <div class="mark-value val-obtained" id="hdObtained">--</div>
                 </div>
             </div>
-
-            <table class="breakdown-table">
-                <tr>
-                    <th>Exam Pattern</th>
-                    <th>Total Questions</th>
-                    <th>Correct Answers</th>
-                </tr>
-                <tr>
-                    <td style="color: #000;">Objective (OMR SHEET)</td>
-                    <td style="color: #000;">100</td>
-                    <td id="hdCorrect">--</td>
-                </tr>
-            </table>
 
             <div id="performanceBadge" class="remarks-box">
                 Remarks: Outstanding 🌟
@@ -277,7 +261,6 @@
 
     <script>
         // 🔥 CLASS 10TH DATABASE (100 MARKS OBJECTIVE)
-        // Note: You can change the 'marks' values once you check their actual copies.
         const resultDatabase = {
             "1001": { code: "GVCC-M1N0D0A1", set: "A", marks: "85" }, // Saloni Kumari
             "1002": { code: "GVCC-P1R0K0B2", set: "B", marks: "64" }, // Rupa Kumari
@@ -298,7 +281,7 @@
             "1017": { code: "GVCC-T1M0N1E7", set: "E", marks: "82" }, // Nitam Kumari
             "1018": { code: "GVCC-X1Y0Z1F8", set: "F", marks: "70" }, // Shivani Kumari II
             "1019": { code: "GVCC-P1R0K1A9", set: "A", marks: "41" }, // Priyanshu Kumari
-            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 40)
+            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 30)
             "1021": { code: "GVCC-W1T0D2C1", set: "C", marks: "79" }, // Sajiya Parveen
             "1022": { code: "GVCC-L1B0J2D2", set: "D", marks: "33" }, // Ishrat Khatoon
             "1023": { code: "GVCC-H1F0G2E3", set: "E", marks: "50" }, // Raziya Tabassum
@@ -315,7 +298,6 @@
                 return;
             }
 
-            // Security Check for 10th Class and Special Faiyaz Roll No
             if (loggedInClass.includes("10") || loggedInRoll === "2356") {
                 document.getElementById("resultSection").classList.remove("hidden");
             } else {
@@ -340,13 +322,12 @@
                 document.getElementById("resultSection").style.display = "none"; 
                 document.getElementById("cardWrapper").style.display = "block";
                 
-                // Common Details Assignment
                 document.getElementById("hdName").innerText = cleanName;
                 document.getElementById("hdSet").innerText = studentData.set;
                 document.getElementById("resNamePrev").innerText = cleanName;
 
                 let marksInt = parseInt(studentData.marks);
-                let isPassed = marksInt >= 40; // 🔥 Passing Mark set to 30/100
+                let isPassed = marksInt >= 40; // Passing Mark set to 40
 
                 // Mobile View Preview Setup
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/100";
@@ -355,7 +336,6 @@
 
                 // HD Marksheet Setup
                 document.getElementById("hdObtained").innerText = studentData.marks;
-                document.getElementById("hdCorrect").innerText = studentData.marks; // Since 1 mark per question
                 
                 document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
                 document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
