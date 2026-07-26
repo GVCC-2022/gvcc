@@ -181,7 +181,7 @@
 
         <div id="resultSection">
             <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-M1...)">
-            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
+            <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
                 <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
             </p>
@@ -209,7 +209,7 @@
         <div id="resultCard">
             
             <div class="side-text-container">
-                <div class="side-text" id="dynamicDateText">MONTHLY OBJECTIVE TEST : 2026</div>
+                <div class="side-text" id="dynamicDateText">MONTHLY OBJECTIVE TEST : 2026-07-26</div>
             </div>
             
             <img src="20260620_144347.png" class="watermark">
@@ -259,7 +259,7 @@
                     <th>Correct Answers</th>
                 </tr>
                 <tr>
-                    <td style="color: #000;">Objective (OMR)</td>
+                    <td style="color: #000;">Objective (OMR SHEET)</td>
                     <td style="color: #000;">100</td>
                     <td id="hdCorrect">--</td>
                 </tr>
@@ -298,7 +298,7 @@
             "1017": { code: "GVCC-T1M0N1E7", set: "E", marks: "82" }, // Nitam Kumari
             "1018": { code: "GVCC-X1Y0Z1F8", set: "F", marks: "70" }, // Shivani Kumari II
             "1019": { code: "GVCC-P1R0K1A9", set: "A", marks: "41" }, // Priyanshu Kumari
-            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 30)
+            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 40)
             "1021": { code: "GVCC-W1T0D2C1", set: "C", marks: "79" }, // Sajiya Parveen
             "1022": { code: "GVCC-L1B0J2D2", set: "D", marks: "33" }, // Ishrat Khatoon
             "1023": { code: "GVCC-H1F0G2E3", set: "E", marks: "50" }, // Raziya Tabassum
@@ -346,7 +346,7 @@
                 document.getElementById("resNamePrev").innerText = cleanName;
 
                 let marksInt = parseInt(studentData.marks);
-                let isPassed = marksInt >= 30; // 🔥 Passing Mark set to 30/100
+                let isPassed = marksInt >= 40; // 🔥 Passing Mark set to 30/100
 
                 // Mobile View Preview Setup
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/100";
