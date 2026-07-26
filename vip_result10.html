@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - Final Result Sheet (Class 10th)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* ===========================
+             🔥 ULTRA-PREMIUM UI DASHBOARD 🔥
+        =========================== */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: radial-gradient(circle at top, #1e293b, #090e17); 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
+        }
+        
+        .container { 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 30px 20px; border-radius: 20px; width: 90%; max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .hidden { display: none; }
+        
+        .btn { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+            color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
+            border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; 
+            margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
+        .btn:active { transform: translateY(1px); }
+        
+        .input-box { 
+            width: 90%; padding: 16px; border-radius: 10px; 
+            border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
+            color: #f8fafc; font-size: 16px; text-transform: uppercase; 
+            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+            box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
+        }
+        .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
+        .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
+        
+        .back-link { 
+            color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
+        }
+        .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
+
+        /* 🔥 VIP MOBILE PREVIEW CARD 🔥 */
+        .mobile-preview-card {
+            margin-top: 15px; padding: 25px 15px; 
+            background: linear-gradient(145deg, #1e3a8a, #0f172a); 
+            border-radius: 16px; border: 2px solid #d4af37; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.15);
+            position: relative; overflow: hidden;
+            animation: cardReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; color: white;
+        }
+        @keyframes cardReveal { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .mobile-preview-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .preview-logo { width: 130px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        .preview-class { margin: 0; color: #d4af37; font-size: 13px; letter-spacing: 3px; font-weight: 900; }
+        .preview-subject { color: #ffffff; font-size: 20px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .preview-name { color: #ffd700; font-size: 20px; margin: 5px 0; font-weight: bold; letter-spacing: 1px; }
+        
+        .preview-marks-box { 
+            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; 
+            padding: 15px; margin-top: 15px; background: rgba(0,0,0,0.4); 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 11px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .preview-marks-value { margin: 5px 0 0 0; color: #ffffff; font-weight: 900; font-size: 38px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+
+        .share-btn {
+            background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
+            padding: 15px 20px; font-size: 16px; font-weight: 900; border-radius: 10px; 
+            cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; 
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6); }
+        .share-btn:active { transform: translateY(1px); }
+
+        /* ===========================
+          HD PAPER MARKSHEET (1080x1920)
+        =========================== */
+        #resultCard {
+            width: 1080px; height: 1920px; position: relative; background-color: #f8fafc; 
+            display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
+            box-sizing: border-box; color: #000000; 
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        /* EXACT BORDERS */
+        #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
+        #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
+
+        /* SIDE TEXT INSIDE GOLDEN LINE */
+        .side-text-container {
+            position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; display: flex; align-items: center; justify-content: center; z-index: 20;
+        }
+        .side-text { transform: rotate(-90deg); font-size: 24px; color: #29438e; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; font-family: 'Segoe UI', Tahoma, sans-serif; white-space: nowrap; }
+
+        /* 🪶 WATERMARK */
+        .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
+
+        /* 🏫 HEADER */
+        .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
+        .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
+        .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
+        .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
+
+        /* 📜 TITLE BOX */
+        .document-title { font-size: 45px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-transform: uppercase; }
+
+        /* 📋 DETAILS TABLE */
+        .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
+        .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
+        .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
+        .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
+
+        /* 📊 MARKS BOX */
+        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
+        .mark-box.total { border-right: 3px solid #29438e; }
+        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
+        
+        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        .val-total { color: #29438e; }
+        .val-obtained { color: #e32726; }
+
+        /* 📝 BREAKDOWN TABLE (OBJECTIVE ONLY) */
+        .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
+        .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 18px; font-weight: 900; font-size: 30px; text-transform: uppercase; }
+        .breakdown-table td { border: 3px solid #29438e; padding: 18px; font-size: 45px; font-weight: 900; color: #e32726; }
+
+        /* ⭐ VIP REMARKS BOX */
+        .remarks-box { 
+            font-size: 40px; font-weight: 900; padding: 18px 60px; 
+            border-radius: 12px; z-index: 5; background: #fffde7; 
+            color: #e32726; margin-bottom: auto; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 4px dashed #f5c518; 
+            width: 70%; text-align: center;
+        }
+
+        /* 🟢 GREEN SEAL LOGO */
+        .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
+        
+        /* 🌐 WEBSITE TEXT */
+        .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div style="text-align: left;">
+            <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        
+        <h2 style="color: #60a5fa; margin-top: 0; font-size: 24px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
+            <i class="fa-solid fa-medal" style="color: #3b82f6;"></i> History Objective Result
+        </h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Class 10th - Verify your official marksheet.</p>
+
+        <div id="resultSection">
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-M1...)">
+            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
+            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
+            </p>
+        </div>
+
+        <div id="cardWrapper" style="display: none;">
+            <div class="mobile-preview-card">
+                <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
+                <h3 class="preview-class">CLASS 10TH</h3>
+                <h2 class="preview-subject">HISTORY (OBJECTIVE)</h2>
+                <h2 class="preview-name" id="resNamePrev">Student Name</h2>
+                <div class="preview-marks-box">
+                    <p class="preview-marks-label">Marks Obtained</p>
+                    <p class="preview-marks-value" id="resMarksPrev">--/100</p>
+                    <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
+                </div>
+            </div>
+            <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download HD Marksheet
+            </button>
+        </div>
+    </div>
+
+    <div style="position: absolute; top: -9999px; left: -9999px;">
+        <div id="resultCard">
+            
+            <div class="side-text-container">
+                <div class="side-text" id="dynamicDateText">MONTHLY OBJECTIVE TEST : 2026</div>
+            </div>
+            
+            <img src="20260620_144347.png" class="watermark">
+
+            <div class="header">
+                <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
+                <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
+                <h3 class="school-tagline">आपकी सफलता ही हमारी पहचान है...!</h3>
+            </div>
+
+            <div class="document-title">History (Objective) Result - Class 10th</div>
+
+            <table class="details-table">
+                <tr>
+                    <td class="td-label">STUDENT NAME</td>
+                    <td class="td-value" id="hdName">STUDENT NAME</td>
+                </tr>
+                <tr>
+                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
+                    <td class="td-value">HISTORY (100 OBJ.)</td>
+                </tr>
+                <tr>
+                    <td class="td-label">QUESTION SET CODE</td>
+                    <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
+                </tr>
+                <tr>
+                    <td class="td-label">RESULT STATUS</td>
+                    <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
+                </tr>
+            </table>
+
+            <div class="marks-container">
+                <div class="mark-box total">
+                    <div class="mark-label">MAXIMUM MARKS</div>
+                    <div class="mark-value val-total">100</div>
+                </div>
+                <div class="mark-box obtained">
+                    <div class="mark-label">MARKS OBTAINED</div>
+                    <div class="mark-value val-obtained" id="hdObtained">--</div>
+                </div>
+            </div>
+
+            <table class="breakdown-table">
+                <tr>
+                    <th>Exam Pattern</th>
+                    <th>Total Questions</th>
+                    <th>Correct Answers</th>
+                </tr>
+                <tr>
+                    <td style="color: #000;">Objective (OMR)</td>
+                    <td style="color: #000;">100</td>
+                    <td id="hdCorrect">--</td>
+                </tr>
+            </table>
+
+            <div id="performanceBadge" class="remarks-box">
+                Remarks: Outstanding 🌟
+            </div>
+
+            <img src="20260714_163333.png" class="footer-logo">
+            
+            <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
+        </div>
+    </div>
+
+    <script>
+        // 🔥 CLASS 10TH DATABASE (100 MARKS OBJECTIVE)
+        // Note: You can change the 'marks' values once you check their actual copies.
+        const resultDatabase = {
+            "1001": { code: "GVCC-M1N0D0A1", set: "A", marks: "85" }, // Saloni Kumari
+            "1002": { code: "GVCC-P1R0K0B2", set: "B", marks: "64" }, // Rupa Kumari
+            "1003": { code: "GVCC-W1T0V0C3", set: "C", marks: "72" }, // Kajal Kumari I
+            "1004": { code: "GVCC-L1B0J0D4", set: "D", marks: "45" }, // Md Noor Alam
+            "1005": { code: "GVCC-H1F0G0E5", set: "E", marks: "89" }, // Aasmin Khatoon
+            "1006": { code: "GVCC-K1X0Y0F6", set: "F", marks: "68" }, // Shruti Kumari
+            "1007": { code: "GVCC-Z1V0W0A7", set: "A", marks: "77" }, // Shivani Kumari I
+            "1008": { code: "GVCC-T1M0N0B8", set: "B", marks: "55" }, // Rahnaz Khatoon
+            "1009": { code: "GVCC-X1Y0Z0C9", set: "C", marks: "91" }, // Saniya Kumari
+            "1010": { code: "GVCC-P1R0K1D0", set: "D", marks: "48" }, // Priti Kumari
+            "1011": { code: "GVCC-M1N0V1E1", set: "E", marks: "62" }, // Rounak Parveen
+            "1012": { code: "GVCC-W1T0D1F2", set: "F", marks: "51" }, // Anu Kumari
+            "1013": { code: "GVCC-L1B0J1A3", set: "A", marks: "88" }, // Anjali Kumari
+            "1014": { code: "GVCC-H1F0G1B4", set: "B", marks: "35" }, // Sajan Kumar
+            "1015": { code: "GVCC-K1X0Y1C5", set: "C", marks: "65" }, // Kajal Kumari II
+            "1016": { code: "GVCC-Z1V0W1D6", set: "D", marks: "59" }, // Mustara Khatoon
+            "1017": { code: "GVCC-T1M0N1E7", set: "E", marks: "82" }, // Nitam Kumari
+            "1018": { code: "GVCC-X1Y0Z1F8", set: "F", marks: "70" }, // Shivani Kumari II
+            "1019": { code: "GVCC-P1R0K1A9", set: "A", marks: "41" }, // Priyanshu Kumari
+            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 30)
+            "1021": { code: "GVCC-W1T0D2C1", set: "C", marks: "79" }, // Sajiya Parveen
+            "1022": { code: "GVCC-L1B0J2D2", set: "D", marks: "33" }, // Ishrat Khatoon
+            "1023": { code: "GVCC-H1F0G2E3", set: "E", marks: "50" }, // Raziya Tabassum
+            "2356": { code: "GVCC-K2X3Y5F6", set: "F", marks: "98" }  // Md Faiyaz (Demo)
+        };
+
+        window.onload = function() {
+            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class") || ""; 
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            if (!loggedInRoll) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            // Security Check for 10th Class and Special Faiyaz Roll No
+            if (loggedInClass.includes("10") || loggedInRoll === "2356") {
+                document.getElementById("resultSection").classList.remove("hidden");
+            } else {
+                alert("⚠️ Access Denied: Yeh result sirf Class 10th ke liye hai.");
+                window.location.href = "dashboard.html";
+            }
+        };
+
+        function verifyResult() {
+            let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
+            let rawName = localStorage.getItem("studentName") || localStorage.getItem("Name") || "Student";
+            let errorMsg = document.getElementById("codeError");
+
+            // 🔥 MAGIC TRICK: "Shivani Kumari I" ko "Shivani Kumari" banayega 🔥
+            let cleanName = rawName.replace(/ (I|II)$/g, '');
+
+            let studentData = resultDatabase[loggedInRoll];
+            
+            if (studentData && enteredCode === studentData.code) {
+                errorMsg.style.display = "none";
+                document.getElementById("resultSection").style.display = "none"; 
+                document.getElementById("cardWrapper").style.display = "block";
+                
+                // Common Details Assignment
+                document.getElementById("hdName").innerText = cleanName;
+                document.getElementById("hdSet").innerText = studentData.set;
+                document.getElementById("resNamePrev").innerText = cleanName;
+
+                let marksInt = parseInt(studentData.marks);
+                let isPassed = marksInt >= 30; // 🔥 Passing Mark set to 30/100
+
+                // Mobile View Preview Setup
+                document.getElementById("resMarksPrev").innerText = studentData.marks + "/100";
+                document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
+                document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
+
+                // HD Marksheet Setup
+                document.getElementById("hdObtained").innerText = studentData.marks;
+                document.getElementById("hdCorrect").innerText = studentData.marks; // Since 1 mark per question
+                
+                document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
+                document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
+
+                const badge = document.getElementById("performanceBadge");
+                if (isPassed) {
+                    if(marksInt >= 80) {
+                        badge.innerHTML = "Remarks: Outstanding 🌟";
+                        badge.style.color = "#e32726";
+                        badge.style.border = "4px dashed #f5c518";
+                        badge.style.background = "#fffde7";
+                    } else if (marksInt >= 60) {
+                        badge.innerHTML = "Remarks: Very Good 🚀";
+                        badge.style.color = "#047857";
+                        badge.style.border = "4px dashed #047857";
+                        badge.style.background = "#d1fae5";
+                    } else {
+                        badge.innerHTML = "Remarks: Good Progress 👍";
+                        badge.style.color = "#29438e";
+                        badge.style.border = "4px dashed #29438e";
+                        badge.style.background = "#eef2ff";
+                    }
+                } else {
+                    badge.innerHTML = "Remarks: Needs Improvement 📖";
+                    badge.style.color = "#d32f2f";
+                    badge.style.border = "4px dashed #d32f2f";
+                    badge.style.background = "#fef2f2";
+                }
+
+                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+                
+            } else {
+                errorMsg.style.display = "block";
+                document.getElementById("cardWrapper").style.display = "none";
+            }
+        }
+
+        function generateAndShareImage() {
+            const btn = document.getElementById("shareBtnObj");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+
+            html2canvas(document.querySelector("#resultCard"), {
+                scale: 2,           
+                useCORS: true,
+                backgroundColor: "#f8fafc",
+                logging: false
+            }).then(canvas => {
+                const imageData = canvas.toDataURL("image/png", 1.0);
+                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet.png`;
+
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], fileName, { type: blob.type });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                title: 'GVCC 10th HD Marksheet',
+                                text: 'Mera GVCC Class 10th History (Objective) ka Result. 📄',
+                                files: [file]
+                            }).catch(err => forceDownload(imageData, fileName));
+                        } else {
+                            forceDownload(imageData, fileName);
+                        }
+                    });
+
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }).catch(err => {
+                alert("⚠️ Document generate karne mein problem aayi.");
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            });
+        }
+
+        function forceDownload(imageData, fileName) {
+            const link = document.createElement("a");
+            link.download = fileName;
+            link.href = imageData;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert("✅ Aapka HD Marksheet Download ho gaya hai!");
+        }
+    </script>
+</body>
+</html>
