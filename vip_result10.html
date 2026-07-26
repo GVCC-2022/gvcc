@@ -259,62 +259,59 @@
         </div>
     </div>
 
-    <script>
+        <!-- 🔥 FIREBASE + LOGIC SCRIPT 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // Firebase Setup
+        const firebaseConfig = { apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", authDomain: "gvcc-database.firebaseapp.com", projectId: "gvcc-database", storageBucket: "gvcc-database.firebasestorage.app", messagingSenderId: "1063216875940", appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         // 🔥 CLASS 10TH DATABASE (100 MARKS OBJECTIVE)
         const resultDatabase = {
-            "1001": { code: "GVCC-M1N0D0A1", set: "A", marks: "85" }, // Saloni Kumari
-            "1002": { code: "GVCC-P1R0K0B2", set: "B", marks: "64" }, // Rupa Kumari
-            "1003": { code: "GVCC-W1T0V0C3", set: "C", marks: "72" }, // Kajal Kumari I
-            "1004": { code: "GVCC-L1B0J0D4", set: "D", marks: "45" }, // Md Noor Alam
-            "1005": { code: "GVCC-H1F0G0E5", set: "E", marks: "89" }, // Aasmin Khatoon
-            "1006": { code: "GVCC-K1X0Y0F6", set: "F", marks: "68" }, // Shruti Kumari
-            "1007": { code: "GVCC-Z1V0W0A7", set: "A", marks: "77" }, // Shivani Kumari I
-            "1008": { code: "GVCC-T1M0N0B8", set: "B", marks: "55" }, // Rahnaz Khatoon
-            "1009": { code: "GVCC-X1Y0Z0C9", set: "C", marks: "91" }, // Saniya Kumari
-            "1010": { code: "GVCC-P1R0K1D0", set: "D", marks: "48" }, // Priti Kumari
-            "1011": { code: "GVCC-M1N0V1E1", set: "E", marks: "62" }, // Rounak Parveen
-            "1012": { code: "GVCC-W1T0D1F2", set: "F", marks: "51" }, // Anu Kumari
-            "1013": { code: "GVCC-L1B0J1A3", set: "A", marks: "88" }, // Anjali Kumari
-            "1014": { code: "GVCC-H1F0G1B4", set: "B", marks: "35" }, // Sajan Kumar
-            "1015": { code: "GVCC-K1X0Y1C5", set: "C", marks: "65" }, // Kajal Kumari II
-            "1016": { code: "GVCC-Z1V0W1D6", set: "D", marks: "59" }, // Mustara Khatoon
-            "1017": { code: "GVCC-T1M0N1E7", set: "E", marks: "82" }, // Nitam Kumari
-            "1018": { code: "GVCC-X1Y0Z1F8", set: "F", marks: "70" }, // Shivani Kumari II
-            "1019": { code: "GVCC-P1R0K1A9", set: "A", marks: "41" }, // Priyanshu Kumari
-            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, // Afsana Khatoon (Failed - Less than 30)
-            "1021": { code: "GVCC-W1T0D2C1", set: "C", marks: "79" }, // Sajiya Parveen
-            "1022": { code: "GVCC-L1B0J2D2", set: "D", marks: "33" }, // Ishrat Khatoon
-            "1023": { code: "GVCC-H1F0G2E3", set: "E", marks: "50" }, // Raziya Tabassum
-            "2356": { code: "GVCC-K2X3Y5F6", set: "F", marks: "98" }  // Md Faiyaz (Demo)
+            "1001": { code: "GVCC-M1N0D0A1", set: "A", marks: "85" }, 
+            "1002": { code: "GVCC-P1R0K0B2", set: "B", marks: "64" }, 
+            "1003": { code: "GVCC-W1T0V0C3", set: "C", marks: "72" }, 
+            "1004": { code: "GVCC-L1B0J0D4", set: "D", marks: "45" }, 
+            "1005": { code: "GVCC-H1F0G0E5", set: "E", marks: "89" }, 
+            "1006": { code: "GVCC-K1X0Y0F6", set: "F", marks: "68" }, 
+            "1007": { code: "GVCC-Z1V0W0A7", set: "A", marks: "77" }, 
+            "1008": { code: "GVCC-T1M0N0B8", set: "B", marks: "55" }, 
+            "1009": { code: "GVCC-X1Y0Z0C9", set: "C", marks: "91" }, 
+            "1010": { code: "GVCC-P1R0K1D0", set: "D", marks: "48" }, 
+            "1011": { code: "GVCC-M1N0V1E1", set: "E", marks: "62" }, 
+            "1012": { code: "GVCC-W1T0D1F2", set: "F", marks: "51" }, 
+            "1013": { code: "GVCC-L1B0J1A3", set: "A", marks: "88" }, 
+            "1014": { code: "GVCC-H1F0G1B4", set: "B", marks: "35" }, 
+            "1015": { code: "GVCC-K1X0Y1C5", set: "C", marks: "65" }, 
+            "1016": { code: "GVCC-Z1V0W1D6", set: "D", marks: "59" }, 
+            "1017": { code: "GVCC-T1M0N1E7", set: "E", marks: "82" }, 
+            "1018": { code: "GVCC-X1Y0Z1F8", set: "F", marks: "70" }, 
+            "1019": { code: "GVCC-P1R0K1A9", set: "A", marks: "41" }, 
+            "1020": { code: "GVCC-M1N0V2B0", set: "B", marks: "28" }, 
+            "1021": { code: "GVCC-W1T0D2C1", set: "C", marks: "79" }, 
+            "1022": { code: "GVCC-L1B0J2D2", set: "D", marks: "33" }, 
+            "1023": { code: "GVCC-H1F0G2E3", set: "E", marks: "50" }, 
+            "2356": { code: "GVCC-K2X3Y5F6", set: "F", marks: "98" }  
         };
 
         window.onload = function() {
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class") || ""; 
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
-
-            if (!loggedInRoll) {
-                alert("⚠️ Kripya pehle Dashboard se login karein!");
-                window.location.href = "dashboard.html";
-                return;
-            }
-
-            if (loggedInClass.includes("10") || loggedInRoll === "2356") {
-                document.getElementById("resultSection").classList.remove("hidden");
-            } else {
-                alert("⚠️ Access Denied: Yeh result sirf Class 10th ke liye hai.");
-                window.location.href = "dashboard.html";
-            }
+            if (!loggedInRoll) { alert("⚠️ Kripya pehle Dashboard se login karein!"); window.location.href = "dashboard.html"; return; }
+            if (loggedInClass.includes("10") || loggedInRoll === "2356") { document.getElementById("resultSection").classList.remove("hidden"); } 
+            else { alert("⚠️ Access Denied: Yeh result sirf Class 10th ke liye hai."); window.location.href = "dashboard.html"; }
         };
 
-        function verifyResult() {
+        window.verifyResult = async function() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
             let rawName = localStorage.getItem("studentName") || localStorage.getItem("Name") || "Student";
             let errorMsg = document.getElementById("codeError");
 
-            // 🔥 MAGIC TRICK: "Shivani Kumari I" ko "Shivani Kumari" banayega 🔥
             let cleanName = rawName.replace(/ (I|II)$/g, '');
-
             let studentData = resultDatabase[loggedInRoll];
             
             if (studentData && enteredCode === studentData.code) {
@@ -327,45 +324,33 @@
                 document.getElementById("resNamePrev").innerText = cleanName;
 
                 let marksInt = parseInt(studentData.marks);
-                let isPassed = marksInt >= 40; // Passing Mark set to 40
+                let isPassed = marksInt >= 30;
 
-                // Mobile View Preview Setup
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/100";
                 document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
                 document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
-
-                // HD Marksheet Setup
                 document.getElementById("hdObtained").innerText = studentData.marks;
-                
                 document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
                 document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
 
                 const badge = document.getElementById("performanceBadge");
                 if (isPassed) {
-                    if(marksInt >= 80) {
-                        badge.innerHTML = "Remarks: Outstanding 🌟";
-                        badge.style.color = "#e32726";
-                        badge.style.border = "4px dashed #f5c518";
-                        badge.style.background = "#fffde7";
-                    } else if (marksInt >= 60) {
-                        badge.innerHTML = "Remarks: Very Good 🚀";
-                        badge.style.color = "#047857";
-                        badge.style.border = "4px dashed #047857";
-                        badge.style.background = "#d1fae5";
-                    } else {
-                        badge.innerHTML = "Remarks: Good Progress 👍";
-                        badge.style.color = "#29438e";
-                        badge.style.border = "4px dashed #29438e";
-                        badge.style.background = "#eef2ff";
-                    }
+                    if(marksInt >= 80) { badge.innerHTML = "Remarks: Outstanding 🌟"; badge.style.color = "#e32726"; badge.style.border = "4px dashed #f5c518"; badge.style.background = "#fffde7"; } 
+                    else if (marksInt >= 60) { badge.innerHTML = "Remarks: Very Good 🚀"; badge.style.color = "#047857"; badge.style.border = "4px dashed #047857"; badge.style.background = "#d1fae5"; } 
+                    else { badge.innerHTML = "Remarks: Good Progress 👍"; badge.style.color = "#29438e"; badge.style.border = "4px dashed #29438e"; badge.style.background = "#eef2ff"; }
                 } else {
-                    badge.innerHTML = "Remarks: Needs Improvement 📖";
-                    badge.style.color = "#d32f2f";
-                    badge.style.border = "4px dashed #d32f2f";
-                    badge.style.background = "#fef2f2";
+                    badge.innerHTML = "Remarks: Needs Improvement 📖"; badge.style.color = "#d32f2f"; badge.style.border = "4px dashed #d32f2f"; badge.style.background = "#fef2f2";
                 }
-
+                
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+
+                // 🌟 FIREBASE LIVE UPDATE: Telling Teacher Dashboard that Student has seen result 🌟
+                try {
+                    await setDoc(doc(db, "vip_results_status", loggedInRoll), {
+                        checked: true,
+                        timestamp: serverTimestamp()
+                    }, { merge: true });
+                } catch(e) { console.log("Firebase sync error: ", e); }
                 
             } else {
                 errorMsg.style.display = "block";
@@ -373,56 +358,28 @@
             }
         }
 
-        function generateAndShareImage() {
+        window.generateAndShareImage = function() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
+            btn.style.opacity = "0.7"; btn.style.pointerEvents = "none";
 
-            html2canvas(document.querySelector("#resultCard"), {
-                scale: 2,           
-                useCORS: true,
-                backgroundColor: "#f8fafc",
-                logging: false
-            }).then(canvas => {
+            html2canvas(document.querySelector("#resultCard"), { scale: 2, useCORS: true, backgroundColor: "#f8fafc", logging: false }).then(canvas => {
                 const imageData = canvas.toDataURL("image/png", 1.0);
                 const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet.png`;
 
-                fetch(imageData)
-                    .then(res => res.blob())
-                    .then(blob => {
+                fetch(imageData).then(res => res.blob()).then(blob => {
                         const file = new File([blob], fileName, { type: blob.type });
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            navigator.share({
-                                title: 'GVCC 10th HD Marksheet',
-                                text: 'Mera GVCC Class 10th History (Objective) ka Result. 📄',
-                                files: [file]
-                            }).catch(err => forceDownload(imageData, fileName));
-                        } else {
-                            forceDownload(imageData, fileName);
-                        }
+                            navigator.share({ title: 'GVCC 10th HD Marksheet', text: 'Mera GVCC Class 10th History (Objective) ka Result. 📄', files: [file] }).catch(err => forceDownload(imageData, fileName));
+                        } else { forceDownload(imageData, fileName); }
                     });
-
-                btn.innerHTML = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            }).catch(err => {
-                alert("⚠️ Document generate karne mein problem aayi.");
-                btn.innerHTML = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            });
+                btn.innerHTML = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
+            }).catch(err => { alert("⚠️ Document generate karne mein problem aayi."); btn.innerHTML = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; });
         }
 
         function forceDownload(imageData, fileName) {
-            const link = document.createElement("a");
-            link.download = fileName;
-            link.href = imageData;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alert("✅ Aapka HD Marksheet Download ho gaya hai!");
+            const link = document.createElement("a"); link.download = fileName; link.href = imageData; document.body.appendChild(link); link.click(); document.body.removeChild(link); alert("✅ Aapka HD Marksheet Download ho gaya hai!");
         }
     </script>
 </body>
