@@ -68,8 +68,7 @@
         .success-box .marks-display { font-size: 50px; font-weight: 900; color: #fbbf24; margin: 15px 0; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
         .success-box p { color: #cbd5e1; font-size: 16px; margin: 5px 0; }
         
-        .btn-cancel { background: #10b981; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; flex: 1; font-size: 15px; margin-top: 15px;}
-        .btn-reveal { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; flex: 1; font-size: 14px; margin-top: 15px;}
+        .btn-cancel { background: #10b981; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; flex: 1; font-size: 15px; margin-top: 15px; width: 100%;}
     </style>
 </head>
 <body>
@@ -117,18 +116,6 @@
 
     </div>
 
-    <!-- 🚨 STRICT WARNING ALERT (For Table Lock) -->
-    <div class="modal-overlay" id="strictAlert">
-        <div class="modal-box">
-            <h2 style="color: #ef4444; margin-top: 0; font-size: 24px;"><i class="fa-solid fa-triangle-exclamation fa-beat"></i> STRICT RULE</h2>
-            <p style="color: #cbd5e1; font-size: 15px; line-height: 1.5; margin-bottom: 25px;"><strong>बच्चों को उनके मार्क्स सीधे मत बताएं!</strong><br><br>उनसे कहें कि वो खुद <b>GVCC App/Website</b> पर अपना रिजल्ट चेक करें। <br><br>अगर आपके पास बच्चे का क्वेश्चन कोड है, तो ऊपर Search Box से चेक करें!</p>
-            <div style="display: flex; gap: 15px; justify-content: center;">
-                <button class="btn-cancel" onclick="closeAlert()">✔️ App par bhejunga</button>
-                <button class="btn-reveal" onclick="forceReveal()">Unlock Marks</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ✅ SUCCESS SEARCH MODAL (For Search Box) -->
     <div class="modal-overlay" id="searchResultModal">
         <div class="modal-box success-box">
@@ -137,7 +124,7 @@
             <p id="searchRoll" style="color: #94a3b8;">Roll: 000 | Set: A</p>
             <div class="marks-display" id="searchMarks">85</div>
             <p id="searchStatus" style="font-weight: bold; margin-bottom: 10px;">Status: PASSED</p>
-            <button class="btn-cancel" onclick="closeSearchModal()" style="width: 100%;">Close</button>
+            <button class="btn-cancel" onclick="closeSearchModal()">Close</button>
         </div>
     </div>
 
@@ -154,10 +141,8 @@
         // State variables
         let liveAppStatus = {}; 
         let currentTab = "10th";
-        let pendingUnlockRoll = null;
-        let pendingUnlockMarks = null;
 
-        // 🗄️ MASTER DATABASES
+        // 🗄️ MASTER DATABASES 
         const class10Data = [
             { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 0, max: 100, passMark: 30 },
             { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 0, max: 100, passMark: 30 },
@@ -293,8 +278,9 @@
                         </button>
                     `;
                 } else {
+                    // 🔥 Seedha unlock (No Popup!) 🔥
                     markBoxHtml = `
-                        <button class="locked-mark" onclick="attemptUnlock('${student.roll}', '${student.marks}')">
+                        <button class="locked-mark" onclick="unlockDirectly('${student.roll}', '${student.marks}')">
                             <i class="fa-solid fa-lock"></i> View Marks
                         </button>
                     `;
@@ -317,7 +303,7 @@
             });
         }
 
-        // 🔍 SEARCH LOGIC (Search box se kisi ka bhi khul jayega)
+        // 🔍 SEARCH LOGIC
         window.searchByCode = function() {
             let codeInput = document.getElementById("teacherSearchCode").value.trim().toUpperCase();
             if(!codeInput) return alert("Please enter a code!");
@@ -339,18 +325,13 @@
             }
         }
 
-        // 🔒 TABLE UNLOCK LOGIC
-        window.attemptUnlock = function(roll, marks) { pendingUnlockRoll = roll; pendingUnlockMarks = marks; document.getElementById("strictAlert").style.display = "flex"; }
-        window.closeAlert = function() { document.getElementById("strictAlert").style.display = "none"; pendingUnlockRoll = null; pendingUnlockMarks = null; }
-        window.closeSearchModal = function() { document.getElementById("searchResultModal").style.display = "none"; document.getElementById("teacherSearchCode").value = ""; }
-        
-        window.forceReveal = function() {
-            if(pendingUnlockRoll && pendingUnlockMarks) {
-                let color = pendingUnlockMarks === "WH" ? "#f59e0b" : "#fbbf24";
-                document.getElementById(`mark-box-${pendingUnlockRoll}`).innerHTML = `<strong style="color: ${color}; font-size: 18px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);">${pendingUnlockMarks}</strong>`;
-            }
-            closeAlert();
+        // 🔓 DIRECT TABLE UNLOCK (Pop-up Hata Diya)
+        window.unlockDirectly = function(roll, marks) {
+            let color = marks === "WH" ? "#f59e0b" : "#fbbf24";
+            document.getElementById(`mark-box-${roll}`).innerHTML = `<strong style="color: ${color}; font-size: 18px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);">${marks}</strong>`;
         }
+
+        window.closeSearchModal = function() { document.getElementById("searchResultModal").style.display = "none"; document.getElementById("teacherSearchCode").value = ""; }
 
         window.onload = function() { window.showClass('10th'); };
     </script>
