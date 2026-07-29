@@ -149,40 +149,40 @@
         const db = getFirestore(app);
 
         // State variables
-        let liveAppStatus = {}; // Stores { "1001": true, "1002": true } based on Firebase
+        let liveAppStatus = {}; 
         let currentTab = "10th";
         let pendingUnlockRoll = null;
         let pendingUnlockMarks = null;
 
-        // 🗄️ MASTER DATABASES (Hardcoded Marks, Dynamic App Status)
+        // 🗄️ MASTER DATABASES (00 ki jagah 0 kar diya gaya hai)
         const class10Data = [
-            { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 00, max: 100, passMark: 30 },
-            { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 00, max: 100, passMark: 30 },
-            { roll: "1003", name: "Kajal Kumari", code: "GVCC-W1T0V0C3", marks: 00, max: 100, passMark: 30 },
+            { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 0, max: 100, passMark: 30 },
+            { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 0, max: 100, passMark: 30 },
+            { roll: "1003", name: "Kajal Kumari", code: "GVCC-W1T0V0C3", marks: 0, max: 100, passMark: 30 },
             { roll: "1004", name: "Md Noor Alam", code: "GVCC-L1B0J0D4", marks: 100, max: 100, passMark: 30 },
-            { roll: "1005", name: "Aasmin Khatoon", code: "GVCC-H1F0G0E5", marks: 00, max: 100, passMark: 30 },
-            { roll: "1006", name: "Shruti Kumari", code: "GVCC-K1X0Y0F6", marks: 00, max: 100, passMark: 30 },
-            { roll: "1007", name: "Shivani Kumari", code: "GVCC-Z1V0W0A7", marks: 00, max: 100, passMark: 30 },
-            { roll: "1008", name: "Rahnaz Khatoon", code: "GVCC-T1M0N0B8", marks: 00, max: 100, passMark: 30 },
-            { roll: "1009", name: "Zuhi kumari", code: "GVCC-X1Y0Z0C9", marks: 00, max: 100, passMark: 30 },
-            { roll: "1010", name: "Priti Kumari", code: "GVCC-P1R0K1D0", marks: 00, max: 100, passMark: 30 },
-            { roll: "1011", name: "Rounak Parveen", code: "GVCC-M1N0V1E1", marks: 00, max: 100, passMark: 30 },
-            { roll: "1012", name: "Anu Kumari", code: "GVCC-W1T0D1F2", marks: 00, max: 100, passMark: 30 },
-            { roll: "1013", name: "Anjali Kumari", code: "GVCC-L1B0J1A3", marks: 00, max: 100, passMark: 30 },
+            { roll: "1005", name: "Aasmin Khatoon", code: "GVCC-H1F0G0E5", marks: 0, max: 100, passMark: 30 },
+            { roll: "1006", name: "Shruti Kumari", code: "GVCC-K1X0Y0F6", marks: 0, max: 100, passMark: 30 },
+            { roll: "1007", name: "Shivani Kumari", code: "GVCC-Z1V0W0A7", marks: 0, max: 100, passMark: 30 },
+            { roll: "1008", name: "Rahnaz Khatoon", code: "GVCC-T1M0N0B8", marks: 0, max: 100, passMark: 30 },
+            { roll: "1009", name: "Zuhi kumari", code: "GVCC-X1Y0Z0C9", marks: 0, max: 100, passMark: 30 },
+            { roll: "1010", name: "Priti Kumari", code: "GVCC-P1R0K1D0", marks: 0, max: 100, passMark: 30 },
+            { roll: "1011", name: "Rounak Parveen", code: "GVCC-M1N0V1E1", marks: 0, max: 100, passMark: 30 },
+            { roll: "1012", name: "Anu Kumari", code: "GVCC-W1T0D1F2", marks: 0, max: 100, passMark: 30 },
+            { roll: "1013", name: "Anjali Kumari", code: "GVCC-L1B0J1A3", marks: 0, max: 100, passMark: 30 },
             { roll: "1014", name: "Sajan Kumar", code: "GVCC-H1F0G1B4", marks: 100, max: 100, passMark: 30 },
-            { roll: "1015", name: "Kajal Kumari", code: "GVCC-K1X0Y1C5", marks: 00, max: 100, passMark: 30 },
-            { roll: "1016", name: "Mustara Khatoon", code: "GVCC-Z1V0W1D6", marks: 00, max: 100, passMark: 30 },
-            { roll: "1017", name: "Nitam Kumari", code: "GVCC-T1M0N1E7", marks: 00, max: 100, passMark: 30 },
-            { roll: "1018", name: "Shivani Kumari", code: "GVCC-X1Y0Z1F8", marks: 00, max: 100, passMark: 30 },
-            { roll: "1019", name: "Priyanshu Kumari", code: "GVCC-P1R0K1A9", marks: 00, max: 100, passMark: 30 },
-            { roll: "1020", name: "Afsana Khatoon", code: "GVCC-M1N0V2B0", marks: 00, max: 100, passMark: 30 },
-            { roll: "1021", name: "Sajiya Parveen", code: "GVCC-W1T0D2C1", marks: 00, max: 100, passMark: 30 },
-            { roll: "1022", name: "Ishrat Khatoon", code: "GVCC-L1B0J2D2", marks: 00, max: 100, passMark: 30 },
-            { roll: "1023", name: "Raziya Tabassum", code: "GVCC-H1F0G2E3", marks: 00, max: 100, passMark: 30 },
+            { roll: "1015", name: "Kajal Kumari", code: "GVCC-K1X0Y1C5", marks: 0, max: 100, passMark: 30 },
+            { roll: "1016", name: "Mustara Khatoon", code: "GVCC-Z1V0W1D6", marks: 0, max: 100, passMark: 30 },
+            { roll: "1017", name: "Nitam Kumari", code: "GVCC-T1M0N1E7", marks: 0, max: 100, passMark: 30 },
+            { roll: "1018", name: "Shivani Kumari", code: "GVCC-X1Y0Z1F8", marks: 0, max: 100, passMark: 30 },
+            { roll: "1019", name: "Priyanshu Kumari", code: "GVCC-P1R0K1A9", marks: 0, max: 100, passMark: 30 },
+            { roll: "1020", name: "Afsana Khatoon", code: "GVCC-M1N0V2B0", marks: 0, max: 100, passMark: 30 },
+            { roll: "1021", name: "Sajiya Parveen", code: "GVCC-W1T0D2C1", marks: 0, max: 100, passMark: 30 },
+            { roll: "1022", name: "Ishrat Khatoon", code: "GVCC-L1B0J2D2", marks: 0, max: 100, passMark: 30 },
+            { roll: "1023", name: "Raziya Tabassum", code: "GVCC-H1F0G2E3", marks: 0, max: 100, passMark: 30 },
             { roll: "2356", name: "Md Faiyaz", code: "GVCC-K2X3Y5F6", marks: 28, max: 100, passMark: 30 }
         ];
 
-                        const class9Data = [
+        const class9Data = [
             { roll: "901", name: "Prince Raj", code: "GVCC-P9R0A1", set: "A", marks: 34, max: 35, passMark: 14 },
             { roll: "902", name: "Avinash Kumar", code: "GVCC-M9K0B2", set: "B", marks: 32, max: 35, passMark: 14 },
             { roll: "903", name: "Shyam Kumar", code: "GVCC-L9X0C3", set: "C", marks: 32.5, max: 35, passMark: 14 },
@@ -206,8 +206,7 @@
             { roll: "924", name: "Radhe Shyam", code: "GVCC-W9Z2B4", set: "B", marks: 20, max: 35, passMark: 14 }
         ];
 
-
-                const class8Data = [
+        const class8Data = [
             { roll: "801", name: "Anamika Kumari", code: "GVCC-N8F0A1", set: "A", marks: 18, max: 30, passMark: 12 },
             { roll: "803", name: "Shabrun Khatoon", code: "GVCC-L8X0C3", set: "C", marks: 18, max: 30, passMark: 12 },
             { roll: "805", name: "Zainab Parveen", code: "GVCC-P8R0E5", set: "E", marks: 6, max: 30, passMark: 12 },
@@ -227,7 +226,6 @@
             { roll: "821", name: "Sajda Khatoon", code: "GVCC-T8Q2C1", set: "C", marks: 0, max: 30, passMark: 12 },
             { roll: "822", name: "Abdul Samad", code: "GVCC-W8Z2D2", set: "D", marks: 11, max: 30, passMark: 12 }
         ];
-
 
         // Combine all for search
         const allStudents = [...class10Data, ...class9Data, ...class8Data];
