@@ -11,64 +11,66 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: radial-gradient(circle at top, #0f172a, #020617); 
             margin: 0; color: white; display: flex; flex-direction: column; 
-            align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box;
+            align-items: center; min-height: 100vh; padding: 15px; box-sizing: border-box;
         }
 
-        .header-box { text-align: center; margin-bottom: 25px; width: 100%; max-width: 1050px; }
-        .header-box h1 { color: #fbbf24; margin: 0 0 5px 0; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
-        .header-box p { color: #94a3b8; font-size: 15px; margin: 0; }
+        .header-box { text-align: center; margin-bottom: 20px; width: 100%; max-width: 1050px; }
+        .header-box h1 { color: #fbbf24; margin: 0 0 5px 0; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+        .header-box p { color: #94a3b8; font-size: 13px; margin: 0; }
 
-        .back-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; align-self: flex-start; margin-left: auto; margin-right: auto; max-width: 1050px; width: 100%; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.05); }
+        .back-link { color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; align-self: flex-start; margin-left: auto; margin-right: auto; max-width: 1050px; width: 100%; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.05); }
         .back-link:hover { color: white; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
 
-        .dashboard-container { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); width: 100%; max-width: 1050px; border-radius: 16px; padding: 25px; box-sizing: border-box; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .dashboard-container { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); width: 100%; max-width: 1050px; border-radius: 16px; padding: 20px; box-sizing: border-box; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
 
-        /* 🔍 SEARCH BOX FOR TEACHERS */
-        .search-container { background: #020617; border: 1px solid #334155; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-        .search-container input { flex: 1; min-width: 200px; padding: 12px 15px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; outline: none; }
+        /* 🔍 SEARCH BOX */
+        .search-container { background: #020617; border: 1px solid #334155; padding: 12px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        .search-container input { flex: 1; min-width: 150px; padding: 10px 15px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 14px; text-transform: uppercase; outline: none; }
         .search-container input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
-        .search-container button { background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4); display: flex; align-items: center; gap: 8px; }
+        .search-container button { background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .search-container button:active { transform: scale(0.95); }
 
         /* 🗂️ TABS */
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn { background: rgba(15, 23, 42, 0.8); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.05); padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; font-size: 15px; transition: all 0.3s ease; white-space: nowrap; text-transform: uppercase; letter-spacing: 1px; }
-        .tab-btn:hover { background: #334155; color: white; }
-        .tab-btn.active { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border-color: #ffd700; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4); font-weight: 900; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { background: rgba(15, 23, 42, 0.8); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; font-size: 13px; transition: all 0.3s ease; white-space: nowrap; text-align: center; }
+        .tab-btn.active { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border-color: #ffd700; font-weight: 900; }
 
-        /* 📊 TABLE */
+        /* 📊 MOBILE OPTIMIZED TABLE */
         .table-wrapper { overflow-x: auto; background: #020617; border-radius: 12px; border: 1px solid #334155; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 850px; }
-        th { background: #0f172a; color: #fbbf24; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; padding: 18px 15px; border-bottom: 2px solid #334155; }
-        td { padding: 16px 15px; border-bottom: 1px solid #1e293b; color: #f8fafc; font-size: 15px; font-weight: 500; vertical-align: middle; }
-        tr:hover { background: #1e293b; }
-        .rank-1 { background: rgba(251, 191, 36, 0.1) !important; border-left: 4px solid #fbbf24; }
-        .rank-2 { background: rgba(148, 163, 184, 0.1) !important; border-left: 4px solid #94a3b8; }
-        .rank-3 { background: rgba(180, 83, 9, 0.1) !important; border-left: 4px solid #b45309; }
-
-        /* BADGES */
-        .status-pass { color: #10b981; font-weight: bold; background: rgba(16, 185, 129, 0.1); padding: 6px 12px; border-radius: 6px; font-size: 12px; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .status-fail { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 6px 12px; border-radius: 6px; font-size: 12px; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .status-wh { color: #f59e0b; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 6px 12px; border-radius: 6px; font-size: 12px; border: 1px dashed #f59e0b; }
-        .app-checked { color: #38bdf8; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .app-pending { color: #64748b; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-
-        .locked-mark { background: #1e293b; color: #94a3b8; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .locked-mark:hover { background: #334155; color: white; border-color: #fbbf24; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
         
-        /* Strict Lock Button specifically for 10th */
-        .app-lock-btn { background: #3f3f46; color: #a1a1aa; border: 1px solid #52525b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; cursor: not-allowed; opacity: 0.8; }
+        /* Table padding adjusted for Mobile */
+        th { background: #0f172a; color: #fbbf24; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 12px 10px; border-bottom: 2px solid #334155; }
+        td { padding: 12px 10px; border-bottom: 1px solid #1e293b; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Rank Styles */
+        .rank-1 { background: rgba(251, 191, 36, 0.08) !important; border-left: 3px solid #fbbf24; }
+        .rank-2 { background: rgba(148, 163, 184, 0.08) !important; border-left: 3px solid #94a3b8; }
+        .rank-3 { background: rgba(180, 83, 9, 0.08) !important; border-left: 3px solid #b45309; }
+        .rank-text { text-align: center; font-weight: 900; font-size: 14px; color: #fbbf24; }
 
-        /* MODALS */
+        /* Badges & Text */
+        .status-pass { color: #10b981; font-weight: bold; background: rgba(16, 185, 129, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px solid rgba(16, 185, 129, 0.3); display: inline-block; }
+        .status-fail { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-block; }
+        .status-wh { color: #f59e0b; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px dashed #f59e0b; display: inline-block; }
+        
+        .app-checked { color: #38bdf8; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;}
+        .app-pending { color: #64748b; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;}
+
+        /* Mobile Action Buttons */
+        .locked-mark { background: #1e293b; color: #94a3b8; border: 1px solid #475569; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.2s; white-space: nowrap; width: 100%; }
+        .locked-mark:active { background: #334155; color: white; border-color: #fbbf24; transform: scale(0.95); }
+        
+        .app-lock-btn { background: #3f3f46; color: #a1a1aa; border: 1px solid #52525b; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: not-allowed; opacity: 0.8; white-space: nowrap; width: 100%; }
+
+        /* Search Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-box { background: #0f172a; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border: 2px solid #ef4444; box-shadow: 0 10px 40px rgba(239, 68, 68, 0.3); }
-        
-        .success-box { border-color: #10b981; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3); }
-        .success-box h2 { color: #10b981; margin-top: 0; font-size: 24px; }
-        .success-box .marks-display { font-size: 50px; font-weight: 900; color: #fbbf24; margin: 15px 0; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
-        .success-box p { color: #cbd5e1; font-size: 16px; margin: 5px 0; }
-        
-        .btn-cancel { background: #10b981; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; flex: 1; font-size: 15px; margin-top: 15px; width: 100%;}
+        .modal-box { background: #0f172a; padding: 25px; border-radius: 15px; width: 85%; max-width: 350px; text-align: center; border: 2px solid #10b981; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3); }
+        .modal-box h2 { color: #10b981; margin-top: 0; font-size: 20px; }
+        .marks-display { font-size: 45px; font-weight: 900; color: #fbbf24; margin: 10px 0; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
+        .btn-cancel { background: #10b981; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 14px; margin-top: 10px;}
     </style>
 </head>
 <body>
@@ -76,36 +78,32 @@
     <a href="teacher_dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
     <div class="header-box">
-        <h1><i class="fa-solid fa-crown"></i> VIP Result Analytics</h1>
-        <p>Strictly Confidential • Ranked by Performance • Live Updates</p>
+        <h1><i class="fa-solid fa-crown"></i> VIP Analytics</h1>
+        <p>Ranked Data • Mobile Optimized • Live Sync</p>
     </div>
 
     <div class="dashboard-container">
         
         <!-- 🔍 SEARCH SECTION -->
         <div class="search-container">
-            <span style="color: #cbd5e1; font-weight: bold;"><i class="fa-solid fa-magnifying-glass"></i> Check via Code:</span>
-            <input type="text" id="teacherSearchCode" placeholder="Enter Question Code (e.g. GVCC-...)">
-            <button onclick="searchByCode()"><i class="fa-solid fa-bolt"></i> Unlock Result</button>
+            <input type="text" id="teacherSearchCode" placeholder="Enter Question Code...">
+            <button onclick="searchByCode()"><i class="fa-solid fa-bolt"></i> Unlock</button>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="showClass('10th')">Class 10th</button>
-            <button class="tab-btn" onclick="showClass('9th')">Class 9th</button>
-            <button class="tab-btn" onclick="showClass('8th')">Class 8th</button>
+            <button class="tab-btn active" onclick="showClass('10th')">10th</button>
+            <button class="tab-btn" onclick="showClass('9th')">9th</button>
+            <button class="tab-btn" onclick="showClass('8th')">8th</button>
         </div>
 
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th style="text-align: center;">Rank</th>
-                        <th>Roll No</th>
-                        <th>Student Name</th>
-                        <th>Exam Code</th>
-                        <th>App Status</th>
-                        <th>Final Marks</th>
-                        <th>Result</th>
+                        <th style="text-align: center; width: 40px;">Rank</th>
+                        <th>Student Info</th>
+                        <th style="text-align: center; width: 60px;">App</th>
+                        <th style="text-align: right; width: 80px;">Result</th>
                     </tr>
                 </thead>
                 <tbody id="resultTableBody">
@@ -116,14 +114,14 @@
 
     </div>
 
-    <!-- ✅ SUCCESS SEARCH MODAL (For Search Box) -->
+    <!-- ✅ SUCCESS SEARCH MODAL -->
     <div class="modal-overlay" id="searchResultModal">
-        <div class="modal-box success-box">
-            <h2><i class="fa-solid fa-circle-check"></i> Result Found</h2>
-            <p id="searchName" style="font-weight: bold; font-size: 20px; color: white;">Student Name</p>
-            <p id="searchRoll" style="color: #94a3b8;">Roll: 000 | Set: A</p>
+        <div class="modal-box">
+            <h2><i class="fa-solid fa-circle-check"></i> Found!</h2>
+            <p id="searchName" style="font-weight: bold; font-size: 18px; color: white; margin: 5px 0;">Student Name</p>
+            <p id="searchRoll" style="color: #94a3b8; font-size: 12px; margin: 0;">Roll: 000 | Set: A</p>
             <div class="marks-display" id="searchMarks">85</div>
-            <p id="searchStatus" style="font-weight: bold; margin-bottom: 10px;">Status: PASSED</p>
+            <p id="searchStatus" style="font-weight: bold; margin-bottom: 10px; font-size: 14px;">Status: PASSED</p>
             <button class="btn-cancel" onclick="closeSearchModal()">Close</button>
         </div>
     </div>
@@ -133,21 +131,19 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // Firebase Setup
         const firebaseConfig = { apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", authDomain: "gvcc-database.firebaseapp.com", projectId: "gvcc-database", storageBucket: "gvcc-database.firebasestorage.app", messagingSenderId: "1063216875940", appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // State variables
         let liveAppStatus = {}; 
         let currentTab = "10th";
 
-        // 🗄️ MASTER DATABASES 
+        // 🗄️ DATABASES
         const class10Data = [
             { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 0, max: 100, passMark: 30 },
             { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 0, max: 100, passMark: 30 },
             { roll: "1003", name: "Kajal Kumari", code: "GVCC-W1T0V0C3", marks: 0, max: 100, passMark: 30 },
-            { roll: "1004", name: "Md Noor Alam", code: "GVCC-L1B0J0D4", marks: 0, max: 100, passMark: 30 },
+            { roll: "1004", name: "Md Noor Alam", code: "GVCC-L1B0J0D4", marks: 100, max: 100, passMark: 30 },
             { roll: "1005", name: "Aasmin Khatoon", code: "GVCC-H1F0G0E5", marks: 0, max: 100, passMark: 30 },
             { roll: "1006", name: "Shruti Kumari", code: "GVCC-K1X0Y0F6", marks: 0, max: 100, passMark: 30 },
             { roll: "1007", name: "Shivani Kumari", code: "GVCC-Z1V0W0A7", marks: 0, max: 100, passMark: 30 },
@@ -157,7 +153,7 @@
             { roll: "1011", name: "Rounak Parveen", code: "GVCC-M1N0V1E1", marks: 0, max: 100, passMark: 30 },
             { roll: "1012", name: "Anu Kumari", code: "GVCC-W1T0D1F2", marks: 0, max: 100, passMark: 30 },
             { roll: "1013", name: "Anjali Kumari", code: "GVCC-L1B0J1A3", marks: 0, max: 100, passMark: 30 },
-            { roll: "1014", name: "Sajan Kumar", code: "GVCC-H1F0G1B4", marks: 0, max: 100, passMark: 30 },
+            { roll: "1014", name: "Sajan Kumar", code: "GVCC-H1F0G1B4", marks: 100, max: 100, passMark: 30 },
             { roll: "1015", name: "Kajal Kumari", code: "GVCC-K1X0Y1C5", marks: 0, max: 100, passMark: 30 },
             { roll: "1016", name: "Mustara Khatoon", code: "GVCC-Z1V0W1D6", marks: 0, max: 100, passMark: 30 },
             { roll: "1017", name: "Nitam Kumari", code: "GVCC-T1M0N1E7", marks: 0, max: 100, passMark: 30 },
@@ -166,66 +162,65 @@
             { roll: "1020", name: "Afsana Khatoon", code: "GVCC-M1N0V2B0", marks: 0, max: 100, passMark: 30 },
             { roll: "1021", name: "Sajiya Parveen", code: "GVCC-W1T0D2C1", marks: 0, max: 100, passMark: 30 },
             { roll: "1022", name: "Ishrat Khatoon", code: "GVCC-L1B0J2D2", marks: 0, max: 100, passMark: 30 },
-            { roll: "1023", name: "Raziya Tabassum", code: "GVCC-H1F0G2E3", marks: 0, max: 100, passMark: 30 }
+            { roll: "1023", name: "Raziya Tabassum", code: "GVCC-H1F0G2E3", marks: 0, max: 100, passMark: 30 },
+            { roll: "2356", name: "Md Faiyaz", code: "GVCC-K2X3Y5F6", marks: 28, max: 100, passMark: 30 }
         ];
 
         const class9Data = [
-            { roll: "901", name: "Prince Raj", code: "GVCC-P9R0A1", set: "A", marks: 34, max: 35, passMark: 14 },
-            { roll: "902", name: "Avinash Kumar", code: "GVCC-M9K0B2", set: "B", marks: 32, max: 35, passMark: 14 },
-            { roll: "903", name: "Shyam Kumar", code: "GVCC-L9X0C3", set: "C", marks: 32.5, max: 35, passMark: 14 },
-            { roll: "904", name: "Kajal Kumari", code: "GVCC-V9T0D4", set: "D", marks: 26, max: 35, passMark: 14 },
-            { roll: "905", name: "Nuzhat Parveen", code: "GVCC-M9R0A5", set: "A", marks: 31, max: 35, passMark: 14 },
-            { roll: "906", name: "Sneha Kumari", code: "GVCC-B9Y0E6", set: "E", marks: 31, max: 35, passMark: 14 },
-            { roll: "907", name: "Aditya Soni", code: "GVCC-Z9H0F7", set: "F", marks: 14, max: 35, passMark: 14 },
-            { roll: "908", name: "Gautam Kumari", code: "GVCC-C9W0A8", set: "A", marks: 20.5, max: 35, passMark: 14 },
-            { roll: "909", name: "Gudiya Khatoon", code: "GVCC-N9Q0B9", set: "B", marks: 0, max: 35, passMark: 14 },
-            { roll: "910", name: "Priya Kumari", code: "GVCC-J9F1C0", set: "C", marks: 10, max: 35, passMark: 14 },
-            { roll: "911", name: "Muskan Khatoon", code: "GVCC-T9R1D1", set: "D", marks: 8, max: 35, passMark: 14 },
-            { roll: "912", name: "Abhishek Kumar", code: "GVCC-D9M1E2", set: "E", marks: 7.5, max: 35, passMark: 14 },
-            { roll: "913", name: "Rahul Kumar", code: "GVCC-G9K1F3", set: "F", marks: 12, max: 35, passMark: 14 },
-            { roll: "915", name: "Prince Kumar", code: "GVCC-W9V1A5", set: "A", marks: 23, max: 35, passMark: 14 },
-            { roll: "916", name: "Ritik Raushan", code: "GVCC-F9P1B6", set: "B", marks: 13, max: 35, passMark: 14 },
-            { roll: "917", name: "Manish Kumar", code: "GVCC-H9X1C7", set: "C", marks: 10, max: 35, passMark: 14 },
-            { roll: "918", name: "Altamash", code: "GVCC-S9N1D8", set: "D", marks: 14.5, max: 35, passMark: 14 },
-            { roll: "919", name: "Pawan Kumar", code: "GVCC-K9L1B9", set: "B", marks: "WH", max: 35, passMark: 14, isCheating: true },
-            { roll: "920", name: "Kanchan Kumari", code: "GVCC-K9Z2E0", set: "E", marks: "WH", max: 35, passMark: 14, isCheating: true },
-            { roll: "922", name: "Uzma Khatoon", code: "GVCC-T9Q2A2", set: "A", marks: 6, max: 35, passMark: 14 },
-            { roll: "924", name: "Radhe Shyam", code: "GVCC-W9Z2B4", set: "B", marks: 20, max: 35, passMark: 14 }
+            { roll: "901", name: "Prince Raj", code: "GVCC-P9R0A1", marks: 34, max: 35, passMark: 14 },
+            { roll: "902", name: "Avinash Kumar", code: "GVCC-M9K0B2", marks: 32, max: 35, passMark: 14 },
+            { roll: "903", name: "Shyam Kumar", code: "GVCC-L9X0C3", marks: 32.5, max: 35, passMark: 14 },
+            { roll: "904", name: "Kajal Kumari", code: "GVCC-V9T0D4", marks: 26, max: 35, passMark: 14 },
+            { roll: "905", name: "Nuzhat Parveen", code: "GVCC-M9R0A5", marks: 31, max: 35, passMark: 14 },
+            { roll: "906", name: "Sneha Kumari", code: "GVCC-B9Y0E6", marks: 31, max: 35, passMark: 14 },
+            { roll: "907", name: "Aditya Soni", code: "GVCC-Z9H0F7", marks: 14, max: 35, passMark: 14 },
+            { roll: "908", name: "Gautam Kumari", code: "GVCC-C9W0A8", marks: 20.5, max: 35, passMark: 14 },
+            { roll: "909", name: "Gudiya Khatoon", code: "GVCC-N9Q0B9", marks: 0, max: 35, passMark: 14 },
+            { roll: "910", name: "Priya Kumari", code: "GVCC-J9F1C0", marks: 10, max: 35, passMark: 14 },
+            { roll: "911", name: "Muskan Khatoon", code: "GVCC-T9R1D1", marks: 8, max: 35, passMark: 14 },
+            { roll: "912", name: "Abhishek Kumar", code: "GVCC-D9M1E2", marks: 7.5, max: 35, passMark: 14 },
+            { roll: "913", name: "Rahul Kumar", code: "GVCC-G9K1F3", marks: 12, max: 35, passMark: 14 },
+            { roll: "915", name: "Prince Kumar", code: "GVCC-W9V1A5", marks: 23, max: 35, passMark: 14 },
+            { roll: "916", name: "Ritik Raushan", code: "GVCC-F9P1B6", marks: 13, max: 35, passMark: 14 },
+            { roll: "917", name: "Manish Kumar", code: "GVCC-H9X1C7", marks: 10, max: 35, passMark: 14 },
+            { roll: "918", name: "Altamash", code: "GVCC-S9N1D8", marks: 14.5, max: 35, passMark: 14 },
+            { roll: "919", name: "Pawan Kumar", code: "GVCC-K9L1B9", marks: "WH", max: 35, passMark: 14, isCheating: true },
+            { roll: "920", name: "Kanchan Kumari", code: "GVCC-K9Z2E0", marks: "WH", max: 35, passMark: 14, isCheating: true },
+            { roll: "922", name: "Uzma Khatoon", code: "GVCC-T9Q2A2", marks: 6, max: 35, passMark: 14 },
+            { roll: "924", name: "Radhe Shyam", code: "GVCC-W9Z2B4", marks: 20, max: 35, passMark: 14 }
         ];
 
         const class8Data = [
-            { roll: "801", name: "Anamika Kumari", code: "GVCC-N8F0A1", set: "A", marks: 18, max: 30, passMark: 12 },
-            { roll: "803", name: "Shabrun Khatoon", code: "GVCC-L8X0C3", set: "C", marks: 18, max: 30, passMark: 12 },
-            { roll: "805", name: "Zainab Parveen", code: "GVCC-P8R0E5", set: "E", marks: 6, max: 30, passMark: 12 },
-            { roll: "806", name: "Sabiya Parveen", code: "GVCC-B8Y0F6", set: "F", marks: 0, max: 30, passMark: 12 },
-            { roll: "807", name: "Shabreen Khatoon", code: "GVCC-Z8H0A7", set: "A", marks: 15, max: 30, passMark: 12 },
-            { roll: "808", name: "Farida Khatoon", code: "GVCC-C8W0B8", set: "B", marks: 2, max: 30, passMark: 12 },
-            { roll: "809", name: "Sama Parveen", code: "GVCC-X8Q0C9", set: "C", marks: 2, max: 30, passMark: 12 },
-            { roll: "810", name: "Sahnuma Parveen", code: "GVCC-J8F1D0", set: "D", marks: 1, max: 30, passMark: 12 },
-            { roll: "811", name: "Musarrat Khatoon", code: "GVCC-T8R1E1", set: "E", marks: 1, max: 30, passMark: 12 },
-            { roll: "812", name: "Mamta Kumari", code: "GVCC-D8M1F2", set: "F", marks: 12, max: 30, passMark: 12 },
-            { roll: "813", name: "Sonakshi Kumari", code: "GVCC-G8K1A3", set: "A", marks: 0, max: 30, passMark: 12 },
-            { roll: "814", name: "Md Ashika", code: "GVCC-W8V1B4", set: "B", marks: 14, max: 30, passMark: 12 },
-            { roll: "815", name: "Raji Alam", code: "GVCC-F8P1C5", set: "C", marks: 14, max: 30, passMark: 12 },
-            { roll: "817", name: "Radhe Krishna", code: "GVCC-S8N1E7", set: "E", marks: 4, max: 30, passMark: 12 },
-            { roll: "818", name: "Ansh Kumar", code: "GVCC-K8L1F8", set: "F", marks: 5, max: 30, passMark: 12 },
-            { roll: "820", name: "Sonali Kumari", code: "GVCC-Y8L2B0", set: "B", marks: 9, max: 30, passMark: 12 },
-            { roll: "821", name: "Sajda Khatoon", code: "GVCC-T8Q2C1", set: "C", marks: 0, max: 30, passMark: 12 },
-            { roll: "822", name: "Abdul Samad", code: "GVCC-W8Z2D2", set: "D", marks: 11, max: 30, passMark: 12 }
+            { roll: "801", name: "Anamika Kumari", code: "GVCC-N8F0A1", marks: 18, max: 30, passMark: 12 },
+            { roll: "803", name: "Shabrun Khatoon", code: "GVCC-L8X0C3", marks: 18, max: 30, passMark: 12 },
+            { roll: "805", name: "Zainab Parveen", code: "GVCC-P8R0E5", marks: 6, max: 30, passMark: 12 },
+            { roll: "806", name: "Sabiya Parveen", code: "GVCC-B8Y0F6", marks: 0, max: 30, passMark: 12 },
+            { roll: "807", name: "Shabreen Khatoon", code: "GVCC-Z8H0A7", marks: 15, max: 30, passMark: 12 },
+            { roll: "808", name: "Farida Khatoon", code: "GVCC-C8W0B8", marks: 2, max: 30, passMark: 12 },
+            { roll: "809", name: "Sama Parveen", code: "GVCC-X8Q0C9", marks: 2, max: 30, passMark: 12 },
+            { roll: "810", name: "Sahnuma Parveen", code: "GVCC-J8F1D0", marks: 1, max: 30, passMark: 12 },
+            { roll: "811", name: "Musarrat Khatoon", code: "GVCC-T8R1E1", marks: 1, max: 30, passMark: 12 },
+            { roll: "812", name: "Mamta Kumari", code: "GVCC-D8M1F2", marks: 12, max: 30, passMark: 12 },
+            { roll: "813", name: "Sonakshi Kumari", code: "GVCC-G8K1A3", marks: 0, max: 30, passMark: 12 },
+            { roll: "814", name: "Md Ashika", code: "GVCC-W8V1B4", marks: 14, max: 30, passMark: 12 },
+            { roll: "815", name: "Raji Alam", code: "GVCC-F8P1C5", marks: 14, max: 30, passMark: 12 },
+            { roll: "817", name: "Radhe Krishna", code: "GVCC-S8N1E7", marks: 4, max: 30, passMark: 12 },
+            { roll: "818", name: "Ansh Kumar", code: "GVCC-K8L1F8", marks: 5, max: 30, passMark: 12 },
+            { roll: "820", name: "Sonali Kumari", code: "GVCC-Y8L2B0", marks: 9, max: 30, passMark: 12 },
+            { roll: "821", name: "Sajda Khatoon", code: "GVCC-T8Q2C1", marks: 0, max: 30, passMark: 12 },
+            { roll: "822", name: "Abdul Samad", code: "GVCC-W8Z2D2", marks: 11, max: 30, passMark: 12 }
         ];
 
-        // Combine all for search
         const allStudents = [...class10Data, ...class9Data, ...class8Data];
+        window.allStudentsGlobal = allStudents; // Accessible globally
 
-        // 📡 LISTEN TO FIREBASE REALTIME UPDATES
+        // 📡 FIREBASE SYNC
         onSnapshot(collection(db, "vip_results_status"), (snapshot) => {
-            snapshot.forEach(doc => {
-                liveAppStatus[doc.id] = doc.data().checked;
-            });
-            window.showClass(currentTab); // Re-render table on update
+            snapshot.forEach(doc => { liveAppStatus[doc.id] = doc.data().checked; });
+            window.showClass(currentTab); 
         });
 
-        // ⚙️ RENDER TABLE
+        // ⚙️ RENDER MOBILE OPTIMIZED TABLE
         window.showClass = function(className) {
             currentTab = className;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -239,9 +234,9 @@
             else if (className === '9th') rawData = [...class9Data];
             else if (className === '8th') rawData = [...class8Data];
 
-            if (rawData.length === 0) { return tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 30px;">No data available yet.</td></tr>`; }
+            if (rawData.length === 0) return;
 
-            // 🏆 Sort Descending
+            // 🏆 Sort
             rawData.sort((a, b) => {
                 let valA = (a.marks === "WH" || a.marks === "--") ? -1 : parseFloat(a.marks);
                 let valB = (b.marks === "WH" || b.marks === "--") ? -1 : parseFloat(b.marks);
@@ -249,57 +244,66 @@
             });
 
             rawData.forEach((student, index) => {
-                let statusHtml = '';
-                if (student.isCheating || student.marks === "WH") statusHtml = `<span class="status-wh">WITHHELD</span>`;
-                else if (student.marks === "--") statusHtml = `<span style="color: #64748b; font-size:12px;">PENDING</span>`;
-                else {
-                    statusHtml = parseFloat(student.marks) >= student.passMark ? `<span class="status-pass">PASSED</span>` : `<span class="status-fail">FAILED</span>`;
-                }
-
-                // 🟢 LIVE APP STATUS FROM FIREBASE
                 let isChecked = liveAppStatus[student.roll] || false;
                 let appStatus = isChecked 
-                    ? `<span class="app-checked"><i class="fa-solid fa-mobile-screen"></i> Dekh Liya</span>` 
-                    : `<span class="app-pending"><i class="fa-solid fa-eye-slash"></i> Nahi Dekha</span>`;
+                    ? `<span class="app-checked"><i class="fa-solid fa-mobile-screen"></i> <small>Dekh<br>Liya</small></span>` 
+                    : `<span class="app-pending"><i class="fa-solid fa-eye-slash"></i> <small>Nahi<br>Dekha</small></span>`;
 
                 let rankText = index + 1; let rowClass = "";
-                if(rankText === 1 && student.marks !== "--" && student.marks !== "WH") { rankText = "🥇 1st"; rowClass="rank-1"; }
-                else if(rankText === 2 && student.marks !== "--" && student.marks !== "WH") { rankText = "🥈 2nd"; rowClass="rank-2"; }
-                else if(rankText === 3 && student.marks !== "--" && student.marks !== "WH") { rankText = "🥉 3rd"; rowClass="rank-3"; }
+                if(rankText === 1 && student.marks !== "WH") { rankText = "🥇<br>1st"; rowClass="rank-1"; }
+                else if(rankText === 2 && student.marks !== "WH") { rankText = "🥈<br>2nd"; rowClass="rank-2"; }
+                else if(rankText === 3 && student.marks !== "WH") { rankText = "🥉<br>3rd"; rowClass="rank-3"; }
                 else { rankText = `#${rankText}`; }
 
-                // 🔥 MAGIC LOGIC: 10th walo ka button tabhi aayega jab 'isChecked' true ho! 🔥
-                let markBoxHtml = '';
+                // 🔥 SMART ACTION BOX (Mobile Optimized) 🔥
+                let actionHtml = '';
                 if (className === '10th' && !isChecked) {
-                    markBoxHtml = `
-                        <button class="app-lock-btn" onclick="alert('⚠️ STRICT RULE: Student ne abhi app par result nahi dekha hai! Kripya unhe App/Website check karne ko kahein. Ya fir Upar Search box me question code dalein.')">
-                            <i class="fa-solid fa-user-lock"></i> App Locked
-                        </button>
-                    `;
+                    actionHtml = `<button class="app-lock-btn" onclick="alert('⚠️ STRICT RULE: Student ne abhi result nahi dekha hai! Unhe App par check karne ko kahein.')"><i class="fa-solid fa-lock"></i> Lock</button>`;
                 } else {
-                    // 🔥 Seedha unlock (No Popup!) 🔥
-                    markBoxHtml = `
-                        <button class="locked-mark" onclick="unlockDirectly('${student.roll}', '${student.marks}')">
-                            <i class="fa-solid fa-lock"></i> View Marks
-                        </button>
-                    `;
+                    actionHtml = `<button class="locked-mark" onclick="unlockDirectly('${student.roll}')"><i class="fa-solid fa-eye"></i> View</button>`;
                 }
 
                 let row = `
                     <tr class="${rowClass}">
-                        <td style="text-align: center; font-weight: 900; font-size: 16px;">${rankText}</td>
-                        <td style="color: #94a3b8; font-family: monospace; font-size: 14px;">${student.roll}</td>
-                        <td style="font-weight: bold; color: #f8fafc;">${student.name}</td>
-                        <td style="font-family: monospace; font-size: 12px; color: #64748b;">${student.code}</td>
-                        <td>${appStatus}</td>
-                        <td id="mark-box-${student.roll}">
-                            ${markBoxHtml}
+                        <td class="rank-text">${rankText}</td>
+                        
+                        <!-- 📱 COMBINED NAME & CODE COLUMN -->
+                        <td>
+                            <div style="font-weight: bold; color: #f8fafc; font-size: 14px;">${student.name}</div>
+                            <div style="color: #64748b; font-size: 10px; margin-top: 4px; font-family: monospace;">
+                                R: <span style="color:#94a3b8">${student.roll}</span> <br> C: ${student.code}
+                            </div>
                         </td>
-                        <td>${statusHtml}</td>
+                        
+                        <td>${appStatus}</td>
+                        <td id="action-box-${student.roll}" style="text-align: right;">${actionHtml}</td>
                     </tr>
                 `;
                 tbody.innerHTML += row;
             });
+        }
+
+        // 🔓 DIRECT TABLE UNLOCK (Replace button with Marks + Badge)
+        window.unlockDirectly = function(roll) {
+            let student = window.allStudentsGlobal.find(s => s.roll === roll);
+            if(!student) return;
+
+            let marks = student.marks;
+            let isPassed = parseFloat(marks) >= student.passMark;
+            let color = marks === "WH" ? "#f59e0b" : "#fbbf24";
+
+            let statusHtml = '';
+            if (student.isCheating || marks === "WH") statusHtml = `<span class="status-wh">WITHHELD</span>`;
+            else if (marks === "--") statusHtml = `<span style="color: #64748b; font-size:10px;">PENDING</span>`;
+            else statusHtml = isPassed ? `<span class="status-pass">PASSED</span>` : `<span class="status-fail">FAILED</span>`;
+
+            // Magic: Replacing button with beautiful score!
+            document.getElementById(`action-box-${roll}`).innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                    <div style="color: ${color}; font-size: 20px; font-weight: 900; line-height: 1;">${marks}</div>
+                    ${statusHtml}
+                </div>
+            `;
         }
 
         // 🔍 SEARCH LOGIC
@@ -307,31 +311,22 @@
             let codeInput = document.getElementById("teacherSearchCode").value.trim().toUpperCase();
             if(!codeInput) return alert("Please enter a code!");
 
-            let found = allStudents.find(s => s.code === codeInput);
+            let found = window.allStudentsGlobal.find(s => s.code === codeInput);
             if(found) {
                 document.getElementById("searchName").innerText = found.name;
-                document.getElementById("searchRoll").innerText = `Roll: ${found.roll} | Max Marks: ${found.max}`;
+                document.getElementById("searchRoll").innerText = `Roll: ${found.roll} | Max: ${found.max}`;
                 document.getElementById("searchMarks").innerText = found.marks;
                 
                 let isPassed = parseFloat(found.marks) >= found.passMark;
                 let statusEl = document.getElementById("searchStatus");
                 if(found.marks === "WH" || found.marks === "--") { statusEl.innerText = "Status: " + found.marks; statusEl.style.color = "#f59e0b"; }
-                else { statusEl.innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌"); statusEl.style.color = isPassed ? "#10b981" : "#ef4444"; }
+                else { statusEl.innerText = "Status: " + (isPassed ? "PASSED" : "FAILED"); statusEl.style.color = isPassed ? "#10b981" : "#ef4444"; }
 
                 document.getElementById("searchResultModal").style.display = "flex";
-            } else {
-                alert("⚠️ Invalid Question Code! Koi student nahi mila.");
-            }
-        }
-
-        // 🔓 DIRECT TABLE UNLOCK (Pop-up Hata Diya)
-        window.unlockDirectly = function(roll, marks) {
-            let color = marks === "WH" ? "#f59e0b" : "#fbbf24";
-            document.getElementById(`mark-box-${roll}`).innerHTML = `<strong style="color: ${color}; font-size: 18px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);">${marks}</strong>`;
+            } else { alert("⚠️ Invalid Code!"); }
         }
 
         window.closeSearchModal = function() { document.getElementById("searchResultModal").style.display = "none"; document.getElementById("teacherSearchCode").value = ""; }
-
         window.onload = function() { window.showClass('10th'); };
     </script>
 </body>
