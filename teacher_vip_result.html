@@ -55,6 +55,9 @@
 
         .locked-mark { background: #1e293b; color: #94a3b8; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
         .locked-mark:hover { background: #334155; color: white; border-color: #fbbf24; }
+        
+        /* Strict Lock Button specifically for 10th */
+        .app-lock-btn { background: #3f3f46; color: #a1a1aa; border: 1px solid #52525b; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; cursor: not-allowed; opacity: 0.8; }
 
         /* MODALS */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
@@ -154,7 +157,7 @@
         let pendingUnlockRoll = null;
         let pendingUnlockMarks = null;
 
-        // 🗄️ MASTER DATABASES (00 ki jagah 0 kar diya gaya hai)
+        // 🗄️ MASTER DATABASES
         const class10Data = [
             { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 0, max: 100, passMark: 30 },
             { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 0, max: 100, passMark: 30 },
@@ -281,6 +284,22 @@
                 else if(rankText === 3 && student.marks !== "--" && student.marks !== "WH") { rankText = "🥉 3rd"; rowClass="rank-3"; }
                 else { rankText = `#${rankText}`; }
 
+                // 🔥 MAGIC LOGIC: 10th walo ka button tabhi aayega jab 'isChecked' true ho! 🔥
+                let markBoxHtml = '';
+                if (className === '10th' && !isChecked) {
+                    markBoxHtml = `
+                        <button class="app-lock-btn" onclick="alert('⚠️ STRICT RULE: Student ne abhi app par result nahi dekha hai! Kripya unhe App/Website check karne ko kahein. Ya fir Upar Search box me question code dalein.')">
+                            <i class="fa-solid fa-user-lock"></i> App Locked
+                        </button>
+                    `;
+                } else {
+                    markBoxHtml = `
+                        <button class="locked-mark" onclick="attemptUnlock('${student.roll}', '${student.marks}')">
+                            <i class="fa-solid fa-lock"></i> View Marks
+                        </button>
+                    `;
+                }
+
                 let row = `
                     <tr class="${rowClass}">
                         <td style="text-align: center; font-weight: 900; font-size: 16px;">${rankText}</td>
@@ -289,9 +308,7 @@
                         <td style="font-family: monospace; font-size: 12px; color: #64748b;">${student.code}</td>
                         <td>${appStatus}</td>
                         <td id="mark-box-${student.roll}">
-                            <button class="locked-mark" onclick="attemptUnlock('${student.roll}', '${student.marks}')">
-                                <i class="fa-solid fa-lock"></i> View Marks
-                            </button>
+                            ${markBoxHtml}
                         </td>
                         <td>${statusHtml}</td>
                     </tr>
@@ -300,7 +317,7 @@
             });
         }
 
-        // 🔍 SEARCH LOGIC
+        // 🔍 SEARCH LOGIC (Search box se kisi ka bhi khul jayega)
         window.searchByCode = function() {
             let codeInput = document.getElementById("teacherSearchCode").value.trim().toUpperCase();
             if(!codeInput) return alert("Please enter a code!");
