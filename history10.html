@@ -314,8 +314,8 @@
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
             // Apne hisaab se Date aur Time change karein
-            const testStartTime = new Date("2026-07-30T21:22:00").getTime(); 
-            const testEndTime = new Date("2026-07-30T21:24:00").getTime(); 
+            const testStartTime = new Date("2026-07-30T21:29:00").getTime(); 
+            const testEndTime = new Date("2026-07-30T21:31:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
@@ -389,7 +389,7 @@
         window.verifyAndStartTest = async function() {
     const passInput = document.getElementById("testPassword").value.trim();
     
-    if (passInput === "gvcc2026") {
+    if (passInput === "GVCC2026") {
         document.getElementById("lockSection").style.display = "none";
         document.getElementById("testSection").style.display = "block";
         
