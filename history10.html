@@ -301,7 +301,7 @@
         const correctAnswers = { q1: "D", q2: "C", q3: "D", q4: "B", q5: "A", q6: "A", q7: "D", q8: "C", q9: "C", q10: "B", q11: "C", q12: "B", q13: "A", q14: "D", q15: "C", q16: "C", q17: "B", q18: "B", q19: "A", q20: "B", q21: "C", q22: "B", q23: "C", q24: "B", q25: "B", q26: "A", q27: "A", q28: "B", q29: "D", q30: "D", q31: "C", q32: "D", q33: "B", q34: "A", q35: "B", q36: "B", q37: "D", q38: "D", q39: "A", q40: "A", q41: "D", q42: "A", q43: "B", q44: "B", q45: "D", q46: "B", q47: "C", q48: "A", q49: "B", q50: "C" };
         let timerInterval;
         let proctorInterval; 
-        let totalTimeLeft = 600; // 10 Minutes in Seconds
+        let totalTimeLeft = 120; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
@@ -314,8 +314,8 @@
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
             // Apne hisaab se Date aur Time change karein
-            const testStartTime = new Date("2026-07-30T21:15:00").getTime(); 
-            const testEndTime = new Date("2026-07-30T21:17:00").getTime(); 
+            const testStartTime = new Date("2026-07-30T21:22:00").getTime(); 
+            const testEndTime = new Date("2026-07-30T21:24:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
@@ -343,7 +343,7 @@
         }
         
         // Har ek second time check karega
-        setInterval(checkTestTime, 120);
+        setInterval(checkTestTime, 1000);
         checkTestTime(); 
 
         // 4. BAAKI KA POORA SYSTEM (Profile Load, Anti-Cheat, Submit)
