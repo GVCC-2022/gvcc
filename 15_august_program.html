@@ -21,13 +21,19 @@
 
         .container { max-width: 800px; margin: 20px auto; padding: 15px; text-align: center; }
 
-        /* LIVE STATUS CARD */
+        /* LIVE STATUS CARD WITH PROGRESS BAR */
         .status-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 25px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .status-card.playing { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
         .status-card h3 { margin: 0 0 10px 0; font-size: 16px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-        #statusText { font-size: 22px; font-weight: bold; color: #f8fafc; margin: 0; }
+        #statusText { font-size: 20px; font-weight: bold; color: #f8fafc; margin: 0; }
         .equalizer { display: none; color: #10b981; margin-left: 10px; }
         .playing .equalizer { display: inline-block; }
+        
+        /* Progress Bar Styles */
+        #progressContainer { display: none; margin-top: 15px; text-align: left; }
+        .time-labels { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; font-weight: bold; margin-bottom: 5px; }
+        .progress-bg { width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; height: 10px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.1s linear; }
 
         /* CATEGORY TABS */
         .category-menu { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; justify-content: flex-start; scrollbar-width: none; }
@@ -54,7 +60,7 @@
         .play-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 12px 25px; font-weight: bold; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 8px; width: 105px; justify-content: center; }
         .play-btn:active { transform: scale(0.92); }
         
-        /* When music is playing, button turns orange/red and shows Pause */
+        /* When music is playing, button turns orange and shows Pause */
         .play-btn.active-pause { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); border: 1px solid #fcd34d; }
 
         /* FLOATING STOP ALL BUTTON */
@@ -66,7 +72,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (Updated with right file name) -->
     <div class="navbar">
         <div class="nav-brand"><i class="fa-solid fa-flag"></i> 15 August Panel</div>
         <a href="teacher-dashboard.html" class="back-btn" onclick="navigateWithAnimation(event, this.href)"><i class="fa-solid fa-arrow-left"></i> Back</a>
@@ -74,24 +80,31 @@
 
     <div class="container">
         
-        <!-- LIVE STATUS CARD -->
+        <!-- LIVE STATUS CARD WITH PROGRESS BAR -->
         <div class="status-card" id="statusCard">
             <h3><i class="fa-solid fa-tower-broadcast"></i> Live Status</h3>
             <p id="statusText"><span style="color:#94a3b8;">No Music Playing</span> <i class="fa-solid fa-chart-bar fa-fade equalizer"></i></p>
+            
+            <!-- Music Timer & Progress Bar (Hidden by default) -->
+            <div id="progressContainer">
+                <div class="time-labels">
+                    <span id="currentTimeDisplay">00:00</span>
+                    <span id="durationDisplay">00:00</span>
+                </div>
+                <div class="progress-bg">
+                    <div id="progressBar" class="progress-fill"></div>
+                </div>
+            </div>
         </div>
 
         <!-- CATEGORY MENU -->
         <div class="category-menu">
-            <button class="cat-btn" onclick="showCategory('class-1-5', this)">Class 1 to 5</button>
             <button class="cat-btn active" onclick="showCategory('class-6', this)">Class 6th</button>
             <button class="cat-btn" onclick="showCategory('class-7', this)">Class 7th</button>
             <button class="cat-btn" onclick="showCategory('class-8', this)">Class 8th</button>
-            <button class="cat-btn" onclick="showCategory('class-9', this)">Class 9th</button>
-            <button class="cat-btn" onclick="showCategory('class-10', this)">Class 10th</button>
-            <button class="cat-btn comedy-btn" onclick="showCategory('comedy', this)"><i class="fa-solid fa-masks-theater"></i> Comedy</button>
         </div>
 
-        <!-- CLASS 6TH PROGRAM -->
+        <!-- CLASS 6TH PROGRAM (Testing with song.mp3) -->
         <div id="class-6" class="program-section active">
             
             <div class="student-row">
@@ -99,8 +112,7 @@
                     <span class="student-name">1. राजन कुमार</span>
                     <span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance Performance</span>
                 </div>
-                <!-- यहाँ 'this' पास किया गया है ताकि कोड समझ सके कौन सा बटन दबा है -->
-                <button class="play-btn" onclick="togglePlay('songs/rajan_song.mp3', 'राजन कुमार (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('song.mp3', 'राजन कुमार (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="student-row">
@@ -108,17 +120,8 @@
                     <span class="student-name">2. नंदनी कुमारी</span>
                     <span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Patriotic Song</span>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/nandani_song.mp3', 'नंदनी कुमारी (Song)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('song.mp3', 'नंदनी कुमारी (Song)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">3. नीरज कुमार</span>
-                    <span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech / Drama</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('songs/neeraj_song.mp3', 'नीरज कुमार (Speech)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
-
         </div>
 
         <!-- CLASS 7TH PROGRAM -->
@@ -128,18 +131,7 @@
                     <span class="student-name">1. नाजरीन परवीन</span>
                     <span class="student-act"><i class="fa-solid fa-person-walking"></i> Solo Dance</span>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/najreen_song.mp3', 'नाजरीन परवीन (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
-        </div>
-
-        <!-- COMEDY SECTION -->
-        <div id="comedy" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. ग्रुप कॉमेडी (Group A)</span>
-                    <span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM & Sound Effects</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('songs/comedy_bgm.mp3', 'Group Comedy BGM', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('song.mp3', 'नाजरीन परवीन (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
         </div>
 
@@ -164,7 +156,10 @@
         var player = document.getElementById("main-player");
         var statusCard = document.getElementById("statusCard");
         var statusText = document.getElementById("statusText");
-        var currentlyPlayingBtn = null; // यह याद रखेगा कि कौन सा बटन दबाया गया था
+        var progressContainer = document.getElementById("progressContainer");
+        var progressBar = document.getElementById("progressBar");
+        
+        let currentSongUrl = ""; // यह याद रखेगा कि अभी कौन सा गाना लोड है
 
         // Tab Switching Logic
         function showCategory(categoryId, btnElement) {
@@ -174,51 +169,69 @@
             document.getElementById(categoryId).classList.add('active');
         }
 
-        // 🎵 MAIN LOGIC: Toggle Play & Pause
+        // 🎵 MAIN LOGIC: Play / Pause Toggle
         function togglePlay(songUrl, studentName, clickedBtn) {
             
-            // अगर वही बटन दोबारा दबाया गया है (यानी Pause करना है)
-            if (currentlyPlayingBtn === clickedBtn && !player.paused) {
-                stopSong(); 
-                return; // यही से वापस लौट जाओ, आगे का कोड रन मत करो
+            // अगर वही गाना पहले से लोड है (Play/Pause Toggle)
+            if (currentSongUrl === songUrl) {
+                if (player.paused) {
+                    player.play(); // Resume
+                    setButtonToPause(clickedBtn);
+                    statusCard.classList.add("playing");
+                    statusText.innerHTML = studentName + ' <i class="fa-solid fa-chart-bar fa-fade equalizer"></i>';
+                } else {
+                    player.pause(); // Pause
+                    setButtonToPlay(clickedBtn);
+                    statusCard.classList.remove("playing");
+                    statusText.innerHTML = '<span style="color:#f59e0b;"><i class="fa-solid fa-circle-pause"></i> Paused: ' + studentName + '</span>';
+                }
+                return;
             }
 
-            // अगर कोई दूसरा गाना प्ले होने जा रहा है, तो पहले सभी बटन्स को 'Play' में रिसेट करो
+            // अगर कोई नया गाना प्ले किया जा रहा है:
             resetAllButtons();
-
-            // नया गाना प्ले करो
+            
+            currentSongUrl = songUrl; // नया गाना सेट करो
             player.src = songUrl;
             player.play();
             
-            // जिस बटन को दबाया गया है, उसे 'Pause' में बदलो और रंग बदलो
-            clickedBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
-            clickedBtn.classList.add("active-pause");
-            currentlyPlayingBtn = clickedBtn; // इसे करेंट बटन मान लो
+            setButtonToPause(clickedBtn);
             
-            // ऊपर वाले Live Status को अपडेट करो
+            // UI Update (Progress bar दिखाएं)
+            progressContainer.style.display = "block";
             statusCard.classList.add("playing");
             statusText.innerHTML = studentName + ' <i class="fa-solid fa-chart-bar fa-fade equalizer"></i>';
             statusText.style.color = "#10b981"; 
         }
 
+        // 🔘 बटन का डिज़ाइन बदलने के फंक्शन्स
+        function setButtonToPause(btn) {
+            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+            btn.classList.add("active-pause");
+        }
+
+        function setButtonToPlay(btn) {
+            btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
+            btn.classList.remove("active-pause");
+        }
+
         // 🔄 सब बटन्स को वापस 'Play' में बदलने का फंक्शन
         function resetAllButtons() {
             let allBtns = document.querySelectorAll('.play-btn');
-            allBtns.forEach(btn => {
-                btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
-                btn.classList.remove("active-pause"); // Pause वाला रंग हटाओ
-            });
-            currentlyPlayingBtn = null;
+            allBtns.forEach(btn => setButtonToPlay(btn));
         }
 
         // 🛑 Stop Song Function (सब कुछ रोकने के लिए)
         function stopSong() {
             player.pause();
-            player.currentTime = 0;
+            player.currentTime = 0; // गाने को शुरुआत में कर दो
+            currentSongUrl = ""; // मेमोरी खाली कर दो
             
-            resetAllButtons(); // सारे बटन वापस Play हो जाएंगे
+            resetAllButtons();
             
-            // Status Card अपडेट करो
+            // UI Hide
+            progressContainer.style.display = "none";
+            progressBar.style.width = "0%";
             statusCard.classList.remove("playing");
             statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
         }
@@ -226,10 +239,37 @@
         // ✅ जब गाना अपने आप खत्म हो जाए
         player.onended = function() {
             resetAllButtons();
+            currentSongUrl = "";
+            progressContainer.style.display = "none";
             statusCard.classList.remove("playing");
             statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
         }
-    </script>
 
+        // 🕒 TIMER & PROGRESS BAR LOGIC 🕒
+        
+        // टाइम को सही फॉर्मेट (MM:SS) में दिखाने का फंक्शन
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            let min = Math.floor(seconds / 60);
+            let sec = Math.floor(seconds % 60);
+            return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+        }
+
+        // जैसे ही गाना लोड हो, टोटल टाइम दिखाओ
+        player.addEventListener("loadedmetadata", function() {
+            document.getElementById("durationDisplay").innerText = formatTime(player.duration);
+        });
+
+        // जैसे-जैसे गाना बजे, टाइम और प्रोग्रेस बार को बढ़ाओ
+        player.addEventListener("timeupdate", function() {
+            document.getElementById("currentTimeDisplay").innerText = formatTime(player.currentTime);
+            
+            if (player.duration) {
+                let progressPercent = (player.currentTime / player.duration) * 100;
+                progressBar.style.width = progressPercent + "%";
+            }
+        });
+
+    </script>
 </body>
 </html>
