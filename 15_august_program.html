@@ -83,8 +83,6 @@
         <div class="status-card" id="statusCard">
             <h3><i class="fa-solid fa-tower-broadcast"></i> Live Status</h3>
             <p id="statusText"><span style="color:#94a3b8;">No Music Playing</span> <i class="fa-solid fa-chart-bar fa-fade equalizer"></i></p>
-            
-            <!-- Music Timer & Progress Bar -->
             <div id="progressContainer">
                 <div class="time-labels">
                     <span id="currentTimeDisplay">00:00</span>
@@ -96,7 +94,7 @@
             </div>
         </div>
 
-        <!-- CATEGORY MENU (ALL CLASSES RESTORED) -->
+        <!-- CATEGORY MENU -->
         <div class="category-menu">
             <button class="cat-btn" onclick="showCategory('class-1-5', this)">Class 1 to 5</button>
             <button class="cat-btn active" onclick="showCategory('class-6', this)">Class 6th</button>
@@ -107,99 +105,111 @@
             <button class="cat-btn comedy-btn" onclick="showCategory('comedy', this)"><i class="fa-solid fa-masks-theater"></i> Comedy</button>
         </div>
 
-        <!-- CLASS 1 TO 5 PROGRAM -->
+        <!-- CLASS 1 TO 5 PROGRAM (10 Students) -->
         <div id="class-1-5" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. छोटे बच्चे (Group)</span>
-                    <span class="student-act"><i class="fa-solid fa-users"></i> Group Dance</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'Class 1 to 5 (Group Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <script>
+                // For repetitive lists to save space, let's write out exactly 10 blocks
+            </script>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. रिया कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'रिया कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. आर्यन कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'आर्यन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. शिवानी कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'शिवानी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. किशन यादव</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'किशन यादव', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. खुशी कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'खुशी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. साहिल कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'साहिल कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. अंजलि कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Group Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'अंजलि कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. राहुल शर्मा</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'राहुल शर्मा', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. नीतू कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'नीतू कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. छोटे बच्चे (Group)</span><span class="student-act"><i class="fa-solid fa-users"></i> Group Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'Class 1 to 5 Group', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 6TH PROGRAM -->
+        <!-- CLASS 6TH PROGRAM (10 Students) -->
         <div id="class-6" class="program-section active">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. राजन कुमार</span>
-                    <span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance Performance</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'राजन कुमार (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">2. नंदनी कुमारी</span>
-                    <span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Patriotic Song</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'नंदनी कुमारी (Song)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">3. नीरज कुमार</span>
-                    <span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech / Drama</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'नीरज कुमार (Speech)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. राजन कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance Performance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'राजन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. नंदनी कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Patriotic Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'नंदनी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. नीरज कुमार</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech / Drama</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'नीरज कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. सुमित राज</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'सुमित राज', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. पूजा कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'पूजा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. आयुष कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'आयुष कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. प्रीति कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'प्रीति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. सोहन कुमार</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'सोहन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. कोमल कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'कोमल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. विकास कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'विकास कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 7TH PROGRAM -->
+        <!-- CLASS 7TH PROGRAM (10 Students) -->
         <div id="class-7" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. नाजरीन परवीन</span>
-                    <span class="student-act"><i class="fa-solid fa-person-walking"></i> Solo Dance</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'नाजरीन परवीन (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. नाजरीन परवीन</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Solo Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'नाजरीन परवीन', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. मनीष यादव</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'मनीष यादव', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. नेहा शर्मा</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'नेहा शर्मा', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. विशाल कुमार</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'विशाल कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. काजल कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. दीपक कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'दीपक कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. सीमा कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'सीमा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. सूरज कुमार</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'सूरज कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. रश्मि कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'रश्मि कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. रोशन कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'रोशन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 8TH PROGRAM -->
+        <!-- CLASS 8TH PROGRAM (10 Students - Ansh is here) -->
         <div id="class-8" class="program-section">
             <div class="student-row">
                 <div class="student-info">
-                    <span class="student-name">1. क्लास 8 स्टूडेंट</span>
-                    <span class="student-act"><i class="fa-solid fa-microphone"></i> Speech</span>
+                    <span class="student-name">1. अंश कुमार</span>
+                    <span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span>
                 </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'Class 8 Student', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'अंश कुमार (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-        
-        <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'अंश कुमार(Dance)', this)"><i class="fa-solid fa-play"></i> Play</button>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. कविता कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'कविता कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. संदीप कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'संदीप कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. रीना कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'रीना कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. सुजीत यादव</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'सुजीत यादव', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. आरती कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'आरती कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. नितिन कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'नितिन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. सपना कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'सपना कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. मोहित राज</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'मोहित राज', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. लक्ष्मी कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'लक्ष्मी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
-    </div>
-        
 
-        <!-- CLASS 9TH PROGRAM -->
+        <!-- CLASS 9TH PROGRAM (10 Students) -->
         <div id="class-9" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. क्लास 9 स्टूडेंट</span>
-                    <span class="student-act"><i class="fa-solid fa-flag"></i> Patriotic Act</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'Class 9 Student', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. गौरव कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'गौरव कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. अनुराधा कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'अनुराधा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. विवेक राज</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'विवेक राज', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. श्वेता कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'श्वेता कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. चंदन यादव</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'चंदन यादव', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. नीलम कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'नीलम कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. अभिषेक कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'अभिषेक कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. सोनी कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'सोनी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. प्रिंस कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'प्रिंस कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. ज्योति कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'ज्योति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 10TH PROGRAM -->
+        <!-- CLASS 10TH PROGRAM (10 Students) -->
         <div id="class-10" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. क्लास 10 स्टूडेंट</span>
-                    <span class="student-act"><i class="fa-solid fa-graduation-cap"></i> Farewell/Special Act</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'Class 10 Student', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. अमरजीत कुमार</span><span class="student-act"><i class="fa-solid fa-graduation-cap"></i> Farewell Act</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'अमरजीत कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. किरण कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'किरण कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. पंकज राज</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'पंकज राज', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. रेखा कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'रेखा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. नीतीश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'नीतीश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. चंदा कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'चंदा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. आकाश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'आकाश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. गीता कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'गीता कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. मनीष कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'मनीष कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. 10th Class (Group)</span><span class="student-act"><i class="fa-solid fa-users"></i> Group Act</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', '10th Class Group', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- COMEDY SECTION -->
+        <!-- COMEDY SECTION (10 Acts) -->
         <div id="comedy" class="program-section">
-            <div class="student-row">
-                <div class="student-info">
-                    <span class="student-name">1. ग्रुप कॉमेडी (Group A)</span>
-                    <span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM & Sound Effects</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay('song.mp3', 'Group Comedy BGM', this)"><i class="fa-solid fa-play"></i> Play</button>
-            </div>
+            <div class="student-row"><div class="student-info"><span class="student-name">1. ग्रुप कॉमेडी (Group A)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 1</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'Group A BGM', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">2. ग्रुप कॉमेडी (Group B)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 2</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'Group B BGM', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">3. ग्रुप कॉमेडी (Group C)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 3</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'Group C BGM', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. सोलो कॉमेडी (Act 1)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> Punchline Sound</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'Solo Comedy 1', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">5. सोलो कॉमेडी (Act 2)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> Funny Track</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'Solo Comedy 2', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">6. ड्रामा (Act 1)</span><span class="student-act"><i class="fa-solid fa-theater-masks"></i> Background Music</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'Drama 1', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">7. ड्रामा (Act 2)</span><span class="student-act"><i class="fa-solid fa-theater-masks"></i> Sad Music</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'Drama 2', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">8. मिमिक्री (Mimicry)</span><span class="student-act"><i class="fa-solid fa-microphone-alt"></i> Entry Song</span></div><button class="play-btn" onclick="togglePlay('songs/song8.mp3', 'Mimicry Act', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">9. फनी डांस (Funny Dance)</span><span class="student-act"><i class="fa-solid fa-music"></i> Mix Song</span></div><button class="play-btn" onclick="togglePlay('songs/song9.mp3', 'Funny Dance', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">10. स्पेशल एक्ट (Special Act)</span><span class="student-act"><i class="fa-solid fa-star"></i> Surprise Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'Special Act', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
     </div>
@@ -226,7 +236,6 @@
         var progressContainer = document.getElementById("progressContainer");
         var progressBar = document.getElementById("progressBar");
         
-        // यह वेरिएबल अब याद रखेगा कि कौन सा *बटन* दबाया गया है
         let activeBtn = null; 
 
         // Tab Switching Logic
@@ -239,28 +248,25 @@
 
         // 🎵 MAIN LOGIC: Play / Pause Toggle
         function togglePlay(songUrl, studentName, clickedBtn) {
-            
-            // स्थिति 1: अगर वही बटन दोबारा दबाया गया है (Pause / Resume)
             if (activeBtn === clickedBtn) {
                 if (player.paused) {
-                    player.play(); // वापस शुरू करो
+                    player.play(); 
                     setButtonToPause(clickedBtn);
                     updateLiveStatus(studentName, true);
                 } else {
-                    player.pause(); // वहीं पर रोक दो
+                    player.pause(); 
                     setButtonToPlay(clickedBtn);
                     updateLiveStatus(studentName, false);
                 }
-                return; // आगे का कोड मत रन करो
+                return; 
             }
 
-            // स्थिति 2: अगर कोई नया/दूसरा बटन दबाया गया है
-            resetAllButtons(); // पहले सब बटन्स को नार्मल करो
+            resetAllButtons(); 
             
-            activeBtn = clickedBtn; // इस नए बटन को एक्टिव बनाओ
+            activeBtn = clickedBtn; 
             
             player.src = songUrl;
-            player.currentTime = 0; // गाना बिल्कुल 00:00 से शुरू होगा
+            player.currentTime = 0; 
             player.play();
             
             setButtonToPause(clickedBtn);
@@ -268,7 +274,6 @@
             progressContainer.style.display = "block";
         }
 
-        // 🟢 Live Status Update Function
         function updateLiveStatus(studentName, isPlaying) {
             if (isPlaying) {
                 statusCard.classList.add("playing");
@@ -280,7 +285,6 @@
             }
         }
 
-        // 🔘 बटन का डिज़ाइन बदलने के फंक्शन्स
         function setButtonToPause(btn) {
             btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
             btn.classList.add("active-pause");
@@ -291,36 +295,30 @@
             btn.classList.remove("active-pause");
         }
 
-        // 🔄 सब बटन्स को वापस 'Play' में बदलने का फंक्शन
         function resetAllButtons() {
             let allBtns = document.querySelectorAll('.play-btn');
             allBtns.forEach(btn => setButtonToPlay(btn));
-            activeBtn = null; // एक्टिव बटन को भूल जाओ
+            activeBtn = null; 
         }
 
-        // 🛑 Stop Song Function (सब कुछ रोकने के लिए)
         function stopSong() {
             player.pause();
-            player.currentTime = 0; // गाने को शुरुआत में कर दो
+            player.currentTime = 0; 
             
             resetAllButtons();
             
-            // UI Hide
             progressContainer.style.display = "none";
             progressBar.style.width = "0%";
             statusCard.classList.remove("playing");
             statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
         }
 
-        // ✅ जब गाना अपने आप खत्म हो जाए
         player.onended = function() {
             resetAllButtons();
             progressContainer.style.display = "none";
             statusCard.classList.remove("playing");
             statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
         }
-
-        // 🕒 TIMER & PROGRESS BAR LOGIC 🕒
         
         function formatTime(seconds) {
             if (isNaN(seconds)) return "00:00";
