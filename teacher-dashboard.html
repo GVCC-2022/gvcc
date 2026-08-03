@@ -78,44 +78,52 @@
     <div class="container">
         <h1 class="welcome-text">Welcome, <span id="welcomeName">Sir</span></h1>
 
-        <div class="cards-grid">
-            <div class="card" id="openDiaryModal" style="border-color: #a855f7;">
-                <i class="fa-solid fa-clipboard-list" style="color: #a855f7;"></i>
-                <h3 style="color: #a855f7;">Daily Diary</h3>
-                <p>Update class topic, homework & photos</p>
+                <div class="cards-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+            
+            <div class="card" id="openDiaryModal" style="border-color: #a855f7; padding: 20px;">
+                <i class="fa-solid fa-clipboard-list" style="color: #a855f7; font-size: 30px;"></i>
+                <h3 style="color: #a855f7; font-size: 15px;">Daily Diary</h3>
+                <p style="font-size: 11px;">Update class topic & photos</p>
             </div>
 
-            <div class="card" id="openViewDiaryModal" style="border-color: #10b981;">
-                <i class="fa-solid fa-list-check" style="color: #10b981;"></i>
-                <h3 style="color: #10b981;">Manage Updates</h3>
-                <p>View, copy & delete homework history</p>
+            <div class="card" id="openViewDiaryModal" style="border-color: #10b981; padding: 20px;">
+                <i class="fa-solid fa-list-check" style="color: #10b981; font-size: 30px;"></i>
+                <h3 style="color: #10b981; font-size: 15px;">Manage Updates</h3>
+                <p style="font-size: 11px;">View, copy & delete history</p>
             </div>
 
-            <div class="card" id="openNoticeModal" style="border-color: #f59e0b;">
-                <i class="fa-solid fa-bullhorn" style="color: #f59e0b;"></i>
-                <h3 style="color: #f59e0b;">Send Notice</h3>
-                <p>Broadcast messages to students instantly</p>
+            <div class="card" id="openNoticeModal" style="border-color: #f59e0b; padding: 20px;">
+                <i class="fa-solid fa-bullhorn" style="color: #f59e0b; font-size: 30px;"></i>
+                <h3 style="color: #f59e0b; font-size: 15px;">Send Notice</h3>
+                <p style="font-size: 11px;">Broadcast msgs instantly</p>
             </div>
 
-            <div class="card" id="openTestModal" style="border-color: #ec4899;">
-                <i class="fa-solid fa-microchip" style="color: #ec4899;"></i>
-                <h3 style="color: #ec4899;">Publish AI Test</h3>
-                <p>Create test from AI JSON code</p>
+            <div class="card" id="openTestModal" style="border-color: #ec4899; padding: 20px;">
+                <i class="fa-solid fa-microchip" style="color: #ec4899; font-size: 30px;"></i>
+                <h3 style="color: #ec4899; font-size: 15px;">Publish AI Test</h3>
+                <p style="font-size: 11px;">Create test from AI JSON</p>
             </div>
 
-            <div class="card" onclick="navigateWithAnimation('view.html')" style="border-color: #3b82f6;">
-                <i class="fa-solid fa-video" style="color: #3b82f6;"></i>
-                <h3 style="color: #3b82f6;">View Proctoring</h3>
-                <p>Check CBT results and tracking</p>
+            <div class="card" onclick="navigateWithAnimation('view.html')" style="border-color: #3b82f6; padding: 20px;">
+                <i class="fa-solid fa-video" style="color: #3b82f6; font-size: 30px;"></i>
+                <h3 style="color: #3b82f6; font-size: 15px;">View Proctoring</h3>
+                <p style="font-size: 11px;">Check CBT results</p>
             </div>
-            <a href="15_august_program.html" style="background-color: #ff9933; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 18px;">🇮🇳 15 August Program</a>
+            
+            <!-- 🇮🇳 15 August Program Card (Converted from Link to Card) -->
+            <div class="card" onclick="navigateWithAnimation('15_august_program.html')" style="border-color: #ff9933; padding: 20px; background: linear-gradient(145deg, #1e293b, rgba(255, 153, 51, 0.15));">
+                <i class="fa-solid fa-flag" style="color: #ff9933; font-size: 30px;"></i>
+                <h3 style="color: #ff9933; font-size: 15px;">15 August</h3>
+                <p style="font-size: 11px;">Manage live program</p>
+            </div>
             
         </div>
 
-        <!-- 📊 VIP Master Result Button for Teachers (ADDED HERE) -->
+        <!-- 📊 VIP Master Result Button for Teachers -->
         <button style="background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border: 1px solid #818cf8; padding: 15px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 25px; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;" onclick="window.location.href='teacher_vip_result.html'">
             <i class="fa-solid fa-database"></i> View All VIP Results
         </button>
+
 
     </div>
 
