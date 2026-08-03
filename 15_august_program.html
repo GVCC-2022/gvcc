@@ -29,6 +29,9 @@
         .equalizer { display: none; color: #10b981; margin-left: 10px; }
         .playing .equalizer { display: inline-block; }
         
+        .reset-icon { float: right; cursor: pointer; color: #64748b; font-size: 14px; transition: 0.2s; }
+        .reset-icon:hover { color: #ef4444; }
+
         /* Progress Bar Styles */
         #progressContainer { display: none; margin-top: 15px; text-align: left; }
         .time-labels { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; font-weight: bold; margin-bottom: 5px; }
@@ -62,7 +65,7 @@
         
         .play-btn.active-pause { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); border: 1px solid #fcd34d; }
         
-        /* ✅ SONG COMPLETED STYLES (NEW) */
+        /* ✅ SONG COMPLETED STYLES (SYNCED GLOBALLY) */
         .play-btn.played-btn { background: linear-gradient(135deg, #475569, #334155); color: #94a3b8; box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
         .student-row.completed { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); }
         .student-row.completed .student-name { color: #10b981; }
@@ -79,14 +82,15 @@
     <!-- NAVBAR -->
     <div class="navbar">
         <div class="nav-brand"><i class="fa-solid fa-flag"></i> 15 August Panel</div>
-        <a href="teacher-dashboard.html" class="back-btn" onclick="navigateWithAnimation(event, this.href)"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a href="teacher_dashboard.html" class="back-btn" onclick="navigateWithAnimation(event, this.href)"><i class="fa-solid fa-arrow-left"></i> Back</a>
     </div>
 
     <div class="container">
         
         <!-- LIVE STATUS CARD -->
         <div class="status-card" id="statusCard">
-            <h3><i class="fa-solid fa-tower-broadcast"></i> Live Status</h3>
+            <!-- Reset Button added here -->
+            <h3><i class="fa-solid fa-tower-broadcast"></i> Live Status <i class="fa-solid fa-rotate-right reset-icon" onclick="resetDatabase()" title="Reset All Played Data"></i></h3>
             <p id="statusText"><span style="color:#94a3b8;">No Music Playing</span> <i class="fa-solid fa-chart-bar fa-fade equalizer"></i></p>
             <div id="progressContainer">
                 <div class="time-labels">
@@ -110,7 +114,7 @@
             <button class="cat-btn comedy-btn" onclick="showCategory('comedy', this)"><i class="fa-solid fa-masks-theater"></i> Comedy</button>
         </div>
 
-        <!-- CLASS 1 TO 5 PROGRAM (10 Students) -->
+        <!-- HTML Lists are exactly the same -->
         <div id="class-1-5" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. रिया कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'रिया कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. आर्यन कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'आर्यन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -124,7 +128,6 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. छोटे बच्चे (Group)</span><span class="student-act"><i class="fa-solid fa-users"></i> Group Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'Class 1 to 5 Group', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 6TH PROGRAM (10 Students) -->
         <div id="class-6" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. राजन कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance Performance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'राजन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. नंदनी कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Patriotic Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'नंदनी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -138,7 +141,6 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. विकास कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'विकास कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 7TH PROGRAM (10 Students) -->
         <div id="class-7" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. नाजरीन परवीन</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Solo Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'नाजरीन परवीन', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. मनीष यादव</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'मनीष यादव', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -152,7 +154,6 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. रोशन कुमार</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'रोशन कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 8TH PROGRAM (10 Students) -->
         <div id="class-8" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. अंश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'अंश कुमार (Dance)', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. कविता कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'कविता कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -166,7 +167,6 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. लक्ष्मी कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'लक्ष्मी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 9TH PROGRAM (10 Students) -->
         <div id="class-9" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. गौरव कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'गौरव कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. अनुराधा कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'अनुराधा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -180,12 +180,11 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. ज्योति कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', 'ज्योति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- CLASS 10TH PROGRAM (10 Students) -->
         <div id="class-10" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. अमरजीत कुमार</span><span class="student-act"><i class="fa-solid fa-graduation-cap"></i> Farewell Act</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'अमरजीत कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. किरण कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'किरण कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">3. पंकज राज</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song3.mp3', 'पंकज राज', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">4. रेखा कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('song.mp3', 'रेखा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="student-row"><div class="student-info"><span class="student-name">4. रेखा कुमारी</span><span class="student-act"><i class="fa-solid fa-bullhorn"></i> Speech</span></div><button class="play-btn" onclick="togglePlay('songs/song4.mp3', 'रेखा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">5. नीतीश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song5.mp3', 'नीतीश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">6. चंदा कुमारी</span><span class="student-act"><i class="fa-solid fa-microphone-lines"></i> Song</span></div><button class="play-btn" onclick="togglePlay('songs/song6.mp3', 'चंदा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">7. आकाश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song7.mp3', 'आकाश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -194,7 +193,6 @@
             <div class="student-row"><div class="student-info"><span class="student-name">10. 10th Class (Group)</span><span class="student-act"><i class="fa-solid fa-users"></i> Group Act</span></div><button class="play-btn" onclick="togglePlay('songs/song10.mp3', '10th Class Group', this)"><i class="fa-solid fa-play"></i> Play</button></div>
         </div>
 
-        <!-- COMEDY SECTION (10 Acts) -->
         <div id="comedy" class="program-section">
             <div class="student-row"><div class="student-info"><span class="student-name">1. ग्रुप कॉमेडी (Group A)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 1</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'Group A BGM', this)"><i class="fa-solid fa-play"></i> Play</button></div>
             <div class="student-row"><div class="student-info"><span class="student-name">2. ग्रुप कॉमेडी (Group B)</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 2</span></div><button class="play-btn" onclick="togglePlay('songs/song2.mp3', 'Group B BGM', this)"><i class="fa-solid fa-play"></i> Play</button></div>
@@ -218,81 +216,139 @@
     <!-- HIDDEN AUDIO PLAYER -->
     <audio id="main-player"></audio>
 
-    <script>
-        // 🔒 SECURITY CHECK (बिना लॉगिन के यह पेज नहीं खुलेगा)
+    <!-- 🔥 FIREBASE SCRIPT ADDED FOR SYNC 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // 🔒 SECURITY CHECK
         if (!sessionStorage.getItem("loggedTeacherId")) {
             window.location.replace("teacher-login.html");
         }
 
-        // Page Exit Animation
-        function navigateWithAnimation(event, url) { 
-            event.preventDefault();
-            document.body.classList.add('page-exit'); 
-            setTimeout(() => { window.location.href = url; }, 300); 
-        }
+        // FIREBASE SETUP
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+            authDomain: "gvcc-database.firebaseapp.com",
+            projectId: "gvcc-database",
+            storageBucket: "gvcc-database.firebasestorage.app",
+            messagingSenderId: "1063216875940",
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const programStatusDoc = doc(db, "live_program", "status_2026");
 
         var player = document.getElementById("main-player");
         var statusCard = document.getElementById("statusCard");
         var statusText = document.getElementById("statusText");
         var progressContainer = document.getElementById("progressContainer");
         var progressBar = document.getElementById("progressBar");
-        
         let activeBtn = null; 
 
-        // 🟢 REFRESH TAB MEMORY (पेज रिफ्रेश होने पर उसी क्लास पर रहेगा)
+        // Assign UNIQUE IDs to all 70 buttons automatically
+        let allBtns = document.querySelectorAll('.play-btn');
+        allBtns.forEach((btn, index) => {
+            btn.setAttribute('data-id', 'song_' + index);
+        });
+
+        // 🟢 REAL-TIME FIREBASE SYNC (दूसरे डिवाइस में अपडेट करने के लिए)
+        onSnapshot(programStatusDoc, (docSnap) => {
+            if (docSnap.exists()) {
+                const dbData = docSnap.data();
+                allBtns.forEach(btn => {
+                    let songId = btn.getAttribute('data-id');
+                    if (dbData[songId] === true) {
+                        btn.classList.add('played-btn');
+                        if (!btn.classList.contains('active-pause')) {
+                            btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
+                        }
+                        let row = btn.closest('.student-row');
+                        if (row) row.classList.add('completed');
+                    } else {
+                        // If false or missing (Reset condition)
+                        btn.classList.remove('played-btn');
+                        if (!btn.classList.contains('active-pause')) {
+                            btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
+                        }
+                        let row = btn.closest('.student-row');
+                        if (row) row.classList.remove('completed');
+                    }
+                });
+            }
+        });
+
+        // Window bindings for UI clicks
+        window.navigateWithAnimation = function(event, url) { 
+            event.preventDefault(); document.body.classList.add('page-exit'); 
+            setTimeout(() => { window.location.href = url; }, 300); 
+        };
+
+        // 🔄 TAB MEMORY FIX
         window.onload = function() {
             let savedTab = sessionStorage.getItem("activeProgramTab");
             if (savedTab) {
-                // जो टैब सेव था, उसका बटन ढूंढो और क्लिक करवाओ
                 let btn = document.querySelector(`button[onclick*="${savedTab}"]`);
-                if (btn) {
-                    showCategory(savedTab, btn);
-                }
+                if (btn) window.showCategory(savedTab, btn);
             } else {
-                // अगर कोई सेव नहीं है, तो डिफ़ॉल्ट क्लास 6th खोलो
                 let defaultBtn = document.querySelector(`button[onclick*="class-6"]`);
-                if (defaultBtn) showCategory('class-6', defaultBtn);
+                if (defaultBtn) window.showCategory('class-6', defaultBtn);
             }
         };
 
-        // Tab Switching Logic
-        function showCategory(categoryId, btnElement) {
+        window.showCategory = function(categoryId, btnElement) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.program-section').forEach(sec => sec.classList.remove('active'));
             btnElement.classList.add('active');
             document.getElementById(categoryId).classList.add('active');
-            
-            // जो क्लास खुली है, उसे मेमोरी में सेव कर लो
-            sessionStorage.setItem("activeProgramTab", categoryId);
-        }
+            sessionStorage.setItem("activeProgramTab", categoryId); // Save state
+        };
 
-        // 🎵 MAIN LOGIC: Play / Pause Toggle
-        function togglePlay(songUrl, studentName, clickedBtn) {
+        window.togglePlay = function(songUrl, studentName, clickedBtn) {
             if (activeBtn === clickedBtn) {
                 if (player.paused) {
-                    player.play(); 
-                    setButtonToPause(clickedBtn);
-                    updateLiveStatus(studentName, true);
+                    player.play(); setButtonToPause(clickedBtn); updateLiveStatus(studentName, true);
                 } else {
-                    player.pause(); 
-                    setButtonToPlay(clickedBtn);
-                    updateLiveStatus(studentName, false);
+                    player.pause(); setButtonToPlay(clickedBtn); updateLiveStatus(studentName, false);
                 }
                 return; 
             }
-
             resetAllButtons(); 
-            
             activeBtn = clickedBtn; 
-            
-            player.src = songUrl;
-            player.currentTime = 0; 
-            player.play();
-            
-            setButtonToPause(clickedBtn);
-            updateLiveStatus(studentName, true);
-            progressContainer.style.display = "block";
-        }
+            player.src = songUrl; player.currentTime = 0; player.play();
+            setButtonToPause(clickedBtn); updateLiveStatus(studentName, true); progressContainer.style.display = "block";
+        };
+
+        window.stopSong = function() {
+            player.pause(); player.currentTime = 0; resetAllButtons();
+            progressContainer.style.display = "none"; progressBar.style.width = "0%";
+            statusCard.classList.remove("playing");
+            statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
+        };
+
+        // ✅ AUTO UPDATE FIREBASE WHEN SONG 100% COMPLETED
+        player.onended = async function() {
+            if (activeBtn) {
+                let songId = activeBtn.getAttribute('data-id');
+                try {
+                    // Save to Firebase (this will sync to all devices)
+                    await setDoc(programStatusDoc, { [songId]: true }, { merge: true });
+                } catch(e) { console.error("Firebase Sync Error:", e); }
+            }
+            resetAllButtons(); progressContainer.style.display = "none"; statusCard.classList.remove("playing");
+            statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
+        };
+
+        // 🔄 RESET ENTIRE DATABASE (Testing Feature)
+        window.resetDatabase = async function() {
+            if(confirm("⚠️ चेतावनी! क्या आप सच में 'Played' हुए सभी गानों का डेटा मिटाना चाहते हैं? (प्रोग्राम के दिन इसे मत दबाना)")) {
+                try {
+                    // Empty object resets the document
+                    await setDoc(programStatusDoc, {});
+                    alert("✅ डेटाबेस रिसेट हो गया। अब सभी गाने वापस Play मोड में हैं।");
+                } catch(e) { alert("Error resetting: " + e.message); }
+            }
+        };
 
         function updateLiveStatus(studentName, isPlaying) {
             if (isPlaying) {
@@ -308,11 +364,10 @@
         function setButtonToPause(btn) {
             btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
             btn.classList.add("active-pause");
-            btn.classList.remove("played-btn"); // अगर पहले बज चुका है, तो वापस प्ले करते वक़्त रंग सही हो जाए
+            btn.classList.remove("played-btn"); 
         }
 
         function setButtonToPlay(btn) {
-            // अगर बटन 'Played' वाला है, तो वापस प्ले ना दिखे, 'Played' ही दिखे
             if (btn.classList.contains('played-btn')) {
                 btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
             } else {
@@ -322,62 +377,20 @@
         }
 
         function resetAllButtons() {
-            let allBtns = document.querySelectorAll('.play-btn');
-            allBtns.forEach(btn => setButtonToPlay(btn));
-            activeBtn = null; 
+            allBtns.forEach(btn => setButtonToPlay(btn)); activeBtn = null; 
         }
 
-        function stopSong() {
-            player.pause();
-            player.currentTime = 0; 
-            
-            resetAllButtons();
-            
-            progressContainer.style.display = "none";
-            progressBar.style.width = "0%";
-            statusCard.classList.remove("playing");
-            statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
-        }
-
-        // ✅ AUTO TICK MARK (जब गाना पूरा 100% बजेगा)
-        player.onended = function() {
-            if (activeBtn) {
-                // बटन का रंग बदलकर 'Played' कर दो
-                activeBtn.classList.add('played-btn');
-                
-                // उस पूरी रो (Row) का बैकग्राउंड हल्का हरा कर दो
-                let row = activeBtn.closest('.student-row');
-                if (row) {
-                    row.classList.add('completed');
-                }
-            }
-            
-            resetAllButtons();
-            progressContainer.style.display = "none";
-            statusCard.classList.remove("playing");
-            statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
-        }
-        
         function formatTime(seconds) {
             if (isNaN(seconds)) return "00:00";
-            let min = Math.floor(seconds / 60);
-            let sec = Math.floor(seconds % 60);
+            let min = Math.floor(seconds / 60); let sec = Math.floor(seconds % 60);
             return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
         }
 
-        player.addEventListener("loadedmetadata", function() {
-            document.getElementById("durationDisplay").innerText = formatTime(player.duration);
-        });
-
+        player.addEventListener("loadedmetadata", function() { document.getElementById("durationDisplay").innerText = formatTime(player.duration); });
         player.addEventListener("timeupdate", function() {
             document.getElementById("currentTimeDisplay").innerText = formatTime(player.currentTime);
-            
-            if (player.duration) {
-                let progressPercent = (player.currentTime / player.duration) * 100;
-                progressBar.style.width = progressPercent + "%";
-            }
+            if (player.duration) { progressBar.style.width = ((player.currentTime / player.duration) * 100) + "%"; }
         });
-
     </script>
 </body>
 </html>
