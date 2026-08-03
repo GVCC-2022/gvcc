@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15 August Program - Gyan Varsha Coaching Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            background-color: #ff9933; /* Saffron color for 15 Aug */
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        /* Category Buttons (Classes) */
+        .category-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .cat-btn {
+            background-color: #138808; /* Green color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cat-btn:hover { background-color: #0d6b05; }
+        .cat-btn.active { background-color: #0b4a05; border: 2px solid #fff; }
+
+        /* Comedy Button Special Color */
+        .comedy-btn { background-color: #e91e63; }
+        .comedy-btn:hover { background-color: #c2185b; }
+
+        /* Program Lists */
+        .program-section {
+            display: none; /* Hidden by default */
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+        }
+        .program-section.active {
+            display: block; /* Shows only active class */
+        }
+        .student-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+        }
+        .student-row:last-child { border-bottom: none; }
+        
+        /* Play & Stop Buttons */
+        .controls { display: flex; gap: 10px; }
+        .play-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .play-btn:hover { background-color: #0b7dda; }
+        
+        .stop-all-container { text-align: center; margin-top: 30px; }
+        .stop-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Currently Playing Status */
+        #status {
+            text-align: center;
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Gyan Varsha Coaching Center</h1>
+        <h2>15 August Program Dashboard</h2>
+    </div>
+
+    <!-- Status showing which song is playing -->
+    <div id="status"></div>
+
+    <!-- Category Menu -->
+    <div class="category-menu">
+        <button class="cat-btn" onclick="showCategory('class-1-5')">Class 1 to 5</button>
+        <button class="cat-btn active" onclick="showCategory('class-6')">Class 6th</button>
+        <button class="cat-btn" onclick="showCategory('class-7')">Class 7th</button>
+        <button class="cat-btn" onclick="showCategory('class-8')">Class 8th</button>
+        <button class="cat-btn" onclick="showCategory('class-9')">Class 9th</button>
+        <button class="cat-btn" onclick="showCategory('class-10')">Class 10th</button>
+        <button class="cat-btn comedy-btn" onclick="showCategory('comedy')">Comedy</button>
+    </div>
+
+    <!-- Class 6th List -->
+    <div id="class-6" class="program-section active">
+        <h3>Class 6th Performances</h3>
+        
+        <div class="student-row">
+            <span>1. राजन कुमार (Dance)</span>
+            <div class="controls">
+                <button class="play-btn" onclick="playSong('songs/rajan_song.mp3', 'राजन कुमार - Dance')">▶ Play</button>
+            </div>
+        </div>
+        
+        <div class="student-row">
+            <span>2. नंदनी कुमारी (Patriotic Song)</span>
+            <div class="controls">
+                <button class="play-btn" onclick="playSong('songs/nandani_song.mp3', 'नंदनी कुमारी - Song')">▶ Play</button>
+            </div>
+        </div>
+        
+        <div class="student-row">
+            <span>3. नीरज कुमार (Speech/Drama)</span>
+            <div class="controls">
+                <button class="play-btn" onclick="playSong('songs/neeraj_song.mp3', 'नीरज कुमार - Speech')">▶ Play</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class 7th List (Example) -->
+    <div id="class-7" class="program-section">
+        <h3>Class 7th Performances</h3>
+        <div class="student-row">
+            <span>1. नाजरीन परवीन (Solo Dance)</span>
+            <div class="controls">
+                <button class="play-btn" onclick="playSong('songs/najreen_song.mp3', 'नाजरीन परवीन - Dance')">▶ Play</button>
+            </div>
+        </div>
+        <!-- आप इसी तरह और बच्चों के नाम जोड़ सकते हैं -->
+    </div>
+
+    <!-- Comedy Section -->
+    <div id="comedy" class="program-section">
+        <h3>Comedy & Special Acts</h3>
+        <div class="student-row">
+            <span>1. ग्रुप कॉमेडी (Group A)</span>
+            <div class="controls">
+                <button class="play-btn" onclick="playSong('songs/comedy_bgm.mp3', 'ग्रुप कॉमेडी - BGM')">▶ Play</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Big Stop Button at the bottom -->
+    <div class="stop-all-container">
+        <button class="stop-btn" onclick="stopSong()">⏹ STOP ALL MUSIC</button>
+    </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="main-player"></audio>
+
+    <script>
+        var player = document.getElementById("main-player");
+        var statusText = document.getElementById("status");
+
+        // 1. Function to switch between classes
+        function showCategory(categoryId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.program-section');
+            sections.forEach(function(sec) {
+                sec.classList.remove('active');
+            });
+
+            // Show the selected section
+            document.getElementById(categoryId).classList.add('active');
+        }
+
+        // 2. Function to play song and show name
+        function playSong(songUrl, studentName) {
+            player.src = songUrl;
+            player.play();
+            statusText.innerHTML = "🎵 अभी बज रहा है: " + studentName;
+            statusText.style.color = "#138808"; // Green color when playing
+        }
+
+        // 3. Function to stop song instantly
+        function stopSong() {
+            player.pause();
+            player.currentTime = 0; // Rewind to start
+            statusText.innerHTML = "⏸ म्यूज़िक रोक दिया गया है";
+            statusText.style.color = "#d32f2f"; // Red color when stopped
+        }
+
+        // Optional: When song ends automatically, clear the status
+        player.onended = function() {
+            statusText.innerHTML = "✅ परफॉरमेंस पूरा हुआ";
+            statusText.style.color = "#ff9933";
+        };
+    </script>
+
+</body>
+</html>
