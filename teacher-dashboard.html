@@ -25,13 +25,25 @@
         .container { max-width: 1000px; margin: 30px auto; padding: 20px; text-align: center; padding-bottom: 50px; }
         .welcome-text { font-size: 28px; margin-bottom: 30px; color: #f8fafc; } 
         
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        /* 🔥 UPDATED: 2-COLUMN GRID STYLES 🔥 */
+        .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 25px; }
         
-        .card { background: #1e293b; padding: 30px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card { display: flex; flex-direction: column; justify-content: center; align-items: center; background: #1e293b; padding: 25px 15px; min-height: 135px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
         .card:active { transform: scale(0.95) !important; border-color: #38bdf8; box-shadow: 0 5px 10px rgba(56, 189, 248, 0.2); }
-        .card i { font-size: 40px; margin-bottom: 15px; }
-        .card h3 { margin: 0 0 10px 0; font-size: 18px; }
-        .card p { color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.4; }
+        .card i { font-size: 32px; margin-bottom: 12px; }
+        .card h3 { margin: 0 0 5px 0; font-size: 16px; }
+        .card p { color: #94a3b8; font-size: 11px; margin: 0; line-height: 1.3; }
+
+        /* 🇮🇳 Asli India Flag Waving Animation */
+        @keyframes wave-indian-flag {
+            0% { transform: rotate(0deg) skewX(0deg); }
+            25% { transform: rotate(-10deg) skewX(-5deg) scale(1.1); }
+            50% { transform: rotate(5deg) skewX(5deg) scale(1.1); }
+            75% { transform: rotate(-5deg) skewX(-5deg) scale(1.1); }
+            100% { transform: rotate(0deg) skewX(0deg); }
+        }
+        .waving-flag { font-size: 38px; display: inline-block; animation: wave-indian-flag 2.5s infinite ease-in-out; transform-origin: bottom center; margin-bottom: 12px; }
+        /* 🔥 END UPDATED CSS 🔥 */
         
         @keyframes fadeInBlur { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(5px); } }
         @keyframes premiumBounce { 0% { opacity: 0; transform: scale(0.85) translateY(30px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
@@ -78,52 +90,50 @@
     <div class="container">
         <h1 class="welcome-text">Welcome, <span id="welcomeName">Sir</span></h1>
 
-                <div class="cards-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
-            
-            <div class="card" id="openDiaryModal" style="border-color: #a855f7; padding: 20px;">
-                <i class="fa-solid fa-clipboard-list" style="color: #a855f7; font-size: 30px;"></i>
-                <h3 style="color: #a855f7; font-size: 15px;">Daily Diary</h3>
-                <p style="font-size: 11px;">Update class topic & photos</p>
+        <!-- 🔥 UPDATED: HTML GRID STRUCTURE 🔥 -->
+        <div class="cards-grid">
+            <div class="card" id="openDiaryModal" style="border-color: #a855f7;">
+                <i class="fa-solid fa-clipboard-list" style="color: #a855f7;"></i>
+                <h3 style="color: #a855f7;">Daily Diary</h3>
+                <p>Update class topic & photos</p>
             </div>
 
-            <div class="card" id="openViewDiaryModal" style="border-color: #10b981; padding: 20px;">
-                <i class="fa-solid fa-list-check" style="color: #10b981; font-size: 30px;"></i>
-                <h3 style="color: #10b981; font-size: 15px;">Manage Updates</h3>
-                <p style="font-size: 11px;">View, copy & delete history</p>
+            <div class="card" id="openViewDiaryModal" style="border-color: #10b981;">
+                <i class="fa-solid fa-list-check" style="color: #10b981;"></i>
+                <h3 style="color: #10b981;">Manage Updates</h3>
+                <p>View, copy & delete history</p>
             </div>
 
-            <div class="card" id="openNoticeModal" style="border-color: #f59e0b; padding: 20px;">
-                <i class="fa-solid fa-bullhorn" style="color: #f59e0b; font-size: 30px;"></i>
-                <h3 style="color: #f59e0b; font-size: 15px;">Send Notice</h3>
-                <p style="font-size: 11px;">Broadcast msgs instantly</p>
+            <div class="card" id="openNoticeModal" style="border-color: #f59e0b;">
+                <i class="fa-solid fa-bullhorn" style="color: #f59e0b;"></i>
+                <h3 style="color: #f59e0b;">Send Notice</h3>
+                <p>Broadcast msgs instantly</p>
             </div>
 
-            <div class="card" id="openTestModal" style="border-color: #ec4899; padding: 20px;">
-                <i class="fa-solid fa-microchip" style="color: #ec4899; font-size: 30px;"></i>
-                <h3 style="color: #ec4899; font-size: 15px;">Publish AI Test</h3>
-                <p style="font-size: 11px;">Create test from AI JSON</p>
+            <div class="card" id="openTestModal" style="border-color: #ec4899;">
+                <i class="fa-solid fa-microchip" style="color: #ec4899;"></i>
+                <h3 style="color: #ec4899;">Publish AI Test</h3>
+                <p>Create test from AI JSON</p>
             </div>
 
-            <div class="card" onclick="navigateWithAnimation('view.html')" style="border-color: #3b82f6; padding: 20px;">
-                <i class="fa-solid fa-video" style="color: #3b82f6; font-size: 30px;"></i>
-                <h3 style="color: #3b82f6; font-size: 15px;">View Proctoring</h3>
-                <p style="font-size: 11px;">Check CBT results</p>
-            </div>
-            
-            <!-- 🇮🇳 15 August Program Card (Converted from Link to Card) -->
-            <div class="card" onclick="navigateWithAnimation('15_august_program.html')" style="border-color: #ff9933; padding: 20px; background: linear-gradient(145deg, #1e293b, rgba(255, 153, 51, 0.15));">
-                <i class="fa-solid fa-flag" style="color: #ff9933; font-size: 30px;"></i>
-                <h3 style="color: #ff9933; font-size: 15px;">15 August</h3>
-                <p style="font-size: 11px;">Manage live program</p>
+            <div class="card" onclick="navigateWithAnimation('view.html')" style="border-color: #3b82f6;">
+                <i class="fa-solid fa-video" style="color: #3b82f6;"></i>
+                <h3 style="color: #3b82f6;">View Proctoring</h3>
+                <p>Check CBT results</p>
             </div>
             
+            <!-- 🇮🇳 15 August Premium Card with Real Waving Flag -->
+            <div class="card" onclick="navigateWithAnimation('15_august_program.html')" style="border-color: #ff9933; background: linear-gradient(145deg, #1e293b, rgba(255, 153, 51, 0.12));">
+                <span class="waving-flag">🇮🇳</span>
+                <h3 style="color: #ff9933;">15 August</h3>
+                <p>Manage live program</p>
+            </div>
         </div>
 
-        <!-- 📊 VIP Master Result Button for Teachers -->
-        <button style="background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border: 1px solid #818cf8; padding: 15px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 25px; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;" onclick="window.location.href='teacher_vip_result.html'">
+        <!-- 📊 VIP Master Result Button for Teachers (Taller padding) -->
+        <button style="background: linear-gradient(135deg, #4f46e5, #3730a3); color: white; border: 1px solid #818cf8; padding: 18px 20px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 25px; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;" onclick="window.location.href='teacher_vip_result.html'">
             <i class="fa-solid fa-database"></i> View All VIP Results
         </button>
-
 
     </div>
 
@@ -320,7 +330,6 @@
 
     <!-- FIREBASE SYSTEM -->
     <script type="module">
-        // 🌟 FIX: Yahan se Firebase Storage hata diya gaya hai!
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -329,7 +338,6 @@
         const app = initializeApp(firebaseConfig); 
         const db = getFirestore(app);
 
-        // 🌟 100% FREE IMGBB API KEY (Yahan Paste Karein 👇) 🌟
         const IMGBB_API_KEY = "4773a759a0ce1c52c2e433ddb97f5f0d";
 
         const teacherId = sessionStorage.getItem("loggedTeacherId");
@@ -411,7 +419,6 @@
             });
         }
 
-        // 🌟 FREE IMGBB API UPLOAD LOGIC 🌟
         document.getElementById("sendDiaryBtn").addEventListener("click", async () => {
             const targetClass = document.getElementById("diaryClass").value;
             const selectedTeacher = document.getElementById("diaryTeacher").value;
@@ -431,38 +438,21 @@
             if (!classTopic || !hwSummary) { alert("Please Topic और Short Homework Summary दोनों भरें!"); return; }
             if (imageFiles.length > 20) { alert("आप अधिकतम 20 फोटो ही सिलेक्ट कर सकते हैं!"); return; }
 
-            // Security check for API Key
-            if (imageFiles.length > 0 && IMGBB_API_KEY === "4773a759a0ce1c52c2e433ddb97f5f0d") {
-                alert("⚠️ आपने अभी तक ImgBB API Key नहीं डाली है! कृपया कोड में लाइन 318 पर अपनी Key डालें।");
-                return;
-            }
-
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Processing...";
             btn.disabled = true;
             
             try {
                 let finalImageUrls = [];
                 
-                // One-by-One ImgBB Upload
                 if (imageFiles.length > 0) {
                     for (let i = 0; i < imageFiles.length; i++) {
                         btn.innerHTML = `<i class='fa-solid fa-spinner fa-spin'></i> Uploading Photo ${i + 1} of ${imageFiles.length}...`;
-                        
                         const formData = new FormData();
                         formData.append("image", imageFiles[i]);
-
-                        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                            method: "POST",
-                            body: formData
-                        });
-                        
+                        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body: formData });
                         const result = await response.json();
-                        
-                        if (result.success) {
-                            finalImageUrls.push(result.data.url); // ImgBB gives direct image URL
-                        } else {
-                            throw new Error("ImgBB Error: " + result.error.message);
-                        }
+                        if (result.success) { finalImageUrls.push(result.data.url); } 
+                        else { throw new Error("ImgBB Error: " + result.error.message); }
                     }
                 }
 
