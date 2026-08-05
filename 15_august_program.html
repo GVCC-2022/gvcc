@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>15 August Program - Gyan Varsha Coaching Center Hirauta Ward no.13</title>
+    <title>15 August Program - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* CORE DASHBOARD STYLES */
-        * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; touch-action: manipulation; padding-bottom: 100px; }
         
         .page-exit { animation: zoomOutUp 0.4s forwards !important; }
         @keyframes zoomOutUp { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-10vh) scale(0.95); } }
         
         /* NAVBAR */
-        .navbar { background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff9933; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
-        .nav-brand { font-size: 20px; font-weight: bold; background: linear-gradient(to right, #ff9933, #ffffff, #138808); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .back-btn { background: #334155; color: white; border: 1px solid #475569; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-decoration: none; font-size: 14px; }
+        .navbar { background: #1e293b; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff9933; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .nav-brand { font-size: 18px; font-weight: bold; background: linear-gradient(to right, #ff9933, #ffffff, #138808); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .back-btn { background: #334155; color: white; border: 1px solid #475569; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-decoration: none; font-size: 13px; }
         .back-btn:active { transform: scale(0.95); background: #475569; }
 
-        .container { max-width: 800px; margin: 20px auto; padding: 15px; text-align: center; }
+        .container { max-width: 800px; margin: 15px auto; padding: 10px; text-align: center; }
 
         /* LIVE STATUS CARD WITH PROGRESS BAR */
         .status-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 25px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .status-card.playing { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-        .status-card h3 { margin: 0 0 10px 0; font-size: 16px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-        #statusText { font-size: 20px; font-weight: bold; color: #f8fafc; margin: 0; }
+        .status-card h3 { margin: 0 0 10px 0; font-size: 15px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        #statusText { font-size: 18px; font-weight: bold; color: #f8fafc; margin: 0; word-wrap: break-word; line-height: 1.3; }
         .equalizer { display: none; color: #10b981; margin-left: 10px; }
         .playing .equalizer { display: inline-block; }
         
@@ -42,83 +42,65 @@
         .category-menu { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; justify-content: flex-start; scrollbar-width: none; }
         .category-menu::-webkit-scrollbar { display: none; }
         
-        .cat-btn { background: #1e293b; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .cat-btn { background: #1e293b; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); padding: 12px 18px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .cat-btn:active { transform: scale(0.95); }
         .cat-btn.active { background: linear-gradient(135deg, #ff9933, #d87b22); color: white; border-color: #ff9933; box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3); }
         .comedy-btn.active { background: linear-gradient(135deg, #ec4899, #be185d); border-color: #ec4899; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
 
-        /* STUDENT LIST (CARDS) */
+        /* 🌟 MOBILE PERFECT ULTRA PREMIUM ROW 🌟 */
         .program-section { display: none; animation: fadeInBlur 0.3s ease-out forwards; }
         .program-section.active { display: block; }
-        
         @keyframes fadeInBlur { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .student-row { background: #1e293b; padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left; transition: 0.2s; }
-        .student-row:active { transform: scale(0.98); background: rgba(255,255,255,0.02); }
-        .student-info { display: flex; flex-direction: column; gap: 5px; }
-        .student-name { font-size: 17px; font-weight: bold; color: #f8fafc; transition: 0.3s; }
-        .student-act { font-size: 13px; color: #38bdf8; font-weight: 600; }
+        .premium-row { 
+            background: rgba(30, 41, 59, 0.6); 
+            padding: 12px 10px; /* मोबाइल के लिए पैडिंग फिक्स */
+            border-radius: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-left: 4px solid transparent; 
+            margin-bottom: 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 8px; /* बटन और टेक्स्ट के बीच गैप */
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .premium-row:hover, .premium-row:active { border-left-color: #38bdf8; background: #1e293b; }
+        
+        .row-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; /* min-width:0 बहुत जरूरी है ताकि टेक्स्ट ओवरलैप न हो */ }
+        .track-num { font-size: 18px; font-weight: 900; color: #475569; min-width: 22px; text-align: center; }
+        
+        .avatar-box { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; color: white; background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3); }
+        .avatar-group { background: linear-gradient(135deg, #3b82f6, #06b6d4); box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3); }
+        .avatar-patriot { background: linear-gradient(135deg, #10b981, #f59e0b); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
 
-        /* PLAY / PAUSE BUTTON STYLES */
-        .play-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 12px 25px; font-weight: bold; font-size: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 8px; width: 115px; justify-content: center; }
+        .info-col { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-align: left; }
+        .stu-name { font-size: 15px; font-weight: bold; color: #f8fafc; line-height: 1.2; word-wrap: break-word; } /* लम्बा नाम अपने आप नीचे आएगा */
+        
+        .song-meta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; font-weight: 600; flex-wrap: wrap; }
+        .song-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; } /* गाना बहुत बड़ा हुआ तो ... आ जाएगा */
+        
+        .badge { font-size: 9px; padding: 3px 6px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;}
+        .badge-solo { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); }
+        .badge-group { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(125, 211, 252, 0.3); }
+        .badge-patriot { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(110, 231, 183, 0.3); }
+
+        /* PLAY / PAUSE BUTTON STYLES (Fixed width so it never shrinks) */
+        .play-btn { flex-shrink: 0; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 10px 15px; font-weight: bold; font-size: 13px; border-radius: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 6px; min-width: 90px; justify-content: center; }
         .play-btn:active { transform: scale(0.92); }
         
         .play-btn.active-pause { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); border: 1px solid #fcd34d; }
         
         /* ✅ SONG COMPLETED STYLES (SYNCED GLOBALLY) */
         .play-btn.played-btn { background: linear-gradient(135deg, #475569, #334155); color: #94a3b8; box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
-        .student-row.completed { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); }
-        .student-row.completed .student-name { color: #10b981; }
+        .premium-row.completed { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); }
+        .premium-row.completed .stu-name { color: #10b981; }
 
         /* FLOATING STOP ALL BUTTON */
-        .floating-stop-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.1); padding: 15px; box-sizing: border-box; z-index: 100; text-align: center; }
-        .stop-btn { width: 100%; max-width: 400px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 15px; font-weight: bold; font-size: 16px; border-radius: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+        .floating-stop-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.1); padding: 12px; box-sizing: border-box; z-index: 100; text-align: center; }
+        .stop-btn { width: 100%; max-width: 400px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 14px; font-weight: bold; font-size: 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); text-transform: uppercase; letter-spacing: 1px; }
         .stop-btn:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3); }
-        /* 🌟 ULTRA PREMIUM STUDENT ROW 🌟 */
-        .premium-row { 
-            background: rgba(30, 41, 59, 0.6); 
-            padding: 15px; 
-            border-radius: 16px; 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-left: 4px solid transparent; /* होवर के लिए */
-            margin-bottom: 16px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .premium-row:hover, .premium-row:active {
-            border-left-color: #38bdf8; 
-            background: #1e293b;
-            transform: translateX(5px); /* हल्का सा आगे खिसकेगा */
-        }
-        
-        .row-left { display: flex; align-items: center; gap: 15px; }
-        .track-num { font-size: 22px; font-weight: 900; color: #475569; width: 25px; text-align: center; }
-        
-        /* गोल आइकॉन बॉक्स (Avatar) */
-        .avatar-box {
-            width: 48px; height: 48px; 
-            border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center;
-            font-size: 20px; color: white;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
-        }
-        .avatar-group { background: linear-gradient(135deg, #3b82f6, #06b6d4); box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3); }
-        .avatar-patriot { background: linear-gradient(135deg, #10b981, #f59e0b); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
-
-        .info-col { display: flex; flex-direction: column; gap: 4px; }
-        .stu-name { font-size: 17px; font-weight: bold; color: #f8fafc; letter-spacing: 0.5px; }
-        
-        /* म्यूजिक का नाम और बैज (Tags) */
-        .song-meta { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #94a3b8; font-weight: 600; }
-        
-        .badge { font-size: 10px; padding: 3px 8px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
-        .badge-solo { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); }
-        .badge-group { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(125, 211, 252, 0.3); }
-        .badge-patriot { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(110, 231, 183, 0.3); }
         
     </style>
 </head>
@@ -134,7 +116,6 @@
         
         <!-- LIVE STATUS CARD -->
         <div class="status-card" id="statusCard">
-            <!-- Reset Button added here -->
             <h3><i class="fa-solid fa-tower-broadcast"></i> Live Status <i class="fa-solid fa-rotate-right reset-icon" onclick="resetDatabase()" title="Reset All Played Data"></i></h3>
             <p id="statusText"><span style="color:#94a3b8;">No Music Playing</span> <i class="fa-solid fa-chart-bar fa-fade equalizer"></i></p>
             <div id="progressContainer">
@@ -155,47 +136,170 @@
             <button class="cat-btn" onclick="showCategory('class-7', this)">Class 7th</button>
             <button class="cat-btn" onclick="showCategory('class-8', this)">Class 8th</button>
             <button class="cat-btn" onclick="showCategory('class-9', this)">Class 9th</button>
-            <button class="cat-btn" onclick="showCategory('class-10', this)">Class 10th</button>
+            <button class="cat-btn active" onclick="showCategory('class-10', this)">Class 10th</button>
             <button class="cat-btn comedy-btn" onclick="showCategory('comedy', this)"><i class="fa-solid fa-masks-theater"></i> Comedy</button>
         </div>
 
-        <!-- HTML Lists are exactly the same -->
+        <!-- ============================================== -->
+        <!-- 💡 नया नाम जोड़ने के लिए इस <div class="premium-row"> ... </div> को कॉपी करें -->
+        <!-- ============================================== -->
+
+        <!-- CLASS 1 TO 5 -->
         <div id="class-1-5" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. </span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', '', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">रिया कुमारी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Dance</span> <span class="badge badge-solo">Solo Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'रिया कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
         </div>
 
+        <!-- CLASS 6TH -->
         <div id="class-6" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. समृद्धि/दिव्या</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Group Dance Performance</span></div><button class="play-btn" onclick="togglePlay('songs/c6_samridhi.mp3', 'समृद्धि/दिव्या', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">2. पलक रानी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c6_palak.mp3', 'पलक रानी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">समृद्धि/दिव्या</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Group Dance</span> <span class="badge badge-group">Group</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c6_samridhi.mp3', 'समृद्धि/दिव्या', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">02</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">पलक रानी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Dance</span> <span class="badge badge-solo">Solo Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c6_palak.mp3', 'पलक रानी', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
         </div>
 
+        <!-- CLASS 7TH -->
         <div id="class-7" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. ABCDEF</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Solo Dance</span></div><button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'ABCDEF', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">ABCDEF</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Solo Dance</span> <span class="badge badge-solo">Solo</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/song1.mp3', 'ABCDEF', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
         </div>
 
+        <!-- CLASS 8TH -->
         <div id="class-8" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. नूर आलम/अंश कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> किया किया group Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम/अंश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">2. सोनाली कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> तेरी आखियों को काजल Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c8_sonali.mp3', 'सोनाली कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">3. सोनाली और अनामिका कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> गोरी तन से सरकता जाए Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'सोनाली और अनामिका कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">नूर आलम/अंश कुमार</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">किया किया</span> <span class="badge badge-group">Group Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम/अंश', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+            
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">02</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">सोनाली कुमारी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">तेरी आखियों को काजल</span> <span class="badge badge-solo">Solo Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c8_sonali.mp3', 'सोनाली कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">03</div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">सोनाली और अनामिका</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">गोरी तन से सरकता जाए</span> <span class="badge badge-group">Duet Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'सोनाली और अनामिका', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
         </div>
 
+        <!-- CLASS 9TH -->
         <div id="class-9" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. गौतम कुमार</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c9_gautam.mp3', 'गौतम कुमार', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">2. नुजहत परवीन</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> काश्मीर ज़िगर के टुकड़ा</span></div><button class="play-btn" onclick="togglePlay('songs/c9_nuzhat.mp3', 'नुजहत परवीन', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">3. काजल और स्नेहा कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> गोरी तन से सरकता जाए Dance</span></div><button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'काजल और स्नेहा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-            <div class="student-row"><div class="student-info"><span class="student-name">4. काजल कुमारी</span><span class="student-act"><i class="fa-solid fa-person-walking"></i> चुनरी चुनरी</span></div><button class="play-btn" onclick="togglePlay('songs/c10_shruti.mp3', 'काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-      </div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">गौतम कुमार</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Dance</span> <span class="badge badge-solo">Solo</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c9_gautam.mp3', 'गौतम कुमार', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
 
-        <!-- CLASS 10TH PROGRAM (ULTRA PREMIUM DESIGN) -->
-        <div id="class-10" class="program-section">
-            
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">02</div>
+                    <div class="avatar-box avatar-patriot"><i class="fa-solid fa-flag"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">नुजहत परवीन</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">काश्मीर ज़िगर के टुकड़ा</span> <span class="badge badge-patriot">Patriotic</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c9_nuzhat.mp3', 'नुजहत परवीन', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">03</div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">काजल और स्नेहा कुमारी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">गोरी तन से सरकता जाए</span> <span class="badge badge-group">Duet Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'काजल और स्नेहा', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">04</div>
+                    <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">काजल कुमारी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">चुनरी चुनरी</span> <span class="badge badge-solo">Solo Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c10_shruti.mp3', 'काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+        </div>
+
+        <!-- CLASS 10TH (ACTIVE) -->
+        <div id="class-10" class="program-section active">
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">01</div>
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">आसमीन खातून</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> शीशा <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">शीशा</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_aasmin.mp3.mp3', 'आसमीन खातून', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -204,10 +308,10 @@
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">02</div>
-                    <div class="avatar-box avatar-group"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">सानिया और अंजली</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> गोरी तन से सरकता जाए <span class="badge badge-group">Duet Dance</span></div>
+                        <span class="stu-name">सानिया और अंजली कुमारी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">गोरी तन से सरकता जाए</span> <span class="badge badge-group">Duet Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'सानिया और अंजली', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -219,7 +323,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">सलोनी कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> लौंग लाची <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">लौंग लाची</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_saloni.mp3', 'सलोनी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -230,8 +334,8 @@
                     <div class="track-num">04</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">नूर आलम / अंश कुमार</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> किया किया <span class="badge badge-group">Boys Group</span></div>
+                        <span class="stu-name">नूर आलम/अंश कुमार</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">किया किया</span> <span class="badge badge-group">Boys Group</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम / अंश', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -242,8 +346,8 @@
                     <div class="track-num">05</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">काजल, श्रुति, सलोनी, सानिया</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> माई हो तनी <span class="badge badge-group">Group Dance</span></div>
+                        <span class="stu-name">ग्रुप डांस - माई हो तनी</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">काजल, श्रुति, सलोनी...</span> <span class="badge badge-group">Group</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_groupdance1.mp3', 'माई हो तनी ग्रुप', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -255,7 +359,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">श्रुति कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> चुनरी चुनरी <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">चुनरी चुनरी</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_shruti.mp3', 'श्रुति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -267,7 +371,7 @@
                     <div class="avatar-box avatar-patriot"><i class="fa-solid fa-flag"></i></div>
                     <div class="info-col">
                         <span class="stu-name">काजल कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> तीन रंग का झंडा <span class="badge badge-patriot">Patriotic</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">तीन रंग का झंडा</span> <span class="badge badge-patriot">Patriotic</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_kajal.mp3', 'काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -279,7 +383,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">रूपा कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> जेकर माई <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">जेकर माई (टून टून यादव)</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_rupa.mp3', 'रूपा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -291,7 +395,7 @@
                     <div class="avatar-box avatar-patriot"><i class="fa-solid fa-flag"></i></div>
                     <div class="info-col">
                         <span class="stu-name">जूही कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> जन गण मन <span class="badge badge-patriot">Patriotic</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">जन गण मन</span> <span class="badge badge-patriot">Patriotic</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_juhi.mp3', 'जूही कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -303,7 +407,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">रूपा कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> मैंने लहंगा दे महंगा <span class="badge badge-solo">Punjabi Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">मैंने लहंगा दे महंगा</span> <span class="badge badge-solo">Punjabi</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_rupa2.mp3', 'रूपा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -315,7 +419,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">चाँदनी कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> दीवानी हु मै दीवानी <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">दीवानी हु मै दीवानी</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_chandni.mp3', 'चाँदनी कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -326,20 +430,28 @@
                     <div class="track-num">12</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">काजल और श्रुति ग्रुप</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> भांग तनी पीस दा गौरा <span class="badge badge-group">Group Dance</span></div>
+                        <span class="stu-name">काजल और श्रुति</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">भांग तनी पीस दा गौरा</span> <span class="badge badge-group">Group Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_groupdance2.mp3', 'काजल और श्रुति', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-            
         </div>
-            
-        </div>           
 
+        <!-- COMEDY SECTION -->
         <div id="comedy" class="program-section">
-            <div class="student-row"><div class="student-info"><span class="student-name">1. कॉमेडियन ग्रुप</span><span class="student-act"><i class="fa-solid fa-face-laugh-squint"></i> BGM 1</span></div><button class="play-btn" onclick="togglePlay('songs/comedian_group.mp3', 'कॉमेडियन ग्रुप', this)"><i class="fa-solid fa-play"></i> Play</button></div>
-       </div>           
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">01</div>
+                    <div class="avatar-box"><i class="fa-solid fa-face-laugh-squint"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">कॉमेडियन ग्रुप</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">BGM 1</span> <span class="badge badge-group">Comedy</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/comedian_group.mp3', 'कॉमेडियन ग्रुप', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+        </div>
 
     </div>
 
@@ -351,12 +463,12 @@
     <!-- HIDDEN AUDIO PLAYER -->
     <audio id="main-player"></audio>
 
-    <!-- 🔥 FIREBASE SCRIPT ADDED FOR SYNC 🔥 -->
+    <!-- 🔥 FIREBASE SCRIPT ADDED FOR SYNC & OUTRO MESSAGE 🔥 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // 🔒 SECURITY CHECK
+        // 🔒 SECURITY CHECK (Without login, redirect to login page)
         if (!sessionStorage.getItem("loggedTeacherId")) {
             window.location.replace("teacher-login.html");
         }
@@ -379,55 +491,54 @@
         var statusText = document.getElementById("statusText");
         var progressContainer = document.getElementById("progressContainer");
         var progressBar = document.getElementById("progressBar");
+        
         let activeBtn = null; 
+        let isPlayingOutro = false; // 🎤 Outro Check Flag
 
-        // Assign UNIQUE IDs to all 70 buttons automatically
+        // Assign UNIQUE IDs to all buttons
         let allBtns = document.querySelectorAll('.play-btn');
         allBtns.forEach((btn, index) => {
             btn.setAttribute('data-id', 'song_' + index);
         });
 
-        // 🟢 REAL-TIME FIREBASE SYNC (दूसरे डिवाइस में अपडेट करने के लिए)
+        // 🟢 REAL-TIME FIREBASE SYNC 
         onSnapshot(programStatusDoc, (docSnap) => {
             if (docSnap.exists()) {
                 const dbData = docSnap.data();
                 allBtns.forEach(btn => {
                     let songId = btn.getAttribute('data-id');
+                    let row = btn.closest('.premium-row');
                     if (dbData[songId] === true) {
                         btn.classList.add('played-btn');
                         if (!btn.classList.contains('active-pause')) {
                             btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
                         }
-                        let row = btn.closest('.student-row');
                         if (row) row.classList.add('completed');
                     } else {
-                        // If false or missing (Reset condition)
                         btn.classList.remove('played-btn');
                         if (!btn.classList.contains('active-pause')) {
                             btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
                         }
-                        let row = btn.closest('.student-row');
                         if (row) row.classList.remove('completed');
                     }
                 });
             }
         });
 
-        // Window bindings for UI clicks
         window.navigateWithAnimation = function(event, url) { 
             event.preventDefault(); document.body.classList.add('page-exit'); 
             setTimeout(() => { window.location.href = url; }, 300); 
         };
 
-        // 🔄 TAB MEMORY FIX
+        // 🔄 TAB MEMORY FIX (Keeps user on the same tab after refresh)
         window.onload = function() {
             let savedTab = sessionStorage.getItem("activeProgramTab");
             if (savedTab) {
                 let btn = document.querySelector(`button[onclick*="${savedTab}"]`);
                 if (btn) window.showCategory(savedTab, btn);
             } else {
-                let defaultBtn = document.querySelector(`button[onclick*="class-6"]`);
-                if (defaultBtn) window.showCategory('class-6', defaultBtn);
+                let defaultBtn = document.querySelector(`button[onclick*="class-10"]`);
+                if (defaultBtn) window.showCategory('class-10', defaultBtn);
             }
         };
 
@@ -440,6 +551,7 @@
         };
 
         window.togglePlay = function(songUrl, studentName, clickedBtn) {
+            isPlayingOutro = false; // Reset outro flag
             if (activeBtn === clickedBtn) {
                 if (player.paused) {
                     player.play(); setButtonToPause(clickedBtn); updateLiveStatus(studentName, true);
@@ -455,30 +567,50 @@
         };
 
         window.stopSong = function() {
+            isPlayingOutro = false;
             player.pause(); player.currentTime = 0; resetAllButtons();
             progressContainer.style.display = "none"; progressBar.style.width = "0%";
             statusCard.classList.remove("playing");
             statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
         };
 
-        // ✅ AUTO UPDATE FIREBASE WHEN SONG 100% COMPLETED
+        // ✅ AUTO UPDATE FIREBASE & PLAY OUTRO MESSAGE
         player.onended = async function() {
-            if (activeBtn) {
-                let songId = activeBtn.getAttribute('data-id');
-                try {
-                    // Save to Firebase (this will sync to all devices)
-                    await setDoc(programStatusDoc, { [songId]: true }, { merge: true });
-                } catch(e) { console.error("Firebase Sync Error:", e); }
+            if (!isPlayingOutro) {
+                if (activeBtn) {
+                    let songId = activeBtn.getAttribute('data-id');
+                    try {
+                        await setDoc(programStatusDoc, { [songId]: true }, { merge: true });
+                    } catch(e) { console.error("Firebase Sync Error:", e); }
+                    
+                    activeBtn.classList.remove("active-pause");
+                    activeBtn.classList.add('played-btn');
+                    activeBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
+                    let row = activeBtn.closest('.premium-row');
+                    if (row) row.classList.add('completed');
+                }
+
+                // 🎤 PLAY GVCC OUTRO MESSAGE
+                isPlayingOutro = true;
+                player.src = "songs/gvcc_outro.mp3"; 
+                player.play();
+                statusCard.classList.add("playing");
+                statusText.innerHTML = '🎤 <span style="color:#ff9933;">GVCC का संदेश बज रहा है...</span> <i class="fa-solid fa-chart-bar fa-fade equalizer"></i>';
+
+            } else {
+                isPlayingOutro = false;
+                resetAllButtons(); 
+                progressContainer.style.display = "none"; 
+                statusCard.classList.remove("playing");
+                statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
+                activeBtn = null;
             }
-            resetAllButtons(); progressContainer.style.display = "none"; statusCard.classList.remove("playing");
-            statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
         };
 
         // 🔄 RESET ENTIRE DATABASE (Testing Feature)
         window.resetDatabase = async function() {
             if(confirm("⚠️ चेतावनी! क्या आप सच में 'Played' हुए सभी गानों का डेटा मिटाना चाहते हैं? (प्रोग्राम के दिन इसे मत दबाना)")) {
                 try {
-                    // Empty object resets the document
                     await setDoc(programStatusDoc, {});
                     alert("✅ डेटाबेस रिसेट हो गया। अब सभी गाने वापस Play मोड में हैं।");
                 } catch(e) { alert("Error resetting: " + e.message); }
@@ -512,7 +644,7 @@
         }
 
         function resetAllButtons() {
-            allBtns.forEach(btn => setButtonToPlay(btn)); activeBtn = null; 
+            allBtns.forEach(btn => setButtonToPlay(btn)); 
         }
 
         function formatTime(seconds) {
