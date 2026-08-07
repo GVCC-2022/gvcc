@@ -24,8 +24,8 @@
         /* LIVE STATUS CARD WITH PROGRESS BAR */
         .status-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 25px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .status-card.playing { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-        .status-card h3 { margin: 0 0 10px 0; font-size: 16px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-        #statusText { font-size: 20px; font-weight: bold; color: #f8fafc; margin: 0; word-wrap: break-word; line-height: 1.3; }
+        .status-card h3 { margin: 0 0 10px 0; font-size: 15px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        #statusText { font-size: 18px; font-weight: bold; color: #f8fafc; margin: 0; word-wrap: break-word; line-height: 1.3; }
         .equalizer { display: none; color: #10b981; margin-left: 10px; }
         .playing .equalizer { display: inline-block; }
         
@@ -76,10 +76,10 @@
         .avatar-patriot { background: linear-gradient(135deg, #10b981, #f59e0b); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
 
         .info-col { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-align: left; }
-        .stu-name { font-size: 15px; font-weight: bold; color: #f8fafc; line-height: 1.2; word-wrap: break-word; }
+        .stu-name { font-size: 15px; font-weight: bold; color: #f8fafc; line-height: 1.2; word-wrap: break-word; } 
         
         .song-meta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; font-weight: 600; flex-wrap: wrap; }
-        .song-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; }
+        .song-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; } 
         
         .badge { font-size: 9px; padding: 3px 6px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;}
         .badge-solo { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); }
@@ -162,7 +162,7 @@
                     <div class="track-num">01</div>
                     <div class="avatar-box avatar-patriot"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">समृद्धि/दिव्या (GROUP)</span>
+                        <span class="stu-name">समृद्धि और दिव्या (GROUP)</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">बेटी हिंदुस्तान की..</span> <span class="badge badge-patriot">देशभक्ति</span></div>
                     </div>
                 </div>
@@ -246,7 +246,6 @@
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'सोनाली और अनामिका (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-            
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">04</div>
@@ -257,6 +256,17 @@
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c8_sonaliauranamika.mp3', 'सोनाली और अनामिका (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
+            </div>
+            <div class="premium-row">
+                <div class="row-left">
+                    <div class="track-num">05</div>
+                    <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
+                    <div class="info-col">
+                        <span class="stu-name">खुशी, साक्षी रानी, अनामिका, काजल (GROUP)</span>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Mix Desh bakti Song</span> <span class="badge badge-group">Duet Dance</span></div>
+                    </div>
+                </div>
+                <button class="play-btn" onclick="togglePlay('songs/c7_mixgroup.mp3', 'Mix Desh bakti Song', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
         </div>
 
@@ -316,7 +326,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">स्नेहा कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">मैंने पायल हैं छनकाई</span> <span class="badge badge-solo">Solo Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">मैंने पायल हैं छनकाई</span> <span class="badge badge-solo">solid Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c9_sneha.mp3', 'स्नेहा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -519,7 +529,7 @@
     <!-- HIDDEN AUDIO PLAYER -->
     <audio id="main-player"></audio>
 
-    <!-- 🔥 FIREBASE SCRIPT ADDED FOR SYNC & OUTRO MESSAGE 🔥 -->
+    <!-- 🔥 FIREBASE SCRIPT ADDED FOR SYNC 🔥 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -620,15 +630,23 @@
             setButtonToPause(clickedBtn); updateLiveStatus(studentName, true); progressContainer.style.display = "block";
         };
 
-        // 🛑 SMART STOP LOGIC: Mark 'Played' if stopped near the end (85%+)
+        // 🛑 SMART STOP LOGIC: Mark 'Played' if stopped near the end (80%+)
         window.stopSong = async function() {
-            // Check if song has played more than 85%
+            // Check if song has played more than 80%
             if (activeBtn && player.duration > 0) {
                 let playedPercentage = (player.currentTime / player.duration) * 100;
                 
-                // If stopped after 85% completion, consider it 'Played'
-                if (playedPercentage >= 85) {
+                // If stopped after 80% completion, consider it 'Played'
+                if (playedPercentage >= 80) {
                     let songId = activeBtn.getAttribute('data-id');
+                    let btnToUpdate = activeBtn; // Save reference
+                    
+                    // Instant UI Update so it doesn't blink
+                    btnToUpdate.classList.remove("active-pause");
+                    btnToUpdate.classList.add('played-btn');
+                    let row = btnToUpdate.closest('.premium-row');
+                    if (row) row.classList.add('completed');
+
                     try {
                         await setDoc(programStatusDoc, { [songId]: true }, { merge: true });
                     } catch(e) { console.error("Firebase Sync Error:", e); }
