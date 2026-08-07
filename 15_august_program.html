@@ -615,11 +615,39 @@
             sessionStorage.setItem("activeProgramTab", categoryId); 
         };
 
-        window.togglePlay = function(songUrl, studentName, clickedBtn) {
+        // 🎵 MAIN LOGIC: Play / Pause Toggle
+        window.togglePlay = async function(songUrl, studentName, clickedBtn) {
             if (activeBtn === clickedBtn) {
                 if (player.paused) {
                     player.play(); setButtonToPause(clickedBtn); updateLiveStatus(studentName, true);
                 } else {
+                    // 🛑 80% CHECK WHEN PAUSING MANUALLY (NEW FIX)
+                    if (player.duration > 0) {
+                        let playedPercentage = (player.currentTime / player.duration) * 100;
+                        if (playedPercentage >= 80) {
+                            let songId = clickedBtn.getAttribute('data-id');
+                            
+                            // Instant UI Update
+                            clickedBtn.classList.remove("active-pause");
+                            clickedBtn.classList.add('played-btn');
+                            let row = clickedBtn.closest('.premium-row');
+                            if (row) row.classList.add('completed');
+
+                            try {
+                                await setDoc(programStatusDoc, { [songId]: true }, { merge: true });
+                            } catch(e) { console.error("Firebase Sync Error:", e); }
+                            
+                            // Treat as ended
+                            player.pause(); player.currentTime = 0; resetAllButtons();
+                            progressContainer.style.display = "none"; progressBar.style.width = "0%";
+                            statusCard.classList.remove("playing");
+                            statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
+                            activeBtn = null;
+                            return; // Stop here
+                        }
+                    }
+
+                    // Normal Pause if under 80%
                     player.pause(); setButtonToPlay(clickedBtn); updateLiveStatus(studentName, false);
                 }
                 return; 
@@ -630,18 +658,15 @@
             setButtonToPause(clickedBtn); updateLiveStatus(studentName, true); progressContainer.style.display = "block";
         };
 
-        // 🛑 SMART STOP LOGIC: Mark 'Played' if stopped near the end (80%+)
+        // 🛑 SMART STOP LOGIC (Stop All Music Button)
         window.stopSong = async function() {
-            // Check if song has played more than 80%
             if (activeBtn && player.duration > 0) {
                 let playedPercentage = (player.currentTime / player.duration) * 100;
                 
-                // If stopped after 80% completion, consider it 'Played'
                 if (playedPercentage >= 80) {
                     let songId = activeBtn.getAttribute('data-id');
-                    let btnToUpdate = activeBtn; // Save reference
+                    let btnToUpdate = activeBtn; 
                     
-                    // Instant UI Update so it doesn't blink
                     btnToUpdate.classList.remove("active-pause");
                     btnToUpdate.classList.add('played-btn');
                     let row = btnToUpdate.closest('.premium-row');
