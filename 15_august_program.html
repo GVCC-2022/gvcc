@@ -77,7 +77,7 @@
         .premium-row:hover, .premium-row:active { border-left-color: #38bdf8; background: #1e293b; }
         
         .row-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-        .track-num { font-size: 18px; font-weight: 900; color: #475569; min-width: 22px; text-align: center; }
+        .track-num { font-size: 18px; font-weight: 900; color: #475569; min-width: 22px; text-align: center; transition: 0.2s; }
         
         .avatar-box { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; color: white; background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3); }
         .avatar-group { background: linear-gradient(135deg, #3b82f6, #06b6d4); box-shadow: 0 4px 10px rgba(56, 189, 248, 0.3); }
@@ -140,7 +140,7 @@
         <!-- 🔍 SMART SEARCH BAR (Hinglish Support) -->
         <div class="search-container">
             <i class="fa-solid fa-search search-icon"></i>
-            <input type="text" id="searchInput" placeholder="नाम या गाना खोजें (Ex: saniya, deshbhakti...)" onkeyup="searchProgram()">
+            <input type="text" id="searchInput" placeholder="नाम या गाना खोजें (Ex: silpi, saniya, deshbhakti...)" onkeyup="searchProgram()">
             <i class="fa-solid fa-xmark clear-icon" id="clearSearch" onclick="clearSearchInput()"></i>
         </div>
 
@@ -549,11 +549,11 @@
                     <div class="track-num">03</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">नूर आलम और अंश कुमार</span>
+                        <span class="stu-name">नूर आलम और अंश कुमार (GROUP)</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">किया किया</span> <span class="badge badge-group">Boys Group</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम और अंश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम और अंश कुमार (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -645,11 +645,11 @@
                     <div class="track-num">11</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">काजल और श्रुति कुमारी</span>
+                        <span class="stu-name">काजल और श्रुति कुमारी (GROUP)</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">भांग तनी पीस दा गौरा</span> <span class="badge badge-group">भक्ति</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c10_groupdance2.mp3', 'काजल और श्रुति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c10_groupdance2.mp3', 'काजल और श्रुति कुमारी (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -669,11 +669,11 @@
                     <div class="track-num">13</div>
                     <div class="avatar-box avatar-patriot"><i class="fa-solid fa-flag"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">अनु और काजल कुमारी</span>
+                        <span class="stu-name">अनु और काजल कुमारी (GROUP)</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">तिरंगा उचा रहेगा..</span> <span class="badge badge-patriot">देशभक्ति</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c10_kajalanu.mp3', 'अनु और काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c10_kajalanu.mp3', 'अनु और काजल कुमारी (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -816,7 +816,7 @@
             setTimeout(() => { window.location.href = url; }, 300); 
         };
 
-        // 🔄 TAB MEMORY FIX 
+        // 🔄 TAB MEMORY FIX & STORE ORIGINAL NUMBERS
         window.onload = function() {
             let savedTab = sessionStorage.getItem("activeProgramTab");
             if (savedTab) {
@@ -826,6 +826,14 @@
                 let defaultBtn = document.querySelector(`button[onclick*="class-10"]`);
                 if (defaultBtn) window.showCategory('class-10', defaultBtn);
             }
+
+            // Save original track numbers for search reset
+            document.querySelectorAll('.premium-row').forEach(row => {
+                let trackNumEl = row.querySelector('.track-num');
+                if(trackNumEl && !row.hasAttribute('data-orig-num')) {
+                    row.setAttribute('data-orig-num', trackNumEl.innerText);
+                }
+            });
         };
 
         window.showCategory = function(categoryId, btnElement) {
@@ -839,19 +847,19 @@
             sessionStorage.setItem("activeProgramTab", categoryId); 
         };
 
-        // 🔍 SMART SEARCH LOGIC (Hinglish to Hindi Mapping)
+        // 🔍 SMART SEARCH LOGIC (Hinglish to Hindi Mapping with Smart Spellings)
         const hinglishMap = {
-            "आसमीन": "aasmin asmin", "खातून": "khatoon khatun", "सानिया": "saniya sanya", "अंजली": "anjali",
-            "सलोनी": "saloni", "नूर": "noor nur", "आलम": "alam", "अंश": "ansh", "काजल": "kajal",
-            "श्रुति": "shruti", "रूपा": "rupa", "जूही": "juhi", "चाँदनी": "chandni chandani", "प्रियांशु": "priyanshu",
-            "अनु": "anu", "ज्योति": "jyoti", "खुशी": "khushi khusi", "साक्षी": "sakshi", "अनामिका": "anamika",
-            "सोनाली": "sonali", "गौतम": "gautam", "नुजहत": "nuzhat", "स्नेहा": "sneha", "समृद्धि": "samridhi",
-            "दिव्या": "divya", "पलक": "palak", "सोनाक्षी": "sonakshi", "शिल्पी": "shilpi", "सोनम": "sonam",
+            "आसमीन": "aasmin asmin ashmin", "खातून": "khatoon khatun", "सानिया": "saniya sanya", "अंजली": "anjali anjali",
+            "सलोनी": "saloni", "नूर": "noor nur", "आलम": "alam", "अंश": "ansh ans", "काजल": "kajal",
+            "श्रुति": "shruti sruti", "रूपा": "rupa", "जूही": "juhi", "चाँदनी": "chandni chandani", "प्रियांशु": "priyanshu priyansu",
+            "अनु": "anu", "ज्योति": "jyoti joti", "खुशी": "khushi khusi kushi", "साक्षी": "sakshi saksi", "अनामिका": "anamika",
+            "सोनाली": "sonali", "गौतम": "gautam", "नुजहत": "nuzhat nujhat", "स्नेहा": "sneha", "समृद्धि": "samridhi samridi",
+            "दिव्या": "divya", "पलक": "palak", "सोनाक्षी": "sonakshi sonaksi", "शिल्पी": "shilpi silpi", "सोनम": "sonam",
             "आकाश": "aakash akash", "अंकित": "ankit", "अंकुश": "ankush", "हिमांशु": "himanshu", "रवि": "ravi",
             "किशन": "kishan", "खुशबू": "khushbu", "आरोही": "aarohi arohi", "आयुषी": "aayushi ayushi", "दीपा": "deepa dipa",
-            "करिश्मा": "karishma", "समा": "sama", "सबिया": "sabiya", "सजदा": "sajda", "सबरून": "sabrun",
-            "शाहनुमा": "shahnuma", "रिया": "riya", "आर्यन": "aryan", "शिवानी": "shivani", "साहिल": "sahil",
-            "राहुल": "rahul", "नीतू": "neetu nitu", "संस्कृति": "sanskriti", "प्रीति": "priti preeti", 
+            "करिश्मा": "karishma", "समा": "sama", "सबिया": "sabiya", "सजदा": "sajda sajida", "सबरून": "sabrun sabroon",
+            "शाहनुमा": "shahnuma", "रिया": "riya", "आर्यन": "aryan", "शिवानी": "shivani sivani", "साहिल": "sahil",
+            "राहुल": "rahul", "नीतू": "neetu nitu", "संस्कृति": "sanskriti sanskriti", "प्रीति": "priti preeti", 
             "देशभक्ति": "desh bhakti deshbhakti patriotic", "नाटक": "natak drama comedy", "कॉमेडियन": "comedian comedy",
             "कबूतर": "kabutar", "चुनरी": "chunari chunri", "लुंगी": "lungi", "डांस": "dance", "गीत": "song",
             "शीशा": "shisha sisha", "गोरी": "gori", "लौंग": "laung long", "लाची": "laachi lachi", "किया": "kiya", 
@@ -873,19 +881,24 @@
                     if (sec.id === savedTab) sec.classList.add("active");
                     else sec.classList.remove("active");
                 });
-                rows.forEach(row => row.style.display = "flex");
+                rows.forEach(row => {
+                    row.style.display = "flex";
+                    // 🔄 Restore original track numbers when search clears
+                    let origNum = row.getAttribute('data-orig-num');
+                    if(origNum) row.querySelector('.track-num').innerText = origNum;
+                });
                 return;
             }
 
             clearIcon.style.display = "block";
-            // Make all sections active so we can search globally
             sections.forEach(sec => sec.classList.add("active"));
 
+            let searchResultCounter = 1; // 🪄 Magic Number Counter for Search
+
             rows.forEach(row => {
-                let hindiText = row.innerText;
+                let hindiText = row.querySelector('.info-col').innerText; 
                 let searchableText = hindiText.toLowerCase();
 
-                // Append matching hinglish keywords
                 for (let hindiWord in hinglishMap) {
                     if (hindiText.includes(hindiWord)) {
                         searchableText += " " + hinglishMap[hindiWord];
@@ -894,6 +907,9 @@
 
                 if (searchableText.includes(input)) {
                     row.style.display = "flex";
+                    // 🔢 Dynamic Track Numbering
+                    row.querySelector('.track-num').innerText = (searchResultCounter < 10 ? '0' : '') + searchResultCounter;
+                    searchResultCounter++;
                 } else {
                     row.style.display = "none";
                 }
