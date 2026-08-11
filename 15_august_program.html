@@ -22,7 +22,7 @@
         .container { max-width: 800px; margin: 15px auto; padding: 10px; text-align: center; }
 
         /* LIVE STATUS CARD WITH PROGRESS BAR */
-        .status-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 25px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .status-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 20px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .status-card.playing { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
         .status-card h3 { margin: 0 0 10px 0; font-size: 15px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
         #statusText { font-size: 18px; font-weight: bold; color: #f8fafc; margin: 0; word-wrap: break-word; line-height: 1.3; }
@@ -37,6 +37,14 @@
         .time-labels { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; font-weight: bold; margin-bottom: 5px; }
         .progress-bg { width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; height: 10px; overflow: hidden; }
         .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.1s linear; }
+
+        /* 🔍 SMART SEARCH BAR STYLES */
+        .search-container { position: relative; margin-bottom: 20px; text-align: left; }
+        .search-container input { width: 100%; padding: 14px 20px 14px 45px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(30, 41, 59, 0.8); color: white; font-size: 15px; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.3s; }
+        .search-container input:focus { border-color: #38bdf8; background: #1e293b; box-shadow: 0 0 15px rgba(56,189,248,0.3); }
+        .search-container input::placeholder { color: #64748b; }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 16px; }
+        .clear-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #ef4444; font-size: 16px; cursor: pointer; display: none; padding: 5px; }
 
         /* CATEGORY TABS */
         .category-menu { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; justify-content: flex-start; scrollbar-width: none; }
@@ -108,7 +116,7 @@
 
     <!-- NAVBAR -->
     <div class="navbar">
-        <div class="nav-brand"><i class="fa-solid fa-flag"></i> 15 August Program Gyan Varsha Coaching Center</div>
+        <div class="nav-brand"><i class="fa-solid fa-flag"></i> 15 August Panel</div>
         <a href="teacher-dashboard.html" class="back-btn" onclick="navigateWithAnimation(event, this.href)"><i class="fa-solid fa-arrow-left"></i> Back</a>
     </div>
 
@@ -129,6 +137,13 @@
             </div>
         </div>
 
+        <!-- 🔍 SMART SEARCH BAR (Hinglish Support) -->
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="नाम या गाना खोजें (Ex: saniya, deshbhakti...)" onkeyup="searchProgram()">
+            <i class="fa-solid fa-xmark clear-icon" id="clearSearch" onclick="clearSearchInput()"></i>
+        </div>
+
         <!-- CATEGORY MENU -->
         <div class="category-menu">
             <button class="cat-btn" onclick="showCategory('class-1-5', this)">Class 1 to 5</button>
@@ -142,7 +157,6 @@
 
         <!-- CLASS 1 TO 5 -->
         <div id="class-1-5" class="program-section">
-            
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">01</div>
@@ -250,7 +264,6 @@
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/papamerepapa.mp3', 'अंजलि और संस्कृति', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-
         </div>
 
         <!-- CLASS 6TH -->
@@ -366,9 +379,9 @@
                 <button class="play-btn" onclick="togglePlay('songs/veerokavatan.mp3', 'करिश्मा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
         </div>
+
         <!-- CLASS 8TH -->
         <div id="class-8" class="program-section">
-            
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">01</div>
@@ -410,8 +423,8 @@
                     <div class="track-num">04</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-masks-theater"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">सबरून ग्रुप नाटक</span>
-                        <div class="song-meta"><i class="fa-solid fa-theater-masks"></i> <span class="song-name">नसमा, सबिया, सजदा, सबरून, अनामिका, शाहनुमा, सोनाली</span> <span class="badge badge-group">Group Act</span></div>
+                        <span class="stu-name">समा, सबिया, सजदा, सबरून, अनामिका, शाहनुमा, सोनाली</span>
+                        <div class="song-meta"><i class="fa-solid fa-theater-masks"></i> <span class="song-name">नाटक (Drama)</span> <span class="badge badge-group">Group Act</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/sabrungroup.mp3', 'सबरून ग्रुप (नाटक)', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -440,8 +453,8 @@
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/merepyarewatan.mp3', 'अनामिका, सबरून और सजदा', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-
         </div>
+
         <!-- CLASS 9TH -->
         <div id="class-9" class="program-section">
             <div class="premium-row">
@@ -473,11 +486,11 @@
                     <div class="track-num">03</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">काजल और स्नेहा कुमारी (GROUP)</span>
+                        <span class="stu-name">काजल और स्नेहा कुमारी</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">गोरी तन से सरकता जाए</span> <span class="badge badge-group">Duet Dance</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'काजल और स्नेहा कुमारी (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c10_saniya.mp3.mp3', 'काजल और स्नेहा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -498,7 +511,7 @@
                     <div class="avatar-box"><i class="fa-solid fa-person-dress"></i></div>
                     <div class="info-col">
                         <span class="stu-name">स्नेहा कुमारी</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">मैंने पायल हैं छनकाई</span> <span class="badge badge-solo">solid Dance</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">मैंने पायल हैं छनकाई</span> <span class="badge badge-solo">Solo Dance</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/c9_sneha.mp3', 'स्नेहा कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -507,7 +520,6 @@
 
         <!-- CLASS 10TH (ACTIVE) -->
         <div id="class-10" class="program-section active">
-            
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">01</div>
@@ -537,11 +549,11 @@
                     <div class="track-num">03</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">नूर आलम और अंश कुमार (GROUP)</span>
+                        <span class="stu-name">नूर आलम और अंश कुमार</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">किया किया</span> <span class="badge badge-group">Boys Group</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम और अंश कुमार (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c8_ansh.mp3', 'नूर आलम और अंश कुमार', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -633,11 +645,11 @@
                     <div class="track-num">11</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-users"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">काजल और श्रुति कुमारी (GROUP)</span>
+                        <span class="stu-name">काजल और श्रुति कुमारी</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">भांग तनी पीस दा गौरा</span> <span class="badge badge-group">भक्ति</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c10_groupdance2.mp3', 'काजल और श्रुति कुमारी (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c10_groupdance2.mp3', 'काजल और श्रुति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -657,11 +669,11 @@
                     <div class="track-num">13</div>
                     <div class="avatar-box avatar-patriot"><i class="fa-solid fa-flag"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">अनु और काजल कुमारी (GROUP)</span>
+                        <span class="stu-name">अनु और काजल कुमारी</span>
                         <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">तिरंगा उचा रहेगा..</span> <span class="badge badge-patriot">देशभक्ति</span></div>
                     </div>
                 </div>
-                <button class="play-btn" onclick="togglePlay('songs/c10_kajalanu.mp3', 'अनु और काजल कुमारी (GROUP)', this)"><i class="fa-solid fa-play"></i> Play</button>
+                <button class="play-btn" onclick="togglePlay('songs/c10_kajalanu.mp3', 'अनु और काजल कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
 
             <div class="premium-row">
@@ -687,18 +699,17 @@
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/udeude.mp3', 'ज्योति कुमारी', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-
         </div>
+
         <!-- COMEDY SECTION -->
         <div id="comedy" class="program-section">
-            
             <div class="premium-row">
                 <div class="row-left">
                     <div class="track-num">01</div>
                     <div class="avatar-box"><i class="fa-solid fa-face-laugh-squint"></i></div>
                     <div class="info-col">
                         <span class="stu-name">कॉमेडियन ग्रुप</span>
-                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">Class 7th aur 8th Boys</span> <span class="badge badge-group">Comedy</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-music"></i> <span class="song-name">BGM 1</span> <span class="badge badge-group">Comedy</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/comedian_group.mp3', 'कॉमेडियन ग्रुप', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -709,8 +720,8 @@
                     <div class="track-num">02</div>
                     <div class="avatar-box avatar-group"><i class="fa-solid fa-masks-theater"></i></div>
                     <div class="info-col">
-                        <span class="stu-name">सबरून ग्रुप नाटक</span>
-                        <div class="song-meta"><i class="fa-solid fa-theater-masks"></i> <span class="song-name">Class 8th Girls</span> <span class="badge badge-group">Group Act</span></div>
+                        <span class="stu-name">समा, सबिया, सजदा, सबरून, अनामिका, शाहनुमा, सोनाली</span>
+                        <div class="song-meta"><i class="fa-solid fa-theater-masks"></i> <span class="song-name">नाटक (Drama)</span> <span class="badge badge-group">Group Act</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/sabrungroup.mp3', 'सबरून ग्रुप (नाटक)', this)"><i class="fa-solid fa-play"></i> Play</button>
@@ -722,12 +733,11 @@
                     <div class="avatar-box avatar-group" style="background: linear-gradient(135deg, #f43f5e, #8b5cf6); box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);"><i class="fa-solid fa-mobile-screen-button"></i></div>
                     <div class="info-col">
                         <span class="stu-name">सोशल मीडिया ग्रुप</span>
-                        <div class="song-meta"><i class="fa-solid fa-hashtag"></i> <span class="song-name">1 To 5 Girls</span> <span class="badge badge-group">Comedy Act</span></div>
+                        <div class="song-meta"><i class="fa-solid fa-hashtag"></i> <span class="song-name">सोशल मीडिया नाटक</span> <span class="badge badge-group">Comedy Act</span></div>
                     </div>
                 </div>
                 <button class="play-btn" onclick="togglePlay('songs/socialmedia.mp3', 'सोशल मीडिया (नाटक)', this)"><i class="fa-solid fa-play"></i> Play</button>
             </div>
-
         </div>
 
     </div>
@@ -770,7 +780,6 @@
         var progressBar = document.getElementById("progressBar");
         
         let activeBtn = null; 
-        let isPlayingOutro = false; 
 
         // Assign UNIQUE IDs to all buttons
         let allBtns = document.querySelectorAll('.play-btn');
@@ -820,6 +829,9 @@
         };
 
         window.showCategory = function(categoryId, btnElement) {
+            document.getElementById('searchInput').value = ""; // Clear search on tab switch
+            window.searchProgram(); // Reset rows
+
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.program-section').forEach(sec => sec.classList.remove('active'));
             btnElement.classList.add('active');
@@ -827,14 +839,78 @@
             sessionStorage.setItem("activeProgramTab", categoryId); 
         };
 
+        // 🔍 SMART SEARCH LOGIC (Hinglish to Hindi Mapping)
+        const hinglishMap = {
+            "आसमीन": "aasmin asmin", "खातून": "khatoon khatun", "सानिया": "saniya sanya", "अंजली": "anjali",
+            "सलोनी": "saloni", "नूर": "noor nur", "आलम": "alam", "अंश": "ansh", "काजल": "kajal",
+            "श्रुति": "shruti", "रूपा": "rupa", "जूही": "juhi", "चाँदनी": "chandni chandani", "प्रियांशु": "priyanshu",
+            "अनु": "anu", "ज्योति": "jyoti", "खुशी": "khushi khusi", "साक्षी": "sakshi", "अनामिका": "anamika",
+            "सोनाली": "sonali", "गौतम": "gautam", "नुजहत": "nuzhat", "स्नेहा": "sneha", "समृद्धि": "samridhi",
+            "दिव्या": "divya", "पलक": "palak", "सोनाक्षी": "sonakshi", "शिल्पी": "shilpi", "सोनम": "sonam",
+            "आकाश": "aakash akash", "अंकित": "ankit", "अंकुश": "ankush", "हिमांशु": "himanshu", "रवि": "ravi",
+            "किशन": "kishan", "खुशबू": "khushbu", "आरोही": "aarohi arohi", "आयुषी": "aayushi ayushi", "दीपा": "deepa dipa",
+            "करिश्मा": "karishma", "समा": "sama", "सबिया": "sabiya", "सजदा": "sajda", "सबरून": "sabrun",
+            "शाहनुमा": "shahnuma", "रिया": "riya", "आर्यन": "aryan", "शिवानी": "shivani", "साहिल": "sahil",
+            "राहुल": "rahul", "नीतू": "neetu nitu", "संस्कृति": "sanskriti", "प्रीति": "priti preeti", 
+            "देशभक्ति": "desh bhakti deshbhakti patriotic", "नाटक": "natak drama comedy", "कॉमेडियन": "comedian comedy",
+            "कबूतर": "kabutar", "चुनरी": "chunari chunri", "लुंगी": "lungi", "डांस": "dance", "गीत": "song",
+            "शीशा": "shisha sisha", "गोरी": "gori", "लौंग": "laung long", "लाची": "laachi lachi", "किया": "kiya", 
+            "माई": "mai", "तनी": "tani", "झंडा": "jhanda", "जेकर": "jekar", "लहंगा": "lehenga", "दीवानी": "diwani deewani", 
+            "भांग": "bhang", "वतन": "watan vatan", "काश्मीर": "kashmir kashmir", "पायल": "payal", "कबूतर": "kabutar", 
+            "झुमका": "jhumka", "रंगीला": "rangila rangeela", "पापा": "papa"
+        };
+
+        window.searchProgram = function() {
+            let input = document.getElementById('searchInput').value.toLowerCase().trim();
+            let clearIcon = document.getElementById('clearSearch');
+            let rows = document.querySelectorAll('.premium-row');
+            let sections = document.querySelectorAll('.program-section');
+
+            if (input === "") {
+                clearIcon.style.display = "none";
+                let savedTab = sessionStorage.getItem("activeProgramTab") || 'class-10';
+                sections.forEach(sec => {
+                    if (sec.id === savedTab) sec.classList.add("active");
+                    else sec.classList.remove("active");
+                });
+                rows.forEach(row => row.style.display = "flex");
+                return;
+            }
+
+            clearIcon.style.display = "block";
+            // Make all sections active so we can search globally
+            sections.forEach(sec => sec.classList.add("active"));
+
+            rows.forEach(row => {
+                let hindiText = row.innerText;
+                let searchableText = hindiText.toLowerCase();
+
+                // Append matching hinglish keywords
+                for (let hindiWord in hinglishMap) {
+                    if (hindiText.includes(hindiWord)) {
+                        searchableText += " " + hinglishMap[hindiWord];
+                    }
+                }
+
+                if (searchableText.includes(input)) {
+                    row.style.display = "flex";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        };
+
+        window.clearSearchInput = function() {
+            document.getElementById('searchInput').value = "";
+            window.searchProgram();
+        };
+
         // 🎵 MAIN LOGIC: Play / Pause Toggle
         window.togglePlay = async function(songUrl, studentName, clickedBtn) {
-            isPlayingOutro = false; 
             if (activeBtn === clickedBtn) {
                 if (player.paused) {
                     player.play(); setButtonToPause(clickedBtn); updateLiveStatus(studentName, true);
                 } else {
-                    // 🛑 80% CHECK WHEN PAUSING MANUALLY
                     if (player.duration > 0) {
                         let playedPercentage = (player.currentTime / player.duration) * 100;
                         if (playedPercentage >= 80) {
@@ -863,24 +939,16 @@
             player.src = songUrl; player.currentTime = 0; player.play();
             setButtonToPause(clickedBtn); updateLiveStatus(studentName, true); progressContainer.style.display = "block";
 
-            // 📱 🔥 LOCK SCREEN MEDIA PLAYER (THUMBNAIL & INFO) 🔥 📱
+            // 📱 🔥 LOCK SCREEN MEDIA PLAYER 🔥
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: studentName,
                     artist: '15 August Program - GVCC',
                     album: 'Gyan Varsha Coaching Center',
-                    artwork: [
-                        { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/512px-Flag_of_India.svg.png', sizes: '512x512', type: 'image/png' }
-                    ]
+                    artwork: [ { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/512px-Flag_of_India.svg.png', sizes: '512x512', type: 'image/png' } ]
                 });
-
-                navigator.mediaSession.setActionHandler('play', function() {
-                    player.play();
-                    if(activeBtn) setButtonToPause(activeBtn);
-                    updateLiveStatus(studentName, true);
-                });
-
-                navigator.mediaSession.setActionHandler('pause', async function() {
+                navigator.mediaSession.setActionHandler('play', function() { player.play(); if(activeBtn) setButtonToPause(activeBtn); updateLiveStatus(studentName, true); });
+                navigator.mediaSession.setActionHandler('pause', async function() { 
                     if (activeBtn && player.duration > 0) {
                         let playedPercentage = (player.currentTime / player.duration) * 100;
                         if (playedPercentage >= 80) {
@@ -889,9 +957,7 @@
                             activeBtn.classList.add('played-btn');
                             let row = activeBtn.closest('.premium-row');
                             if (row) row.classList.add('completed');
-
                             try { await setDoc(programStatusDoc, { [songId]: true }, { merge: true }); } catch(e) {}
-                            
                             player.pause(); player.currentTime = 0; resetAllButtons();
                             progressContainer.style.display = "none"; progressBar.style.width = "0%";
                             statusCard.classList.remove("playing");
@@ -900,18 +966,12 @@
                             return;
                         }
                     }
-                    player.pause();
-                    if(activeBtn) setButtonToPlay(activeBtn);
-                    updateLiveStatus(studentName, false);
+                    player.pause(); if(activeBtn) setButtonToPlay(activeBtn); updateLiveStatus(studentName, false); 
                 });
-
-                navigator.mediaSession.setActionHandler('stop', function() {
-                    window.stopSong();
-                });
+                navigator.mediaSession.setActionHandler('stop', function() { window.stopSong(); });
             }
         };
 
-        // 🛑 SMART STOP LOGIC (Stop All Music Button)
         window.stopSong = async function() {
             if (activeBtn && player.duration > 0) {
                 let playedPercentage = (player.currentTime / player.duration) * 100;
@@ -922,7 +982,6 @@
                     btnToUpdate.classList.add('played-btn');
                     let row = btnToUpdate.closest('.premium-row');
                     if (row) row.classList.add('completed');
-
                     try { await setDoc(programStatusDoc, { [songId]: true }, { merge: true }); } catch(e) {}
                 }
             }
@@ -932,26 +991,22 @@
             statusText.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-ban"></i> Music Stopped</span>';
         };
 
-        // ✅ AUTO UPDATE FIREBASE WHEN SONG 100% COMPLETED
         player.onended = async function() {
-            if (!isPlayingOutro) {
-                if (activeBtn) {
-                    let songId = activeBtn.getAttribute('data-id');
-                    try { await setDoc(programStatusDoc, { [songId]: true }, { merge: true }); } catch(e) {}
-                    
-                    activeBtn.classList.remove("active-pause");
-                    activeBtn.classList.add('played-btn');
-                    activeBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
-                    let row = activeBtn.closest('.premium-row');
-                    if (row) row.classList.add('completed');
-                }
-                resetAllButtons(); progressContainer.style.display = "none"; statusCard.classList.remove("playing");
-                statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
-                activeBtn = null;
+            if (activeBtn) {
+                let songId = activeBtn.getAttribute('data-id');
+                try { await setDoc(programStatusDoc, { [songId]: true }, { merge: true }); } catch(e) {}
+                
+                activeBtn.classList.remove("active-pause");
+                activeBtn.classList.add('played-btn');
+                activeBtn.innerHTML = '<i class="fa-solid fa-check-double"></i> Played';
+                let row = activeBtn.closest('.premium-row');
+                if (row) row.classList.add('completed');
             }
+            resetAllButtons(); progressContainer.style.display = "none"; statusCard.classList.remove("playing");
+            statusText.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-check-circle"></i> Performance Completed</span>';
+            activeBtn = null;
         };
 
-        // 🔄 RESET ENTIRE DATABASE 
         window.resetDatabase = async function() {
             if(confirm("⚠️ चेतावनी! क्या आप सच में 'Played' हुए सभी गानों का डेटा मिटाना चाहते हैं? (प्रोग्राम के दिन इसे मत दबाना)")) {
                 try {
@@ -987,9 +1042,7 @@
             btn.classList.remove("active-pause");
         }
 
-        function resetAllButtons() {
-            allBtns.forEach(btn => setButtonToPlay(btn)); 
-        }
+        function resetAllButtons() { allBtns.forEach(btn => setButtonToPlay(btn)); }
 
         function formatTime(seconds) {
             if (isNaN(seconds)) return "00:00";
