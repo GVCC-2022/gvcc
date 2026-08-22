@@ -178,7 +178,7 @@
         </div>
         <div class="timer-box">
             <i class="fa-solid fa-clock fa-pulse"></i>
-            <span id="countdownTimer">02:00</span>
+            <span id="countdownTimer">00:00</span>
         </div>
     </div>
 
@@ -299,9 +299,8 @@
 
         // 2. Updated Correct Answers array for all 50 Questions
         const correctAnswers = { q1: "D", q2: "C", q3: "D", q4: "B", q5: "A", q6: "A", q7: "D", q8: "C", q9: "C", q10: "B", q11: "C", q12: "B", q13: "A", q14: "D", q15: "C", q16: "C", q17: "B", q18: "B", q19: "A", q20: "B", q21: "C", q22: "B", q23: "C", q24: "B", q25: "B", q26: "A", q27: "A", q28: "B", q29: "D", q30: "D", q31: "C", q32: "D", q33: "B", q34: "A", q35: "B", q36: "B", q37: "D", q38: "D", q39: "A", q40: "A", q41: "D", q42: "A", q43: "B", q44: "B", q45: "D", q46: "B", q47: "C", q48: "A", q49: "B", q50: "C" };
-        let timerInterval;
+        
         let proctorInterval; 
-        let totalTimeLeft = 120; // 10 Minutes in Seconds
         let cheatCount = 0;
         let hasSubmitted = false;
         let isTestStarted = false; 
@@ -311,19 +310,21 @@
         const canvas = document.getElementById('photoCanvas');
         const currentRoll = localStorage.getItem("studentRoll"); 
 
-        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
+        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM (Updated Live Timer Logic)
         function checkTestTime() {
             // Apne hisaab se Date aur Time change karein
-            const testStartTime = new Date("2026-08-22T12:20:00").getTime(); 
-            const testEndTime = new Date("2026-08-22T12:22:00").getTime(); 
+            const testStartTime = new Date("2026-08-22T12:50:00").getTime(); 
+            const testEndTime = new Date("2026-08-22T12:52:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
             const passAreaElement = document.getElementById("passwordArea");
+            const timerDisplay = document.getElementById("countdownTimer");
 
-            if (!timeMsgElement || !passAreaElement) return; 
+            if (!timeMsgElement || !passAreaElement || !timerDisplay) return; 
 
             if (currentTime >= testEndTime) {
+                timerDisplay.innerText = "00:00";
                 if (isTestStarted === true && hasSubmitted === false) {
                     alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
                     window.processSubmission(true); 
@@ -335,10 +336,22 @@
                 }
             }
             else if (currentTime >= testStartTime && currentTime < testEndTime) {
+                // Live Countdown calculation (Absolute Time)
+                let timeLeft = Math.floor((testEndTime - currentTime) / 1000);
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timerDisplay.innerText = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
                 if (isTestStarted === false) {
                     timeMsgElement.style.display = "none";
                     passAreaElement.style.display = "block";
                 }
+            } else {
+                // Agar test start hone mein time hai, toh total time dikhayega
+                let totalDuration = Math.floor((testEndTime - testStartTime) / 1000);
+                let minutes = Math.floor(totalDuration / 60);
+                let seconds = totalDuration % 60;
+                timerDisplay.innerText = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             }
         }
         
@@ -387,65 +400,48 @@
         loadProfileHeader();
 
         window.verifyAndStartTest = async function() {
-    const passInput = document.getElementById("testPassword").value.trim();
-    
-    if (passInput === "GVCC2026") {
-        document.getElementById("lockSection").style.display = "none";
-        document.getElementById("testSection").style.display = "block";
-        
-        isTestStarted = true;
+            const passInput = document.getElementById("testPassword").value.trim();
+            
+            if (passInput === "GVCC2026") {
+                document.getElementById("lockSection").style.display = "none";
+                document.getElementById("testSection").style.display = "block";
+                
+                isTestStarted = true;
 
-        // 1. Pehle Camera Permission mangenge
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "user" }, 
-                audio: false 
-            });
-            video.srcObject = stream;
-            console.log("🔒 GVCC Camera Active!");
-            startAutomaticPhotoCapture(); 
-        } catch (err) {
-            console.error("Camera error:", err);
-            alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
-        }
-
-        // 2. Camera pop-up clear hone ke baad Timer aur Anti-Cheat activate karenge
-        startTestTimer();
-        activateAntiCheatSystem();
-
-        // 3. Database mein entry banayenge
-        try {
-            const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
-            await setDoc(testDocRef, { 
-                submitted: false, 
-                cheatStatus: "Testing connection live",
-                score: "0/50",
-                percentage: "0%",
-                submittedAt: "Direct Sync Test Successful"
-            }, { merge: true });
-        } catch(e) { 
-            alert("❌ Connection Fail Error: " + e.message); 
-        }
-    } else {
-        alert("❌ Galat Password! Kripya sahi password enter karein.");
-    }
-};
-
-
-        function startTestTimer() {
-            timerInterval = setInterval(() => {
-                if (totalTimeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    processSubmission(true); 
-                } else {
-                    totalTimeLeft--;
-                    let minutes = Math.floor(totalTimeLeft / 60);
-                    let seconds = totalTimeLeft % 60;
-                    document.getElementById("countdownTimer").innerText = 
-                        `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                // 1. Pehle Camera Permission mangenge
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: "user" }, 
+                        audio: false 
+                    });
+                    video.srcObject = stream;
+                    console.log("🔒 GVCC Camera Active!");
+                    startAutomaticPhotoCapture(); 
+                } catch (err) {
+                    console.error("Camera error:", err);
+                    alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
                 }
-            }, 1000);
-        }
+
+                // 2. Camera pop-up clear hone ke baad Anti-Cheat activate karenge (Timer ab automatic hai)
+                activateAntiCheatSystem();
+
+                // 3. Database mein entry banayenge
+                try {
+                    const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
+                    await setDoc(testDocRef, { 
+                        submitted: false, 
+                        cheatStatus: "Testing connection live",
+                        score: "0/50",
+                        percentage: "0%",
+                        submittedAt: "Direct Sync Test Successful"
+                    }, { merge: true });
+                } catch(e) { 
+                    alert("❌ Connection Fail Error: " + e.message); 
+                }
+            } else {
+                alert("❌ Galat Password! Kripya sahi password enter karein.");
+            }
+        };
 
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
@@ -569,8 +565,7 @@
             if (hasSubmitted) return;
             hasSubmitted = true;
             
-            clearInterval(timerInterval);
-            clearInterval(proctorInterval);
+            clearInterval(proctorInterval); // Removed old timer clear interval
 
             if (video.srcObject) {
                 const tracks = video.srcObject.getTracks();
