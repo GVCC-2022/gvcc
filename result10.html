@@ -108,15 +108,9 @@
     </div>
 </div>
 
-<div class="result-box" id="timerBox">
-    <p style="color: #d9534f; font-weight: bold; font-size: 15px;">
-        ⏳ Leaderboard <span id="timeRemaining">Loading...</span> mein unlock hoga.
-    </p>
-    <p style="font-size: 12px; color: #64748b;">(Class 10th ke sabhi bacchon ki ranking test khatam hone ke baad aayegi)</p>
-</div>
-
 <div class="result-box hidden" id="leaderboardBox">
-    <h2>🏆 Class 10th History Leaderboard</h2>
+    <h2>🏆 Live Leaderboard</h2>
+    <p style="font-size: 12px; color: #64748b; margin-top: -5px; margin-bottom: 10px;">(Jaise-jaise students submit karenge, unka naam yahan aayega)</p>
     <div class="table-container" id="leaderboardTableContainer"></div>
 </div>
 
@@ -126,7 +120,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -144,12 +138,7 @@
     let globalClass = "N/A";
     let globalName = "Student";
 
-    // 🎯 TARGET PATH CHANGED TO HISTORY10_TEST
     const targetTestPath = "history10_test"; 
-    
-    // ⏰ 20 Minutes Timer Settings (Isko bhi apne test ke hisab se Date adjust kar lena)
-    const testStartTime = new Date("2026-08-22T18:00:00").getTime(); 
-    const testDurationMs = 20 * 60 * 1000; 
 
     if (!activeRoll) {
         alert("Session Expired: Kripya dashboard se login karein.");
@@ -174,14 +163,13 @@
                 document.getElementById("studentClassDisplay").innerText = globalClass;
             }
 
-            // 🛑 STRICT SECURITY CHECK: Agar baccha Class 10th ka nahi hai toh block kar do
+            // STRICT SECURITY CHECK
             if (!globalClass.includes("10")) {
                 document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545; font-weight:700;"><i class="fa-solid fa-ban"></i> Error 403: Yeh result sirf Class 10th ke students ke liye published hai.</span>`;
-                document.getElementById("timerBox").classList.add("hidden");
                 return;
             }
 
-            // 2. Fetch Personal History Test Result
+            // 2. Fetch Personal Test Result
             const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
             const resultSnap = await getDoc(resultRef);
 
@@ -202,8 +190,8 @@
                 document.getElementById("myResultContent").innerHTML = "<p style='color:#dc3545; font-weight:bold;'>Aapne Class 10th History Online Test submit nahi kiya hai.</p>";
             }
 
-            // 3. Start Timer for Leaderboard
-            startLeaderboardTimer();
+            // 3. Load Leaderboard Immediately!
+            loadClassLeaderboard();
 
         } catch (error) {
             console.error(error);
@@ -211,41 +199,23 @@
         }
     }
 
-    function startLeaderboardTimer() {
-        const timerInterval = setInterval(() => {
-            const currentTime = new Date().getTime();
-            const timePassed = currentTime - testStartTime;
-            const timeLeft = testDurationMs - timePassed;
-
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                document.getElementById("timerBox").classList.add("hidden");
-                loadClassLeaderboard(); 
-            } else {
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                document.getElementById("timeRemaining").innerText = `${minutes} min ${seconds} sec`;
-            }
-        }, 1000);
-    }
-
     async function loadClassLeaderboard() {
         try {
-            // Fetch all records from tests -> history10_test -> students
             const q = collection(db, "tests", targetTestPath, "students");
             const querySnapshot = await getDocs(q);
             
             let studentsData = [];
             
-            // ⭐ NAAM FETCH KARNE KE LIYE FOR-OF LOOP (Kyunki await lagana tha)
+            // Loop for fetching names
             for (const testDocument of querySnapshot.docs) {
                 let data = testDocument.data();
-                data.rollNumber = testDocument.id; 
                 
-                // Score string extraction
+                // Agar bacche ne submit hi nahi kiya hai (submitted: false) to leaderboard me na dikhaye
+                if(data.submitted === false) continue; 
+
+                data.rollNumber = testDocument.id; 
                 data.sortScore = parseInt((data.score || "0").split('/')[0]) || 0;
                 
-                // ⭐ DATABASE SE NAAM NIKALNE KA NAYA CODE
                 try {
                     const profileRef = doc(db, "students", data.rollNumber);
                     const profileSnap = await getDoc(profileRef);
@@ -256,13 +226,13 @@
                         data.name = "GVCC Student";
                     }
                 } catch(e) {
-                    data.name = "GVCC Student"; // Error aane par default name
+                    data.name = "GVCC Student"; 
                 }
 
                 studentsData.push(data);
             }
 
-            // Highest rank scoring system logic setup
+            // Highest rank sorting
             studentsData.sort((a, b) => b.sortScore - a.sortScore);
 
             renderLeaderboardTable(studentsData);
@@ -274,7 +244,7 @@
 
     function renderLeaderboardTable(data) {
         if(data.length === 0) {
-            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Leaderboard data unavailable.</p>";
+            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Abhi tak kisi ne test submit nahi kiya hai.</p>";
             return;
         }
 
@@ -282,7 +252,6 @@
                         <tr>
                             <th>Rank</th>
                             <th>Name</th>
-                            <th>Roll No.</th>
                             <th>Score</th>
                         </tr>`;
         
@@ -296,7 +265,6 @@
             html += `<tr class="${rowClass}">
                         <td>#${rank}</td>
                         <td style="font-weight:600;">${student.name}</td>
-                        <td>${student.rollNumber}</td>
                         <td style="font-weight:bold; color:#003366;">${student.score || '--'}</td>
                     </tr>`;
         });
