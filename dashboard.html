@@ -10,6 +10,10 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- 🔥 YAHAN HAIN WO 2 GLOBAL THEME LINES 🔥 -->
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
+    
     <style>
         /* 👇 APP FEELING CODE 👇 */
         * {
@@ -31,14 +35,12 @@
 
         img { -webkit-user-drag: none; }
 
-        /* 🔥 DYNAMIC THEME VARIABLES (LIGHT & DARK MODE) 🔥 */
+        /* 🔥 DASHBOARD SPECIFIC THEME VARIABLES 🔥 */
         :root {
             --primary: #003366;
             --secondary: #007bff;
             --success: #28a745;
             --danger: #dc3545;
-            --bg: #f8fafc;
-            --text-main: #1e293b;
             --card-bg: #ffffff;
             --card-border: rgba(0,0,0,0.02);
             --border-line: #f1f5f9;
@@ -55,10 +57,8 @@
             --install-text: #0284c7;
         }
 
-        /* 🌙 DARK MODE VARIABLES */
+        /* 🌙 DASHBOARD SPECIFIC DARK VARIABLES */
         [data-theme="dark"] {
-            --bg: #0b1120;
-            --text-main: #f8fafc;
             --card-bg: #1e293b;
             --card-border: rgba(255,255,255,0.05);
             --border-line: #334155;
@@ -77,16 +77,14 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
+            /* Background aur Color ab Global theme.css handle karega */
             margin: 0;
             padding: 0;
-            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             overscroll-behavior-y: none; 
             touch-action: manipulation;  
-            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         .page-exit { animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
@@ -158,23 +156,23 @@
         .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--border-line); }
         .info-row:last-child { border: none; }
         .info-label { color: var(--label-text); font-weight: 500; }
-        .info-value { color: var(--text-main); font-weight: 600; transition: color 0.3s; }
+        .info-value { font-weight: 600; transition: color 0.3s; } /* Color will inherit from global text-color */
 
         .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .full-width { grid-column: span 2; }
 
         .menu-card {
-            background: var(--card-bg) !important; color: var(--text-main); border: none; border-radius: 14px; padding: 18px 12px;
+            background: var(--card-bg) !important; border: none; border-radius: 14px; padding: 18px 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent;
+            transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent; color: inherit;
         }
         .menu-card:active { transform: scale(0.92) !important; opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
         .menu-card i { font-size: 24px; }
         .menu-card span { font-size: 14px; font-weight: 600; }
 
-        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white; flex-direction: row; padding: 14px; }
+        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white !important; flex-direction: row; padding: 14px; }
         .card-live i { font-size: 20px; animation: pulse 1.5s infinite; }
         .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
         .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
@@ -183,7 +181,7 @@
         
         .card-install { 
             background: var(--install-bg) !important;
-            color: var(--install-text); border: 1px solid var(--install-border); flex-direction: row; padding: 14px;
+            color: var(--install-text) !important; border: 1px solid var(--install-border); flex-direction: row; padding: 14px;
         }
         .card-install i { font-size: 20px; animation: bounce 2s infinite; }
 
@@ -208,34 +206,6 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
     </style>
-
-    <!-- 🌙 DARK/LIGHT MODE SCRIPT (RUNS IMMEDIATELY) -->
-    <script>
-        function applyTheme(theme) {
-            document.documentElement.setAttribute("data-theme", theme);
-            localStorage.setItem("theme", theme);
-            
-            // Icon Switcher
-            let icon = document.getElementById("themeIcon");
-            if (icon) {
-                icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
-                icon.style.color = theme === "dark" ? "#fbbf24" : "#ffd700"; // Yellow sun / Gold moon
-            }
-        }
-
-        function toggleTheme() {
-            let currentTheme = document.documentElement.getAttribute("data-theme");
-            let newTheme = currentTheme === "dark" ? "light" : "dark";
-            applyTheme(newTheme);
-        }
-
-        // Auto-detect saved theme or system preference
-        let savedTheme = localStorage.getItem("theme");
-        if (!savedTheme) {
-            savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-        }
-        applyTheme(savedTheme);
-    </script>
 </head>
 <body>
 
@@ -256,11 +226,6 @@
                     <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content;">
                         ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
                     </div>
-                </div>
-
-                <!-- 🌙 DARK MODE TOGGLE BUTTON -->
-                <div style="position: absolute !important; right: 20px; top: 35px; cursor: pointer; z-index: 10001;" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-                    <i class="fa-solid fa-moon" id="themeIcon" style="color: #ffd700; font-size: 24px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); transition: 0.3s transform;"></i>
                 </div>
             </div>
             <div style="height: 110px; width: 100%; background: transparent;"></div>
@@ -286,7 +251,6 @@
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 
-                <!-- 🌟 Daily Diary Page (Now connected to Dark Mode vars) -->
                 <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: var(--diary-bg) !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
                     <span style="font-size: 16px; color: var(--diary-text); font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
@@ -336,9 +300,6 @@
 
     <!-- UI & App Install Scripts -->
     <script>
-        // Set icon shape correctly on script execution
-        document.getElementById("themeIcon").className = document.documentElement.getAttribute("data-theme") === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
-
         function navigateWithAnimation(url) {
             document.body.classList.add('page-exit');
             setTimeout(() => { window.location.href = url; }, 300);
