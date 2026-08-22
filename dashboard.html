@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -31,6 +31,7 @@
 
         img { -webkit-user-drag: none; }
 
+        /* 🔥 DYNAMIC THEME VARIABLES (LIGHT & DARK MODE) 🔥 */
         :root {
             --primary: #003366;
             --secondary: #007bff;
@@ -38,6 +39,40 @@
             --danger: #dc3545;
             --bg: #f8fafc;
             --text-main: #1e293b;
+            --card-bg: #ffffff;
+            --card-border: rgba(0,0,0,0.02);
+            --border-line: #f1f5f9;
+            --label-text: #64748b;
+            
+            /* Custom Colored Cards */
+            --diary-bg: #faf5ff;
+            --diary-text: #6b21a8;
+            --gallery-bg: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            --gallery-border: #fbcfe8;
+            --gallery-text: #c026d3;
+            --install-bg: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            --install-border: #7dd3fc;
+            --install-text: #0284c7;
+        }
+
+        /* 🌙 DARK MODE VARIABLES */
+        [data-theme="dark"] {
+            --bg: #0b1120;
+            --text-main: #f8fafc;
+            --card-bg: #1e293b;
+            --card-border: rgba(255,255,255,0.05);
+            --border-line: #334155;
+            --label-text: #94a3b8;
+            
+            /* Custom Colored Cards Dark */
+            --diary-bg: #2e1065;
+            --diary-text: #d8b4fe;
+            --gallery-bg: linear-gradient(135deg, #4a044e, #2e1065);
+            --gallery-border: #701a75;
+            --gallery-text: #f0abfc;
+            --install-bg: linear-gradient(135deg, #075985, #0f172a);
+            --install-border: #0ea5e9;
+            --install-text: #38bdf8;
         }
 
         body {
@@ -51,6 +86,7 @@
             min-height: 100vh;
             overscroll-behavior-y: none; 
             touch-action: manipulation;  
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         .page-exit { animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
@@ -109,29 +145,29 @@
         .container { max-width: 450px; width: 90%; margin: -25px auto 30px auto; flex: 1; }
 
         .profile-card {
-            background: white; border-radius: 16px; padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02);
-            margin-bottom: 25px;
+            background: var(--card-bg); border-radius: 16px; padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border);
+            margin-bottom: 25px; transition: all 0.3s ease;
         }
 
         .profile-header {
-            font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 15px;
-            display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;
+            font-size: 16px; font-weight: 700; color: #007bff; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--border-line); padding-bottom: 8px;
         }
 
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #f1f5f9; }
+        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--border-line); }
         .info-row:last-child { border: none; }
-        .info-label { color: #64748b; font-weight: 500; }
-        .info-value { color: var(--text-main); font-weight: 600; }
+        .info-label { color: var(--label-text); font-weight: 500; }
+        .info-value { color: var(--text-main); font-weight: 600; transition: color 0.3s; }
 
         .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .full-width { grid-column: span 2; }
 
         .menu-card {
-            background: white !important; border: none; border-radius: 14px; padding: 18px 12px;
+            background: var(--card-bg) !important; color: var(--text-main); border: none; border-radius: 14px; padding: 18px 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.1s ease; text-decoration: none;
+            transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent;
         }
         .menu-card:active { transform: scale(0.92) !important; opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
@@ -146,8 +182,8 @@
         .card-result { color: #10b981; border-top: 4px solid #10b981; }
         
         .card-install { 
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
-            color: #0284c7; border: 1px solid #7dd3fc; flex-direction: row; padding: 14px;
+            background: var(--install-bg) !important;
+            color: var(--install-text); border: 1px solid var(--install-border); flex-direction: row; padding: 14px;
         }
         .card-install i { font-size: 20px; animation: bounce 2s infinite; }
 
@@ -171,8 +207,35 @@
         @keyframes shine { to { background-position: 200% center; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
-        @keyframes shineVIP { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
     </style>
+
+    <!-- 🌙 DARK/LIGHT MODE SCRIPT (RUNS IMMEDIATELY) -->
+    <script>
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            localStorage.setItem("theme", theme);
+            
+            // Icon Switcher
+            let icon = document.getElementById("themeIcon");
+            if (icon) {
+                icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+                icon.style.color = theme === "dark" ? "#fbbf24" : "#ffd700"; // Yellow sun / Gold moon
+            }
+        }
+
+        function toggleTheme() {
+            let currentTheme = document.documentElement.getAttribute("data-theme");
+            let newTheme = currentTheme === "dark" ? "light" : "dark";
+            applyTheme(newTheme);
+        }
+
+        // Auto-detect saved theme or system preference
+        let savedTheme = localStorage.getItem("theme");
+        if (!savedTheme) {
+            savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+        }
+        applyTheme(savedTheme);
+    </script>
 </head>
 <body>
 
@@ -193,6 +256,11 @@
                     <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content;">
                         ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
                     </div>
+                </div>
+
+                <!-- 🌙 DARK MODE TOGGLE BUTTON -->
+                <div style="position: absolute !important; right: 20px; top: 35px; cursor: pointer; z-index: 10001;" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon" style="color: #ffd700; font-size: 24px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); transition: 0.3s transform;"></i>
                 </div>
             </div>
             <div style="height: 110px; width: 100%; background: transparent;"></div>
@@ -218,25 +286,11 @@
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
                 
-                <!-- 🌟 NAYA: Link to Daily Diary Page -->
-                <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: #faf5ff !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
+                <!-- 🌟 Daily Diary Page (Now connected to Dark Mode vars) -->
+                <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: var(--diary-bg) !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
-                    <span style="font-size: 16px; color: #6b21a8; font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
+                    <span style="font-size: 16px; color: var(--diary-text); font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
                 </button>
-
-                <!-- 🔥 👑 VIP OFFLINE RESULT BUTTON (NEW) 🔥 
-               <button class="menu-card full-width" style="background: linear-gradient(135deg, #0f172a, #1e293b) !important; border: 1px solid #fbbf24; flex-direction: row; padding: 18px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.25); position: relative; overflow: hidden; align-items: center; justify-content: flex-start;" onclick="routeToVIPResult()">
-                    
-                    <!-- ✨ Shine Effect Layer 
-                     <div style="position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.3), transparent); transform: skewX(-20deg); animation: shineVIP 3s infinite;"></div> 
-                    
-                   <i class="fa-solid fa-crown fa-beat" style="font-size: 28px; color: #fbbf24; --fa-animation-duration: 2.5s; text-shadow: 0 0 15px rgba(251,191,36,0.6); margin-left: 10px;"></i> 
-                    
-                    <div style="display: flex; flex-direction: column; text-align: left; margin-left: 20px; z-index: 1;">
-                        <span style="font-size: 17px; font-weight: 800; color: #fbbf24; letter-spacing: 0.5px;">VIP OFFLINE RESULT 🚀</span>
-                        <span style="font-size: 12px; color: #cbd5e1; font-weight: 500; margin-top: 3px;">Apna Secret Code se marks check karein</span>
-                    </div> 
-                </button> -->
 
                 <a href="https://meet.google.com/iwb-mgyk-mpd" class="menu-card card-live full-width" target="_blank">
                     <i class="fa-solid fa-video"></i><span>Join Live Class</span>
@@ -258,7 +312,7 @@
                     <i class="fa-solid fa-chart-bar"></i><span>Result</span>
                 </button>
 
-                <button class="menu-card full-width" style="color: #c026d3; border: 1px solid #fbcfe8; background: linear-gradient(135deg, #fdf2f8, #fce7f3) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
+                <button class="menu-card full-width" style="color: var(--gallery-text); border: 1px solid var(--gallery-border); background: var(--gallery-bg) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
                     <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
                     <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
                 </button>
@@ -282,6 +336,9 @@
 
     <!-- UI & App Install Scripts -->
     <script>
+        // Set icon shape correctly on script execution
+        document.getElementById("themeIcon").className = document.documentElement.getAttribute("data-theme") === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+
         function navigateWithAnimation(url) {
             document.body.classList.add('page-exit');
             setTimeout(() => { window.location.href = url; }, 300);
@@ -342,16 +399,35 @@
 
         let studentClassGlobal = "10th";
         
-        // 🔥 BIG FIX 1: Login Roll No check karega (studentRoll nahi mila to loggedInRollNo dhoondega)
         const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
 
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
-            fetchStudentData(activeRoll);
+            // 🔥 BIG FIX (OPTIMISTIC LOADING): Pehle saved data dikhao bina wait kiye
+            const savedName = localStorage.getItem("studentName");
+            const savedClass = localStorage.getItem("studentClass");
+            let isLocallyLoaded = false;
+
+            if (savedName && savedClass) {
+                document.getElementById("studentName").innerText = savedName;
+                document.getElementById("studentRollDisplay").innerText = activeRoll;
+                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
+                
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("mainContent").style.display = "flex";
+                isLocallyLoaded = true;
+            }
+
+            // Phir background me database se fetch karo
+            fetchStudentData(activeRoll, !isLocallyLoaded);
         }
 
-        async function fetchStudentData(roll) {
+        async function fetchStudentData(roll, showLoader) {
+            if (showLoader) {
+                document.getElementById("loading").style.display = "flex";
+                document.getElementById("mainContent").style.display = "none";
+            }
             try {
                 const docRef = doc(db, "students", roll);
                 const docSnap = await getDoc(docRef);
@@ -372,14 +448,19 @@
                     document.getElementById("studentRollDisplay").innerText = roll;
                     document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
                     
-                    document.getElementById("loading").style.display = "none";
-                    document.getElementById("mainContent").style.display = "flex";
-
+                    if (showLoader) {
+                        document.getElementById("loading").style.display = "none";
+                        document.getElementById("mainContent").style.display = "flex";
+                    }
                 } else {
-                    alert("Session Error: Profile not found."); window.logout();
+                    if (showLoader) {
+                        alert("Session Error: Profile not found."); window.logout();
+                    }
                 }
             } catch (error) {
-                document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
+                if (showLoader) {
+                    document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
+                }
             }
         }
 
@@ -479,68 +560,44 @@
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
-                // 🔥 VIP Result Routing Logic (Roll Number Base Par)
+        // 🔥 VIP Result Routing Logic
         window.routeToVIPResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
+            if (!roll) { alert("⚠️ Please login first!"); return; }
 
-            if (!roll) {
-                alert("⚠️ Please login first!");
-                return;
-            }
-
-            if (roll.startsWith("8")) {
-                navigateWithAnimation("vip_result8.html");
-            } else if (roll.startsWith("9")) {
-                navigateWithAnimation("vip_result9.html");
-            } else if (roll.startsWith("10") || roll === "2356") {
-                // 10th वालों को और 2356 को उनके VIP रिजल्ट पर भेजेगा
-                navigateWithAnimation("vip_result10.html");
-            } else {
-                alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai.");
-            }
+            if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
+            else if (roll.startsWith("9")) { navigateWithAnimation("vip_result9.html"); }
+            else if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("vip_result10.html"); }
+            else { alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai."); }
         }
 
-        // 🔥 Online Live Test Routing Logic (Roll Number Base Par)
+        // 🔥 Online Live Test Routing Logic
         window.routeToLiveTest = function() {
             let roll = localStorage.getItem("studentRoll") || "";
-            
-            if (roll.startsWith("10") || roll === "2356") {
-                navigateWithAnimation("history10.html");
-            } else if (roll.startsWith("9")) {
-                navigateWithAnimation("history9.html");
-            } else if (roll.startsWith("8")) {
-                navigateWithAnimation("math8.html");
-            } else {
-                alert("⚠️ Error: Aapki class ke liye koi active test nahi hai.");
-            }
+            if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("history10.html"); }
+            else if (roll.startsWith("9")) { navigateWithAnimation("history9.html"); }
+            else if (roll.startsWith("8")) { navigateWithAnimation("math8.html"); }
+            else { alert("⚠️ Error: Aapki class ke liye koi active test nahi hai."); }
         }
 
-        // 🔥 Online Result Routing Logic (Roll Number Base Par)
+        // 🔥 Online Result Routing Logic
         window.routeToResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
-            
-            if (roll.startsWith("10") || roll === "2356") {
-                navigateWithAnimation("result10.html");
-            } else if (roll.startsWith("9")) {
-                navigateWithAnimation("result.html");
-            } else if (roll.startsWith("8")) {
-                alert("⚠️ Alert: Class 8th ka online result abhi available nahi hai!");
-            } else {
-                alert("⚠️ Error: Aapki class ke liye koi result nahi hai.");
-            }
+            if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
+            else if (roll.startsWith("9")) { navigateWithAnimation("result.html"); }
+            else if (roll.startsWith("8")) { alert("⚠️ Alert: Class 8th ka online result abhi available nahi hai!"); }
+            else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
         }
 
-        // 🔥 Logout Logic (Pura Data Clean Karega)
+        // 🔥 Logout Logic
         window.logout = function() { 
             document.body.classList.add('page-exit'); 
             setTimeout(() => {
-                // 🔥 BIG FIX 2: Logout karne par ab saara purana data clean hoga!
                 localStorage.clear(); 
                 window.location.replace("student-login.html"); 
             }, 300);
         }
         document.getElementById("logoutBtn").addEventListener("click", window.logout);
     </script>
-
 </body>
 </html>
