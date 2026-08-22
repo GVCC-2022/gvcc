@@ -147,8 +147,8 @@
     // 🎯 TARGET PATH CHANGED TO HISTORY10_TEST
     const targetTestPath = "history10_test"; 
     
-    // ⏰ 20 Minutes Timer Settings
-    const testStartTime = new Date("2026-06-21T18:00:00").getTime(); 
+    // ⏰ 20 Minutes Timer Settings (Isko bhi apne test ke hisab se Date adjust kar lena)
+    const testStartTime = new Date("2026-08-22T18:00:00").getTime(); 
     const testDurationMs = 20 * 60 * 1000; 
 
     if (!activeRoll) {
@@ -236,14 +236,31 @@
             const querySnapshot = await getDocs(q);
             
             let studentsData = [];
-            querySnapshot.forEach((doc) => {
-                let data = doc.data();
-                data.rollNumber = doc.id; 
+            
+            // ⭐ NAAM FETCH KARNE KE LIYE FOR-OF LOOP (Kyunki await lagana tha)
+            for (const testDocument of querySnapshot.docs) {
+                let data = testDocument.data();
+                data.rollNumber = testDocument.id; 
                 
                 // Score string extraction
                 data.sortScore = parseInt((data.score || "0").split('/')[0]) || 0;
+                
+                // ⭐ DATABASE SE NAAM NIKALNE KA NAYA CODE
+                try {
+                    const profileRef = doc(db, "students", data.rollNumber);
+                    const profileSnap = await getDoc(profileRef);
+                    if (profileSnap.exists()) {
+                        const pData = profileSnap.data();
+                        data.name = pData["Name "] || pData.Name || "GVCC Student";
+                    } else {
+                        data.name = "GVCC Student";
+                    }
+                } catch(e) {
+                    data.name = "GVCC Student"; // Error aane par default name
+                }
+
                 studentsData.push(data);
-            });
+            }
 
             // Highest rank scoring system logic setup
             studentsData.sort((a, b) => b.sortScore - a.sortScore);
@@ -278,7 +295,7 @@
 
             html += `<tr class="${rowClass}">
                         <td>#${rank}</td>
-                        <td>${student.name || 'GVCC Student'}</td>
+                        <td style="font-weight:600;">${student.name}</td>
                         <td>${student.rollNumber}</td>
                         <td style="font-weight:bold; color:#003366;">${student.score || '--'}</td>
                     </tr>`;
