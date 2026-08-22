@@ -400,27 +400,23 @@
         let studentClassGlobal = "10th";
         
         const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+        
+        // 🔥 SUPER FIX: Wapas aane par NA na dikhe, isliye turant LocalStorage se data uthao
+        const savedName = localStorage.getItem("studentName");
+        const savedClass = localStorage.getItem("studentClass");
+
+        if (savedName && savedClass && activeRoll) {
+            document.getElementById("studentName").innerText = savedName;
+            document.getElementById("studentRollDisplay").innerText = activeRoll;
+            document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("mainContent").style.display = "flex";
+        }
 
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
-            // 🔥 BIG FIX (OPTIMISTIC LOADING): Pehle saved data dikhao bina wait kiye
-            const savedName = localStorage.getItem("studentName");
-            const savedClass = localStorage.getItem("studentClass");
-            let isLocallyLoaded = false;
-
-            if (savedName && savedClass) {
-                document.getElementById("studentName").innerText = savedName;
-                document.getElementById("studentRollDisplay").innerText = activeRoll;
-                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
-                
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("mainContent").style.display = "flex";
-                isLocallyLoaded = true;
-            }
-
-            // Phir background me database se fetch karo
-            fetchStudentData(activeRoll, !isLocallyLoaded);
+            fetchStudentData(activeRoll); // Piche background me data update kar lega
         }
 
         async function fetchStudentData(roll, showLoader) {
