@@ -201,7 +201,7 @@
         </div>
 
         <div id="testSection" class="glass-panel" style="display:none;">
-            <h2 id="testTitle">Class 10th History Test</h2>
+            <h2 id="testTitle">Class 10th History CH-1 (Test 2)</h2>
             <hr style="border:0; border-top:1px solid var(--panel-border); margin-bottom:25px;">
 
             <form id="quizForm">
@@ -293,7 +293,7 @@
         const db = getFirestore(app);
 
         // 👇👇👇🔥 NAYA TEST ID YAHAN BADLEIN 🔥👇👇👇
-        const TARGET_TEST_ID = "history10_test_1"; 
+        const TARGET_TEST_ID = "history10_test_2"; 
         // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
 
         // 2. Updated Correct Answers array for all 50 Questions
@@ -311,8 +311,8 @@
 
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
-            const testStartTime = new Date("2026-08-23T19:00:00").getTime(); 
-            const testEndTime = new Date("2026-08-23T19:20:00").getTime(); 
+            const testStartTime = new Date("2026-08-24T19:00:00").getTime(); 
+            const testEndTime = new Date("2026-08-24T19:20:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
