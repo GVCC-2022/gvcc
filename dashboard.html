@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>GVCC - Student Dashboard</title>
@@ -10,7 +10,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 🔥 YAHAN HAIN WO 2 GLOBAL THEME LINES 🔥 -->
+    <!-- 🔥 GLOBAL THEME SYSTEM 🔥 -->
     <link rel="stylesheet" href="theme.css">
     <script src="theme.js" defer></script>
     
@@ -77,7 +77,6 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Background aur Color ab Global theme.css handle karega */
             margin: 0;
             padding: 0;
             display: flex;
@@ -156,7 +155,7 @@
         .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--border-line); }
         .info-row:last-child { border: none; }
         .info-label { color: var(--label-text); font-weight: 500; }
-        .info-value { font-weight: 600; transition: color 0.3s; } /* Color will inherit from global text-color */
+        .info-value { font-weight: 600; transition: color 0.3s; } 
 
         .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .full-width { grid-column: span 2; }
@@ -250,7 +249,6 @@
 
             <!-- 📌 CLEAN 2x2 GRID MENU -->
             <div class="grid-menu">
-                
                 <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: var(--diary-bg) !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
                     <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
                     <span style="font-size: 16px; color: var(--diary-text); font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
@@ -298,7 +296,7 @@
         </footer>
     </div>
 
-    <!-- UI & App Install Scripts -->
+    <!-- UI Scripts -->
     <script>
         function navigateWithAnimation(url) {
             document.body.classList.add('page-exit');
@@ -348,8 +346,7 @@
             projectId: "gvcc-database",
             storageBucket: "gvcc-database.firebasestorage.app",
             messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931",
-            measurementId: "G-DP808QLE7K"
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
 
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -362,77 +359,66 @@
         
         const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
         
-        // 🔥 NA BUG FIX: LocalStorage se data laao
-        const savedName = localStorage.getItem("studentName");
-        const savedClass = localStorage.getItem("studentClass");
+        // 🔥 SUPER FIX: Sirf LocalStorage se valid naam uthao. Agar NA/Data Not Found ho toh mat lo.
+        let savedName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+        let savedClass = localStorage.getItem("studentClass") || localStorage.getItem("Class");
 
-        // 🔥 Agar Name mein "N/A" ya "undefined" save ho gaya hai, toh usko reject kar do!
-        const isValidName = savedName && savedName !== "N/A" && savedName !== "undefined" && savedName !== "null";
+        // Agar galti se NA save ho gaya hai, to use clear maano
+        if(savedName === "N/A" || savedName === "Data Not Found" || savedName === "undefined") {
+            savedName = null;
+        }
 
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
-            if (isValidName && savedClass) {
-                // Sahi data hai toh turant dikhao
+            // UI FORAN UPDATE KAREIN (0.01 seconds me)
+            if (savedName) {
                 document.getElementById("studentName").innerText = savedName;
-                document.getElementById("studentRollDisplay").innerText = activeRoll;
-                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("mainContent").style.display = "flex";
-            } else {
-                // Purana data kharab hai toh Loading... dikhao jab tak internet se na aa jaye
-                document.getElementById("studentName").innerText = "Fetching Name...";
-                document.getElementById("studentClass").innerText = "Fetching Class...";
-                // Loader ghume ga jab tak data aayega
             }
+            if (savedClass && savedClass !== "N/A") {
+                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
+            }
+            document.getElementById("studentRollDisplay").innerText = activeRoll;
+            
+            // Screen turant dikha do, loader mat dikhao
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("mainContent").style.display = "flex";
 
-            // Piche background me Firebase se naya aur original data update karo
-            fetchStudentData(activeRoll, !isValidName); 
+            // Peeche chupke se Firebase check karega (Agar Local data nahi tha toh loader ke bina text replace karega)
+            fetchStudentData(activeRoll);
         }
 
-        async function fetchStudentData(roll, showLoader) {
-            if (showLoader) {
-                document.getElementById("loading").style.display = "flex";
-                document.getElementById("mainContent").style.display = "none";
-            }
+        async function fetchStudentData(roll) {
             try {
                 const docRef = doc(db, "students", roll);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "Data Not Found";
-                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "Data Not Found";
-                    
-                    studentClassGlobal = String(studentClass).trim();
-                    
-                    // Naya sahi data save karo
-                    localStorage.setItem("studentClass", studentClassGlobal);
-                    localStorage.setItem("studentName", studentName);
-                    
-                    if (analytics) { try { setUserProperties(analytics, { class_group: studentClassGlobal }); } catch(e) {} }
-                    
-                    document.getElementById("studentName").innerText = studentName;
-                    document.getElementById("studentRollDisplay").innerText = roll;
-                    document.getElementById("studentClass").innerText = studentClass + (String(studentClass).toLowerCase().includes('th') ? '' : 'th');
-                    
-                    if (showLoader) {
-                        document.getElementById("loading").style.display = "none";
-                        document.getElementById("mainContent").style.display = "flex";
+                    let fbName = data["Name "] || data.Name || data.name || data.StudentName;
+                    let fbClass = data["Class "] || data.Class || data.class || data.stdClass;
+
+                    // FIREBASE MEIN ASLI NAAM HAI TABHI UPDATE KAREGA, WARNA "NA" KABHI NAHI LIKHEGA!
+                    if (fbName && fbName.trim() !== "") {
+                        document.getElementById("studentName").innerText = fbName;
+                        localStorage.setItem("studentName", fbName);
+                        localStorage.setItem("Name", fbName);
                     }
-                } else {
-                    if (showLoader) {
-                        alert("Session Error: Profile not found."); window.logout();
+                    if (fbClass) {
+                        let cleanClass = String(fbClass).trim();
+                        studentClassGlobal = cleanClass;
+                        document.getElementById("studentClass").innerText = cleanClass + (cleanClass.toLowerCase().includes('th') ? '' : 'th');
+                        localStorage.setItem("studentClass", cleanClass);
+                        localStorage.setItem("Class", cleanClass);
+                        if (analytics) { try { setUserProperties(analytics, { class_group: cleanClass }); } catch(e) {} }
                     }
                 }
             } catch (error) {
-                if (showLoader) {
-                    document.getElementById("loading").innerHTML = "<div style='color:red;'>⚠️ Connection timeout. Refresh the page.</div>";
-                }
+                console.log("Network slow, using local data only.");
             }
         }
 
-        // --- BAAKI CODE (Notices aur Exams wala) SAME RAHEGA ---
+        // Notices Load
         const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
         onSnapshot(qNotices, (snapshot) => {
             const noticeBox = document.getElementById("studentNotices");
@@ -450,6 +436,7 @@
             });
         });
 
+        // Popup Radar
         const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
         onSnapshot(popupQuery, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
@@ -486,6 +473,7 @@
             document.body.appendChild(pop);
         }
 
+        // Active Tests
         const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
         onSnapshot(qTests, (snapshot) => {
             const testBox = document.getElementById("studentTests");
@@ -520,9 +508,9 @@
                 if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
             } catch (err) { console.log("FCM Token Error:", err); }
         }
-
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
+        // Routing Logic
         window.routeToVIPResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (!roll) { alert("⚠️ Please login first!"); return; }
@@ -531,7 +519,6 @@
             else if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("vip_result10.html"); }
             else { alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai."); }
         }
-
         window.routeToLiveTest = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("history10.html"); }
@@ -539,7 +526,6 @@
             else if (roll.startsWith("8")) { navigateWithAnimation("math8.html"); }
             else { alert("⚠️ Error: Aapki class ke liye koi active test nahi hai."); }
         }
-
         window.routeToResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
