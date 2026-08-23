@@ -80,7 +80,7 @@
         /* 🔥 SELECT TEST DROPDOWN VIP STYLE (WITH CUSTOM ARROW) 🔥 */
         .custom-select {
             width: 100%;
-            padding: 14px 45px 14px 15px; /* Right padding badha di taaki text arrow par na chade */
+            padding: 14px 45px 14px 15px; 
             border-radius: 10px;
             background-color: var(--input-bg);
             color: var(--text-main);
@@ -92,22 +92,28 @@
             outline: none;
             transition: 0.3s;
             
-            /* Purana ghatiya arrow hataya aur naya VIP arrow lagaya */
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23007bff"><path d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
-            background-position: right 15px center; /* 🔥 ARROW KO RIGHT SE 15px LEFT KHISKA DIYA 🔥 */
+            background-position: right 15px center; 
             background-size: 26px;
         }
         .custom-select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
 
-        /* Dark mode mein arrow ka color change karne ke liye */
         [data-theme="dark"] .custom-select {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2338bdf8"><path d="M7 10l5 5 5-5z"/></svg>');
         }
         
+        .marks-highlight {
+            font-size: 32px;
+            color: #28a745;
+            font-weight: 800;
+            margin: 10px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        [data-theme="dark"] .marks-highlight { color: #34d399; }
 
         .info-text { font-size: 14px; margin: 5px 0; color: var(--text-muted); }
         .info-text strong { color: var(--text-main); }
@@ -153,19 +159,12 @@
 
 <div class="result-box" id="myResultBox">
     
-    <!-- 👇👇👇🔥 NAYA TEST LIST YAHAN JODEIN 🔥👇👇👇 -->
     <!-- 👇👇👇 SELECT TEST DROPDOWN 👇👇👇 -->
     <select id="testSelector" class="custom-select" onchange="changeTest()">
-        
-        <!-- YEH TEST 1 HAI (Iska naam 'history10_test' hi rehna chahiye kyunki asli data isi me hai) -->
         <option value="history10_test">📚 History CH-1 (Test 1)</option>
-        
-        <!-- YEH TEST 2 HAI (Isme bina space ke value daalni hai) -->
         <option value="history10_ch1_test2">📚 History CH-1 (Test 2)</option>
-        
     </select>
     <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
-    <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
 
     <h2>👤 Aapka Result</h2>
     <p id="loadingText" style="color: var(--text-main);"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
@@ -213,29 +212,31 @@
     let globalClass = localStorage.getItem("studentClass") || "N/A";
     const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
-    // 🌟 FIX 1: REFRESH PROBLEM SOLVED (Memory se purana selection laao)
+    // 🌟 REFRESH PROBLEM SOLVED (Memory se purana selection laao)
     let testSelector = document.getElementById("testSelector");
     let savedTestOption = localStorage.getItem("lastViewedTest");
     
-    // Agar memory mein koi test save hai aur wo dropdown mein maujood hai, toh usko select kar lo
     if (savedTestOption && testSelector.querySelector(`option[value="${savedTestOption}"]`)) {
         testSelector.value = savedTestOption;
     }
 
-    // 🌟 FIX 2: SPACE HATAO (.trim() lagaya)
     let targetTestPath = testSelector.value.trim(); 
 
     // 🔥 1-CLICK CHANGE FUNCTION
     window.changeTest = function() {
         targetTestPath = document.getElementById("testSelector").value.trim();
         
-        // Naya selection memory mein save kar lo taaki refresh par wapas Test 1 par na jaye
         localStorage.setItem("lastViewedTest", targetTestPath); 
         
         document.getElementById("myResultContent").classList.add("hidden");
         document.getElementById("leaderboardBox").classList.add("hidden");
         document.getElementById("loadingText").innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading test data...`;
         document.getElementById("loadingText").classList.remove("hidden");
+        
+        // 🚀 BUG FIX: Display ko wapas reset kar rahe hain taaki crash na ho
+        document.getElementById("myMarksDisplay").style.display = "block";
+        document.getElementById("myPercentDisplay").style.display = "block";
+        document.getElementById("cheatStatusDisplay").innerHTML = "";
         
         fetchStudentProfileAndResult();
     };
@@ -284,6 +285,10 @@
 
             if (resultSnap.exists()) {
                 const rData = resultSnap.data();
+                // Wapas visible karo agar chhupa tha
+                document.getElementById("myMarksDisplay").style.display = "block";
+                document.getElementById("myPercentDisplay").style.display = "block";
+                
                 document.getElementById("myMarksDisplay").innerText = rData.score || "--/--";
                 document.getElementById("myPercentDisplay").innerText = rData.percentage || "";
                 
@@ -293,14 +298,16 @@
                     document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
                 }
             } else {
-                document.getElementById("myResultContent").innerHTML = "<p style='color: var(--text-main); font-weight:bold;'>Aapne is Online Test ko submit nahi kiya hai.</p>";
+                // 🚀 SUPER FIX: Yahan tags (myMarksDisplay aur myPercentDisplay) ko delete nahi kar rahe, sirf chhupa rahe hain.
+                document.getElementById("myMarksDisplay").style.display = "none";
+                document.getElementById("myPercentDisplay").style.display = "none";
+                document.getElementById("cheatStatusDisplay").innerHTML = "<p style='color: var(--danger); font-weight:bold; font-size: 16px;'>Aapne is Online Test ko submit nahi kiya hai.</p>";
             }
 
             loadClassLeaderboard();
 
         } catch (error) {
             console.error("Firebase Details Error:", error);
-            // 🌟 SMART ERROR: Agar abhi bhi error aayega toh exact batayega ki problem kahan hai
             document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545;">⚠️ Error: ${error.message} <br> <small>(Path: ${targetTestPath})</small></span>`;
         }
     }
@@ -346,7 +353,7 @@
 
     function renderLeaderboardTable(data) {
         if(data.length === 0) {
-            document.getElementById("leaderboardTableContainer").innerHTML = "<p style='color: var(--text-main);'>Abhi tak kisi ne test submit nahi kiya hai.</p>";
+            document.getElementById("leaderboardTableContainer").innerHTML = "<p style='color: var(--text-main); font-weight: 500;'>Abhi tak kisi ne test submit nahi kiya hai.</p>";
             return;
         }
 
