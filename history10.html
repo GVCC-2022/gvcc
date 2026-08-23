@@ -292,6 +292,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // 👇👇👇🔥 NAYA TEST ID YAHAN BADLEIN 🔥👇👇👇
+        const TARGET_TEST_ID = "history10_test_1"; 
+        // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
+
         // 2. Updated Correct Answers array for all 50 Questions
         const correctAnswers = { q1: "D", q2: "C", q3: "D", q4: "B", q5: "A", q6: "A", q7: "D", q8: "C", q9: "C", q10: "B", q11: "C", q12: "B", q13: "A", q14: "D", q15: "C", q16: "C", q17: "B", q18: "B", q19: "A", q20: "B", q21: "C", q22: "B", q23: "C", q24: "B", q25: "B", q26: "A", q27: "A", q28: "B", q29: "D", q30: "D", q31: "C", q32: "D", q33: "B", q34: "A", q35: "B", q36: "B", q37: "D", q38: "D", q39: "A", q40: "A", q41: "D", q42: "A", q43: "B", q44: "B", q45: "D", q46: "B", q47: "C", q48: "A", q49: "B", q50: "C" };
         
@@ -305,9 +309,8 @@
         const canvas = document.getElementById('photoCanvas');
         const currentRoll = localStorage.getItem("studentRoll"); 
 
-        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM (Updated Live Timer Logic)
+        // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
-            // Apne hisaab se Date aur Time change karein
             const testStartTime = new Date("2026-08-23T19:00:00").getTime(); 
             const testEndTime = new Date("2026-08-23T19:20:00").getTime(); 
             const currentTime = new Date().getTime();
@@ -331,7 +334,6 @@
                 }
             }
             else if (currentTime >= testStartTime && currentTime < testEndTime) {
-                // Live Countdown calculation (Absolute Time)
                 let timeLeft = Math.floor((testEndTime - currentTime) / 1000);
                 let minutes = Math.floor(timeLeft / 60);
                 let seconds = timeLeft % 60;
@@ -342,7 +344,6 @@
                     passAreaElement.style.display = "block";
                 }
             } else {
-                // Agar test start hone mein time hai, toh total time dikhayega
                 let totalDuration = Math.floor((testEndTime - testStartTime) / 1000);
                 let minutes = Math.floor(totalDuration / 60);
                 let seconds = totalDuration % 60;
@@ -350,7 +351,6 @@
             }
         }
         
-        // Har ek second time check karega
         setInterval(checkTestTime, 1000);
         checkTestTime(); 
 
@@ -382,7 +382,8 @@
                     }
                 }
 
-                const testCheckRef = doc(db, "tests", "history10_test", "students", currentRoll);
+                // USE DYNAMIC TARGET_TEST_ID HERE
+                const testCheckRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
                 const testCheckSnap = await getDoc(testCheckRef);
                 if (testCheckSnap.exists() && testCheckSnap.data().submitted === true) {
                     alert("⚠️ Security Lock: Aap yeh test pehle hi shuru ya submit kar chuke hain! Dobara entry block hai.");
@@ -403,7 +404,6 @@
                 
                 isTestStarted = true;
 
-                // 1. Pehle Camera Permission mangenge
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { facingMode: "user" }, 
@@ -417,12 +417,11 @@
                     alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
                 }
 
-                // 2. Camera pop-up clear hone ke baad Anti-Cheat activate karenge (Timer ab automatic hai)
                 activateAntiCheatSystem();
 
-                // 3. Database mein entry banayenge
                 try {
-                    const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
+                    // USE DYNAMIC TARGET_TEST_ID HERE
+                    const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
                     await setDoc(testDocRef, { 
                         submitted: false, 
                         cheatStatus: "Testing connection live",
@@ -464,7 +463,8 @@
 
             const timestamp = Date.now();
             try {
-                const photoDocRef = doc(db, "tests", "history10_test", "students", currentRoll, "snapshots", `snap_${timestamp}`);
+                // USE DYNAMIC TARGET_TEST_ID HERE
+                const photoDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll, "snapshots", `snap_${timestamp}`);
                 await setDoc(photoDocRef, {
                     capturedImage: base64Image,
                     capturedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
@@ -560,7 +560,7 @@
             if (hasSubmitted) return;
             hasSubmitted = true;
             
-            clearInterval(proctorInterval); // Removed old timer clear interval
+            clearInterval(proctorInterval); 
 
             if (video.srcObject) {
                 const tracks = video.srcObject.getTracks();
@@ -585,7 +585,8 @@
             document.getElementById("resultModal").style.display = "flex";
 
             try {
-                const testDocRef = doc(db, "tests", "history10_test", "students", currentRoll);
+                // USE DYNAMIC TARGET_TEST_ID HERE
+                const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
                 await setDoc(testDocRef, {
                     submitted: true,
                     score: finalScoreStr,
