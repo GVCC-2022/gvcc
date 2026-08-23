@@ -362,22 +362,32 @@
         
         const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
         
-        // 🔥 SUPER FIX: Wapas aane par NA na dikhe, isliye turant LocalStorage se data uthao
+        // 🔥 NA BUG FIX: LocalStorage se data laao
         const savedName = localStorage.getItem("studentName");
         const savedClass = localStorage.getItem("studentClass");
 
-        if (savedName && savedClass && activeRoll) {
-            document.getElementById("studentName").innerText = savedName;
-            document.getElementById("studentRollDisplay").innerText = activeRoll;
-            document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("mainContent").style.display = "flex";
-        }
+        // 🔥 Agar Name mein "N/A" ya "undefined" save ho gaya hai, toh usko reject kar do!
+        const isValidName = savedName && savedName !== "N/A" && savedName !== "undefined" && savedName !== "null";
 
         if (!activeRoll) {
             window.location.replace("student-login.html"); 
         } else {
-            fetchStudentData(activeRoll); // Piche background me data update kar lega
+            if (isValidName && savedClass) {
+                // Sahi data hai toh turant dikhao
+                document.getElementById("studentName").innerText = savedName;
+                document.getElementById("studentRollDisplay").innerText = activeRoll;
+                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("mainContent").style.display = "flex";
+            } else {
+                // Purana data kharab hai toh Loading... dikhao jab tak internet se na aa jaye
+                document.getElementById("studentName").innerText = "Fetching Name...";
+                document.getElementById("studentClass").innerText = "Fetching Class...";
+                // Loader ghume ga jab tak data aayega
+            }
+
+            // Piche background me Firebase se naya aur original data update karo
+            fetchStudentData(activeRoll, !isValidName); 
         }
 
         async function fetchStudentData(roll, showLoader) {
@@ -391,11 +401,12 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "N/A";
-                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "N/A";
+                    let studentName = data["Name "] || data.Name || data.name || data.StudentName || "Data Not Found";
+                    let studentClass = data["Class "] || data.Class || data.class || data.stdClass || "Data Not Found";
                     
                     studentClassGlobal = String(studentClass).trim();
                     
+                    // Naya sahi data save karo
                     localStorage.setItem("studentClass", studentClassGlobal);
                     localStorage.setItem("studentName", studentName);
                     
@@ -421,7 +432,7 @@
             }
         }
 
-        // Notices
+        // --- BAAKI CODE (Notices aur Exams wala) SAME RAHEGA ---
         const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
         onSnapshot(qNotices, (snapshot) => {
             const noticeBox = document.getElementById("studentNotices");
@@ -439,17 +450,14 @@
             });
         });
 
-        // 🌟 Real-Time Popup Radar
         const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
         onSnapshot(popupQuery, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
                     const notice = change.doc.data();
                     const noticeId = change.doc.id;
-                    
                     let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
                     let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
-                    
                     if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
                         const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
                         if (!seenNotices.includes(noticeId)) {
@@ -464,7 +472,6 @@
 
         function showNoticePopup(sender, text) {
             try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
-
             const pop = document.createElement("div");
             pop.style.position = "fixed"; pop.style.top = "20px"; pop.style.left = "50%"; 
             pop.style.transform = "translateX(-50%)"; pop.style.zIndex = "99999"; pop.style.width = "90vw"; pop.style.maxWidth = "350px";
@@ -479,7 +486,6 @@
             document.body.appendChild(pop);
         }
 
-        // Active Tests
         const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
         onSnapshot(qTests, (snapshot) => {
             const testBox = document.getElementById("studentTests");
@@ -517,18 +523,15 @@
 
         if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
 
-        // 🔥 VIP Result Routing Logic
         window.routeToVIPResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (!roll) { alert("⚠️ Please login first!"); return; }
-
             if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
             else if (roll.startsWith("9")) { navigateWithAnimation("vip_result9.html"); }
             else if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("vip_result10.html"); }
             else { alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai."); }
         }
 
-        // 🔥 Online Live Test Routing Logic
         window.routeToLiveTest = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("history10.html"); }
@@ -537,7 +540,6 @@
             else { alert("⚠️ Error: Aapki class ke liye koi active test nahi hai."); }
         }
 
-        // 🔥 Online Result Routing Logic
         window.routeToResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
@@ -546,7 +548,6 @@
             else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
         }
 
-        // 🔥 Logout Logic
         window.logout = function() { 
             document.body.classList.add('page-exit'); 
             setTimeout(() => {
