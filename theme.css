@@ -42,3 +42,27 @@ body {
     color: #1e293b;
     border: 2px solid #1e293b;
 }
+/* 🔥 SUPER TEXT FIXER FOR DARK MODE 🔥 */
+[data-theme="dark"] p, 
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4, 
+[data-theme="dark"] h5, 
+[data-theme="dark"] h6, 
+[data-theme="dark"] span, 
+[data-theme="dark"] div, 
+[data-theme="dark"] td, 
+[data-theme="dark"] th, 
+[data-theme="dark"] label {
+    /* Yeh dark mode me har text ko zabardasti white/light kar dega */
+    color: var(--text-color) !important;
+}
+
+/* Lekin buttons aur icons ka color kharab na ho, isliye unhe chhod dega */
+[data-theme="dark"] button,
+[data-theme="dark"] button span,
+[data-theme="dark"] button i,
+[data-theme="dark"] a {
+    color: inherit;
+}
