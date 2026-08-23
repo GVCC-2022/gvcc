@@ -14,6 +14,10 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- GLOBAL THEME SYSTEM -->
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
+    
     <style>
         * {
             -webkit-touch-callout: none;
@@ -36,19 +40,49 @@
             -webkit-user-drag: none; 
         }
 
+        /* 🔥 VIP THEME VARIABLES 🔥 */
+        :root {
+            /* LIGHT MODE (Premium Bright Look) */
+            --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --text-main: #1e293b;
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --subtitle-color: #64748b;
+            --teacher-btn-bg: rgba(0, 0, 0, 0.05);
+            --teacher-btn-text: #475569;
+            --teacher-btn-border: rgba(0, 0, 0, 0.1);
+            --teacher-btn-hover: rgba(0, 0, 0, 0.1);
+            --divider-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* DARK MODE (Aapka Original Navy Blue Look) */
+            --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --text-main: white;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --subtitle-color: #94a3b8;
+            --teacher-btn-bg: rgba(255, 255, 255, 0.1);
+            --teacher-btn-text: #e2e8f0;
+            --teacher-btn-border: rgba(255, 255, 255, 0.2);
+            --teacher-btn-hover: rgba(255, 255, 255, 0.2);
+            --divider-color: rgba(255, 255, 255, 0.1);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: var(--page-bg);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: white;
+            color: var(--text-main);
             overflow: hidden;
             overscroll-behavior-y: none;
             touch-action: manipulation;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
         @keyframes fadeInUp {
@@ -78,16 +112,17 @@
         }
 
         .landing-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             backdrop-filter: blur(15px);
             padding: 120px 30px 40px 30px; 
             border-radius: 24px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
             width: 100%;
             text-align: center;
             box-sizing: border-box;
             position: relative;
+            transition: background 0.4s ease, border 0.4s ease;
         }
 
         .title {
@@ -99,10 +134,11 @@
         }
 
         .subtitle {
-            color: #94a3b8;
+            color: var(--subtitle-color);
             font-size: 14px;
             margin-bottom: 30px;
             font-weight: 500;
+            transition: color 0.4s ease;
         }
 
         .btn {
@@ -147,11 +183,11 @@
         .btn-student:hover { background: #f1f5f9; transform: translateY(-2px); }
 
         .btn-teacher {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--teacher-btn-bg);
+            color: var(--teacher-btn-text);
+            border: 1px solid var(--teacher-btn-border);
         }
-        .btn-teacher:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+        .btn-teacher:hover { background: var(--teacher-btn-hover); transform: translateY(-2px); }
 
         .divider {
             display: flex;
@@ -165,7 +201,7 @@
         .divider::before, .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--divider-color);
         }
         .divider:not(:empty)::before { margin-right: .5em; }
         .divider:not(:empty)::after { margin-left: .5em; }
@@ -190,9 +226,6 @@
             to { opacity: 0; transform: translateY(-15vh) scale(0.9); }
         }
     </style>
-    <!-- GLOBAL THEME SYSTEM -->
-<link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
 </head>
 <body>
 
@@ -321,7 +354,8 @@
         }
     });
 </script>
-                        <div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
+
+<div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
     
     <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
     <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
