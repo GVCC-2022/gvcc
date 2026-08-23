@@ -213,20 +213,30 @@
     let globalClass = localStorage.getItem("studentClass") || "N/A";
     const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
-    // ✅ Yeh value Dropdown se automatic nikal lega
-    let targetTestPath = document.getElementById("testSelector").value; 
+    // 🌟 FIX 1: REFRESH PROBLEM SOLVED (Memory se purana selection laao)
+    let testSelector = document.getElementById("testSelector");
+    let savedTestOption = localStorage.getItem("lastViewedTest");
+    
+    // Agar memory mein koi test save hai aur wo dropdown mein maujood hai, toh usko select kar lo
+    if (savedTestOption && testSelector.querySelector(`option[value="${savedTestOption}"]`)) {
+        testSelector.value = savedTestOption;
+    }
 
-    // 🔥 1-CLICK CHANGE FUNCTION (Jab Bacha Dropdown se test badlega)
+    // 🌟 FIX 2: SPACE HATAO (.trim() lagaya)
+    let targetTestPath = testSelector.value.trim(); 
+
+    // 🔥 1-CLICK CHANGE FUNCTION
     window.changeTest = function() {
-        targetTestPath = document.getElementById("testSelector").value;
+        targetTestPath = document.getElementById("testSelector").value.trim();
         
-        // Purana result chhupao aur Loading dikhao
+        // Naya selection memory mein save kar lo taaki refresh par wapas Test 1 par na jaye
+        localStorage.setItem("lastViewedTest", targetTestPath); 
+        
         document.getElementById("myResultContent").classList.add("hidden");
         document.getElementById("leaderboardBox").classList.add("hidden");
         document.getElementById("loadingText").innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading test data...`;
         document.getElementById("loadingText").classList.remove("hidden");
         
-        // Naye test ka data laao
         fetchStudentProfileAndResult();
     };
 
@@ -261,11 +271,11 @@
             }
 
             if (!globalClass.includes("10")) {
-                document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545; font-weight:700;"><i class="fa-solid fa-ban"></i> Error 403: Yeh result sirf Class 10th ke students ke liye published hai.</span>`;
+                document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545; font-weight:700;"><i class="fa-solid fa-ban"></i> Error 403: Yeh result Class 10th ke liye hai.</span>`;
                 return;
             }
 
-            // Database se 'targetTestPath' wali ID uthayega jo dropdown mein chuni gayi hai
+            // Database fetch
             const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
             const resultSnap = await getDoc(resultRef);
 
@@ -289,8 +299,9 @@
             loadClassLeaderboard();
 
         } catch (error) {
-            console.error(error);
-            document.getElementById("loadingText").innerText = "Network Error: Server se connection nahi ho saka.";
+            console.error("Firebase Details Error:", error);
+            // 🌟 SMART ERROR: Agar abhi bhi error aayega toh exact batayega ki problem kahan hai
+            document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545;">⚠️ Error: ${error.message} <br> <small>(Path: ${targetTestPath})</small></span>`;
         }
     }
 
