@@ -6,10 +6,36 @@
     <title>Class 10th History Result - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- GLOBAL THEME SYSTEM -->
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
+    
     <style>
         :root {
             --primary: #003366;
             --bg: #f8fafc;
+            --box-bg: #ffffff;
+            --box-border: rgba(0,0,0,0.05);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --table-border: #e2e8f0;
+            --table-even: #f8fafc;
+            --table-header: #003366;
+            --table-header-text: #ffffff;
+        }
+
+        /* 🔥 VIP DARK MODE SPECIFIC COLORS 🔥 */
+        [data-theme="dark"] {
+            --primary: #38bdf8;
+            --bg: #0f172a;
+            --box-bg: #1e293b;
+            --box-border: rgba(255,255,255,0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --table-border: #334155;
+            --table-even: #0f172a;
+            --table-header: #0ea5e9;
+            --table-header-text: #0f172a;
         }
 
         body {
@@ -18,32 +44,35 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            color: #1e293b;
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .header {
-            background: linear-gradient(135deg, #002244, var(--primary));
+            background: linear-gradient(135deg, #002244, #003366);
             color: white;
             padding: 25px 15px;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .header h1 { margin: 0; font-size: 22px; }
-        .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; }
+        .header h1 { margin: 0; font-size: 22px; color: white !important; }
+        .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; color: white !important; }
 
+        /* 🔥 SMART BOX TARGETING THEME VARIABLES 🔥 */
         .result-box {
-            background: white;
+            background: var(--box-bg);
             max-width: 450px;
             width: 90%;
             margin: 20px auto;
             padding: 20px;
             border-radius: 14px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            border: 1px solid var(--box-border);
+            transition: background-color 0.3s ease, border 0.3s ease;
         }
 
-        h2 { color: var(--primary); font-size: 18px; margin-top: 0; border-bottom: 2px dashed #f1f5f9; padding-bottom: 10px; }
+        h2 { color: var(--primary); font-size: 18px; margin-top: 0; border-bottom: 2px dashed var(--table-border); padding-bottom: 10px; }
         
         .hidden { display: none; }
         
@@ -52,41 +81,50 @@
             color: #28a745;
             font-weight: 800;
             margin: 10px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        [data-theme="dark"] .marks-highlight { color: #34d399; }
 
-        .info-text { font-size: 14px; margin: 5px 0; color: #64748b; }
-        .info-text strong { color: #1e293b; }
+        .info-text { font-size: 14px; margin: 5px 0; color: var(--text-muted); }
+        .info-text strong { color: var(--text-main); }
 
-        /* Leaderboard Table */
+        /* Leaderboard Table Adjustments for VIP Look */
         .table-container { overflow-x: auto; margin-top: 15px; }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
+            color: var(--text-main);
         }
-        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
-        th { background-color: #003366; color: white; }
-        tr:nth-child(even) { background-color: #f8fafc; }
-        .rank-1 { background-color: #fef08a; font-weight: bold; } /* Gold */
-        .rank-2 { background-color: #e2e8f0; font-weight: bold; } /* Silver */
-        .rank-3 { background-color: #fed7aa; font-weight: bold; } /* Bronze */
+        th, td { border: 1px solid var(--table-border); padding: 10px; text-align: center; }
+        th { background-color: var(--table-header); color: var(--table-header-text); font-weight: bold; }
+        tr:nth-child(even) { background-color: var(--table-even); }
+        
+        .rank-1 { background-color: rgba(254, 240, 138, 0.2); font-weight: bold; } /* Gold Light */
+        .rank-2 { background-color: rgba(226, 232, 240, 0.2); font-weight: bold; } /* Silver Light */
+        .rank-3 { background-color: rgba(254, 215, 170, 0.2); font-weight: bold; } /* Bronze Light */
+        
+        /* Dark Mode Medal Colors for better visibility */
+        [data-theme="dark"] .rank-1 { color: #fef08a; background-color: rgba(254, 240, 138, 0.1); }
+        [data-theme="dark"] .rank-2 { color: #e2e8f0; background-color: rgba(226, 232, 240, 0.1); }
+        [data-theme="dark"] .rank-3 { color: #fed7aa; background-color: rgba(254, 215, 170, 0.1); }
 
         .btn-back {
             display: inline-block;
             background: #007bff;
-            color: white;
+            color: white !important;
             padding: 12px 25px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            transition: 0.3s;
         }
+        .btn-back:hover { transform: translateY(-2px); }
 
         .footer { background: #001529; color: white; padding: 15px; font-size: 12px; margin-top: 40px; }
     </style>
-    <!-- GLOBAL THEME SYSTEM -->
-<link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
 </head>
 
 <body>
@@ -98,14 +136,14 @@
 
 <div class="result-box" id="myResultBox">
     <h2>👤 Aapka History Test Result</h2>
-    <p id="loadingText"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
+    <p id="loadingText" style="color: var(--text-main);"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
     
     <div id="myResultContent" class="hidden">
-        <h3 id="studentNameDisplay" style="margin: 5px 0;">--</h3>
+        <h3 id="studentNameDisplay" style="margin: 5px 0; color: var(--text-main);">--</h3>
         <p class="info-text">Class: <strong id="studentClassDisplay">--</strong> | Roll: <strong id="studentRollDisplay">--</strong></p>
         
         <div class="marks-highlight" id="myMarksDisplay">--/--</div>
-        <div style="font-size: 16px; font-weight: 600; color: #007bff; margin-bottom: 15px;" id="myPercentDisplay"></div>
+        <div style="font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 15px;" id="myPercentDisplay"></div>
         
         <p id="cheatStatusDisplay"></p>
     </div>
@@ -113,7 +151,7 @@
 
 <div class="result-box hidden" id="leaderboardBox">
     <h2>🏆 Live Leaderboard</h2>
-    <p style="font-size: 12px; color: #64748b; margin-top: -5px; margin-bottom: 10px;">(Jaise-jaise students submit karenge, unka naam yahan aayega)</p>
+    <p style="font-size: 12px; color: var(--text-muted); margin-top: -5px; margin-bottom: 10px;">(Jaise-jaise students submit karenge, unka naam yahan aayega)</p>
     <div class="table-container" id="leaderboardTableContainer"></div>
 </div>
 
@@ -137,9 +175,14 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const activeRoll = localStorage.getItem("studentRoll");
-    let globalClass = "N/A";
-    let globalName = "Student";
+    const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+    
+    // 🔥 OPTIMISTIC LOADING FIX (NA/-- PROBLEM KHTAM)
+    let globalName = localStorage.getItem("studentName") || "Student";
+    let globalClass = localStorage.getItem("studentClass") || "N/A";
+    
+    // Check if valid data exists locally to show instantly
+    const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
     const targetTestPath = "history10_test"; 
 
@@ -147,7 +190,14 @@
         alert("Session Expired: Kripya dashboard se login karein.");
         window.location.href = "dashboard.html";
     } else {
+        // Turant UI update karo taaki '--' na dikhe
         document.getElementById("studentRollDisplay").innerText = activeRoll;
+        if(isValidName) {
+            document.getElementById("studentNameDisplay").innerText = globalName;
+            document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
+        }
+        
+        // Piche background me original data aur result fetch karo
         fetchStudentProfileAndResult();
     }
 
@@ -162,8 +212,12 @@
                 globalName = sData["Name "] || sData.Name || "Student";
                 globalClass = String(sData["Class "] || sData.Class).trim();
                 
+                // Save updated data back to local memory
+                localStorage.setItem("studentName", globalName);
+                localStorage.setItem("studentClass", globalClass);
+                
                 document.getElementById("studentNameDisplay").innerText = globalName;
-                document.getElementById("studentClassDisplay").innerText = globalClass;
+                document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
             }
 
             // STRICT SECURITY CHECK
@@ -190,7 +244,7 @@
                     document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
                 }
             } else {
-                document.getElementById("myResultContent").innerHTML = "<p style='color:#dc3545; font-weight:bold;'>Aapne Class 10th History Online Test submit nahi kiya hai.</p>";
+                document.getElementById("myResultContent").innerHTML = "<p style='color: var(--text-main); font-weight:bold;'>Aapne Class 10th History Online Test submit nahi kiya hai.</p>";
             }
 
             // 3. Load Leaderboard Immediately!
@@ -247,7 +301,7 @@
 
     function renderLeaderboardTable(data) {
         if(data.length === 0) {
-            document.getElementById("leaderboardTableContainer").innerHTML = "<p>Abhi tak kisi ne test submit nahi kiya hai.</p>";
+            document.getElementById("leaderboardTableContainer").innerHTML = "<p style='color: var(--text-main);'>Abhi tak kisi ne test submit nahi kiya hai.</p>";
             return;
         }
 
@@ -268,7 +322,7 @@
             html += `<tr class="${rowClass}">
                         <td>#${rank}</td>
                         <td style="font-weight:600;">${student.name}</td>
-                        <td style="font-weight:bold; color:#003366;">${student.score || '--'}</td>
+                        <td style="font-weight:bold; color: var(--primary);">${student.score || '--'}</td>
                     </tr>`;
         });
         html += `</table>`;
