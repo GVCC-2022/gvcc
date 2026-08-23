@@ -77,12 +77,12 @@
         
         .hidden { display: none; }
         
-        /* 🔥 SELECT TEST DROPDOWN VIP STYLE 🔥 */
+        /* 🔥 SELECT TEST DROPDOWN VIP STYLE (WITH CUSTOM ARROW) 🔥 */
         .custom-select {
             width: 100%;
-            padding: 14px;
+            padding: 14px 45px 14px 15px; /* Right padding badha di taaki text arrow par na chade */
             border-radius: 10px;
-            background: var(--input-bg);
+            background-color: var(--input-bg);
             color: var(--text-main);
             border: 2px solid var(--box-border);
             font-size: 15px;
@@ -91,17 +91,23 @@
             cursor: pointer;
             outline: none;
             transition: 0.3s;
+            
+            /* Purana ghatiya arrow hataya aur naya VIP arrow lagaya */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23007bff"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center; /* 🔥 ARROW KO RIGHT SE 15px LEFT KHISKA DIYA 🔥 */
+            background-size: 26px;
         }
         .custom-select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
 
-        .marks-highlight {
-            font-size: 32px;
-            color: #28a745;
-            font-weight: 800;
-            margin: 10px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Dark mode mein arrow ka color change karne ke liye */
+        [data-theme="dark"] .custom-select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2338bdf8"><path d="M7 10l5 5 5-5z"/></svg>');
         }
-        [data-theme="dark"] .marks-highlight { color: #34d399; }
+        
 
         .info-text { font-size: 14px; margin: 5px 0; color: var(--text-muted); }
         .info-text strong { color: var(--text-main); }
