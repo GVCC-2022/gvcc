@@ -8,43 +8,75 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* 🔥 THEME VARIABLES - SETTING VIP COLORS FOR BOTH MODES 🔥 */
         :root {
             --primary: #003366;
             --accent: #007bff;
             --success: #28a745;
             --danger: #dc3545;
-            --bg: #0f172a;
+            
+            /* LIGHT MODE DEFAULT COLORS */
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --panel-bg: #ffffff;
+            --panel-border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.1);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
+            --input-border: #cbd5e1;
+            --q-card-bg: #f8fafc;
+            --q-card-border: #e2e8f0;
+            --option-bg: #ffffff;
+            --option-hover: #e2e8f0;
+            --heading-color: #007bff;
+        }
+
+        [data-theme="dark"] {
+            /* DARK MODE COLORS (Aapke Original Colors) */
+            --header-bg: rgba(15, 23, 42, 0.85);
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --q-card-bg: rgba(255, 255, 255, 0.02);
+            --q-card-border: rgba(255, 255, 255, 0.05);
+            --option-bg: rgba(255, 255, 255, 0.03);
+            --option-hover: rgba(255, 255, 255, 0.06);
+            --heading-color: #38bdf8;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: #f8fafc;
+            color: var(--text-main);
             margin: 0;
             padding: 0;
             user-select: none; /* Prevents text copying */
+            /* Background color theme.css handle kar raha hai */
         }
 
         /* Fixed Header with Timer */
         .test-header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.85);
+            top: 0; left: 0; right: 0;
+            background: var(--header-bg);
+            color: var(--text-main);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--panel-border);
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
+            transition: 0.3s;
         }
 
         .timer-box {
-            background: rgba(220, 53, 69, 0.2);
+            background: rgba(220, 53, 69, 0.15);
             border: 1px solid var(--danger);
-            color: #fca5a5;
+            color: var(--danger);
             padding: 6px 14px;
             border-radius: 50px;
             font-weight: 700;
@@ -53,6 +85,7 @@
             align-items: center;
             gap: 6px;
         }
+        [data-theme="dark"] .timer-box { color: #fca5a5; }
 
         /* Glassmorphism Lock & Form Containers */
         .main-container {
@@ -62,122 +95,81 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--panel-bg);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--panel-border);
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px var(--shadow);
+            transition: 0.3s;
         }
 
-        h2 { text-align: center; color: #38bdf8; margin-top: 0; }
+        h2 { text-align: center; color: var(--heading-color); margin-top: 0; }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+        .input-group { margin-bottom: 20px; }
         .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 6px;
+            display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px;
         }
         .input-group input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            box-sizing: border-box;
+            width: 100%; background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            padding: 12px; border-radius: 10px;
+            color: var(--text-main); font-size: 15px; box-sizing: border-box;
         }
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .input-group input:focus { outline: none; border-color: var(--accent); }
 
         .btn-premium {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent), #3b82f6);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
+            width: 100%; background: linear-gradient(135deg, var(--accent), #3b82f6);
+            color: white; border: none; padding: 14px;
+            border-radius: 12px; font-weight: 600; font-size: 16px;
+            cursor: pointer; transition: all 0.2s;
         }
         .btn-premium:active { transform: scale(0.98); }
 
         /* Question Cards Styling */
         .q-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 20px;
+            background: var(--q-card-bg);
+            border: 1px solid var(--q-card-border);
+            border-radius: 14px; padding: 18px; margin-bottom: 20px;
+            transition: 0.3s;
         }
         .q-text {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            color: #e2e8f0;
+            font-size: 15px; font-weight: 600; margin-bottom: 14px; color: var(--text-main);
         }
         .option-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
+            display: flex; align-items: center; gap: 10px;
+            background: var(--option-bg); color: var(--text-main);
+            padding: 12px; border-radius: 8px; margin-bottom: 8px;
+            cursor: pointer; border: 1px solid transparent; transition: 0.2s;
         }
-        .option-label:hover { background: rgba(255,255,255,0.06); }
+        .option-label:hover { background: var(--option-hover); }
         .option-label input { accent-color: var(--accent); }
 
         /* Custom Modern Modal for Results/Alerts */
         .custom-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.9); z-index: 1000;
+            align-items: center; justify-content: center; padding: 20px;
         }
         .modal-content {
             background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+            padding: 30px; text-align: center; max-width: 400px; width: 100%;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        .score-badge {
-            font-size: 48px;
-            font-weight: 800;
-            color: #10b981;
-            margin: 15px 0;
-        }
+        .score-badge { font-size: 48px; font-weight: 800; color: #10b981; margin: 15px 0; }
     </style>
     <!-- GLOBAL THEME SYSTEM -->
-<link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
 </head>
 <body>
 
     <div class="test-header">
         <div>
             <div style="font-weight:700; font-size:14px;" id="headerStudentName">Loading...</div>
-            <div style="font-size:11px; color:#94a3b8;">Roll: <span id="headerStudentRoll">--</span></div>
+            <div style="font-size:11px; color:var(--text-muted);">Roll: <span id="headerStudentRoll">--</span></div>
         </div>
         <div class="timer-box">
             <i class="fa-solid fa-clock fa-pulse"></i>
@@ -193,12 +185,12 @@
         <div id="lockSection" class="glass-panel">
             <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
             
-            <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; padding: 15px; border-radius: 10px; color: #fca5a5; font-weight: bold; text-align: center; margin-bottom: 15px;">
+            <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.15); border: 1px solid var(--danger); padding: 15px; border-radius: 10px; color: var(--danger); font-weight: bold; text-align: center; margin-bottom: 15px;">
                 <i class="fa-solid fa-clock"></i> ⚠️ कृप्या Wait करें.. आपका Test रात 7 बजे शुरू होगा ।✨
             </div>
 
             <div id="passwordArea" style="display: none;">
-                <p style="text-align:center; font-size:13px; color:#94a3b8; margin-bottom:20px;">Please enter the test password provided by Md Faiyaz.</p>
+                <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:20px;">Please enter the test password provided by Md Faiyaz.</p>
                 
                 <div class="input-group">
                     <label>Test Activation Password</label>
@@ -210,7 +202,7 @@
 
         <div id="testSection" class="glass-panel" style="display:none;">
             <h2 id="testTitle">Class 10th History Test</h2>
-            <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:25px;">
+            <hr style="border:0; border-top:1px solid var(--panel-border); margin-bottom:25px;">
 
             <form id="quizForm">
                 <!-- All 50 Questions Generated Below -->
