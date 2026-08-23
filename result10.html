@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Class 10th History Result - GVCC</title>
+    <title>Class 10th Test Result - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- GLOBAL THEME SYSTEM -->
@@ -22,6 +22,7 @@
             --table-even: #f8fafc;
             --table-header: #003366;
             --table-header-text: #ffffff;
+            --input-bg: #f1f5f9;
         }
 
         /* 🔥 VIP DARK MODE SPECIFIC COLORS 🔥 */
@@ -36,6 +37,7 @@
             --table-even: #0f172a;
             --table-header: #0ea5e9;
             --table-header-text: #0f172a;
+            --input-bg: #334155;
         }
 
         body {
@@ -59,7 +61,6 @@
         .header h1 { margin: 0; font-size: 22px; color: white !important; }
         .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; color: white !important; }
 
-        /* 🔥 SMART BOX TARGETING THEME VARIABLES 🔥 */
         .result-box {
             background: var(--box-bg);
             max-width: 450px;
@@ -76,6 +77,23 @@
         
         .hidden { display: none; }
         
+        /* 🔥 SELECT TEST DROPDOWN VIP STYLE 🔥 */
+        .custom-select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            border: 2px solid var(--box-border);
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            cursor: pointer;
+            outline: none;
+            transition: 0.3s;
+        }
+        .custom-select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
+
         .marks-highlight {
             font-size: 32px;
             color: #28a745;
@@ -88,23 +106,16 @@
         .info-text { font-size: 14px; margin: 5px 0; color: var(--text-muted); }
         .info-text strong { color: var(--text-main); }
 
-        /* Leaderboard Table Adjustments for VIP Look */
         .table-container { overflow-x: auto; margin-top: 15px; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            color: var(--text-main);
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; color: var(--text-main); }
         th, td { border: 1px solid var(--table-border); padding: 10px; text-align: center; }
         th { background-color: var(--table-header); color: var(--table-header-text); font-weight: bold; }
         tr:nth-child(even) { background-color: var(--table-even); }
         
-        .rank-1 { background-color: rgba(254, 240, 138, 0.2); font-weight: bold; } /* Gold Light */
-        .rank-2 { background-color: rgba(226, 232, 240, 0.2); font-weight: bold; } /* Silver Light */
-        .rank-3 { background-color: rgba(254, 215, 170, 0.2); font-weight: bold; } /* Bronze Light */
+        .rank-1 { background-color: rgba(254, 240, 138, 0.2); font-weight: bold; } 
+        .rank-2 { background-color: rgba(226, 232, 240, 0.2); font-weight: bold; } 
+        .rank-3 { background-color: rgba(254, 215, 170, 0.2); font-weight: bold; } 
         
-        /* Dark Mode Medal Colors for better visibility */
         [data-theme="dark"] .rank-1 { color: #fef08a; background-color: rgba(254, 240, 138, 0.1); }
         [data-theme="dark"] .rank-2 { color: #e2e8f0; background-color: rgba(226, 232, 240, 0.1); }
         [data-theme="dark"] .rank-3 { color: #fed7aa; background-color: rgba(254, 215, 170, 0.1); }
@@ -130,12 +141,24 @@
 <body>
 
 <div class="header">
-    <h1>📚 Class 10th History Test Result</h1>
+    <h1>📚 Class 10th Test Result</h1>
     <p>Gyan Varsha Coaching Center</p>
 </div>
 
 <div class="result-box" id="myResultBox">
-    <h2>👤 Aapka History Test Result</h2>
+    
+    <!-- 👇👇👇🔥 NAYA TEST LIST YAHAN JODEIN 🔥👇👇👇 -->
+    <select id="testSelector" class="custom-select" onchange="changeTest()">
+        <!-- Har naye test ki 'value' mein uska TEST_ID daalein -->
+        <option value="history10_test_1">📚 History Test - 1</option>
+        
+        <!-- JAB NAYA TEST LEIN TO AISE EK NAYI LINE LIKH DEIN: -->
+        <!-- <option value="history10_test_2">📚 History Test - 2</option> -->
+        <!-- <option value="maths10_test_1">🧮 Maths Test - 1</option> -->
+    </select>
+    <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
+
+    <h2>👤 Aapka Result</h2>
     <p id="loadingText" style="color: var(--text-main);"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
     
     <div id="myResultContent" class="hidden">
@@ -177,33 +200,42 @@
 
     const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
     
-    // 🔥 OPTIMISTIC LOADING FIX (NA/-- PROBLEM KHTAM)
     let globalName = localStorage.getItem("studentName") || "Student";
     let globalClass = localStorage.getItem("studentClass") || "N/A";
-    
-    // Check if valid data exists locally to show instantly
     const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
-    const targetTestPath = "history10_test"; 
+    // ✅ Yeh value Dropdown se automatic nikal lega
+    let targetTestPath = document.getElementById("testSelector").value; 
+
+    // 🔥 1-CLICK CHANGE FUNCTION (Jab Bacha Dropdown se test badlega)
+    window.changeTest = function() {
+        targetTestPath = document.getElementById("testSelector").value;
+        
+        // Purana result chhupao aur Loading dikhao
+        document.getElementById("myResultContent").classList.add("hidden");
+        document.getElementById("leaderboardBox").classList.add("hidden");
+        document.getElementById("loadingText").innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading test data...`;
+        document.getElementById("loadingText").classList.remove("hidden");
+        
+        // Naye test ka data laao
+        fetchStudentProfileAndResult();
+    };
 
     if (!activeRoll) {
         alert("Session Expired: Kripya dashboard se login karein.");
         window.location.href = "dashboard.html";
     } else {
-        // Turant UI update karo taaki '--' na dikhe
         document.getElementById("studentRollDisplay").innerText = activeRoll;
         if(isValidName) {
             document.getElementById("studentNameDisplay").innerText = globalName;
             document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
         }
         
-        // Piche background me original data aur result fetch karo
         fetchStudentProfileAndResult();
     }
 
     async function fetchStudentProfileAndResult() {
         try {
-            // 1. Fetch Profile Class & Name from Root 'students' Collection
             const studentRef = doc(db, "students", activeRoll);
             const studentSnap = await getDoc(studentRef);
 
@@ -212,7 +244,6 @@
                 globalName = sData["Name "] || sData.Name || "Student";
                 globalClass = String(sData["Class "] || sData.Class).trim();
                 
-                // Save updated data back to local memory
                 localStorage.setItem("studentName", globalName);
                 localStorage.setItem("studentClass", globalClass);
                 
@@ -220,13 +251,12 @@
                 document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
             }
 
-            // STRICT SECURITY CHECK
             if (!globalClass.includes("10")) {
                 document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545; font-weight:700;"><i class="fa-solid fa-ban"></i> Error 403: Yeh result sirf Class 10th ke students ke liye published hai.</span>`;
                 return;
             }
 
-            // 2. Fetch Personal Test Result
+            // Database se 'targetTestPath' wali ID uthayega jo dropdown mein chuni gayi hai
             const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
             const resultSnap = await getDoc(resultRef);
 
@@ -244,10 +274,9 @@
                     document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
                 }
             } else {
-                document.getElementById("myResultContent").innerHTML = "<p style='color: var(--text-main); font-weight:bold;'>Aapne Class 10th History Online Test submit nahi kiya hai.</p>";
+                document.getElementById("myResultContent").innerHTML = "<p style='color: var(--text-main); font-weight:bold;'>Aapne is Online Test ko submit nahi kiya hai.</p>";
             }
 
-            // 3. Load Leaderboard Immediately!
             loadClassLeaderboard();
 
         } catch (error) {
@@ -263,11 +292,8 @@
             
             let studentsData = [];
             
-            // Loop for fetching names
             for (const testDocument of querySnapshot.docs) {
                 let data = testDocument.data();
-                
-                // Agar bacche ne submit hi nahi kiya hai (submitted: false) to leaderboard me na dikhaye
                 if(data.submitted === false) continue; 
 
                 data.rollNumber = testDocument.id; 
@@ -289,7 +315,6 @@
                 studentsData.push(data);
             }
 
-            // Highest rank sorting
             studentsData.sort((a, b) => b.sortScore - a.sortScore);
 
             renderLeaderboardTable(studentsData);
