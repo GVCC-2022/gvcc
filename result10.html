@@ -77,7 +77,7 @@
         
         .hidden { display: none; }
         
-        /* 🔥 SELECT TEST DROPDOWN VIP STYLE (WITH CUSTOM ARROW) 🔥 */
+        /* 🔥 SELECT TEST DROPDOWN VIP STYLE 🔥 */
         .custom-select {
             width: 100%;
             padding: 14px 45px 14px 15px; 
@@ -162,6 +162,8 @@
     <!-- 👇👇👇 SELECT TEST DROPDOWN 👇👇👇 -->
     <select id="testSelector" class="custom-select" onchange="changeTest()">
         <option value="history10_test">📚 History CH-1 (Test 1)</option>
+        
+        <!-- 🔥 FIREBASE SE EXACT SPELLING COPY KARKE YAHAN DAALEIN 🔥 -->
         <option value="history10_ch1_test2">📚 History CH-1 (Test 2)</option>
     </select>
     <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
@@ -175,8 +177,7 @@
         
         <div class="marks-highlight" id="myMarksDisplay">--/--</div>
         <div style="font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 15px;" id="myPercentDisplay"></div>
-        
-        <p id="cheatStatusDisplay"></p>
+        <div id="cheatStatusDisplay"></div>
     </div>
 </div>
 
@@ -212,7 +213,6 @@
     let globalClass = localStorage.getItem("studentClass") || "N/A";
     const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
-    // 🌟 REFRESH PROBLEM SOLVED (Memory se purana selection laao)
     let testSelector = document.getElementById("testSelector");
     let savedTestOption = localStorage.getItem("lastViewedTest");
     
@@ -222,10 +222,8 @@
 
     let targetTestPath = testSelector.value.trim(); 
 
-    // 🔥 1-CLICK CHANGE FUNCTION
     window.changeTest = function() {
         targetTestPath = document.getElementById("testSelector").value.trim();
-        
         localStorage.setItem("lastViewedTest", targetTestPath); 
         
         document.getElementById("myResultContent").classList.add("hidden");
@@ -233,7 +231,6 @@
         document.getElementById("loadingText").innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading test data...`;
         document.getElementById("loadingText").classList.remove("hidden");
         
-        // 🚀 BUG FIX: Display ko wapas reset kar rahe hain taaki crash na ho
         document.getElementById("myMarksDisplay").style.display = "block";
         document.getElementById("myPercentDisplay").style.display = "block";
         document.getElementById("cheatStatusDisplay").innerHTML = "";
@@ -250,7 +247,6 @@
             document.getElementById("studentNameDisplay").innerText = globalName;
             document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
         }
-        
         fetchStudentProfileAndResult();
     }
 
@@ -276,7 +272,6 @@
                 return;
             }
 
-            // Database fetch
             const resultRef = doc(db, "tests", targetTestPath, "students", activeRoll);
             const resultSnap = await getDoc(resultRef);
 
@@ -285,20 +280,28 @@
 
             if (resultSnap.exists()) {
                 const rData = resultSnap.data();
-                // Wapas visible karo agar chhupa tha
-                document.getElementById("myMarksDisplay").style.display = "block";
-                document.getElementById("myPercentDisplay").style.display = "block";
                 
-                document.getElementById("myMarksDisplay").innerText = rData.score || "--/--";
-                document.getElementById("myPercentDisplay").innerText = rData.percentage || "";
-                
-                if (rData.cheatStatus && rData.cheatStatus !== "Clean Profile Verified" && rData.cheatStatus !== "Clean / No Cheating") {
-                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#dc3545; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Security Status: ${rData.cheatStatus}</span>`;
+                // 🔥 SMART CHECK: Kya bacche ne test Submit kiya hai ya abhi bas test chal raha hai?
+                if (rData.submitted === true) {
+                    document.getElementById("myMarksDisplay").style.display = "block";
+                    document.getElementById("myPercentDisplay").style.display = "block";
+                    document.getElementById("myMarksDisplay").innerText = rData.score || "--/--";
+                    document.getElementById("myPercentDisplay").innerText = rData.percentage || "";
+                    
+                    if (rData.cheatStatus && rData.cheatStatus !== "Clean Profile Verified" && rData.cheatStatus !== "Clean / No Cheating") {
+                        document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#dc3545; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Security Status: ${rData.cheatStatus}</span>`;
+                    } else {
+                        document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
+                    }
                 } else {
-                    document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
+                    // Agar submitted false hai (Yani test khola hai par submit nahi hua)
+                    document.getElementById("myMarksDisplay").style.display = "none";
+                    document.getElementById("myPercentDisplay").style.display = "none";
+                    document.getElementById("cheatStatusDisplay").innerHTML = "<p style='color: #f59e0b; font-weight:bold; font-size: 15px;'>⏳ Aapka test abhi chal raha hai (Submit nahi hua hai).</p>";
                 }
+                
             } else {
-                // 🚀 SUPER FIX: Yahan tags (myMarksDisplay aur myPercentDisplay) ko delete nahi kar rahe, sirf chhupa rahe hain.
+                // Agar Firebase mein data hai hi nahi
                 document.getElementById("myMarksDisplay").style.display = "none";
                 document.getElementById("myPercentDisplay").style.display = "none";
                 document.getElementById("cheatStatusDisplay").innerHTML = "<p style='color: var(--danger); font-weight:bold; font-size: 16px;'>Aapne is Online Test ko submit nahi kiya hai.</p>";
