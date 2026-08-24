@@ -570,29 +570,61 @@
             let score = 0;
             const form = document.getElementById("quizForm");
             
+            // 🔥 NAYA CODE: Galat Jawab ki list banayega
+            let wrongAnswersList = []; 
+            
             for (let q in correctAnswers) {
-                const selected = form.elements[q] ? form.elements[q].value : "";
-                if (selected === correctAnswers[q]) {
+                let radios = form.elements[q];
+                let selectedVal = radios ? radios.value : "";
+                let correctVal = correctAnswers[q];
+
+                if (selectedVal === correctVal) {
                     score++;
+                } else {
+                    // 🔥 NAYA CODE: Agar galat hai, toh question aur answer save karega
+                    if (radios && radios.length > 0) {
+                        try {
+                            let qCard = radios[0].closest('.q-card');
+                            let qText = qCard.querySelector('.q-text').innerText;
+
+                            let selectedText = "Chhoda gaya (Not Attempted)";
+                            if (selectedVal) {
+                                let selectedLabel = qCard.querySelector(`input[value="${selectedVal}"]`).closest('.option-label');
+                                selectedText = selectedLabel ? selectedLabel.innerText.trim() : selectedVal;
+                            }
+
+                            let correctLabel = qCard.querySelector(`input[value="${correctVal}"]`).closest('.option-label');
+                            let correctText = correctLabel ? correctLabel.innerText.trim() : correctVal;
+
+                            wrongAnswersList.push({
+                                question: qText,
+                                selected: selectedText,
+                                correct: correctText
+                            });
+                        } catch(err) {
+                            console.log("Error saving wrong answers", err);
+                        }
+                    }
                 }
             }
 
-            const pct = ((score / 50) * 100).toFixed(0) + "%";
-            const finalScoreStr = `${score}/50`;
+            const totalQ = Object.keys(correctAnswers).length;
+            const pct = ((score / totalQ) * 100).toFixed(0) + "%";
+            const finalScoreStr = `${score}/${totalQ}`;
 
             document.getElementById("modalScore").innerText = finalScoreStr;
             document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
             document.getElementById("resultModal").style.display = "flex";
 
             try {
-                // USE DYNAMIC TARGET_TEST_ID HERE
                 const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
                 await setDoc(testDocRef, {
                     submitted: true,
                     score: finalScoreStr,
                     percentage: pct,
                     cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
-                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                    submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    wrongAnswers: wrongAnswersList  // 🔥 NAYA CODE: Data Firebase bheja ja raha hai
                 }, { merge: true });
             } catch (err) {
                 console.error("Data saving error: ", err);
