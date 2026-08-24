@@ -118,6 +118,10 @@
             document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
             
             let decodedHW = decodeURIComponent(encodedHW).trim();
+            
+            // 🌟 जादुई कोड 🌟: *text* को <b>text</b> में बदलना
+            decodedHW = decodedHW.replace(/\*(.*?)\*/g, "<b>$1</b>");
+
             let decodedTopic = decodeURIComponent(encodedTopic).trim();
             let decodedShortHW = decodeURIComponent(encodedShortHW).trim();
             
@@ -158,7 +162,7 @@
                 // 🌟 Agar Text ya Photo dono me se kuch bhi hai
                 let contentHTML = "";
                 
-                // 1. Text Dikhao
+                // 1. Text Dikhao (यहाँ white-space: pre-wrap; लगा दिया गया है)
                 if (hasText) {
                     contentHTML += `<div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; text-align:left;">${decodedHW}</div>`;
                 }
@@ -166,7 +170,7 @@
                 // 2. Photos Dikhao
                 if (hasImages) {
                     contentHTML += `<div style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">`;
-                    contentHTML += `<p style="font-size:12px; color:#ef4444; margin:0; text-align:center; font-weight:bold;"><i class="fa-solid fa-hand-pointer"></i> (फोटो को बड़ा देखने के लिए उस पर क्लिक करें)</p>`;
+                    contentHTML += `<p style="font-size:12px; color:#ef4444; margin:0; text-align:center; font-weight:bold;"><i class="fa-solid fa-hand-pointer"></i> (फोटो को बड़ा देखने के लिए उस पर क्लिक करें)</p>`;
                     
                     imageUrls.forEach(url => {
                         contentHTML += `
