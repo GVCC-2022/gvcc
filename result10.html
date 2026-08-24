@@ -6,7 +6,6 @@
     <title>Class 10th Test Result - GVCC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- GLOBAL THEME SYSTEM -->
     <link rel="stylesheet" href="theme.css">
     <script src="theme.js" defer></script>
     
@@ -39,80 +38,21 @@
             --input-bg: #334155;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #002244, #003366);
-            color: white;
-            padding: 25px 15px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: var(--text-main); transition: background-color 0.3s ease, color 0.3s ease; }
+        .header { background: linear-gradient(135deg, #002244, #003366); color: white; padding: 25px 15px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .header h1 { margin: 0; font-size: 22px; color: white !important; }
         .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; color: white !important; }
 
-        .result-box {
-            background: var(--box-bg);
-            max-width: 450px;
-            width: 90%;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            border: 1px solid var(--box-border);
-            transition: background-color 0.3s ease, border 0.3s ease;
-        }
-
+        .result-box { background: var(--box-bg); max-width: 450px; width: 90%; margin: 20px auto; padding: 20px; border-radius: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: 1px solid var(--box-border); transition: 0.3s ease; }
         h2 { color: var(--primary); font-size: 18px; margin-top: 0; border-bottom: 2px dashed var(--table-border); padding-bottom: 10px; }
-        
         .hidden { display: none; }
         
-        /* 🔥 SELECT TEST DROPDOWN VIP STYLE 🔥 */
-        .custom-select {
-            width: 100%;
-            padding: 14px 45px 14px 15px; 
-            border-radius: 10px;
-            background-color: var(--input-bg);
-            color: var(--text-main);
-            border: 2px solid var(--box-border);
-            font-size: 15px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            cursor: pointer;
-            outline: none;
-            transition: 0.3s;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23007bff"><path d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 15px center; 
-            background-size: 26px;
-        }
+        .custom-select { width: 100%; padding: 14px 45px 14px 15px; border-radius: 10px; background-color: var(--input-bg); color: var(--text-main); border: 2px solid var(--box-border); font-size: 15px; font-weight: bold; margin-bottom: 15px; cursor: pointer; outline: none; transition: 0.3s; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23007bff"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat: no-repeat; background-position: right 15px center; background-size: 26px; }
         .custom-select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
-
-        [data-theme="dark"] .custom-select {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2338bdf8"><path d="M7 10l5 5 5-5z"/></svg>');
-        }
+        [data-theme="dark"] .custom-select { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2338bdf8"><path d="M7 10l5 5 5-5z"/></svg>'); }
         
-        .marks-highlight {
-            font-size: 32px;
-            color: #28a745;
-            font-weight: 800;
-            margin: 10px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .marks-highlight { font-size: 32px; color: #28a745; font-weight: 800; margin: 10px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         [data-theme="dark"] .marks-highlight { color: #34d399; }
-
         .info-text { font-size: 14px; margin: 5px 0; color: var(--text-muted); }
         .info-text strong { color: var(--text-main); }
 
@@ -121,29 +61,15 @@
         th, td { border: 1px solid var(--table-border); padding: 10px; text-align: center; }
         th { background-color: var(--table-header); color: var(--table-header-text); font-weight: bold; }
         tr:nth-child(even) { background-color: var(--table-even); }
-        
         .rank-1 { background-color: rgba(254, 240, 138, 0.2); font-weight: bold; } 
         .rank-2 { background-color: rgba(226, 232, 240, 0.2); font-weight: bold; } 
         .rank-3 { background-color: rgba(254, 215, 170, 0.2); font-weight: bold; } 
-        
         [data-theme="dark"] .rank-1 { color: #fef08a; background-color: rgba(254, 240, 138, 0.1); }
         [data-theme="dark"] .rank-2 { color: #e2e8f0; background-color: rgba(226, 232, 240, 0.1); }
         [data-theme="dark"] .rank-3 { color: #fed7aa; background-color: rgba(254, 215, 170, 0.1); }
 
-        .btn-back {
-            display: inline-block;
-            background: #007bff;
-            color: white !important;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-            transition: 0.3s;
-        }
+        .btn-back { display: inline-block; background: #007bff; color: white !important; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); transition: 0.3s; }
         .btn-back:hover { transform: translateY(-2px); }
-
         .footer { background: #001529; color: white; padding: 15px; font-size: 12px; margin-top: 40px; }
     </style>
 </head>
@@ -156,16 +82,10 @@
 </div>
 
 <div class="result-box" id="myResultBox">
-    
-    <!-- 👇👇👇 SELECT TEST DROPDOWN 👇👇👇 -->
     <select id="testSelector" class="custom-select" onchange="changeTest()">
-        <!-- 🔥 FIX: Jo test sabse upar hoga wahi Automatic khulega! Isme 'selected' laga diya hai 🔥 -->
         <option value="history10_test_2" selected>📚 History CH-1 (Test 2)</option>
-        
-        <!-- Puraana Test Neeche Rakhein -->
         <option value="history10_test">📚 History CH-1 (Test 1)</option>
     </select>
-    <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
 
     <h2>👤 Aapka Result</h2>
     <p id="loadingText" style="color: var(--text-main);"><i class="fa-solid fa-spinner fa-spin"></i> Loading test data...</p>
@@ -177,6 +97,15 @@
         <div class="marks-highlight" id="myMarksDisplay">--/--</div>
         <div style="font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 15px;" id="myPercentDisplay"></div>
         <div id="cheatStatusDisplay"></div>
+        
+        <!-- 🔥 NAYA BUTTON: GALAT JAWAB DEKHNE KE LIYE 🔥 -->
+        <button id="viewMistakesBtn" onclick="toggleMistakes()" style="display:none; background: #dc3545; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size:15px; cursor: pointer; margin-top: 15px; width: 100%; box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);">
+            <i class="fa-solid fa-eye"></i> Galat Jawab Dekhein
+        </button>
+
+        <!-- 🔥 MISTAKES DIKHANE WALA DABBA 🔥 -->
+        <div id="mistakesContainer" style="display:none; text-align: left; margin-top: 20px; padding: 15px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--box-border);">
+        </div>
     </div>
 </div>
 
@@ -187,7 +116,6 @@
 </div>
 
 <a href="dashboard.html" class="btn-back">⬅ Back to Dashboard</a>
-
 <div class="footer">© Gyan Varsha Coaching Center</div>
 
 <script type="module">
@@ -207,14 +135,24 @@
     const db = getFirestore(app);
 
     const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
-    
     let globalName = localStorage.getItem("studentName") || "Student";
     let globalClass = localStorage.getItem("studentClass") || "N/A";
     const isValidName = globalName && globalName !== "N/A" && globalName !== "undefined" && globalName !== "null";
 
-    // 🔥 FIX: Puraana Local Storage System Hata Diya. Ab Hamesha Wahi Khulega Jo HTML me Upar Hoga 🔥
     let testSelector = document.getElementById("testSelector");
     let targetTestPath = testSelector.value.trim(); 
+
+    // 🔥 BUTTON CLICK HONE PAR DABBA KHOLNE KA FUNCTION 🔥
+    window.toggleMistakes = function() {
+        let container = document.getElementById("mistakesContainer");
+        if(container.style.display === "none") {
+            container.style.display = "block";
+            document.getElementById("viewMistakesBtn").innerHTML = `<i class="fa-solid fa-eye-slash"></i> Galat Jawab Chhupayein`;
+        } else {
+            container.style.display = "none";
+            document.getElementById("viewMistakesBtn").innerHTML = `<i class="fa-solid fa-eye"></i> Galat Jawab Dekhein`;
+        }
+    };
 
     window.changeTest = function() {
         targetTestPath = document.getElementById("testSelector").value.trim();
@@ -227,6 +165,10 @@
         document.getElementById("myMarksDisplay").style.display = "block";
         document.getElementById("myPercentDisplay").style.display = "block";
         document.getElementById("cheatStatusDisplay").innerHTML = "";
+        
+        // Naya test select karne par button aur answers wapas chhupa do
+        document.getElementById("mistakesContainer").style.display = "none";
+        document.getElementById("viewMistakesBtn").style.display = "none";
         
         fetchStudentProfileAndResult();
     };
@@ -252,10 +194,8 @@
                 const sData = studentSnap.data();
                 globalName = sData["Name "] || sData.Name || "Student";
                 globalClass = String(sData["Class "] || sData.Class).trim();
-                
                 localStorage.setItem("studentName", globalName);
                 localStorage.setItem("studentClass", globalClass);
-                
                 document.getElementById("studentNameDisplay").innerText = globalName;
                 document.getElementById("studentClassDisplay").innerText = globalClass + (String(globalClass).toLowerCase().includes('th') ? '' : 'th');
             }
@@ -285,6 +225,41 @@
                     } else {
                         document.getElementById("cheatStatusDisplay").innerHTML = `<span style="color:#28a745; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Proctoring Status: Clean Profile</span>`;
                     }
+
+                    // 🔥 GALAT JAWAB DIKHANE KA LOGIC 🔥
+                    let mistakesBtn = document.getElementById("viewMistakesBtn");
+                    let mistakesContainer = document.getElementById("mistakesContainer");
+                    mistakesBtn.innerHTML = `<i class="fa-solid fa-eye"></i> Galat Jawab Dekhein`; // reset text
+                    
+                    if (rData.wrongAnswers && Array.isArray(rData.wrongAnswers)) {
+                        if (rData.wrongAnswers.length === 0) {
+                            // Bachhe ne sab sahi diya!
+                            mistakesBtn.style.display = "none";
+                            mistakesContainer.style.display = "block";
+                            mistakesContainer.innerHTML = "<p style='color: #28a745; text-align:center; font-weight:bold; font-size:16px;'>🎉 Badhai ho! Aapke saare jawab sahi hain.</p>";
+                        } else {
+                            // Bachhe ne galti ki
+                            mistakesBtn.style.display = "inline-block";
+                            let mistakesHTML = `<h4 style="color: var(--danger); margin-top:0;">❌ Aapke Galat Jawab:</h4>`;
+                            
+                            rData.wrongAnswers.forEach((ans) => {
+                                mistakesHTML += `
+                                    <div style="margin-bottom: 15px; border-bottom: 1px solid var(--box-border); padding-bottom: 10px;">
+                                        <div style="font-weight:600; font-size:14px; margin-bottom:6px; color: var(--text-main);">${ans.question}</div>
+                                        <div style="font-size:13px; color: var(--danger); margin-bottom:4px;"><i class="fa-solid fa-xmark"></i> Aapka Jawab: <strong>${ans.selected}</strong></div>
+                                        <div style="font-size:13px; color: #28a745;"><i class="fa-solid fa-check-double"></i> Sahi Jawab: <strong>${ans.correct}</strong></div>
+                                    </div>
+                                `;
+                            });
+                            mistakesContainer.innerHTML = mistakesHTML;
+                        }
+                    } else {
+                        // Purane tests jisme save nahi the jawab
+                        mistakesBtn.style.display = "none";
+                        mistakesContainer.style.display = "block";
+                        mistakesContainer.innerHTML = "<p style='color: var(--text-muted); font-size:13px; text-align:center;'><em>Is test ka detailed result available nahi hai (Purana test).</em></p>";
+                    }
+
                 } else {
                     document.getElementById("myMarksDisplay").style.display = "none";
                     document.getElementById("myPercentDisplay").style.display = "none";
@@ -301,7 +276,7 @@
 
         } catch (error) {
             console.error("Firebase Details Error:", error);
-            document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545;">⚠️ Error: ${error.message} <br> <small>(Path: ${targetTestPath})</small></span>`;
+            document.getElementById("loadingText").innerHTML = `<span style="color:#dc3545;">⚠️ Error: ${error.message}</span>`;
         }
     }
 
