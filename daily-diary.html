@@ -1,297 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"> <!-- Emoji / Hindi support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"> <!-- 🔥 FIX: EMOJI AUR HINDI SUPPORT KE LIYE 🔥 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
     <title>Class Updates - GVCC</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
     <style>
-        /* Core layout */
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; color: #0f172a;}
-        .header { background: #003366; color: white; padding: 16px; text-align: center; font-weight: 700; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-        .container { max-width: 680px; margin: 18px auto; padding: 0 16px 40px; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 0; overscroll-behavior-y: none; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 500px; margin: 20px auto; padding: 0 15px; padding-bottom: 40px; }
+        
+        .update-item { background: white; margin-bottom: 16px; padding: 15px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid #8b5cf6; }
+        .meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 8px; }
+        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block; margin-bottom: 12px; }
+        .content-box { background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; line-height: 1.5; }
+        
+        .btn-view-hw { background: #10b981; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; margin-top: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); transition: 0.2s;}
+        .btn-view-hw:active { transform: scale(0.96); }
 
-        .update-item { background: white; margin-bottom: 16px; padding: 14px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 5px solid #8b5cf6; }
-        .meta { display:flex; justify-content:space-between; gap:8px; align-items:center; font-size:13px; color:#64748b; margin-bottom:10px; }
-        .teacher-badge { background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 8px; font-weight: 700; font-size: 12px; display:inline-block; margin-bottom: 10px; }
-        .content-box { background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; line-height:1.5; }
+        .video-link { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
 
-        .btn-view-hw { background: #10b981; color: white; border: none; padding: 10px 14px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; gap:8px; align-items:center; }
-        .btn-view-hw:active { transform: scale(0.985); }
-        .btn-view-hw i { margin-left: 6px; }
+        /* Premium Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px); }
+        .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px auto; }
+        
+        .hw-text { display: block; font-size: 15px; color: #1e293b; line-height: 1.7; margin-top: 10px; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; overflow-y: auto; flex: 1; margin-bottom: 15px; text-align: left; }
 
-        .video-link { display: inline-flex; align-items:center; gap:8px; margin-top:10px; background:#fff4f4; color:#ef4444; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid #fee2e2; }
+        /* WhatsApp Button Main */
+        .wa-btn { background: #f1f5f9; color: #475569; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1; width: 100%; box-sizing: border-box; display: block; text-align: center; text-decoration: none; margin-top: 15px; transition: 0.2s; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .wa-btn:active { background: #e2e8f0; transform: scale(0.98); border-color: #25D366; }
 
-        /* Modal */
-        .modal { display:none; position:fixed; inset:0; background: rgba(15,23,42,0.7); z-index:1000; justify-content: center; align-items: flex-end; }
-        .modal[aria-hidden="false"] { display:flex; }
-        .modal-content { background:white; width:100%; max-width:680px; border-radius:18px 18px 6px 6px; padding:18px; max-height:85vh; overflow:auto; box-sizing:border-box; animation: slideUp 220ms ease; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity:0 } to { transform: translateY(0); opacity:1 } }
-        .modal-handle { width:40px; height:5px; background:#cbd5e1; border-radius:10px; margin:0 auto 12px; }
-
-        .hw-text { display:block; font-size:15px; color:#1e293b; line-height:1.7; margin-top:10px; background:#f8fafc; padding:14px; border-radius:12px; border:1px solid #e2e8f0; overflow:auto; box-sizing:border-box; }
-
-        /* WhatsApp */
-        .wa-btn { background:#f1f5f9; color:#0f172a; padding:12px; border-radius:10px; border:1px dashed #cbd5e1; width:100%; box-sizing:border-box; display:inline-flex; gap:8px; align-items:center; justify-content:center; text-decoration:none; font-weight:700; }
-        .wa-btn-small { display:inline-flex; align-items:center; gap:8px; background:#25D366; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:13px; border:none; cursor:pointer; }
-
-        .missing-box { margin-top:18px; padding:14px; background:white; border-radius:12px; border:1px dashed #cbd5e1; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.02); }
-
-        img.hw-image { width:100%; border-radius:8px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.06); cursor:zoom-in; }
-
-        @media (min-width: 900px) {
-            .container { max-width: 900px; }
-        }
+        /* Small WhatsApp Buttons for Missing Teachers */
+        .missing-box { margin-top: 25px; padding: 15px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .wa-btn-small { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; margin: 5px; transition: 0.2s; border: none; cursor: pointer; }
+        .wa-btn-small:active { transform: scale(0.95); background: #1da851; }
     </style>
-
-    <!-- theme layer -->
-    <link rel="stylesheet" href="theme.css">
-    <script src="theme.js" defer></script>
+    <!-- GLOBAL THEME SYSTEM -->
+<link rel="stylesheet" href="theme.css">
+<script src="theme.js" defer></script>
 </head>
 <body>
-    <header class="header" role="banner" onclick="window.history.back()">
-        <i class="fa-solid fa-arrow-left" style="float:left; margin-top:3px;"></i>
-        Daily Class Diary
-    </header>
 
-    <main class="container" id="diaryList" role="main" aria-live="polite">
-        <div id="loadingState" style="text-align:center; margin-top:50px; color:#64748b;">
-            <i class="fa-solid fa-spinner fa-spin fa-2x" aria-hidden="true"></i>
+    <div class="header" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left" style="float:left; margin-top: 3px;"></i> Daily Class Diary
+    </div>
+
+    <div class="container" id="diaryList">
+        <div style="text-align: center; margin-top: 50px; color: #64748b;">
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
             <p>Loading updates...</p>
-        </div>
-    </main>
-
-    <!-- Modal -->
-    <div class="modal" id="hwModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
-        <div class="modal-content" role="document">
-            <div class="modal-handle" aria-hidden="true"></div>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
-                <h3 id="modalTitle" style="color:#10b981; margin:0; font-size:18px;"><i class="fa-solid fa-book-open-reader"></i> Class Homework</h3>
-                <button type="button" id="closeModalBtn" style="background:none;border:0;color:#94a3b8;font-size:22px;cursor:pointer;" aria-label="Close">✕</button>
-            </div>
-            <div id="modalSubtitle" style="font-size:13px;color:#64748b;margin-top:10px;"></div>
-            <div id="modalHWText" class="hw-text" tabindex="0"></div>
-            <div style="margin-top:12px;">
-                <button id="modalCloseFooter" type="button" style="width:100%; background:#0f172a; color:white; border:none; padding:12px; border-radius:10px; font-weight:700; font-size:15px; cursor:pointer;">Close</button>
-            </div>
         </div>
     </div>
 
-<script>
-/* -----------------------------
-   Helper utilities (security)
-   ----------------------------- */
-function escapeHTML(str) {
-    if (str === undefined || str === null) return '';
-    return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-}
+    <!-- Modal Box -->
+    <div class="modal" id="hwModal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <h3 style="color: #10b981; margin: 0; font-size: 18px;"><i class="fa-solid fa-book-open-reader"></i> Class Homework</h3>
+                <i class="fa-solid fa-circle-xmark" onclick="closeHomeworkModal()" style="font-size: 24px; color: #94a3b8; cursor: pointer;"></i>
+            </div>
+            <div style="font-size: 13px; color: #64748b; margin-top: 12px;" id="modalSubtitle"></div>
+            
+            <div class="hw-text" id="modalHWText"></div>
+            
+            <button onclick="closeHomeworkModal()" style="width:100%; background:#0f172a; color:white; border:none; padding:14px; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer;">Close Homework</button>
+        </div>
+    </div>
 
-// Converts *bold* style to <b> after escaping everything else
-function formatBoldMarkdown(plainText) {
-    const escaped = escapeHTML(plainText);
-    // Replace only pairs of *...* (non-greedy) with <b>...</b>
-    return escaped.replace(/\*(.+?)\*/g, '<b>$1</b>');
-}
+    <!-- 🌟 Smart Logic Engine 🌟 -->
+    <script>
+        // 🌟 FIXED: Md Faiyaz Last Position
+        const teacherPhones = {
+            "Md Nijamuddin Sir": "916201799298",
+            "Vikash Sir": "917485032599",
+            "Md Faiyaz Sir": "916203491210"
+        };
 
-// Safely create text node wrapper (no HTML parsing)
-function setText(el, text) {
-    el.textContent = text ?? '';
-}
+        // Helper: Student Name, Gender & Time Detection
+        function getStudentContext() {
+            const sName = localStorage.getItem("studentName") || "Student";
+            const sClass = localStorage.getItem("studentClass") || "All";
+            const nameLower = sName.toLowerCase();
+            
+            let actionWord = "कर रहा हूँ"; 
+            const girlKeywords = ["kumari", "khatoon", "parveen", "bano", "begum", "saba", "fatima", "anjali", "priya", "neha", "sana", "muskan", "rani", "gajala", "shabnam"];
+            if (girlKeywords.some(keyword => nameLower.includes(keyword))) { actionWord = "कर रही हूँ"; }
 
-// Safe URL validation for video links (basic)
-function sanitizeUrl(url) {
-    try {
-        const u = new URL(url);
-        if (u.protocol === 'http:' || u.protocol === 'https:') return u.toString();
-        return null;
-    } catch (e) {
-        return null;
-    }
-}
+            const hour = new Date().getHours();
+            let greeting = "Good Morning";
+            if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+            else if (hour >= 17) greeting = "Good Evening";
 
-/* -----------------------------
-   Small app state & helpers
-   ----------------------------- */
-const teacherPhones = {
-    "Md Nijamuddin Sir": "916201799298",
-    "Vikash Sir": "917485032599",
-    "Md Faiyaz Sir": "916203491210"
-};
-
-function getStudentContext() {
-    const sName = localStorage.getItem("studentName") || "Student";
-    const sClass = localStorage.getItem("studentClass") || "All";
-    const nameLower = sName.toLowerCase();
-    let actionWord = "कर रहा हूँ";
-    const girlKeywords = ["kumari","khatoon","parveen","bano","begum","saba","fatima","anjali","priya","neha","sana","muskan","rani","gajala","shabnam"];
-    if (girlKeywords.some(k => nameLower.includes(k))) actionWord = "कर रही हूँ";
-    const hour = new Date().getHours();
-    let greeting = "Good Morning";
-    if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
-    else if (hour >= 17) greeting = "Good Evening";
-    return { sName, sClass, actionWord, greeting };
-}
-
-/* Open WhatsApp with a safe message */
-function openWhatsApp(phone, msg) {
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank', 'noopener');
-}
-
-window.askForMissingHW = function(teacherName) {
-    const { sName, sClass, actionWord, greeting } = getStudentContext();
-    const phone = teacherPhones[teacherName] || "916203491210";
-    const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nकृपया आज का होमवर्क / नोट्स भेज दें। धन्यवाद!`;
-    openWhatsApp(phone, msg);
-};
-
-window.askForNotes = function(teacherName, encodedTopic, encodedShortHW) {
-    const { sName, sClass, actionWord, greeting } = getStudentContext();
-    const phone = teacherPhones[teacherName] || "916203491210";
-    const topic = decodeURIComponent(encodedTopic || '');
-    const hw = decodeURIComponent(encodedShortHW || '');
-    const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\n\n📝 Topic: ${topic}\n🏠 HW: ${hw}\nकृपया नोट्स/फोटो भेज दें। धन्यवाद।`;
-    openWhatsApp(phone, msg);
-};
-
-/* -----------------------------
-   Modal handling (safe DOM)
-   ----------------------------- */
-const modal = document.getElementById('hwModal');
-const modalSubtitle = document.getElementById('modalSubtitle');
-const modalHWText = document.getElementById('modalHWText');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const modalCloseFooter = document.getElementById('modalCloseFooter');
-
-function openHomeworkModal(encodedHW, teacherName, subject, encodedTopic, encodedShortHW, encodedImageUrls) {
-    // decode safely
-    const fullHW = decodeURIComponent(encodedHW || '');
-    const topic = decodeURIComponent(encodedTopic || '');
-    const shortHW = decodeURIComponent(encodedShortHW || '');
-    let imageUrls = [];
-    if (encodedImageUrls && encodedImageUrls !== 'undefined') {
-        try {
-            const parsed = JSON.parse(decodeURIComponent(encodedImageUrls));
-            if (Array.isArray(parsed)) imageUrls = parsed.filter(u => typeof u === 'string' && u.startsWith('http'));
-        } catch (e) {
-            imageUrls = [];
-        }
-    }
-
-    modalSubtitle.innerHTML = `<strong style="color:#1e293b">Subject:</strong> ${escapeHTML(subject || '')} &nbsp;|&nbsp; <strong style="color:#1e293b">Teacher:</strong> ${escapeHTML(teacherName || '')}`;
-
-    // Construct content safely
-    modalHWText.innerHTML = ''; // clear
-    if ((!fullHW || fullHW === 'undefined' || fullHW.trim() === '') && imageUrls.length === 0) {
-        const wrapper = document.createElement('div');
-        wrapper.style.textAlign = 'center';
-        wrapper.style.padding = '8px 0';
-        wrapper.innerHTML = `
-            <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size:44px;color:#f59e0b;margin-bottom:12px;"></i>
-            <p style="color:#64748b;font-size:14px;margin-bottom:14px;">सर ने लम्बा वाला प्रश्न यहाँ नहीं डाला है।</p>
-        `;
-        const infoBox = document.createElement('div');
-        infoBox.style.background = '#f8fafc';
-        infoBox.style.border = '1px solid #e2e8f0';
-        infoBox.style.borderRadius = '8px';
-        infoBox.style.padding = '12px';
-        infoBox.style.textAlign = 'left';
-        infoBox.innerHTML = `<strong style="color:#0ea5e9">📝 Topic:</strong> ${escapeHTML(topic)}<br><strong style="color:#ef4444">🏠 HW:</strong> ${escapeHTML(shortHW)}`;
-        wrapper.appendChild(infoBox);
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'wa-btn';
-        btn.style.marginTop = '12px';
-        btn.innerHTML = `<i class="fa-brands fa-whatsapp" style="color:#25D366"></i> व्हाट्सएप पर नोट्स / फोटो मांगें`;
-        btn.addEventListener('click', () => window.askForNotes(teacherName, encodeURIComponent(topic), encodeURIComponent(shortHW)));
-
-        wrapper.appendChild(btn);
-        modalHWText.appendChild(wrapper);
-    } else {
-        // show text if present
-        if (fullHW && fullHW !== 'undefined' && fullHW.trim() !== '') {
-            const div = document.createElement('div');
-            div.style.fontSize = '15px';
-            div.style.color = '#1e293b';
-            div.style.lineHeight = '1.7';
-            div.style.whiteSpace = 'pre-wrap';
-            // allow only *bold* markup
-            div.innerHTML = formatBoldMarkdown(fullHW);
-            modalHWText.appendChild(div);
+            return { sName, sClass, actionWord, greeting };
         }
 
-        // show images if present
-        if (imageUrls.length > 0) {
-            const imagesContainer = document.createElement('div');
-            imagesContainer.style.marginTop = '12px';
-            imagesContainer.style.display = 'flex';
-            imagesContainer.style.flexDirection = 'column';
-            imagesContainer.style.gap = '12px';
-
-            const hint = document.createElement('p');
-            hint.style.fontSize = '12px';
-            hint.style.color = '#ef4444';
-            hint.style.margin = '0';
-            hint.style.textAlign = 'center';
-            hint.style.fontWeight = '700';
-            hint.innerHTML = `<i class="fa-solid fa-hand-pointer"></i> (फोटो को टैप करके बड़ा करें)`;
-            imagesContainer.appendChild(hint);
-
-            imageUrls.forEach(src => {
-                const img = document.createElement('img');
-                img.className = 'hw-image';
-                img.loading = 'lazy';
-                img.alt = 'Homework Note';
-                img.src = src;
-                img.addEventListener('click', () => window.open(src, '_blank', 'noopener'));
-                imagesContainer.appendChild(img);
-            });
-            modalHWText.appendChild(imagesContainer);
+        window.askForMissingHW = function(teacherName) {
+            const { sName, sClass, actionWord, greeting } = getStudentContext();
+            const phone = teacherPhones[teacherName] || "916203491210";
+            const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\nआपने आज होमवर्क ऐप पर नहीं डाला है। कृपया बता दें कि आज का क्या होमवर्क है? 📚`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // WhatsApp button to ask doubts
-        const askBtn = document.createElement('button');
-        askBtn.type = 'button';
-        askBtn.className = 'wa-btn';
-        askBtn.style.marginTop = '18px';
-        askBtn.innerHTML = `<i class="fa-brands fa-whatsapp" style="color:#25D366"></i> व्हाट्सएप पर डाउट पूछें / नोट्स मांगे`;
-        askBtn.addEventListener('click', () => window.askForNotes(teacherName, encodeURIComponent(topic), encodeURIComponent(shortHW)));
-        modalHWText.appendChild(askBtn);
-    }
+        window.askForNotes = function(teacherName, topic, shortHW) {
+            const { sName, sClass, actionWord, greeting } = getStudentContext();
+            const phone = teacherPhones[teacherName] || "916203491210";
+            let decodedTopic = decodeURIComponent(topic);
+            let decodedShortHW = decodeURIComponent(shortHW);
+            const msg = `${greeting} ${teacherName}! 🙏\nमैं *${sName}* ✨ (Class ${sClass})\nGVCC App से मैसेज ${actionWord}।\n\n📝 *Topic:* ${decodedTopic}\n🏠 *HW:* ${decodedShortHW}\n\nसर, अगर आपके पास इसका नोट्स या फोटो है तो कृपया भेज दीजिए। 📚`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
 
-    // show modal & focus
-    modal.setAttribute('aria-hidden','false');
-    modal.style.display = 'flex';
-    modalHWText.focus();
-}
+        // 🌟 NAYA: Photo Receive Logic Added Here 🌟
+        window.openHomeworkModal = function(encodedHW, teacherName, subject, encodedTopic, encodedShortHW, encodedImageUrls) {
+            document.getElementById("modalSubtitle").innerHTML = `<strong style="color:#1e293b;">Subject:</strong> ${subject} &nbsp;|&nbsp; <strong style="color:#1e293b;">Teacher:</strong> ${teacherName}`;
+            
+            let decodedHW = decodeURIComponent(encodedHW).trim();
+            
+            // 🌟 जादुई कोड 🌟: *text* को <b>text</b> में बदलना
+            decodedHW = decodedHW.replace(/\*(.*?)\*/g, "<b>$1</b>");
 
-function closeHomeworkModal() {
-    modal.setAttribute('aria-hidden','true');
-    modal.style.display = 'none';
-}
+            let decodedTopic = decodeURIComponent(encodedTopic).trim();
+            let decodedShortHW = decodeURIComponent(encodedShortHW).trim();
+            
+            // Photo Array Process Karna
+            let imageUrls = [];
+            if (encodedImageUrls && encodedImageUrls !== 'undefined') {
+                try {
+                    imageUrls = JSON.parse(decodeURIComponent(encodedImageUrls));
+                } catch(e) {}
+            }
 
-closeModalBtn.addEventListener('click', closeHomeworkModal);
-modalCloseFooter.addEventListener('click', closeHomeworkModal);
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeHomeworkModal();
-});
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeHomeworkModal(); });
+            const modalTextContainer = document.getElementById("modalHWText");
+            
+            const hasText = (decodedHW && decodedHW !== "undefined" && decodedHW !== "");
+            const hasImages = (imageUrls.length > 0);
 
-/* -----------------------------
-   Firestore: safe initialization and query
-   ----------------------------- */
-(async function initFirebaseAndListen(){
-    try {
-        // load firebase modular SDK dynamically (already used in original app)
-        // Using dynamic import keeps top-level script valid if blocked
-        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js');
-        const { getFirestore, collection, query, orderBy, onSnapshot, where, limit } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js');
+            // Agar na Text hai, na koi Photo hai
+            if (!hasText && !hasImages) {
+                modalTextContainer.innerHTML = `
+                    <div style="text-align:center; padding: 10px 0;">
+                        <i class="fa-solid fa-face-grin-beam-sweat fa-bounce" style="font-size: 55px; color: #f59e0b; margin-bottom: 15px;"></i>
+                        <p style="color:#64748b; font-size:14px; margin-bottom:15px;">सर ने लम्बा वाला प्रश्न यहाँ नहीं डाला है。</p>
+                        
+                        <div style="background:#f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: left; margin-bottom: 15px;">
+                            <strong style="color:#0ea5e9;">📝 Topic:</strong> ${decodedTopic}<br>
+                            <strong style="color:#ef4444; margin-top:8px; display:inline-block;">🏠 HW:</strong> ${decodedShortHW}
+                        </div>
+                        
+                        <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn">
+                            <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर नोट्स / फोटो मांगें 🚀
+                        </button>
+                    </div>
+                `;
+                modalTextContainer.style.background = "transparent";
+                modalTextContainer.style.border = "none";
+                modalTextContainer.style.padding = "0";
+            } else {
+                // 🌟 Agar Text ya Photo dono me se kuch bhi hai
+                let contentHTML = "";
+                
+                // 1. Text Dikhao (यहाँ white-space: pre-wrap; लगा दिया गया है)
+                if (hasText) {
+                    contentHTML += `<div style="font-size: 15px; color: #1e293b; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; text-align:left;">${decodedHW}</div>`;
+                }
+
+                // 2. Photos Dikhao
+                if (hasImages) {
+                    contentHTML += `<div style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">`;
+                    contentHTML += `<p style="font-size:12px; color:#ef4444; margin:0; text-align:center; font-weight:bold;"><i class="fa-solid fa-hand-pointer"></i> (फोटो को बड़ा देखने के लिए उस पर क्लिक करें)</p>`;
+                    
+                    imageUrls.forEach(url => {
+                        contentHTML += `
+                            <img src="${url}" 
+                                 style="width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: zoom-in;" 
+                                 onclick="window.open(this.src, '_blank')" 
+                                 alt="Homework Note">
+                        `;
+                    });
+                    contentHTML += `</div>`;
+                }
+                
+                // 3. Last me WhatsApp wala button 
+                contentHTML += `
+                    <button onclick="askForNotes('${teacherName}', '${encodedTopic}', '${encodedShortHW}')" class="wa-btn" style="margin-top:20px;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> व्हाट्सएप पर डाउट पूछें / नोट्स मांगें 🚀
+                    </button>
+                `;
+
+                modalTextContainer.innerHTML = contentHTML;
+                modalTextContainer.style.background = "#f8fafc";
+                modalTextContainer.style.border = "1px solid #e2e8f0";
+                modalTextContainer.style.padding = "18px";
+            }
+            document.getElementById("hwModal").style.display = "flex";
+        }
+
+        window.closeHomeworkModal = function() {
+            document.getElementById("hwModal").style.display = "none";
+        }
+    </script>
+
+    <!-- Firebase System -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
@@ -301,249 +216,174 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeHomew
             messagingSenderId: "1063216875940",
             appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const studentClass = localStorage.getItem("studentClass") || "All"; 
+        
+        // 🌟 FIXED: Md Faiyaz Last Position
+        const allTeachers = ["Md Nijamuddin Sir", "Vikash Sir", "Md Faiyaz Sir"];
 
-        // Prevent double-init in case of multiple imports
-        try { initializeApp(firebaseConfig); } catch(e) { /* already initialized */ }
-
-        const db = getFirestore();
-        const studentClass = localStorage.getItem("studentClass") || "All";
-
-        // Build safe query: when studentClass != "All" use where filter, always limit results
-        let q;
-        if (studentClass && studentClass !== 'All') {
-            // Using 'in' keeps only docs targeted to student's class or All
-            q = query(collection(db, "daily_diary"), where("targetClass", "in", [studentClass, "All"]), orderBy("timestamp","desc"), limit(100));
-        } else {
-            q = query(collection(db, "daily_diary"), orderBy("timestamp","desc"), limit(100));
-        }
-
-        const diaryList = document.getElementById('diaryList');
-        const loadingState = document.getElementById('loadingState');
-
+        const q = query(collection(db, "daily_diary"), orderBy("timestamp", "desc"));
         onSnapshot(q, (snapshot) => {
-            loadingState?.remove();
-            diaryList.innerHTML = ''; // clear container
-
+            const list = document.getElementById("diaryList");
+            list.innerHTML = "";
+            let hasData = false;
+            
             const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            const teachersPostedToday = new Set();
-            const allTeachers = ["Md Nijamuddin Sir","Vikash Sir","Md Faiyaz Sir"];
+            let teachersPostedToday = new Set(); 
 
-            let anyShown = false;
+            let cardsHTML = "";
 
-            snapshot.forEach(doc => {
-                const data = doc.data ? doc.data() : doc;
-                // defensive checks
-                if (!data) return;
-                // targetClass match already applied in query, but keep defensive
-                if (data.targetClass && studentClass !== 'All' && data.targetClass !== studentClass && data.targetClass !== 'All') return;
-
-                anyShown = true;
-                if (data.date === todayStr && data.teacherName) teachersPostedToday.add(data.teacherName);
-
-                // prepare values safely
-                const subject = data.subject || '';
-                const date = data.date || '';
-                const teacherName = data.teacherName || '';
-                const classTopic = data.classTopic || '';
-                const hwSummary = data.homeworkSummary || data.homework || 'कोई जानकारी नहीं';
-                const fullHW = data.fullHomework || '';
-                // image fields may be array or single url
-                let imageUrls = [];
-                if (Array.isArray(data.imageUrls)) imageUrls = data.imageUrls.filter(u => typeof u === 'string' && u.startsWith('http'));
-                else if (typeof data.imageUrl === 'string' && data.imageUrl.startsWith('http')) imageUrls = [data.imageUrl];
-
-                const safeImageUrlsEncoded = encodeURIComponent(JSON.stringify(imageUrls));
-                const safeFullHW = encodeURIComponent(fullHW);
-                const safeTopic = encodeURIComponent(classTopic);
-                const safeShortHW = encodeURIComponent(hwSummary);
-
-                // Build card via DOM (avoid innerHTML injection)
-                const card = document.createElement('article');
-                card.className = 'update-item';
-                card.setAttribute('role','article');
-
-                const meta = document.createElement('div');
-                meta.className = 'meta';
-                const subjSpan = document.createElement('span');
-                subjSpan.style.fontWeight = '800';
-                subjSpan.style.color = '#1e293b';
-                subjSpan.style.fontSize = '14px';
-                subjSpan.innerHTML = `<i class="fa-solid fa-book" style="color:#8b5cf6"></i> ${escapeHTML(subject)}`;
-                const dateSpan = document.createElement('span');
-                dateSpan.innerHTML = `<i class="fa-regular fa-calendar"></i> ${escapeHTML(date)}`;
-                meta.appendChild(subjSpan);
-                meta.appendChild(dateSpan);
-                card.appendChild(meta);
-
-                const teacherBadge = document.createElement('div');
-                teacherBadge.className = 'teacher-badge';
-                teacherBadge.textContent = `By: ${teacherName}`;
-                card.appendChild(teacherBadge);
-
-                const contentBox = document.createElement('div');
-                contentBox.className = 'content-box';
-                const topicDiv = document.createElement('div');
-                topicDiv.style.marginBottom = '8px';
-                topicDiv.innerHTML = `<strong style="color:#0ea5e9">📝 Topic:</strong> ${escapeHTML(classTopic)}`;
-                const hwDiv = document.createElement('div');
-                hwDiv.innerHTML = `<strong style="color:#ef4444">🏠 HW:</strong> <span style="color:#64748b">${escapeHTML(hwSummary)}</span>`;
-                if (imageUrls.length > 0) hwDiv.innerHTML += ` <i class="fa-solid fa-image" style="color:#f59e0b;margin-left:8px"></i>`;
-
-                contentBox.appendChild(topicDiv);
-                contentBox.appendChild(hwDiv);
-                card.appendChild(contentBox);
-
-                // View button
-                const viewBtn = document.createElement('button');
-                viewBtn.type = 'button';
-                viewBtn.className = 'btn-view-hw';
-                viewBtn.innerHTML = `<span>View Full Homework</span> <i class="fa-solid fa-expand"></i>`;
-                viewBtn.addEventListener('click', () => openHomeworkModal(safeFullHW, teacherName, subject, safeTopic, safeShortHW, safeImageUrlsEncoded));
-                card.appendChild(viewBtn);
-
-                // optional video link (sanitize URL)
-                if (data.videoLink) {
-                    const v = sanitizeUrl(data.videoLink);
-                    if (v) {
-                        const a = document.createElement('a');
-                        a.href = v;
-                        a.target = '_blank';
-                        a.rel = 'noopener noreferrer';
-                        a.className = 'video-link';
-                        a.innerHTML = `<i class="fa-brands fa-youtube"></i> Basic Video देखें`;
-                        card.appendChild(a);
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.targetClass === "All" || data.targetClass === studentClass || studentClass.includes(data.targetClass)) {
+                    hasData = true;
+                    
+                    if(data.date === todayStr) {
+                        teachersPostedToday.add(data.teacherName);
                     }
-                }
 
-                diaryList.appendChild(card);
+                    const hwSummary = data.homeworkSummary || data.homework || "कोई जानकारी नहीं";
+                    const fullHW = data.fullHomework || ""; 
+                    const safeHW = encodeURIComponent(fullHW);
+                    const safeTopic = encodeURIComponent(data.classTopic || "");
+                    const safeShortHW = encodeURIComponent(hwSummary || "");
+                    
+                    // 🌟 NAYA: Extract Image URLs and Convert to String array
+                    let imageUrls = [];
+                    if (data.imageUrls) imageUrls = data.imageUrls;
+                    else if (data.imageUrl) imageUrls = [data.imageUrl];
+                    const safeImageUrls = encodeURIComponent(JSON.stringify(imageUrls));
+
+                    // Show Photo icon on Card if image exists
+                    let photoIcon = imageUrls.length > 0 ? `<i class="fa-solid fa-image" style="color:#f59e0b; margin-left:8px;"></i>` : '';
+
+                    cardsHTML += `
+                        <div class="update-item">
+                            <div class="meta">
+                                <span style="font-weight:800; color:#1e293b; font-size:14px;"><i class="fa-solid fa-book" style="color:#8b5cf6;"></i> ${data.subject}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${data.date}</span>
+                            </div>
+                            <span class="teacher-badge">👨‍🏫 By: ${data.teacherName}</span>
+                            <div class="content-box">
+                                <div style="margin-bottom: 8px;">
+                                    <strong style="color:#0ea5e9;">📝 Topic:</strong> ${data.classTopic}
+                                </div>
+                                <div>
+                                    <strong style="color:#ef4444;">🏠 HW:</strong> <span style="color:#64748b;">${hwSummary}</span> ${photoIcon}
+                                </div>
+                            </div>
+                            
+                            <!-- 🌟 FIXED: Passing safeImageUrls into the function -->
+                            <button class="btn-view-hw" onclick="openHomeworkModal('${safeHW}', '${data.teacherName}', '${data.subject}', '${safeTopic}', '${safeShortHW}', '${safeImageUrls}')">
+                                <span>View Full Homework</span> <i class="fa-solid fa-expand"></i>
+                            </button>
+                            
+                            ${data.videoLink ? `<a href="${data.videoLink}" target="_blank" class="video-link"><i class="fa-brands fa-youtube"></i> Basic Video देखें</a>` : ''}
+                        </div>
+                    `;
+                }
             });
 
-            if (!anyShown) {
-                const empty = document.createElement('div');
-                empty.style.textAlign = 'center';
-                empty.style.marginTop = '40px';
-                empty.style.color = '#94a3b8';
-                empty.style.fontSize = '18px';
-                empty.style.fontWeight = '700';
-                empty.textContent = 'आज का कोई अपडेट नहीं है!';
-                diaryList.appendChild(empty);
+            if (hasData) {
+                list.innerHTML = cardsHTML;
+            } else {
+                list.innerHTML = `<div style="text-align:center; margin-top:40px; color:#94a3b8; font-size:18px; font-weight:bold;">आज का कोई अपडेट नहीं है!</div>`;
             }
 
-            // Missing teacher buttons
-            const allTeachers = ["Md Nijamuddin Sir","Vikash Sir","Md Faiyaz Sir"];
-            const missingTeachers = allTeachers.filter(t => !Array.from(teachersPostedToday || []).includes(t));
+            // Missing Teachers List (Faiyaz will automatically be last due to 'allTeachers' array order)
+            const missingTeachers = allTeachers.filter(t => !teachersPostedToday.has(t));
+
             if (missingTeachers.length > 0) {
-                const box = document.createElement('div');
-                box.className = 'missing-box';
-                const p = document.createElement('p');
-                p.style.color = '#475569';
-                p.style.fontSize = '13px';
-                p.style.fontWeight = '700';
-                p.style.margin = '0 0 8px 0';
-                p.textContent = 'क्या आज किसी सर ने होमवर्क नहीं डाला? उन्‍हें व्हाट्सएप करके पूछें:';
-                box.appendChild(p);
+                let btnsHTML = missingTeachers.map(t => `
+                    <button class="wa-btn-small" onclick="askForMissingHW('${t}')">
+                        <i class="fa-brands fa-whatsapp"></i> ${t}
+                    </button>
+                `).join('');
 
-                const wrap = document.createElement('div');
-                wrap.style.display = 'flex';
-                wrap.style.flexWrap = 'wrap';
-                wrap.style.justifyContent = 'center';
-                wrap.style.gap = '8px';
-
-                missingTeachers.forEach(t => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'wa-btn-small';
-                    btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> ${escapeHTML(t)}`;
-                    btn.addEventListener('click', () => window.askForMissingHW(t));
-                    wrap.appendChild(btn);
-                });
-
-                box.appendChild(wrap);
-                diaryList.appendChild(box);
+                list.innerHTML += `
+                    <div class="missing-box">
+                        <p style="color:#475569; font-size:13px; font-weight:bold; margin-top:0;">क्या आज किसी सर ने होमवर्क नहीं डाला? उन्हें याद दिलाएं:</p>
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+                            ${btnsHTML}
+                        </div>
+                    </div>
+                `;
             }
-
-        }, (err) => {
-            // onSnapshot error
-            const loading = document.getElementById('loadingState');
-            if (loading) loading.innerHTML = `<p style="color:#ef4444">डेटा लोड करने में त्रुटि हुई। कृपया पेज रिफ्रेश करें।</p>`;
-            console.error('Firestore snapshot error:', err);
         });
+    </script>
+    <!-- 🔥 VIP LIVE ACTIVITY TRACKER START 🔥 -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    } catch (err) {
-        console.error('Firebase initialization failed:', err);
-        const loading = document.getElementById('loadingState');
-        if (loading) loading.innerHTML = `<p style="color:#ef4444">सर्विस उपलब्ध नहीं है। नेटवर्क चेक करें।</p>`;
-    }
-})();
+    // Aapka Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
 
-/* -----------------------------
-   Activity tracker (debounced & optimized)
-   ----------------------------- */
-(function activityTracker(){
-    try {
-        const activeRoll = localStorage.getItem('studentRoll') || localStorage.getItem('loggedInRollNo');
-        if (!activeRoll) return;
-        let lastSent = 0;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+    
+    let pageName = window.location.pathname.split("/").pop(); 
+    if(!pageName || pageName === "") pageName = "daily-diary.html";
+
+    if (activeRoll) {
         let entryTime = Date.now();
-        let timeSpentSeconds = 0;
 
-        const updateIntervalMs = 15000; // 15 seconds
-        let pageName = window.location.pathname.split('/').pop() || 'daily-diary.html';
+        // 🔥 VIP STRUCTURE: activity_logs -> Roll Number -> pages -> File Name
+        const studentDocRef = doc(db, "activity_logs", activeRoll); 
+        const pageDocRef = doc(db, "activity_logs", activeRoll, "pages", pageName); 
 
-        // lazy init firebase writes, dynamic import as needed
-        let dbRefs = null;
-        async function initDbRefs() {
-            if (dbRefs) return dbRefs;
-            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js');
-            const { getFirestore, doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js');
-            try { initializeApp({
-                apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-                authDomain: "gvcc-database.firebaseapp.com",
-                projectId: "gvcc-database",
-                storageBucket: "gvcc-database.firebasestorage.app",
-                messagingSenderId: "1063216875940",
-                appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-            }); } catch(e) {}
-            const db = getFirestore();
-            const studentDocRef = doc(db, 'activity_logs', activeRoll);
-            const pageDocRef = doc(db, 'activity_logs', activeRoll, 'pages', pageName);
-            dbRefs = { setDoc, serverTimestamp, studentDocRef, pageDocRef };
-            return dbRefs;
-        }
-
-        async function sendUpdate(force=false) {
+        async function createLog() {
             try {
-                const now = Date.now();
-                timeSpentSeconds = Math.floor((now - entryTime)/1000);
-                if (!force && (now - lastSent) < updateIntervalMs) return;
-                lastSent = now;
-                const refs = await initDbRefs();
-                await refs.setDoc(refs.studentDocRef, { rollNumber: activeRoll, lastActiveAt: refs.serverTimestamp }, { merge: true });
-                await refs.setDoc(refs.pageDocRef, {
-                    pageVisited: pageName,
-                    timeSpentSeconds,
-                    timeSpentText: `${Math.floor(timeSpentSeconds/60)} Min ${timeSpentSeconds%60} Sec`,
-                    lastUpdated: refs.serverTimestamp,
-                    date: new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })
+                // 1. Pehle Roll Number ka folder banayega
+                await setDoc(studentDocRef, {
+                    rollNumber: activeRoll,
+                    lastActiveAt: serverTimestamp()
                 }, { merge: true });
+
+                // 2. Uske andar File ke naam ka folder aur uski details
+                await setDoc(pageDocRef, {
+                    pageVisited: pageName,
+                    timeSpentSeconds: 0,
+                    timeSpentText: "Just Opened...",
+                    date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    timestamp: serverTimestamp()
+                }, { merge: true }); 
+                
+                console.log("Tracker Started in VIP Format!");
             } catch (e) {
-                // fail silently to avoid spamming console in production
+                console.error("Tracker Start Error: ", e);
             }
         }
+        
+        createLog(); // Tracker on
 
-        // periodic updates
-        const intervalId = setInterval(() => sendUpdate(false), updateIntervalMs);
+        // 3. Har 5 second mein time update
+        setInterval(async () => {
+            let timeSpentSeconds = Math.floor((Date.now() - entryTime) / 1000);
+            let minutes = Math.floor(timeSpentSeconds / 60);
+            let seconds = timeSpentSeconds % 60;
+            let timeString = `${minutes} Min ${seconds} Sec`;
 
-        // send one final update on visibility change or unload
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') sendUpdate(true);
-        });
-        window.addEventListener('beforeunload', () => { sendUpdate(true); });
-
-    } catch (e) {
-        // ignore activity tracker errors
+            try {
+                await setDoc(pageDocRef, {
+                    timeSpentSeconds: timeSpentSeconds,
+                    timeSpentText: timeString,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+            } catch(e) {}
+        }, 5000);
     }
-})();
 </script>
+<!-- 🔥 VIP LIVE ACTIVITY TRACKER END 🔥 -->
 </body>
 </html>
