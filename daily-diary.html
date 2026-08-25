@@ -312,5 +312,74 @@
             }
         });
     </script>
+    <!-- 🔥 VIP ACTIVITY TRACKER START 🔥 -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    // Aapka Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Bacche ki details aur Page ka naam nikalna
+    const activeRoll = localStorage.getItem("studentRoll");
+    let pageName = window.location.pathname.split("/").pop(); 
+    if(!pageName) pageName = "home_page"; // Agar URL me naam na ho
+
+    const entryTime = Date.now(); // Page khulte hi time start
+    let isTracked = false; // Double save hone se rokne ke liye
+
+    async function saveTimeLog() {
+        if (!activeRoll || isTracked) return; // Bina login wale ko track nahi karna hai
+
+        const exitTime = Date.now();
+        const timeSpentSeconds = Math.floor((exitTime - entryTime) / 1000);
+        
+        // Agar baccha 2 second me hi page se bhag gaya, toh usko track karne ka fayda nahi
+        if (timeSpentSeconds < 2) return;
+
+        isTracked = true; // Mark kar diya ki save ho gaya
+
+        // Time ko Minute aur Second me set karna
+        const minutes = Math.floor(timeSpentSeconds / 60);
+        const seconds = timeSpentSeconds % 60;
+        const timeString = `${minutes} Min ${seconds} Sec`;
+
+        try {
+            // Firebase ke 'activity_logs' folder me save karna
+            await addDoc(collection(db, "activity_logs"), {
+                rollNumber: activeRoll,
+                pageVisited: pageName,
+                timeSpentSeconds: timeSpentSeconds,
+                timeSpentText: timeString,
+                date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
+                timestamp: serverTimestamp()
+            });
+            console.log(`Tracked: ${pageName} for ${timeString}`);
+        } catch (e) {
+            console.error("Tracker Error: ", e);
+        }
+    }
+
+    // Jab baccha Page band kare ya back kare
+    window.addEventListener("beforeunload", saveTimeLog);
+
+    // Jab baccha app minimize kare ya dusre tab me jaye
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+            saveTimeLog();
+        }
+    });
+</script>
+<!-- 🔥 VIP ACTIVITY TRACKER END 🔥 -->
 </body>
 </html>
