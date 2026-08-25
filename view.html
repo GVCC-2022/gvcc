@@ -244,13 +244,19 @@
         async function loadAvailableTests() {
             const selectMenu = document.getElementById("testSelectMenu");
             try {
+                // 🔥 NAYA CODE: 'Day 1 Maths' Hata Diya aur Aapke saare History Tests laga diye 🔥
                 selectMenu.innerHTML = `
                     <option value="" disabled selected>Select a test to view...</option>
                     <option disabled>────────── Old Tests ──────────</option>
-                    <option value="maths_day1">🧮 Day 1 - Arithmetic Foundation</option>
                     <option value="history8_test">📘 Class 8th - History Test</option>
                     <option value="history9_test">📚 Class 9th - History Test</option>
-                    <option value="history10_test">📖 Class 10th - History Test</option>
+                    
+                    <option disabled>────────── Class 10th Tests ──────────</option>
+                    <!-- 👇👇 NAYE TESTS YAHAN ADD KAREIN 👇👇 -->
+                    <option value="history10_test">📚 Class 10th - History CH-1 (Test 1)</option>
+                    <option value="history10_test_2">📚 Class 10th - History CH-1 (Test 2)</option>
+                    <!-- 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆 -->
+                    
                     <option disabled>────────── New Live Tests ──────────</option>
                 `;
 
@@ -313,7 +319,6 @@
 
                 let studentsDataArray = [];
                 
-                // 1. Data Ikhatta karna
                 for (const documentSnap of querySnapshot.docs) {
                     const data = documentSnap.data();
                     const rollNo = documentSnap.id;
@@ -335,7 +340,6 @@
                         
                         sName = sName || "Unknown";
 
-                        // 🚀 NUMBER NIKALNA RANKING KE LIYE (e.g., "28/50" se 28 nikalna)
                         let rawScore = 0;
                         if (data.score) {
                             const scoreParts = String(data.score).split('/');
@@ -361,10 +365,8 @@
                     return;
                 }
 
-                // 2. 🚀 ARRAY KO SORT KARNA (Sabse jyada marks wala sabse upar)
                 studentsDataArray.sort((a, b) => b.numericScore - a.numericScore);
 
-                // 3. UI MEIN PRINT KARNA (With Rank)
                 tbody.innerHTML = ""; 
                 studentsDataArray.forEach((student, index) => {
                     let rankDisplay = index + 1;
@@ -425,7 +427,6 @@
                     let sName = sData["Name "] || sData["Name"] || sData.name || sData.studentName;
                     let sClass = sData["Class "] || sData["Class"] || sData.class || sData.className;
                     
-                    // MASTER DATABASE FALLBACK
                     if (!sName || !sClass) {
                         try {
                             const masterStudentSnap = await getDoc(doc(db, "students", rollNo));
