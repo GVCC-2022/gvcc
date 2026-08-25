@@ -315,7 +315,7 @@
     <!-- 🔥 VIP LIVE ACTIVITY TRACKER START 🔥 -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
     // Aapka Firebase Config
     const firebaseConfig = {
@@ -330,58 +330,60 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 🔥 FIX 1: Roll Number pakadne ka dono tareeka laga diya
     const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
     
     let pageName = window.location.pathname.split("/").pop(); 
     if(!pageName || pageName === "") pageName = "daily-diary.html";
 
-    // Agar baccha login hai, tabhi track karenge
     if (activeRoll) {
-        let trackerDocId = null;
         let entryTime = Date.now();
 
-        // 1. Jaise hi page khulega, turant ek file bana dega (Zero minutes ke sath)
+        // 🔥 VIP STRUCTURE: activity_logs -> Roll Number -> pages -> File Name
+        const studentDocRef = doc(db, "activity_logs", activeRoll); 
+        const pageDocRef = doc(db, "activity_logs", activeRoll, "pages", pageName); 
+
         async function createLog() {
             try {
-                const docRef = await addDoc(collection(db, "activity_logs"), {
+                // 1. Pehle Roll Number ka folder banayega
+                await setDoc(studentDocRef, {
                     rollNumber: activeRoll,
+                    lastActiveAt: serverTimestamp()
+                }, { merge: true });
+
+                // 2. Uske andar File ke naam ka folder aur uski details
+                await setDoc(pageDocRef, {
                     pageVisited: pageName,
                     timeSpentSeconds: 0,
                     timeSpentText: "Just Opened...",
                     date: new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
                     timestamp: serverTimestamp()
-                });
-                trackerDocId = docRef.id; // Is id ko yaad rakhega
-                console.log("Tracker Started!");
+                }, { merge: true }); // merge: true se purana data crash nahi hoga
+                
+                console.log("Tracker Started in VIP Format!");
             } catch (e) {
                 console.error("Tracker Start Error: ", e);
             }
         }
         
-        createLog(); // Turant chalu karo
+        createLog(); // Tracker on
 
-        // 2. 🔥 FIX 2: Har 5 second mein Firebase mein time update karta rahega (LIVE)
+        // 3. Har 5 second mein time update
         setInterval(async () => {
-            if (trackerDocId) {
-                let timeSpentSeconds = Math.floor((Date.now() - entryTime) / 1000);
-                let minutes = Math.floor(timeSpentSeconds / 60);
-                let seconds = timeSpentSeconds % 60;
-                let timeString = `${minutes} Min ${seconds} Sec`;
+            let timeSpentSeconds = Math.floor((Date.now() - entryTime) / 1000);
+            let minutes = Math.floor(timeSpentSeconds / 60);
+            let seconds = timeSpentSeconds % 60;
+            let timeString = `${minutes} Min ${seconds} Sec`;
 
-                try {
-                    await updateDoc(doc(db, "activity_logs", trackerDocId), {
-                        timeSpentSeconds: timeSpentSeconds,
-                        timeSpentText: timeString
-                    });
-                    console.log(`Live Update: ${timeString}`);
-                } catch(e) {
-                    console.error("Live Update Error:", e);
-                }
-            }
-        }, 5000); // 5000 milliseconds = 5 seconds
+            try {
+                await setDoc(pageDocRef, {
+                    timeSpentSeconds: timeSpentSeconds,
+                    timeSpentText: timeString,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+            } catch(e) {}
+        }, 5000);
     }
 </script>
-<!-- 🔥 VIP LIVE ACTIVITY TRACKER END 🔥 -->
+<!-- 🔥 VIP LIVE ACTIVITY TRACKER END 🔥 -->s
 </body>
 </html>
