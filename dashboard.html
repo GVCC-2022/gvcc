@@ -522,15 +522,15 @@
         window.routeToLiveTest = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("history10.html"); }
-            else if (roll.startsWith("9")) { navigateWithAnimation("history9.html"); }
-            else if (roll.startsWith("8")) { navigateWithAnimation("math8.html"); }
+            else if (roll.startsWith("9")) { alert("⚠️ Error: Aapki class ke liye koi Online Test nahi hai."); }
+            else if (roll.startsWith("8")) { alert("⚠️ Error: Aapki class ke liye koi Online Test nahi hai."); }
             else { alert("⚠️ Error: Aapki class ke liye koi active test nahi hai."); }
         }
         window.routeToResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
-            else if (roll.startsWith("9")) { navigateWithAnimation("result.html"); }
-            else if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
+            else if (roll.startsWith("9")) { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
+            else if (roll.startsWith("8")) { alert("⚠️ Error: Aapka Result Abhi Publish Nahi Kiya Gya Hain."); }
             else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
         }
 
