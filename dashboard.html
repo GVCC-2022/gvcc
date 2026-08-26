@@ -530,7 +530,7 @@
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
             else if (roll.startsWith("9")) { navigateWithAnimation("result.html"); }
-            else if (roll.startsWith("8")) { alert("⚠️ Alert: Class 8th ka online result abhi available nahi hai!"); }
+            else if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
             else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
         }
 
