@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVCC - VIP Master Result</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -39,12 +39,11 @@
         /* 📊 MOBILE OPTIMIZED TABLE */
         .table-wrapper { overflow-x: auto; background: #020617; border-radius: 12px; border: 1px solid #334155; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        
-        /* Table padding adjusted for Mobile */
+
         th { background: #0f172a; color: #fbbf24; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 12px 10px; border-bottom: 2px solid #334155; }
         td { padding: 12px 10px; border-bottom: 1px solid #1e293b; vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
-        
+
         /* Rank Styles */
         .rank-1 { background: rgba(251, 191, 36, 0.08) !important; border-left: 3px solid #fbbf24; }
         .rank-2 { background: rgba(148, 163, 184, 0.08) !important; border-left: 3px solid #94a3b8; }
@@ -55,14 +54,15 @@
         .status-pass { color: #10b981; font-weight: bold; background: rgba(16, 185, 129, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px solid rgba(16, 185, 129, 0.3); display: inline-block; }
         .status-fail { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-block; }
         .status-wh { color: #f59e0b; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px dashed #f59e0b; display: inline-block; }
-        
+        .status-abs { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.2); padding: 3px 8px; border-radius: 4px; font-size: 10px; border: 1px solid #ef4444; display: inline-block; }
+
         .app-checked { color: #38bdf8; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;}
         .app-pending { color: #64748b; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;}
 
         /* Mobile Action Buttons */
         .locked-mark { background: #1e293b; color: #94a3b8; border: 1px solid #475569; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.2s; white-space: nowrap; width: 100%; }
         .locked-mark:active { background: #334155; color: white; border-color: #fbbf24; transform: scale(0.95); }
-        
+
         .app-lock-btn { background: #3f3f46; color: #a1a1aa; border: 1px solid #52525b; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: not-allowed; opacity: 0.8; white-space: nowrap; width: 100%; }
 
         /* Search Modal */
@@ -83,7 +83,7 @@
     </div>
 
     <div class="dashboard-container">
-        
+
         <!-- 🔍 SEARCH SECTION -->
         <div class="search-container">
             <input type="text" id="teacherSearchCode" placeholder="Enter Question Code...">
@@ -127,7 +127,6 @@
     </div>
 
     <!-- 🔥 FIREBASE & LOGIC 🔥 -->
-   <!-- 🔥 FIREBASE & LOGIC 🔥 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -139,7 +138,7 @@
         let liveAppStatus = {}; 
         let currentTab = "10th";
 
-        // 🗄️ CLASS 10TH DATABASE
+        // 🗄️ CLASS 10TH DATABASE (Absent marks flagged with isAbsent: true)
         const class10Data = [
             { roll: "1001", name: "Saloni Kumari", code: "GVCC-M1N0D0A1", marks: 94, max: 100, passMark: 30 },
             { roll: "1002", name: "Rupa Kumari", code: "GVCC-P1R0K0B2", marks: 32, max: 100, passMark: 30 },
@@ -152,18 +151,19 @@
             { roll: "1009", name: "Juhi kumari", code: "GVCC-X1Y0Z0C9", marks: 40, max: 100, passMark: 30 },
             { roll: "1010", name: "Priti Kumari", code: "GVCC-P1R0K1D0", marks: 43, max: 100, passMark: 30 },
             { roll: "1011", name: "Raunaque Perween", code: "GVCC-M1N0V1E1", marks: 53, max: 100, passMark: 30 },
-            { roll: "1012", name: "Anu Kumari", code: "GVCC-W1T0D1F2", marks: 0, max: 100, passMark: 30 },
+            { roll: "1012", name: "Anu Kumari", code: "GVCC-W1T0D1F2", marks: "ABS", isAbsent: true, max: 100, passMark: 30 },
             { roll: "1013", name: "Anjali Kumari", code: "GVCC-L1B0J1A3", marks: 89, max: 100, passMark: 30 },
             { roll: "1014", name: "Sajan Kumar", code: "GVCC-H1F0G1B4", marks: 70, max: 100, passMark: 30 },
             { roll: "1015", name: "Kajal Kumari", code: "GVCC-K1X0Y1C5", marks: 31, max: 100, passMark: 30 },
-            { roll: "1016", name: "Mustara Khatoon", code: "GVCC-Z1V0W1D6", marks: 0, max: 100, passMark: 30 },
+            { roll: "1016", name: "Mustara Khatoon", code: "GVCC-Z1V0W1D6", marks: "ABS", isAbsent: true, max: 100, passMark: 30 },
             { roll: "1017", name: "Nitam Kumari", code: "GVCC-T1M0N1E7", marks: 95, max: 100, passMark: 30 },
             { roll: "1018", name: "Shivani Rani", code: "GVCC-X1Y0Z1F8", marks: 51, max: 100, passMark: 30 },
-            { roll: "1019", name: "Priyanshu Kumari", code: "GVCC-P1R0K1A9", marks: 0, max: 100, passMark: 30 },
+            { roll: "1019", name: "Priyanshu Kumari", code: "GVCC-P1R0K1A9", marks: "ABS", isAbsent: true, max: 100, passMark: 30 },
             { roll: "1020", name: "Afsana Khatoon", code: "GVCC-M1N0V2B0", marks: 59, max: 100, passMark: 30 },
             { roll: "1021", name: "Saziya Prvin", code: "GVCC-W1T0D2C1", marks: 87, max: 100, passMark: 30 },
             { roll: "1022", name: "Raziya Tabassum", code: "GVCC-L1B0J2D2", marks: 39, max: 100, passMark: 30 },
-            { roll: "1023", name: "Ishrat Khatoon", code: "GVCC-H1F0G2E3", marks: 0, max: 100, passMark: 30 }
+            { roll: "1023", name: "Ishrat Khatoon", code: "GVCC-H1F0G2E3", marks: "ABS", isAbsent: true, max: 100, passMark: 30 },
+            { roll: "2356", name: "Md Faiyaz", code: "GVCC-K2X3Y5F6", marks: 98, max: 100, passMark: 30 }
         ];
 
         // 🗄️ CLASS 9TH DATABASE
@@ -181,6 +181,7 @@
             { roll: "911", name: "Muskan Khatoon", code: "GVCC-T9R1D1", marks: 8, max: 35, passMark: 14 },
             { roll: "912", name: "Abhishek Kumar", code: "GVCC-D9M1E2", marks: 7.5, max: 35, passMark: 14 },
             { roll: "913", name: "Rahul Kumar", code: "GVCC-G9K1F3", marks: 12, max: 35, passMark: 14 },
+            { roll: "914", name: "Saqib Ansari", code: "GVCC-W9Z1A4", marks: "ABS", isAbsent: true, max: 35, passMark: 14 },
             { roll: "915", name: "Prince Kumar", code: "GVCC-W9V1A5", marks: 23, max: 35, passMark: 14 },
             { roll: "916", name: "Ritik Raushan", code: "GVCC-F9P1B6", marks: 13, max: 35, passMark: 14 },
             { roll: "917", name: "Manish Kumar", code: "GVCC-H9X1C7", marks: 10, max: 35, passMark: 14 },
@@ -188,28 +189,38 @@
             { roll: "919", name: "Pawan Kumar", code: "GVCC-K9L1B9", marks: "WH", max: 35, passMark: 14, isCheating: true },
             { roll: "920", name: "Kanchan Kumari", code: "GVCC-K9Z2E0", marks: "WH", max: 35, passMark: 14, isCheating: true },
             { roll: "922", name: "Uzma Khatoon", code: "GVCC-T9Q2A2", marks: 6, max: 35, passMark: 14 },
+            { roll: "923", name: "Naushin Khatoon", code: "GVCC-T9X2A3", marks: "ABS", isAbsent: true, max: 35, passMark: 14 },
             { roll: "924", name: "Radhe Shyam", code: "GVCC-W9Z2B4", marks: 20, max: 35, passMark: 14 }
         ];
 
-        // 🗄️ CLASS 8TH DATABASE
+        // 🗄️ CLASS 8TH COMPLETE DATABASE (13 Present + 9 Absent)
         const class8Data = [
             { roll: "801", name: "Anamika Kumari", code: "GVCC-A8D0DA1", marks: 12, max: 30, passMark: 12 },
+            { roll: "802", name: "Radhika Kumari", code: "GVCC-M8K0B2", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
             { roll: "803", name: "Shabrun Khatoon", code: "GVCC-M8X0EB3", marks: 30, max: 30, passMark: 12 },
             { roll: "804", name: "Rubana Khatoon", code: "GVCC-M8X0DC4", marks: 13, max: 30, passMark: 12 },
             { roll: "805", name: "Zainab Parveen", code: "GVCC-M8F0RD5", marks: 9.5, max: 30, passMark: 12 },
-            { roll: "806", name: "Sabiya Parveen", code: "GVCC-M8E0RE6", marks: 0, max: 30, passMark: 12 },
+            { roll: "806", name: "Sabiya Parveen", code: "GVCC-M8E0RE6", marks: 0, max: 30, passMark: 12 }, // Present (0 Marks)
+            { roll: "807", name: "Shabreen Khatoon", code: "GVCC-M8X0RF7", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
             { roll: "808", name: "Farida Khatoon", code: "GVCC-M8X0RA8", marks: 7, max: 30, passMark: 12 },
             { roll: "809", name: "Sama Parveen", code: "GVCC-C8C0DB9", marks: 6, max: 30, passMark: 12 },
             { roll: "810", name: "Sahnuma Parveen", code: "GVCC-M8X1FC0", marks: 6, max: 30, passMark: 12 },
             { roll: "811", name: "Musarrat Khatoon", code: "GVCC-F8X1RD1", marks: 8, max: 30, passMark: 12 },
+            { roll: "812", name: "Mamta Kumari", code: "GVCC-D8M1F2", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
+            { roll: "813", name: "Sonakshi Kumari", code: "GVCC-G8K1A3", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
+            { roll: "814", name: "Md Ashika", code: "GVCC-W8V1B4", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
             { roll: "815", name: "Md Raji Alam", code: "GVCC-M8X1RF5", marks: 8, max: 30, passMark: 12 },
             { roll: "816", name: "Subodh Kumar", code: "GVCC-M8X1RE6", marks: 4, max: 30, passMark: 12 },
+            { roll: "817", name: "Radhe Krishna", code: "GVCC-S8N1E7", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
+            { roll: "818", name: "Ansh Kumar", code: "GVCC-K8L1F8", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
+            { roll: "819", name: "Md Salman", code: "GVCC-A8X1BA9", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
             { roll: "820", name: "Sonali Kumari", code: "GVCC-M8X2FF0", marks: 14, max: 30, passMark: 12 },
+            { roll: "821", name: "Sajda Khatoon", code: "GVCC-T8Q2C1", marks: "ABS", isAbsent: true, max: 30, passMark: 12 },
             { roll: "822", name: "Abdul Samad", code: "GVCC-M8X2BA2", marks: 16, max: 30, passMark: 12 }
         ];
 
         const allStudents = [...class10Data, ...class9Data, ...class8Data];
-        window.allStudentsGlobal = allStudents; // Accessible globally
+        window.allStudentsGlobal = allStudents;
 
         // 📡 FIREBASE SYNC (Live App Status)
         onSnapshot(collection(db, "vip_results_status"), (snapshot) => {
@@ -217,7 +228,7 @@
             window.showClass(currentTab); 
         });
 
-        // ⚙️ RENDER MOBILE OPTIMIZED TABLE WITH SMART RANKING
+        // ⚙️ RENDER MOBILE OPTIMIZED TABLE WITH EXACT ABSENT / PRESENT LOGIC
         window.showClass = function(className) {
             currentTab = className;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -233,52 +244,68 @@
 
             if (rawData.length === 0) return;
 
-            // 🏆 Sort Descending
+            // 🏆 Sort: Numbers Descending (0 comes above ABSENT), ABSENT/WH at bottom
             rawData.sort((a, b) => {
-                let valA = (a.marks === "WH" || a.marks === "--" || a.marks === 0 || a.marks === "0") ? -1 : parseFloat(a.marks);
-                let valB = (b.marks === "WH" || b.marks === "--" || b.marks === 0 || b.marks === "0") ? -1 : parseFloat(b.marks);
-                return valB - valA;
+                let getVal = (x) => {
+                    if (x.isAbsent || x.marks === "ABS") return -999;
+                    if (x.isCheating || x.marks === "WH" || x.marks === "--") return -500;
+                    return parseFloat(x.marks);
+                };
+                return getVal(b) - getVal(a);
             });
 
             let rank = 0;
             let previousMarks = null;
 
-            rawData.forEach((student, index) => {
+            rawData.forEach((student) => {
                 let isChecked = liveAppStatus[student.roll] || false;
                 let appStatus = isChecked 
                     ? `<span class="app-checked"><i class="fa-solid fa-mobile-screen"></i> <small>Dekh<br>Liya</small></span>` 
                     : `<span class="app-pending"><i class="fa-solid fa-eye-slash"></i> <small>Nahi<br>Dekha</small></span>`;
 
-                let m = student.marks;
-                let isAbsent = (m === 0 || m === "0");
-                let currentMarks = (student.isCheating || m === "WH" || m === "--" || isAbsent) ? -1 : parseFloat(m);
+                let isAbsent = student.isAbsent || student.marks === "ABS";
+                let isNumeric = !isAbsent && student.marks !== "WH" && student.marks !== "--";
+                let numericMarks = isNumeric ? parseFloat(student.marks) : -1;
 
-                // 🔥 SMART TIE-BREAKER LOGIC 🔥
-                if (currentMarks !== previousMarks && currentMarks !== -1) {
-                    rank++; 
+                // 🔥 SMART RANKING LOGIC (0 marks gets rank, ABSENT does not) 🔥
+                if (isNumeric) {
+                    if (numericMarks !== previousMarks) {
+                        rank++;
+                    }
+                    previousMarks = numericMarks;
                 }
-                previousMarks = currentMarks;
 
-                let rankText = ""; let rowClass = "";
-                if (currentMarks === -1) { rankText = "-"; } // Absent/WH ko Rank nahi
-                else if(rank === 1) { rankText = "🥇<br>1st"; rowClass="rank-1"; }
-                else if(rank === 2) { rankText = "🥈<br>2nd"; rowClass="rank-2"; }
-                else if(rank === 3) { rankText = "🥉<br>3rd"; rowClass="rank-3"; }
-                else { rankText = `#${rank}`; }
+                let rankText = ""; 
+                let rowClass = "";
 
-                // 🔥 SMART ACTION BOX (Mobile Optimized) 🔥
+                if (isAbsent || !isNumeric) { 
+                    rankText = "-"; 
+                } else if (rank === 1) { 
+                    rankText = "🥇<br>1st"; rowClass="rank-1"; 
+                } else if (rank === 2) { 
+                    rankText = "🥈<br>2nd"; rowClass="rank-2"; 
+                } else if (rank === 3) { 
+                    rankText = "🥉<br>3rd"; rowClass="rank-3"; 
+                } else { 
+                    rankText = `#${rank}`; 
+                }
+
+                // 🔥 SMART ACTION BOX 🔥
                 let actionHtml = '';
-                if (className === '10th' && !isChecked && !isAbsent) {
-                    actionHtml = `<button class="app-lock-btn" onclick="alert('⚠️ STRICT RULE: Student ne abhi result nahi dekha hai! Unhe App par check karne ko kahein.')"><i class="fa-solid fa-lock"></i> Lock</button>`;
-                } else if (isAbsent) {
-                    // Absent student ke liye directly ABSENT dikha do
+
+                if (isAbsent) {
+                    // Agar baccha Absent tha
                     actionHtml = `
                         <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-                            <div style="color: #ef4444; font-size: 20px; font-weight: 900; line-height: 1;">ABS</div>
-                            <span class="status-fail" style="background: #ef4444; color: white;">ABSENT</span>
+                            <div style="color: #ef4444; font-size: 16px; font-weight: 900; line-height: 1;">ABS</div>
+                            <span class="status-abs">ABSENT</span>
                         </div>
                     `;
+                } else if (className === '10th' && !isChecked) {
+                    // 10th class jinhone abhi app me nahi dekha
+                    actionHtml = `<button class="app-lock-btn" onclick="alert('⚠️ STRICT RULE: Student ne abhi result nahi dekha hai! Unhe App par check karne ko kahein.')"><i class="fa-solid fa-lock"></i> Lock</button>`;
                 } else {
+                    // Present bacche ka View Button
                     actionHtml = `<button class="locked-mark" onclick="unlockDirectly('${student.roll}')"><i class="fa-solid fa-eye"></i> View</button>`;
                 }
 
@@ -305,15 +332,16 @@
             if(!student) return;
 
             let marks = student.marks;
+            let isAbsent = student.isAbsent || marks === "ABS";
             let isPassed = parseFloat(marks) >= student.passMark;
-            let color = marks === "WH" ? "#f59e0b" : "#fbbf24";
+            let color = (marks === "WH" || isAbsent) ? "#f59e0b" : "#fbbf24";
 
             let statusHtml = '';
-            if (student.isCheating || marks === "WH") statusHtml = `<span class="status-wh">WITHHELD</span>`;
+            if (isAbsent) statusHtml = `<span class="status-abs">ABSENT</span>`;
+            else if (student.isCheating || marks === "WH") statusHtml = `<span class="status-wh">WITHHELD</span>`;
             else if (marks === "--") statusHtml = `<span style="color: #64748b; font-size:10px;">PENDING</span>`;
             else statusHtml = isPassed ? `<span class="status-pass">PASSED</span>` : `<span class="status-fail">FAILED</span>`;
 
-            // Magic: Replacing button with beautiful score!
             document.getElementById(`action-box-${roll}`).innerHTML = `
                 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
                     <div style="color: ${color}; font-size: 20px; font-weight: 900; line-height: 1;">${marks}</div>
@@ -331,16 +359,16 @@
             if(found) {
                 document.getElementById("searchName").innerText = found.name;
                 document.getElementById("searchRoll").innerText = `Roll: ${found.roll} | Max: ${found.max}`;
-                
-                let isAbsent = (found.marks === 0 || found.marks === "0");
+
+                let isAbsent = found.isAbsent || found.marks === "ABS";
                 document.getElementById("searchMarks").innerText = isAbsent ? "ABS" : found.marks;
-                
+
                 let isPassed = parseFloat(found.marks) >= found.passMark;
                 let statusEl = document.getElementById("searchStatus");
-                
+
                 if (isAbsent) { statusEl.innerText = "Status: ABSENT"; statusEl.style.color = "#ef4444"; }
                 else if(found.marks === "WH" || found.marks === "--") { statusEl.innerText = "Status: " + found.marks; statusEl.style.color = "#f59e0b"; }
-                else { statusEl.innerText = "Status: " + (isPassed ? "PASSED" : "FAILED"); statusEl.style.color = isPassed ? "#10b981" : "#ef4444"; }
+                else { statusEl.innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌"); statusEl.style.color = isPassed ? "#10b981" : "#ef4444"; }
 
                 document.getElementById("searchResultModal").style.display = "flex";
             } else { alert("⚠️ Invalid Code!"); }
