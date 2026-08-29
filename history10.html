@@ -405,48 +405,58 @@ const correctAnswers = {
         }
         loadProfileHeader();
 
-        window.verifyAndStartTest = async function() {
-            const passInput = document.getElementById("testPassword").value.trim();
+        // 🔥 STRICT CAMERA LOCK SYSTEM 🔥
+window.verifyAndStartTest = async function() {
+    const passInput = document.getElementById("testPassword").value.trim();
+    
+    // Password check (apne test ke hisaab se password yahan set karein)
+    if (passInput === "gvcc2026") { 
+        
+        try {
+            // 1. Sabse pehle Camera Permission Mangega
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "user" }, 
+                audio: false 
+            });
             
-            if (passInput === "Nitam48") {
-                document.getElementById("lockSection").style.display = "none";
-                document.getElementById("testSection").style.display = "block";
-                
-                isTestStarted = true;
+            // 2. Agar permission mil gayi, tabhi aage ka code chalega
+            video.srcObject = stream;
+            console.log("🔒 GVCC Camera Active!");
+            startAutomaticPhotoCapture(); 
+            
+            // 3. Test UI Unlock karega
+            document.getElementById("lockSection").style.display = "none";
+            document.getElementById("testSection").style.display = "block";
+            
+            isTestStarted = true;
+            startTestTimer();
+            activateAntiCheatSystem();
 
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { facingMode: "user" }, 
-                        audio: false 
-                    });
-                    video.srcObject = stream;
-                    console.log("🔒 GVCC Camera Active!");
-                    startAutomaticPhotoCapture(); 
-                } catch (err) {
-                    console.error("Camera error:", err);
-                    alert("⚠️ SYSTEM ALERT: Background camera access nahi mil saka. Kripya browser check karein, par aapka test chalu kar diya gaya hai.");
-                }
-
-                activateAntiCheatSystem();
-
-                try {
-                    // USE DYNAMIC TARGET_TEST_ID HERE
-                    const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
-                    await setDoc(testDocRef, { 
-                        submitted: false, 
-                        cheatStatus: "Testing connection live",
-                        score: "0/50",
-                        percentage: "0%",
-                        submittedAt: "Direct Sync Test Successful"
-                    }, { merge: true });
-                } catch(e) { 
-                    alert("❌ Connection Fail Error: " + e.message); 
-                }
-            } else {
-                alert("❌ Galat Password! Kripya sahi password enter karein.");
+            try {
+                const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
+                await setDoc(testDocRef, { 
+                    submitted: false, 
+                    cheatStatus: "Live (Camera Checked ✅)",
+                    score: "0/50",
+                    percentage: "0%",
+                    submittedAt: "Direct Sync Test Successful"
+                }, { merge: true });
+            } catch(e) { 
+                console.error("Connection Fail Error: " + e.message); 
             }
-        };
 
+        } catch (err) {
+            // 🛑 4. AGAR CAMERA PERMISSION DENY KIYA TOH YAHAN AAYEGA 🛑
+            console.error("Camera error:", err);
+            
+            // Bacche ko Warning dikhayega aur test shuru nahi hone dega
+            alert("🚨 STRICT WARNING: Aapne Camera permission 'Deny' kar di hai! Camera access ke bina aap GVCC ka test start nahi kar sakte. Kripya URL ke bagal wale 'Lock' 🔒 icon par click karke Camera 'Allow' karein aur page Refresh karein.");
+        }
+        
+    } else {
+        alert("❌ Galat Password! Kripya sahi password enter karein.");
+    }
+};
         function startAutomaticPhotoCapture() {
             proctorInterval = setInterval(() => {
                 captureAndUploadSnapshot();
