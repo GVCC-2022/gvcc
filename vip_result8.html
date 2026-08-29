@@ -304,7 +304,24 @@
         </div>
     </div>
 
-    <script>
+    <!-- 🔥 UPDATED SCRIPT WITH FIREBASE SYNC 🔥 -->
+    <script type="module">
+        // 1. Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // 2. Firebase Configuration
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", 
+            authDomain: "gvcc-database.firebaseapp.com", 
+            projectId: "gvcc-database", 
+            storageBucket: "gvcc-database.firebasestorage.app", 
+            messagingSenderId: "1063216875940", 
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         // ✅ CLASS 8TH DATABASE
         const resultDatabase = {
             "801": { code: "GVCC-A8D0DA1", set: "A", marks: "12", obj: "08", short: "04", long: "00" },
@@ -356,7 +373,8 @@
             }
         };
 
-        function verifyResult() {
+        // 🟢 Async function bana diya gaya hai taaki Firebase update ho sake
+        window.verifyResult = async function() {
             let rawCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let enteredCode = rawCode.replace(/O/g, '0');
             let errorMsg = document.getElementById("codeError");
@@ -417,6 +435,19 @@
                     badge.style.background = "#fef2f2"; 
                 }
 
+                // 🚀🔥 MAIN FIX: DATABASE UPDATE CODE 🔥🚀
+                try {
+                    const statusRef = doc(db, "vip_results_status", loggedInRoll);
+                    await setDoc(statusRef, {
+                        checked: true,
+                        checkedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                        className: "8th"
+                    }, { merge: true });
+                    console.log("Success: Database updated to 'Checked'");
+                } catch (error) {
+                    console.error("Database error: ", error);
+                }
+
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
             } else {
                 errorMsg.style.display = "block";
@@ -424,7 +455,7 @@
             }
         }
 
-        function generateAndShareImage() {
+        window.generateAndShareImage = function() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
@@ -432,7 +463,7 @@
             btn.style.pointerEvents = "none";
 
             html2canvas(document.querySelector("#resultCard"), {
-                scale: 2,           
+                scale: 2,            
                 useCORS: true,
                 backgroundColor: "#f8fafc",
                 logging: false
@@ -449,9 +480,9 @@
                                 title: 'GVCC Formal Marksheet',
                                 text: 'Mera GVCC Class 8th Maths ka Official Marksheet. 📄',
                                 files: [file]
-                            }).catch(err => forceDownload(imageData, fileName));
+                            }).catch(err => window.forceDownload(imageData, fileName));
                         } else {
-                            forceDownload(imageData, fileName);
+                            window.forceDownload(imageData, fileName);
                         }
                     });
 
@@ -466,7 +497,7 @@
             });
         }
 
-        function forceDownload(imageData, fileName) {
+        window.forceDownload = function(imageData, fileName) {
             const link = document.createElement("a");
             link.download = fileName;
             link.href = imageData;
