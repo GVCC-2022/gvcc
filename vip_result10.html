@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
+    <!-- 🔥 QR CODE SCANNER LIBRARY 🔥 -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
     <style>
         /* ===========================
              🔥 ULTRA-PREMIUM UI DASHBOARD 🔥
@@ -37,12 +40,19 @@
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
         .btn:active { transform: translateY(1px); }
+
+        .btn-scan {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            margin-top: 5px;
+        }
+        .btn-scan:hover { box-shadow: 0 12px 25px rgba(16, 185, 129, 0.5); }
         
         .input-box { 
-            width: 90%; padding: 16px; border-radius: 10px; 
+            width: 100%; padding: 16px; border-radius: 10px; 
             border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
             color: #f8fafc; font-size: 16px; text-transform: uppercase; 
-            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+            text-align: center; margin-bottom: 5px; transition: all 0.3s ease; outline: none;
             box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
         }
         .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
@@ -97,6 +107,25 @@
         .share-btn:active { transform: translateY(1px); }
 
         /* ===========================
+             QR SCANNER STYLES
+        =========================== */
+        #scanner-container {
+            width: 100%; border-radius: 15px; overflow: hidden; display: none;
+            border: 2px solid #10b981; margin-bottom: 15px; background: #000;
+        }
+        #reader { width: 100%; }
+        #reader button { background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 10px; }
+        #reader span { color: white; }
+        #reader a { color: #3b82f6; }
+        .stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; }
+
+        .divider { display: flex; align-items: center; text-align: center; margin: 15px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+        .divider span { color: #64748b; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
+
+        /* ===========================
           HD PAPER MARKSHEET (1080x1920)
         =========================== */
         #resultCard {
@@ -106,35 +135,26 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
 
-        /* EXACT BORDERS */
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
 
-        /* SIDE TEXT INSIDE GOLDEN LINE */
-        .side-text-container {
-            position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; display: flex; align-items: center; justify-content: center; z-index: 20;
-        }
+        .side-text-container { position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; display: flex; align-items: center; justify-content: center; z-index: 20; }
         .side-text { transform: rotate(-90deg); font-size: 24px; color: #29438e; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; font-family: 'Segoe UI', Tahoma, sans-serif; white-space: nowrap; }
 
-        /* 🪶 WATERMARK */
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
 
-        /* 🏫 HEADER */
         .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
         .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
 
-        /* 📜 TITLE BOX */
         .document-title { font-size: 45px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-transform: uppercase; }
 
-        /* 📋 DETAILS TABLE */
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
         .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 📊 MARKS BOX (UPDATED FOR OBJECTIVE) */
         .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 50px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
         .mark-box { flex: 1; text-align: center; padding: 40px 20px; }
         .mark-box.total { border-right: 3px solid #29438e; }
@@ -144,7 +164,6 @@
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
-        /* ⭐ VIP REMARKS BOX */
         .remarks-box { 
             font-size: 40px; font-weight: 900; padding: 18px 60px; 
             border-radius: 12px; z-index: 5; background: #fffde7; 
@@ -154,10 +173,7 @@
             width: 70%; text-align: center;
         }
 
-        /* 🟢 GREEN SEAL LOGO */
         .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
-        
-        /* 🌐 WEBSITE TEXT */
         .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
 
     </style>
@@ -178,8 +194,21 @@
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Class 10th - Verify your official OMR marksheet.</p>
 
         <div id="resultSection">
-            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-M1...)">
+            <!-- 🔥 QR SCANNER UI 🔥 -->
+            <button class="btn btn-scan" id="startScannerBtn" onclick="startQRScanner()">
+                <i class="fa-solid fa-qrcode"></i> Scan QR Code
+            </button>
+
+            <div id="scanner-container">
+                <div id="reader"></div>
+                <button class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Scan</button>
+            </div>
+
+            <div class="divider"><span>OR TYPE CODE</span></div>
+
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Exam Code (e.g. GVCC...)">
             <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
+            
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
                 <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
             </p>
@@ -192,7 +221,6 @@
                 <h2 class="preview-subject">HISTORY (OBJECTIVE)</h2>
                 <h2 class="preview-name" id="resNamePrev">Student Name</h2>
                 <div class="preview-marks-box">
-                    <!-- 🔥 YAHAN CHANGE HUA HAIN 🔥 -->
                     <p class="preview-marks-label">Correct Answers</p>
                     <p class="preview-marks-value" id="resMarksPrev">--/100</p>
                     <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
@@ -204,6 +232,7 @@
         </div>
     </div>
 
+    <!-- Hidden HD Marksheet for Download -->
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             
@@ -241,7 +270,6 @@
             </table>
 
             <div class="marks-container">
-                <!-- 🔥 YAHAN CHANGE HUA HAIN 🔥 -->
                 <div class="mark-box total">
                     <div class="mark-label">TOTAL QUESTIONS</div>
                     <div class="mark-value val-total">100</div>
@@ -300,12 +328,42 @@
             "2356": { code: "GVCC-K2X3Y5F6", set: "F", marks: "28" }  
         };
 
+        let html5QrcodeScanner = null;
+
         window.onload = function() {
             let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class") || ""; 
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
             if (!loggedInRoll) { alert("⚠️ Kripya pehle Dashboard se login karein!"); window.location.href = "dashboard.html"; return; }
             if (loggedInClass.includes("10") || loggedInRoll === "2356") { document.getElementById("resultSection").classList.remove("hidden"); } 
             else { alert("⚠️ Access Denied: Yeh result sirf Class 10th ke liye hai."); window.location.href = "dashboard.html"; }
+        };
+
+        // 🔥 QR SCANNER LOGIC 🔥
+        window.startQRScanner = function() {
+            document.getElementById("startScannerBtn").style.display = "none";
+            document.getElementById("scanner-container").style.display = "block";
+            document.getElementById("codeError").style.display = "none";
+
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+            
+            html5QrcodeScanner.render((decodedText) => {
+                // Jab QR Code mil jaye
+                document.getElementById("questionCodeInput").value = decodedText;
+                stopQRScanner();
+                verifyResult(); // Automatically result check ho jayega
+            }, (errorMessage) => {
+                // Scanning process, ignore errors
+            });
+        };
+
+        window.stopQRScanner = function() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+            }
+            document.getElementById("scanner-container").style.display = "none";
+            document.getElementById("startScannerBtn").style.display = "block";
         };
 
         window.verifyResult = async function() {
