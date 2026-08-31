@@ -334,15 +334,24 @@
                             <th>Score</th>
                         </tr>`;
         
+        let currentRank = 0;
+        let previousScore = -1;
+
         data.forEach((student, index) => {
-            let rank = index + 1;
+            let currentMarks = parseInt((student.score || "0").split('/')[0]) || 0;
+
+            if (currentMarks !== previousScore) {
+                currentRank++;
+            }
+            previousScore = currentMarks;
+
             let rowClass = "";
-            if(rank === 1) rowClass = "rank-1";
-            else if(rank === 2) rowClass = "rank-2";
-            else if(rank === 3) rowClass = "rank-3";
+            if(currentRank === 1) rowClass = "rank-1";
+            else if(currentRank === 2) rowClass = "rank-2";
+            else if(currentRank === 3) rowClass = "rank-3";
 
             html += `<tr class="${rowClass}">
-                        <td>#${rank}</td>
+                        <td>#${currentRank}</td>
                         <td style="font-weight:600;">${student.name}</td>
                         <td style="font-weight:bold; color: var(--primary);">${student.score || '--'}</td>
                     </tr>`;
