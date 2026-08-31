@@ -186,7 +186,7 @@
             <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
             
             <div id="timeLockMessage" style="background: rgba(220, 53, 69, 0.15); border: 1px solid var(--danger); padding: 15px; border-radius: 10px; color: var(--danger); font-weight: bold; text-align: center; margin-bottom: 15px;">
-                <i class="fa-solid fa-clock"></i> ⚠️ कृप्या Wait करें.. आपका Test रात 7 बजे शुरू होगा ।✨
+                <i class="fa-solid fa-clock"></i> ⚠️ कृप्या Wait करें.. आपका Test शाम 6 बजे शुरू होगा ।✨
             </div>
 
             <div id="passwordArea" style="display: none;">
@@ -321,8 +321,8 @@ const correctAnswers = {
 
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
-            const testStartTime = new Date("2026-08-30T19:00:00").getTime(); 
-            const testEndTime = new Date("2026-08-30T19:20:00").getTime(); 
+            const testStartTime = new Date("2026-08-31T18:00:00").getTime(); 
+            const testEndTime = new Date("2026-08-31T18:30:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
