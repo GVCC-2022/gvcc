@@ -1,11 +1,14 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GVCC - Class 8th Maths Result</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 🔥 CORE QR CODE LIBRARY (DIRECT CAMERA) 🔥 -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <style>
         /* ===========================
@@ -29,21 +32,55 @@
         
         .hidden { display: none !important; }
         
+        /* 🔥 VIP SCAN BUTTON 🔥 */
+        .btn-scan { 
+            background: linear-gradient(135deg, #10b981, #059669) !important; 
+            color: white !important; width: 100%; border: 2px solid #34d399; 
+            padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 900; 
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; 
+            display: flex; justify-content: center; align-items: center; gap: 10px; 
+            position: relative; overflow: hidden;
+            animation: vipPulse 2s infinite; 
+            transition: transform 0.2s;
+            margin-bottom: 10px;
+        }
+        @keyframes vipPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .btn-scan::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg); animation: shineScan 3s infinite; pointer-events: none;
+        }
+        @keyframes shineScan { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
+
+        /* QR SCANNER CONTAINER */
+        #scanner-container { width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 2px solid #10b981; margin-bottom: 15px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+        #reader { width: 100%; }
+        .stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px;}
+
+        .divider { display: flex; align-items: center; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 700; margin: 20px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
         .btn { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); 
             color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
             border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; 
-            margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
-        .btn:active { transform: translateY(1px); }
+        .btn:active, .btn-scan:active, .stop-scan-btn:active { transform: scale(0.95); opacity: 0.8; }
         
         .input-box { 
-            width: 90%; padding: 16px; border-radius: 10px; 
+            width: 100%; padding: 16px; border-radius: 10px; 
             border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
-            color: #f8fafc; font-size: 16px; text-transform: uppercase; 
-            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
-            box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
+            color: #f8fafc; font-size: 15px; text-transform: uppercase; 
+            text-align: center; margin-bottom: 15px; transition: all 0.3s ease; outline: none;
+            box-sizing: border-box; letter-spacing: 1px; font-weight: bold;
         }
         .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
         .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
@@ -97,7 +134,7 @@
         .share-btn:active { transform: translateY(1px); }
 
         /* ===========================
-          HD PAPER MARKSHEET (1080x1920)
+           HD PAPER MARKSHEET (1080x1920)
         =========================== */
         #resultCard {
             width: 1080px; height: 1920px; position: relative; background-color: #f8fafc; 
@@ -105,73 +142,26 @@
             box-sizing: border-box; color: #000000; 
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
-
         #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
         #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
-
-        .side-text-container {
-            position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; 
-            display: flex; align-items: center; justify-content: center; z-index: 20;
-        }
-        .side-text { 
-            transform: rotate(-90deg); font-size: 24px; color: #29438e; font-weight: 900; 
-            letter-spacing: 5px; text-transform: uppercase; font-family: 'Segoe UI', Tahoma, sans-serif; white-space: nowrap; 
-        }
-
+        .side-text-container { position: absolute; top: 0; left: 45px; width: 35px; height: 1920px; display: flex; align-items: center; justify-content: center; z-index: 20; }
+        .side-text { transform: rotate(-90deg); font-size: 24px; color: #29438e; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; font-family: 'Segoe UI', Tahoma, sans-serif; white-space: nowrap; }
         .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
-
         .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
         .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
         .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
         .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
-
         .document-title { font-size: 45px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 20px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); white-space: nowrap; }
-
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
         .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
         .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
-        /* 🔥 FINAL BALANCED MARKS BOX FIX 🔥 */
-        .marks-container { 
-            display: flex; 
-            width: 82%; 
-            border: 3px solid #29438e; 
-            z-index: 5; 
-            overflow: hidden; 
-            border-radius: 20px; 
-            margin-bottom: 35px; 
-            background: #fff; 
-            box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); 
-        }
-        .mark-box { 
-            flex: 1; 
-            text-align: center; 
-            padding: 25px 20px 30px 20px; /* Thoda sa aur space diya niche ki taraf */
-            box-sizing: border-box;
-        } 
+        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        .mark-box { flex: 1; text-align: center; padding: 25px 20px 30px 20px; box-sizing: border-box; } 
         .mark-box.total { border-right: 3px solid #29438e; }
-        
-        .mark-label { 
-            font-size: 26px; 
-            font-weight: 600; 
-            color: #000; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            font-family: 'Segoe UI', sans-serif;
-            margin-bottom: 5px; 
-        }
-        .mark-value { 
-            font-size: 130px; /* Font size safe rakha hai */
-            font-weight: 900; 
-            margin: 0; 
-            line-height: 1; /* Tightest line height */
-            padding-bottom: 10px; /* 🔥 YEH TRICK KABHI BHI NUMBER KO KATNE NAHI DEGI 🔥 */
-            letter-spacing: -2px; 
-            font-family: Arial, sans-serif; 
-            display: inline-block; /* Inline-block zaroori hai padding properly render hone ke liye */
-        }
-        
+        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif; margin-bottom: 5px; }
+        .mark-value { font-size: 130px; font-weight: 900; margin: 0; line-height: 1; padding-bottom: 10px; letter-spacing: -2px; font-family: Arial, sans-serif; display: inline-block; }
         .val-total { color: #29438e; }
         .val-obtained { color: #e32726; }
 
@@ -179,22 +169,15 @@
         .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 15px; font-weight: 900; font-size: 30px; }
         .breakdown-table td { border: 3px solid #29438e; padding: 15px; font-size: 45px; font-weight: 900; color: #e32726; }
 
-        .remarks-box { 
-            font-size: 40px; font-weight: 900; padding: 18px 60px; 
-            border-radius: 12px; z-index: 5; background: #fffde7; 
-            color: #e32726; margin-bottom: auto; letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 4px dashed #f5c518; 
-            width: 70%; text-align: center;
-        }
+        .remarks-box { font-size: 40px; font-weight: 900; padding: 18px 60px; border-radius: 12px; z-index: 5; background: #fffde7; color: #e32726; margin-bottom: auto; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 4px dashed #f5c518; width: 70%; text-align: center; }
 
         .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
         .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
-
     </style>
+    
     <!-- GLOBAL THEME SYSTEM -->
-<link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
 </head>
 <body>
 
@@ -209,18 +192,30 @@
         </h2>
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
-        <!-- 🛑 ERROR BOX FOR WRONG CLASS OR PENDING RESULT -->
-        <div id="classErrorBox" class="hidden" style="margin-top: 20px; background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 12px; border: 1px solid #ef4444;">
-            <!-- Message injected by JS -->
-        </div>
+        <!-- 🛑 ERROR BOX -->
+        <div id="classErrorBox" class="hidden" style="margin-top: 20px; background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 12px; border: 1px solid #ef4444;"></div>
 
         <!-- ✅ RESULT INPUT SECTION -->
         <div id="resultSection" class="hidden">
-            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. GVCC-N8...)">
-            <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
-            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
-                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Please check your code.
+            
+            <!-- 🔥 VIP SCAN BUTTON 🔥 -->
+            <button type="button" class="btn-scan" id="startScannerBtn" onclick="startQRScanner()">
+                <i class="fa-solid fa-expand"></i> Scan VIP Card to View
+            </button>
+
+            <div id="scanner-container">
+                <div id="reader"></div>
+                <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Camera</button>
+            </div>
+
+            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 10px; margin-bottom: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code!
             </p>
+
+            <div class="divider">OR TYPE MANUAL CODE</div>
+
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (GVCC...)">
+            <button class="btn" onclick="verifyResult()">Check Result 🚀</button>
         </div>
 
         <!-- 📱 VIP MOBILE PREVIEW UI -->
@@ -246,7 +241,6 @@
     <div style="position: absolute; top: -9999px; left: -9999px;">
         <div id="resultCard">
             <div class="side-text-container">
-                <!-- 🔥 Date Updated Here 🔥 -->
                 <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-08-27</div>
             </div>
             <img src="20260620_144347.png" class="watermark">
@@ -257,60 +251,30 @@
             </div>
             <div class="document-title">Mathematics Result - Class 8th</div>
             <table class="details-table">
-                <tr>
-                    <td class="td-label">STUDENT NAME</td>
-                    <td class="td-value" id="hdName">STUDENT NAME</td>
-                </tr>
-                <tr>
-                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
-                    <td class="td-value">MATHEMATICS</td>
-                </tr>
-                <tr>
-                    <td class="td-label">QUESTION SET CODE</td>
-                    <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
-                </tr>
-                <tr>
-                    <td class="td-label">RESULT STATUS</td>
-                    <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
-                </tr>
+                <tr><td class="td-label">STUDENT NAME</td><td class="td-value" id="hdName">STUDENT NAME</td></tr>
+                <tr><td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td><td class="td-value">MATHEMATICS</td></tr>
+                <tr><td class="td-label">QUESTION SET CODE</td><td class="td-value" id="hdSet" style="font-size: 45px;">A</td></tr>
+                <tr><td class="td-label">RESULT STATUS</td><td class="td-value" id="hdStatus" style="font-weight: 900;">--</td></tr>
             </table>
             <div class="marks-container">
-                <div class="mark-box total">
-                    <div class="mark-label">MAXIMUM MARKS</div>
-                    <div class="mark-value val-total">30</div>
-                </div>
-                <div class="mark-box obtained">
-                    <div class="mark-label">MARKS OBTAINED</div>
-                    <div class="mark-value val-obtained" id="hdObtained">--</div>
-                </div>
+                <div class="mark-box total"><div class="mark-label">MAXIMUM MARKS</div><div class="mark-value val-total">30</div></div>
+                <div class="mark-box obtained"><div class="mark-label">MARKS OBTAINED</div><div class="mark-value val-obtained" id="hdObtained">--</div></div>
             </div>
             <table class="breakdown-table">
-                <tr>
-                    <th>Objective</th>
-                    <th>Short Answer</th>
-                    <th>Long Answer</th>
-                </tr>
-                <tr>
-                    <td id="hdObj">--</td>
-                    <td id="hdShort">--</td>
-                    <td id="hdLong">--</td>
-                </tr>
+                <tr><th>Objective</th><th>Short Answer</th><th>Long Answer</th></tr>
+                <tr><td id="hdObj">--</td><td id="hdShort">--</td><td id="hdLong">--</td></tr>
             </table>
-            <div id="performanceBadge" class="remarks-box">
-                Remarks: Outstanding 🌟
-            </div>
+            <div id="performanceBadge" class="remarks-box">Remarks: Outstanding 🌟</div>
             <img src="20260714_163333.png" class="footer-logo">
             <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
         </div>
     </div>
 
-    <!-- 🔥 UPDATED SCRIPT WITH FIREBASE SYNC 🔥 -->
+    <!-- 🔥 UPDATED SCRIPT WITH FIREBASE & SCANNER SYNC 🔥 -->
     <script type="module">
-        // 1. Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // 2. Firebase Configuration
         const firebaseConfig = { 
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", 
             authDomain: "gvcc-database.firebaseapp.com", 
@@ -322,21 +286,24 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // ✅ SECURE DATABASE: ONLY PAID VIP STUDENTS LIST
+        const activeVIPs = ["805", "809", "806", "810", "820", "801", "803"];
+
         // ✅ CLASS 8TH DATABASE
         const resultDatabase = {
-            "801": { code: "GVCC-A8D0DA1", set: "A", marks: "12", obj: "08", short: "04", long: "00" },
-            "803": { code: "GVCC-M8X0EB3", set: "B", marks: "30", obj: "10", short: "10", long: "10" },
-            "804": { code: "GVCC-M8X0DC4", set: "C", marks: "13", obj: "07", short: "06", long: "00" },
-            "805": { code: "GVCC-M8F0RD5", set: "D", marks: "9.5", obj: "06", short: "3.5", long: "00" },
-            "806": { code: "GVCC-M8E0RE6", set: "E", marks: "0", obj: "00", short: "00", long: "00" },
-            "808": { code: "GVCC-M8X0RA8", set: "A", marks: "7", obj: "03", short: "04", long: "00" },
-            "809": { code: "GVCC-C8C0DB9", set: "B", marks: "6", obj: "06", short: "00", long: "00" },
-            "810": { code: "GVCC-M8X1FC0", set: "C", marks: "6", obj: "06", short: "00", long: "00" },
-            "811": { code: "GVCC-F8X1RD1", set: "D", marks: "8", obj: "06", short: "02", long: "00" },
-            "815": { code: "GVCC-M8X1RF5", set: "F", marks: "8", obj: "08", short: "00", long: "00" },
-            "816": { code: "GVCC-M8X1RE6", set: "E", marks: "4", obj: "04", short: "00", long: "00" },
-            "820": { code: "GVCC-M8X2FF0", set: "F", marks: "14", obj: "07", short: "07", long: "00" },
-            "822": { code: "GVCC-M8X2BA2", set: "A", marks: "16", obj: "10", short: "06", long: "00" }
+            "801": { code: "GVCC-A8D0DA1", set: "A", marks: "12", obj: "08", short: "04", long: "00", name: "Anamika Kumari" },
+            "803": { code: "GVCC-M8X0EB3", set: "B", marks: "30", obj: "10", short: "10", long: "10", name: "Shabrun Khatoon" },
+            "804": { code: "GVCC-M8X0DC4", set: "C", marks: "13", obj: "07", short: "06", long: "00", name: "Rubana Khatoon" },
+            "805": { code: "GVCC-M8F0RD5", set: "D", marks: "9.5", obj: "06", short: "3.5", long: "00", name: "Zainab Parveen" },
+            "806": { code: "GVCC-M8E0RE6", set: "E", marks: "0", obj: "00", short: "00", long: "00", name: "Sabiya Parveen" },
+            "808": { code: "GVCC-M8X0RA8", set: "A", marks: "7", obj: "03", short: "04", long: "00", name: "Farida Khatoon" },
+            "809": { code: "GVCC-C8C0DB9", set: "B", marks: "6", obj: "06", short: "00", long: "00", name: "Sama Parveen" },
+            "810": { code: "GVCC-M8X1FC0", set: "C", marks: "6", obj: "06", short: "00", long: "00", name: "Sahnuma Parveen" },
+            "811": { code: "GVCC-F8X1RD1", set: "D", marks: "8", obj: "06", short: "02", long: "00", name: "Musarrat Khatoon" },
+            "815": { code: "GVCC-M8X1RF5", set: "F", marks: "8", obj: "08", short: "00", long: "00", name: "Md Raji Alam" },
+            "816": { code: "GVCC-M8X1RE6", set: "E", marks: "4", obj: "04", short: "00", long: "00", name: "Subodh Kumar" },
+            "820": { code: "GVCC-M8X2FF0", set: "F", marks: "14", obj: "07", short: "07", long: "00", name: "Sonali Kumari" },
+            "822": { code: "GVCC-M8X2BA2", set: "A", marks: "16", obj: "10", short: "06", long: "00", name: "Abdul Samad" }
         };
 
         const isResultPublished = true; 
@@ -353,11 +320,7 @@
 
             if (!isResultPublished) {
                 document.getElementById("classErrorBox").classList.remove("hidden");
-                document.getElementById("classErrorBox").innerHTML = `
-                    <i class="fa-solid fa-clock" style="font-size: 30px; color: #f59e0b; margin-bottom: 10px;"></i>
-                    <h3 style="color: #f59e0b; margin: 0 0 10px 0;">Result Coming Soon!</h3>
-                    <p style="color: #cbd5e1; font-size: 14px;">Abhi Class 8th Maths ka result publish nahi hua hai. Kripya thoda intezaar karein!</p>
-                `;
+                document.getElementById("classErrorBox").innerHTML = `<i class="fa-solid fa-clock" style="font-size: 30px; color: #f59e0b; margin-bottom: 10px;"></i><h3 style="color: #f59e0b; margin: 0 0 10px 0;">Result Coming Soon!</h3><p style="color: #cbd5e1; font-size: 14px;">Abhi Class 8th Maths ka result publish nahi hua hai. Kripya thoda intezaar karein!</p>`;
                 return;
             }
 
@@ -365,147 +328,178 @@
                 document.getElementById("resultSection").classList.remove("hidden"); 
             } else {
                 document.getElementById("classErrorBox").classList.remove("hidden");
-                document.getElementById("classErrorBox").innerHTML = `
-                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i>
-                    <h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3>
-                    <p style="color: #cbd5e1; font-size: 14px;">Aap Class ${loggedInClass} ke student hain. Ye result sirf Class 8th ke liye hai.</p>
-                `;
+                document.getElementById("classErrorBox").innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="font-size: 30px; color: #ef4444; margin-bottom: 10px;"></i><h3 style="color: #ef4444; margin: 0 0 10px 0;">Access Denied!</h3><p style="color: #cbd5e1; font-size: 14px;">Aap Class ${loggedInClass} ke student hain. Ye result sirf Class 8th ke liye hai.</p>`;
             }
         };
 
-        // 🟢 Async function bana diya gaya hai taaki Firebase update ho sake
+        // 🌟 SCANNER LOGIC 🌟
+        let html5Qrcode = null;
+        
+        function showError(msg) {
+            let errBox = document.getElementById("codeError");
+            errBox.style.display = "block";
+            errBox.style.color = "#ef4444";
+            errBox.style.borderColor = "#ef4444";
+            errBox.style.background = "rgba(239, 68, 68, 0.1)";
+            errBox.innerHTML = msg;
+        }
+
+        window.startQRScanner = function() {
+            document.getElementById("startScannerBtn").style.display = "none";
+            document.getElementById("questionCodeInput").style.display = "none";
+            document.querySelector(".btn").style.display = "none";
+            document.querySelector(".divider").style.display = "none";
+            document.getElementById("scanner-container").style.display = "block";
+            
+            let errBox = document.getElementById("codeError");
+            errBox.style.display = "block";
+            errBox.style.color = "#38bdf8";
+            errBox.style.borderColor = "#38bdf8";
+            errBox.style.background = "rgba(56, 189, 248, 0.1)";
+            errBox.innerHTML = "📸 Opening Camera...";
+
+            html5Qrcode = new Html5Qrcode("reader");
+            html5Qrcode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                (decodedText) => {
+                    let scannedRoll = "";
+                    if (decodedText.includes("Roll: ")) {
+                        scannedRoll = decodedText.split("Roll: ")[1].split("\n")[0].trim();
+                    }
+                    stopQRScanner(); 
+
+                    if(scannedRoll) {
+                        if(activeVIPs.includes(scannedRoll)) {
+                            let studentFound = resultDatabase[scannedRoll];
+                            if(studentFound) {
+                                renderResult(scannedRoll, studentFound);
+                            } else {
+                                showError("❌ Result Data Not Found for this VIP Roll.");
+                            }
+                        } else {
+                            showError("🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>Pay ₹50 VIP Fee at office to activate scanner. Until then, use manual login.</small>");
+                        }
+                    } else {
+                        showError("❌ Invalid QR Code!");
+                    }
+                },
+                (errorMessage) => { /* ignore */ }
+            ).then(() => { errBox.style.display = "none"; }).catch((err) => {
+                showError("❌ Camera access denied.");
+            });
+        };
+
+        window.stopQRScanner = function() {
+            if (html5Qrcode) { 
+                html5Qrcode.stop().then(() => { html5Qrcode.clear(); html5Qrcode = null; }).catch(err => console.log(err));
+            }
+            document.getElementById("scanner-container").style.display = "none";
+            document.getElementById("startScannerBtn").style.display = "flex";
+            document.getElementById("questionCodeInput").style.display = "block";
+            document.querySelector(".btn").style.display = "block";
+            document.querySelector(".divider").style.display = "flex";
+            document.getElementById("codeError").style.display = "none";
+        };
+
+        // 🌟 MANUAL VERIFY LOGIC 🌟
         window.verifyResult = async function() {
             let rawCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let enteredCode = rawCode.replace(/O/g, '0');
-            let errorMsg = document.getElementById("codeError");
             
-            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
-            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
-
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
             let studentFound = resultDatabase[loggedInRoll];
             
             if (studentFound && studentFound.code === enteredCode) {
-                errorMsg.style.display = "none";
-                document.getElementById("resultSection").style.display = "none"; 
-                document.getElementById("cardWrapper").style.display = "block";
-                
-                if (!loggedInName || loggedInName === "N/A" || loggedInName.trim() === "") {
-                    loggedInName = studentFound.name;
-                }
-
-                let marksInt = parseFloat(studentFound.marks);
-                let isPassed = marksInt >= 12;
-
-                document.getElementById("resNamePrev").innerText = loggedInName;
-                document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30";
-                
-                document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
-                document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
-
-                document.getElementById("hdName").innerText = loggedInName;
-                document.getElementById("hdSet").innerText = studentFound.set;
-                
-                document.getElementById("hdObtained").innerText = marksInt < 10 ? "0" + marksInt : marksInt;
-
-                document.getElementById("hdObj").innerText = parseInt(studentFound.obj) < 10 ? "0" + parseInt(studentFound.obj) : studentFound.obj;
-                document.getElementById("hdShort").innerText = parseInt(studentFound.short) < 10 ? "0" + parseInt(studentFound.short) : studentFound.short;
-                document.getElementById("hdLong").innerText = parseInt(studentFound.long) < 10 ? "0" + parseInt(studentFound.long) : studentFound.long;
-                
-                document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
-                document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
-
-                const badge = document.getElementById("performanceBadge");
-
-                if (isPassed) {
-                    if (marksInt >= 25) { 
-                        badge.innerHTML = "Remarks: Outstanding 🌟"; 
-                        badge.style.color = "#e32726"; 
-                        badge.style.border = "4px dashed #f5c518"; 
-                        badge.style.background = "#fffde7"; 
-                    } else { 
-                        badge.innerHTML = "Remarks: Good Progress 👍"; 
-                        badge.style.color = "#29438e"; 
-                        badge.style.border = "4px dashed #29438e"; 
-                        badge.style.background = "#eef2ff"; 
-                    }
-                } else { 
-                    badge.innerHTML = "Remarks: Needs Improvement 📖"; 
-                    badge.style.color = "#d32f2f"; 
-                    badge.style.border = "4px dashed #d32f2f"; 
-                    badge.style.background = "#fef2f2"; 
-                }
-
-                // 🚀🔥 MAIN FIX: DATABASE UPDATE CODE 🔥🚀
-                try {
-                    const statusRef = doc(db, "vip_results_status", loggedInRoll);
-                    await setDoc(statusRef, {
-                        checked: true,
-                        checkedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                        className: "8th"
-                    }, { merge: true });
-                    console.log("Success: Database updated to 'Checked'");
-                } catch (error) {
-                    console.error("Database error: ", error);
-                }
-
-                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+                renderResult(loggedInRoll, studentFound);
             } else {
-                errorMsg.style.display = "block";
-                document.getElementById("cardWrapper").style.display = "none";
+                showError("<i class='fa-solid fa-circle-exclamation'></i> Invalid Code! Please check your code.");
             }
-        }
+        };
+
+        // 🌟 COMMON RESULT RENDERING & FIREBASE SYNC 🌟
+        window.renderResult = async function(roll, studentFound) {
+            document.getElementById("codeError").style.display = "none";
+            document.getElementById("resultSection").style.display = "none"; 
+            document.getElementById("cardWrapper").style.display = "block";
+            
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+            if (!loggedInName || loggedInName === "N/A" || loggedInName.trim() === "") {
+                loggedInName = studentFound.name || "Student";
+            }
+
+            let marksInt = parseFloat(studentFound.marks);
+            let isPassed = marksInt >= 12;
+
+            document.getElementById("resNamePrev").innerText = loggedInName;
+            document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30";
+            
+            document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
+            document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
+
+            document.getElementById("hdName").innerText = loggedInName;
+            document.getElementById("hdSet").innerText = studentFound.set;
+            document.getElementById("hdObtained").innerText = marksInt < 10 ? "0" + marksInt : marksInt;
+
+            document.getElementById("hdObj").innerText = parseInt(studentFound.obj) < 10 ? "0" + parseInt(studentFound.obj) : studentFound.obj;
+            document.getElementById("hdShort").innerText = parseInt(studentFound.short) < 10 ? "0" + parseInt(studentFound.short) : studentFound.short;
+            document.getElementById("hdLong").innerText = parseInt(studentFound.long) < 10 ? "0" + parseInt(studentFound.long) : studentFound.long;
+            
+            document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
+            document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
+
+            const badge = document.getElementById("performanceBadge");
+            if (isPassed) {
+                if (marksInt >= 25) { 
+                    badge.innerHTML = "Remarks: Outstanding 🌟"; badge.style.color = "#e32726"; badge.style.border = "4px dashed #f5c518"; badge.style.background = "#fffde7"; 
+                } else { 
+                    badge.innerHTML = "Remarks: Good Progress 👍"; badge.style.color = "#29438e"; badge.style.border = "4px dashed #29438e"; badge.style.background = "#eef2ff"; 
+                }
+            } else { 
+                badge.innerHTML = "Remarks: Needs Improvement 📖"; badge.style.color = "#d32f2f"; badge.style.border = "4px dashed #d32f2f"; badge.style.background = "#fef2f2"; 
+            }
+
+            // Database Update
+            try {
+                const statusRef = doc(db, "vip_results_status", roll);
+                await setDoc(statusRef, { checked: true, checkedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), className: "8th" }, { merge: true });
+                console.log("Success: Database updated to 'Checked'");
+            } catch (error) { console.error("Database error: ", error); }
+
+            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+        };
 
         window.generateAndShareImage = function() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
+            btn.style.opacity = "0.7"; btn.style.pointerEvents = "none";
 
-            html2canvas(document.querySelector("#resultCard"), {
-                scale: 2,            
-                useCORS: true,
-                backgroundColor: "#f8fafc",
-                logging: false
-            }).then(canvas => {
+            html2canvas(document.querySelector("#resultCard"), { scale: 2, useCORS: true, backgroundColor: "#f8fafc", logging: false }).then(canvas => {
                 const imageData = canvas.toDataURL("image/png", 1.0);
                 const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet_Maths.png`;
 
-                fetch(imageData)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const file = new File([blob], fileName, { type: blob.type });
-                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            navigator.share({
-                                title: 'GVCC Formal Marksheet',
-                                text: 'Mera GVCC Class 8th Maths ka Official Marksheet. 📄',
-                                files: [file]
-                            }).catch(err => window.forceDownload(imageData, fileName));
-                        } else {
-                            window.forceDownload(imageData, fileName);
-                        }
-                    });
+                fetch(imageData).then(res => res.blob()).then(blob => {
+                    const file = new File([blob], fileName, { type: blob.type });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({ title: 'GVCC Formal Marksheet', text: 'Mera GVCC Class 8th Maths ka Official Marksheet. 📄', files: [file] })
+                        .catch(err => window.forceDownload(imageData, fileName));
+                    } else { window.forceDownload(imageData, fileName); }
+                });
 
-                btn.innerHTML = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
+                btn.innerHTML = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
             }).catch(err => {
                 alert("⚠️ Document generate karne mein problem aayi.");
-                btn.innerHTML = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
+                btn.innerHTML = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
             });
-        }
+        };
 
         window.forceDownload = function(imageData, fileName) {
             const link = document.createElement("a");
-            link.download = fileName;
-            link.href = imageData;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            link.download = fileName; link.href = imageData;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
             alert("✅ Aapka HD Marksheet Download ho gaya hai!");
-        }
+        };
     </script>
 </body>
 </html>
