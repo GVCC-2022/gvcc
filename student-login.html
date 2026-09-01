@@ -72,7 +72,7 @@ body {
 
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(-5vh); } }
 
-/* 🔥 ORIGINAL LOGO SIZES AND GLOW RESTORED EXACTLY 🔥 */
+/* 🌟 EXACT SAME LOGO SIZE AND SPACING AS YOUR ORIGINAL CODE 🌟 */
 .login-container { position: relative; width: 85%; max-width: 400px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .logo-glow-wrapper { position: relative; width: 100%; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: -110px; z-index: 10; }
 .logo-glow-wrapper::before { content: ''; position: absolute; width: 190px; height: 190px; margin-top: 25px; margin-left: 10px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
@@ -83,21 +83,20 @@ body {
 .login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 120px 30px 30px 30px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
 .title { color: #38bdf8; font-size: 26px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 1px; }
 
-/* 🌟 VIP SCAN BUTTON CSS 🌟 */
-.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); margin-bottom: 10px; }
-.btn-scan:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); transform: translateY(-2px); }
-.btn-scan:active { transform: scale(0.95); }
-
-/* QR SCANNER CONTAINER */
-#scanner-container { width: 100%; border-radius: 14px; overflow: hidden; display: none; border: 3px solid #10b981; margin-bottom: 15px; background: #000; box-shadow: 0 10px 25px rgba(0,0,0,0.5);}
-#reader { width: 100%; }
-.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px; }
-
-/* ORIGINAL BUTTONS */
 .install-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 14px !important; font-size: 16px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 20px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
 .install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
 .install-btn:active, .btn-login:active:not(:disabled) { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
 .install-btn i { animation: bounce 2s infinite; font-size: 20px; }
+
+/* 🌟 NEW VIP BUTTON ADDED SMOOTHLY 🌟 */
+.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); margin-top: -5px; margin-bottom: -5px; }
+.btn-scan:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); transform: translateY(-2px); }
+.btn-scan:active { transform: scale(0.95); }
+
+/* QR SCANNER CONTAINER */
+#scanner-container { width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 2px solid #10b981; margin-top: 10px; margin-bottom: 5px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+#reader { width: 100%; }
+.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px;}
 
 .divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 12px; font-weight: 600; margin: 25px 0; }
 .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--divider-color); }
@@ -134,7 +133,9 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
         </button>
 
-        <!-- 🔥 VIP SMART LOGIN SYSTEM 🔥 -->
+        <div class="divider">SELECT YOUR LOGIN</div>
+
+        <!-- 🔥 NEW VIP BUTTON 🔥 -->
         <button type="button" class="btn-scan" id="startScannerBtn" onclick="startQRScanner()">
             <i class="fa-solid fa-qrcode"></i> Scan VIP Card
         </button>
@@ -144,8 +145,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Camera</button>
         </div>
 
-        <div class="divider">SELECT YOUR LOGIN</div>
-        
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
             <div id="dynamicName"></div>
@@ -170,7 +169,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             if (outcome === 'accepted') console.log('App Installed!');
             deferredPrompt = null;
         } else {
-            // 🔥 ORIGINAL ALERT TEXT EXACTLY AS YOU REQUESTED 🔥
             alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi aur aap login kar payenge.");
         }
     };
@@ -208,7 +206,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         msgBox.innerHTML = "📸 Opening Camera...";
         msgBox.style.color = "#38bdf8";
 
-        // Using direct API to bypass file upload UI - Only Camera!
         html5Qrcode = new Html5Qrcode("reader");
         html5Qrcode.start(
             { facingMode: "environment" }, 
@@ -226,28 +223,22 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                         autoLoginVIP(scannedRoll);
                     } else {
                         msgBox.style.color = "#ef4444"; 
-                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee.</small>";
+                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee. Pay at office to activate scanner. Until then, use manual login.</small>";
                     }
                 } else {
                     msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Invalid QR Code!";
                 }
             },
-            (errorMessage) => { /* Background scan errors, ignore */ }
-        ).then(() => {
-            msgBox.innerHTML = ""; 
-        }).catch((err) => {
+            (errorMessage) => { /* ignore */ }
+        ).then(() => { msgBox.innerHTML = ""; }).catch((err) => {
             msgBox.style.color = "#ef4444"; 
-            msgBox.innerHTML = "❌ Camera access denied or not found.";
-            console.error(err);
+            msgBox.innerHTML = "❌ Camera access denied.";
         });
     };
 
     window.stopQRScanner = function() {
         if (html5Qrcode) { 
-            html5Qrcode.stop().then(() => {
-                html5Qrcode.clear(); 
-                html5Qrcode = null; 
-            }).catch(err => console.log(err));
+            html5Qrcode.stop().then(() => { html5Qrcode.clear(); html5Qrcode = null; }).catch(err => {});
         }
         document.getElementById("scanner-container").style.display = "none";
         document.getElementById("startScannerBtn").style.display = "flex";
@@ -268,6 +259,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                 
                 await saveLoginLog(roll, data["Name "] || data.Name || "VIP Student");
                 
+                msgBox.innerHTML = "🚀 Redirecting...";
                 setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
             } else {
                 msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ VIP Roll Number Not Found in DB.";
@@ -293,7 +285,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         }
     }, 2000);
 
-    // App Download Tracker
     window.addEventListener('appinstalled', async () => {
         try {
             const statsRef = doc(db, "admin_stats", "app_downloads");
@@ -336,7 +327,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         } catch (error) {}
     }
 
-    // 🔒 MANUAL LOGIN SYSTEM (For Non-VIPs)
+    // 🔒 MANUAL LOGIN SYSTEM
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
         const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
