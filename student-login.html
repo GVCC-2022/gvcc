@@ -414,71 +414,42 @@ const vipData = {
             enteredPin += num;
             updatePinDots();
             
-            // As soon as 4 digits are entered, auto-verify!
-            if(enteredPin.length === 4) {
-                verifyVipPinLogin();
-            }
-        }
-    };
+            // 🚀 FAST & SECURE VIP PIN VERIFICATION
+async function verifyVipPinLogin() {
+    const subText = document.getElementById("pinSubText");
+    subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying VIP PIN...`;
+    subText.style.color = "#fbbf24";
 
-    window.deletePin = function() {
-        if(enteredPin.length > 0) {
-            enteredPin = enteredPin.slice(0, -1);
-            updatePinDots();
-        }
-    };
-
-    window.clearPin = function() {
-        enteredPin = "";
-        updatePinDots();
-    };
-
-    function updatePinDots() {
-        for(let i=1; i<=4; i++) {
-            let dot = document.getElementById("dot" + i);
-            if(i <= enteredPin.length) {
-                dot.classList.add("filled");
-            } else {
-                dot.classList.remove("filled");
-            }
-        }
-    }
-
-    async function verifyVipPinLogin() {
-        const subText = document.getElementById("pinSubText");
-        subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking Database...`;
-        subText.style.color = "#fbbf24";
+    // मैच करें कि क्या डाला गया PIN उस रोल नंबर के VIP PIN के बराबर है
+    if (activeVipInfo && activeVipInfo.pin === String(enteredPin).trim()) {
+        subText.innerHTML = `✅ PIN Matched! Welcome...`;
+        subText.style.color = "#4ade80";
 
         try {
             const docSnap = await getDoc(doc(db, "students", currentVipRoll));
+            let studentClass = "8th";
+            let studentName = "VIP Student";
+
             if (docSnap.exists()) {
                 let data = docSnap.data();
-                
-                // Compare entered PIN with Firebase Password
-                if (String(data["Password "] || data.Password || data["password "]).trim() === String(enteredPin).trim()) {
-                    
-                    subText.innerHTML = `✅ PIN Matched! Redirecting...`;
-                    subText.style.color = "#4ade80";
-                    
-                    if ("Notification" in window && Notification.permission === "granted") {
-                        try {
-                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-                            if (token) { await setDoc(doc(db, "students", currentVipRoll), { notificationToken: token, class: data.class }, { merge: true }); }
-                        } catch (err) {}
-                    }
+                studentClass = data.class || "8th";
+                studentName = data["Name "] || data.Name || "VIP Student";
+            }
 
-                    localStorage.setItem("studentRoll", currentVipRoll);
-                    localStorage.setItem("studentClass", data.class); 
-                    
-                    await saveLoginLog(currentVipRoll, data["Name "] || data.Name || "VIP Student");
-                    
-                    // Delay slightly for effect, then redirect
-                    setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
-                } else { 
-                    // WRONG PIN LOGIC
-                    triggerPinError("❌ Wrong PIN! Try Again.");
-                }
-            } else { 
+            localStorage.setItem("studentRoll", currentVipRoll);
+            localStorage.setItem("studentClass", studentClass);
+
+            await saveLoginLog(currentVipRoll, studentName);
+
+            setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
+        } catch (e) {
+            window.location.href = "dashboard.html";
+        }
+    } else {
+        // गलत PIN डालने पर एरर
+        triggerPinError("❌ Wrong VIP PIN! Try Again.");
+    }
+} else { 
                 triggerPinError("❌ Roll Not Found in Database.");
             }
         } catch (error) { 
