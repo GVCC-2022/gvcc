@@ -64,10 +64,10 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background: var(--page-bg); 
     margin: 0; 
-    padding: 50px 15px; /* MAGIC FIX: अब पेज कभी ऊपर-नीचे से नहीं कटेगा */
+    padding: 50px 15px; 
     display: flex; justify-content: center; align-items: center; min-height: 100vh; 
     color: var(--text-main); 
-    overflow-y: auto; /* MAGIC FIX: छोटी स्क्रीन में स्क्रॉल हो जाएगा पर कटेगा नहीं */
+    overflow-y: auto; 
     overflow-x: hidden;
     touch-action: manipulation; 
     transition: background 0.4s ease, color 0.4s ease; box-sizing: border-box;
@@ -77,25 +77,12 @@ body {
 
 .login-container { position: relative; width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-/* 
-========================================================
-   🔥 LOGO SETTINGS (लोगो को ऊपर-नीचे/दायें-बायें करें) 🔥
-========================================================
-*/
 .logo-glow-wrapper { 
     position: relative; width: 100%; height: 130px; display: flex; justify-content: center; align-items: center; 
-    margin-bottom: -65px; /* अगर कार्ड को लोगो के और करीब लाना है तो इसे -70px या -80px करें */
+    margin-bottom: -65px; 
     z-index: 10; 
-    
-    /* 👇 यहाँ से लोगो खिसकाएं (X , Y) 👇 */
     transform: translate(2px, 15px); 
-    /* 
-       पहला नंबर (0px) = Left/Right (जैसे 10px दायें, -10px बायें)
-       दूसरा नंबर (15px) = Up/Down (जैसे 25px नीचे, -10px ऊपर)
-    */
 }
-/* ======================================================== */
-
 .logo-glow-wrapper::before { content: ''; position: absolute; width: 140px; height: 140px; margin-top: 15px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
 .logo-glow-wrapper::after { content: ''; position: absolute; width: 90px; height: 90px; margin-top: 15px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
 @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -104,7 +91,6 @@ body {
 
 .login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 80px 20px 20px 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
 .title { color: #38bdf8; font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
-
 
 /* 🔥 1. VIP SCAN BUTTON - HERO EFFECT 🔥 */
 .btn-scan { 
@@ -144,9 +130,6 @@ input { display: block; width: 100%; padding: 14px; margin: 12px auto; border: 1
 input::placeholder { color: var(--placeholder-color); }
 input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
-/* 🔥 NEW VISUAL LOCK FOR AUTO-FILLED ROLL NUMBER 🔥 */
-input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weight: 900; border-color: #38bdf8; cursor: not-allowed; }
-
 .btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
@@ -183,6 +166,55 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
 #dynamicName { font-size: 13px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 600; width: 100%; text-align: left; height: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
 #dynamicName.show { opacity: 1; transform: translateY(0); }
 #msg { font-weight: 600; font-size: 13px; margin-top: 10px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px; }
+
+/* ========================================================
+   🌟 NEW: VIP PIN PAD OVERLAY UI 🌟
+======================================================== */
+#pinPadOverlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    z-index: 9999; display: none; justify-content: center; align-items: center;
+    animation: fadeInPin 0.3s ease;
+}
+@keyframes fadeInPin { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+.pin-modal {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    padding: 30px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border: 1px solid rgba(56, 189, 248, 0.3); text-align: center;
+    width: 85%; max-width: 320px; color: white;
+}
+.pin-modal h3 { margin: 0; color: #38bdf8; font-size: 20px; font-weight: 800; letter-spacing: 1px;}
+.pin-modal p { color: #94a3b8; font-size: 13px; margin-top: 5px; margin-bottom: 20px;}
+
+.pin-dots { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+.pin-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid #38bdf8; transition: all 0.2s ease;
+    background: transparent;
+}
+.pin-dot.filled { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; transform: scale(1.2); }
+
+.pin-keypad {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+    justify-items: center;
+}
+.pin-btn {
+    width: 65px; height: 65px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05); color: white;
+    font-size: 24px; font-weight: 700; border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.pin-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
+.pin-btn:active { transform: scale(0.9); background: #38bdf8; }
+.pin-action-btn { background: transparent; border: none; font-size: 20px; color: #ef4444; }
+.pin-action-btn:hover { background: rgba(239, 68, 68, 0.1); }
+.pin-cancel-btn { color: #94a3b8; font-size: 14px; font-weight: bold; border: none; background: transparent; margin-top: 20px; padding: 10px; cursor: pointer; transition: 0.2s;}
+.pin-cancel-btn:active { transform: scale(0.9); }
+
+.shake-error { animation: shake 0.4s; }
+@keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 </style>
 </head>
 <body>
@@ -224,6 +256,40 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
     </div>
 </div>
 
+<!-- ========================================================
+   🌟 NEW: VIP PIN PAD OVERLAY HTML 🌟
+======================================================== -->
+<div id="pinPadOverlay">
+    <div class="pin-modal" id="pinModal">
+        <h3><i class="fa-solid fa-shield-halved"></i> VIP Verified</h3>
+        <p id="pinSubText">Enter 4-Digit PIN for Roll: <strong id="pinRollDisplay">---</strong></p>
+        
+        <div class="pin-dots">
+            <div class="pin-dot" id="dot1"></div>
+            <div class="pin-dot" id="dot2"></div>
+            <div class="pin-dot" id="dot3"></div>
+            <div class="pin-dot" id="dot4"></div>
+        </div>
+
+        <div class="pin-keypad">
+            <button class="pin-btn" onclick="enterPin(1)">1</button>
+            <button class="pin-btn" onclick="enterPin(2)">2</button>
+            <button class="pin-btn" onclick="enterPin(3)">3</button>
+            <button class="pin-btn" onclick="enterPin(4)">4</button>
+            <button class="pin-btn" onclick="enterPin(5)">5</button>
+            <button class="pin-btn" onclick="enterPin(6)">6</button>
+            <button class="pin-btn" onclick="enterPin(7)">7</button>
+            <button class="pin-btn" onclick="enterPin(8)">8</button>
+            <button class="pin-btn" onclick="enterPin(9)">9</button>
+            <button class="pin-btn pin-action-btn" onclick="clearPin()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="pin-btn" onclick="enterPin(0)">0</button>
+            <button class="pin-btn pin-action-btn" onclick="deletePin()"><i class="fa-solid fa-delete-left"></i></button>
+        </div>
+        
+        <button class="pin-cancel-btn" onclick="closePinPad()">Cancel Login</button>
+    </div>
+</div>
+
 <script>
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
@@ -258,8 +324,6 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
     const messaging = getMessaging(app);
 
     // 🌟 SECURE KEYS DATABASE (Har VIP bacche ki alag GVCC-Key) 🌟
-    // Note: Aadhe bachhon ka number yahan as an example diya gaya hai.
-    // Jab naya card banaye, to uski Key yahan zaroor jodein.
     const vipKeys = {
         "GVCC-A4M8": "801", // Anamika Kumari
         "GVCC-R2N7": "803", // Shabrun Khatoon
@@ -273,6 +337,10 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
     // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
     let html5Qrcode = null;
     const msgBox = document.getElementById("msg");
+    
+    // 🌟 PIN PAD VARIABLES 🌟
+    let currentVipRoll = "";
+    let enteredPin = "";
 
     window.startQRScanner = function() {
         document.getElementById("startScannerBtn").style.display = "none";
@@ -289,7 +357,6 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
             async (decodedText) => {
                 let scannedKey = "";
                 
-                // Text se 'GVCC-' wali chabi dhoondho
                 if (decodedText.includes("Key: GVCC-")) {
                     scannedKey = "GVCC-" + decodedText.split("Key: GVCC-")[1].split("\n")[0].trim();
                 }
@@ -297,21 +364,10 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
                 stopQRScanner(); 
 
                 if(scannedKey && vipKeys.hasOwnProperty(scannedKey)) {
-                    let rollFromKey = vipKeys[scannedKey]; // Chabi se asli roll number nikala
+                    let rollFromKey = vipKeys[scannedKey]; 
                     
-                    msgBox.style.color = "#4ade80"; 
-                    msgBox.innerHTML = `✅ <b>VIP Card Verified!</b><br><small style='color:#94a3b8;'>Enter your password to secure login.</small>`;
-                    
-                    // 🚀 THE MAGIC: Auto-fill roll number and lock it
-                    const rollInputBox = document.getElementById("roll");
-                    rollInputBox.value = rollFromKey;
-                    rollInputBox.disabled = true; // Lock the input so they can't change it
-                    
-                    // Trigger input event to fetch Name dynamically from Firebase
-                    rollInputBox.dispatchEvent(new Event('input'));
-                    
-                    // Put focus on password box automatically
-                    document.getElementById("password").focus();
+                    // 🚀 THE NEW MAGIC: OPEN THE VIP PIN PAD 🚀
+                    openPinPad(rollFromKey);
 
                 } else {
                     msgBox.style.color = "#ef4444"; 
@@ -319,11 +375,8 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
                 }
             },
             (errorMessage) => { /* ignore */ }
-        ).then(() => {
-            msgBox.innerHTML = ""; 
-        }).catch((err) => {
-            msgBox.style.color = "#ef4444"; 
-            msgBox.innerHTML = "❌ Camera access denied.";
+        ).then(() => { msgBox.innerHTML = ""; }).catch((err) => {
+            msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Camera access denied.";
         });
     };
 
@@ -334,9 +387,125 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
         document.getElementById("scanner-container").style.display = "none";
         document.getElementById("startScannerBtn").style.display = "flex";
         document.getElementById("loginForm").style.display = "block";
-        document.querySelector(".install-btn").style.display = "inline-flex"; // Restore Pill shape
-        // MsgBox clear nahi karenge taaki "Verified" wala message dikhta rahe
+        document.querySelector(".install-btn").style.display = "inline-flex"; 
     };
+
+    // ==========================================
+    // 🌟 VIP PIN PAD JAVASCRIPT LOGIC 🌟
+    // ==========================================
+    window.openPinPad = function(roll) {
+        currentVipRoll = roll;
+        enteredPin = "";
+        updatePinDots();
+        
+        document.getElementById("pinRollDisplay").innerText = roll;
+        document.getElementById("pinSubText").innerText = `Enter 4-Digit PIN for Roll: ${roll}`;
+        document.getElementById("pinSubText").style.color = "#94a3b8"; // reset color
+        document.getElementById("pinPadOverlay").style.display = "flex";
+    };
+
+    window.closePinPad = function() {
+        document.getElementById("pinPadOverlay").style.display = "none";
+        msgBox.innerHTML = ""; // Clear background messages
+    };
+
+    window.enterPin = function(num) {
+        if(enteredPin.length < 4) {
+            enteredPin += num;
+            updatePinDots();
+            
+            // As soon as 4 digits are entered, auto-verify!
+            if(enteredPin.length === 4) {
+                verifyVipPinLogin();
+            }
+        }
+    };
+
+    window.deletePin = function() {
+        if(enteredPin.length > 0) {
+            enteredPin = enteredPin.slice(0, -1);
+            updatePinDots();
+        }
+    };
+
+    window.clearPin = function() {
+        enteredPin = "";
+        updatePinDots();
+    };
+
+    function updatePinDots() {
+        for(let i=1; i<=4; i++) {
+            let dot = document.getElementById("dot" + i);
+            if(i <= enteredPin.length) {
+                dot.classList.add("filled");
+            } else {
+                dot.classList.remove("filled");
+            }
+        }
+    }
+
+    async function verifyVipPinLogin() {
+        const subText = document.getElementById("pinSubText");
+        subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking Database...`;
+        subText.style.color = "#fbbf24";
+
+        try {
+            const docSnap = await getDoc(doc(db, "students", currentVipRoll));
+            if (docSnap.exists()) {
+                let data = docSnap.data();
+                
+                // Compare entered PIN with Firebase Password
+                if (String(data["Password "] || data.Password || data["password "]).trim() === String(enteredPin).trim()) {
+                    
+                    subText.innerHTML = `✅ PIN Matched! Redirecting...`;
+                    subText.style.color = "#4ade80";
+                    
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        try {
+                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                            if (token) { await setDoc(doc(db, "students", currentVipRoll), { notificationToken: token, class: data.class }, { merge: true }); }
+                        } catch (err) {}
+                    }
+
+                    localStorage.setItem("studentRoll", currentVipRoll);
+                    localStorage.setItem("studentClass", data.class); 
+                    
+                    await saveLoginLog(currentVipRoll, data["Name "] || data.Name || "VIP Student");
+                    
+                    // Delay slightly for effect, then redirect
+                    setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+                } else { 
+                    // WRONG PIN LOGIC
+                    triggerPinError("❌ Wrong PIN! Try Again.");
+                }
+            } else { 
+                triggerPinError("❌ Roll Not Found in Database.");
+            }
+        } catch (error) { 
+            triggerPinError("⚠️ Network Error.");
+        }
+    }
+
+    function triggerPinError(errorMsg) {
+        const modal = document.getElementById("pinModal");
+        const subText = document.getElementById("pinSubText");
+        
+        subText.innerHTML = errorMsg;
+        subText.style.color = "#ef4444";
+        
+        // Add shake animation
+        modal.classList.add("shake-error");
+        
+        // Vibrate phone if supported
+        if(navigator.vibrate) navigator.vibrate(200);
+
+        setTimeout(() => {
+            modal.classList.remove("shake-error");
+            clearPin(); // Auto clear so they can type again
+        }, 500);
+    }
+    // ==========================================
+
 
     // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
@@ -397,12 +566,11 @@ input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weigh
         } catch (error) {}
     }
 
-    // 🔒 MANUAL LOGIN SYSTEM (Works for both Manual and Auto-filled VIP)
+    // 🔒 MANUAL LOGIN SYSTEM (Standard Box logic remains untouched)
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
         const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
         
-        // We use .value to get the roll number even if it's disabled/locked by the scanner
         let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
         loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
