@@ -370,6 +370,14 @@
                     stopQRScanner(); 
 
                     if(scannedRoll) {
+                        // 🔥 CROSS-MATCH SECURITY LOCK 🔥
+                        let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+                        
+                        if (scannedRoll !== loggedInRoll) {
+                            showError(`🚨 <b>SECURITY ALERT: CARD MISMATCH!</b><br><small style='color:#f87171;'>You are logged in as Roll ${loggedInRoll}. You cannot scan someone else's card (Roll ${scannedRoll}). Please scan YOUR OWN VIP card.</small>`);
+                            return;
+                        }
+
                         if(activeVIPs.includes(scannedRoll)) {
                             let studentFound = resultDatabase[scannedRoll];
                             if(studentFound) {
@@ -423,21 +431,19 @@
             document.getElementById("resultSection").style.display = "none"; 
             document.getElementById("cardWrapper").style.display = "block";
             
-            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
-            if (!loggedInName || loggedInName === "N/A" || loggedInName.trim() === "") {
-                loggedInName = studentFound.name || "Student";
-            }
+            // 🔥 NAME FIX: ALWAYS USE DATABASE NAME 🔥
+            let finalName = studentFound.name || "Unknown Student";
 
             let marksInt = parseFloat(studentFound.marks);
             let isPassed = marksInt >= 12;
 
-            document.getElementById("resNamePrev").innerText = loggedInName;
+            document.getElementById("resNamePrev").innerText = finalName;
             document.getElementById("resMarksPrev").innerText = studentFound.marks + "/30";
             
             document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
             document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
 
-            document.getElementById("hdName").innerText = loggedInName;
+            document.getElementById("hdName").innerText = finalName;
             document.getElementById("hdSet").innerText = studentFound.set;
             document.getElementById("hdObtained").innerText = marksInt < 10 ? "0" + marksInt : marksInt;
 
