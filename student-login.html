@@ -323,16 +323,16 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-    // 🌟 SECURE KEYS DATABASE (Har VIP bacche ki alag GVCC-Key) 🌟
-    const vipKeys = {
-        "GVCC-A4M8": "801", // Anamika Kumari
-        "GVCC-R2N7": "803", // Shabrun Khatoon
-        "GVCC-Z9B2": "805", // Zainab Parveen
-        "GVCC-B1Y6": "806", // Sabiya Parveen
-        "GVCC-S3M4": "809", // Sama Parveen
-        "GVCC-H8N9": "810", // Sahnuma Parveen
-        "GVCC-S5N1": "820"  // Sonali Kumari
-    };
+   // 🌟 SECURE VIP DATABASE (Key, Roll & 4-Digit PIN) 🌟
+const vipData = {
+    "GVCC-A4M8": { roll: "801", pin: "8011" }, // Anamika
+    "GVCC-R2N7": { roll: "803", pin: "8033" }, // Shabrun
+    "GVCC-Z9B2": { roll: "805", pin: "8055" }, // Zainab
+    "GVCC-B1Y6": { roll: "806", pin: "8066" }, // Sabiya
+    "GVCC-S3M4": { roll: "809", pin: "8099" }, // Sama
+    "GVCC-H8N9": { roll: "810", pin: "8100" }, // Sahnuma
+    "GVCC-S5N1": { roll: "820", pin: "8200" }  // Sonali
+};
 
     // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
     let html5Qrcode = null;
