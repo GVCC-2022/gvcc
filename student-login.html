@@ -324,15 +324,15 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const messaging = getMessaging(app);
 
    // 🌟 SECURE VIP DATABASE (Key, Roll & 4-Digit PIN) 🌟
-const vipData = {
-    "GVCC-A4M8": { roll: "801", pin: "8011" }, // Anamika
-    "GVCC-R2N7": { roll: "803", pin: "8033" }, // Shabrun
-    "GVCC-Z9B2": { roll: "805", pin: "8055" }, // Zainab
-    "GVCC-B1Y6": { roll: "806", pin: "8066" }, // Sabiya
-    "GVCC-S3M4": { roll: "809", pin: "8099" }, // Sama
-    "GVCC-H8N9": { roll: "810", pin: "8100" }, // Sahnuma
-    "GVCC-S5N1": { roll: "820", pin: "8200" }  // Sonali
-};
+   const vipData = {
+        "GVCC-A4M8": { roll: "801", pin: "8011" }, // Anamika
+        "GVCC-R2N7": { roll: "803", pin: "8033" }, // Shabrun
+        "GVCC-Z9B2": { roll: "805", pin: "8055" }, // Zainab
+        "GVCC-B1Y6": { roll: "806", pin: "8066" }, // Sabiya
+        "GVCC-S3M4": { roll: "809", pin: "8099" }, // Sama
+        "GVCC-H8N9": { roll: "810", pin: "8100" }, // Sahnuma
+        "GVCC-S5N1": { roll: "820", pin: "8200" }  // Sonali
+    };
 
     // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
     let html5Qrcode = null;
@@ -340,6 +340,7 @@ const vipData = {
     
     // 🌟 PIN PAD VARIABLES 🌟
     let currentVipRoll = "";
+    let currentVipPin = ""; // Store the correct PIN here
     let enteredPin = "";
 
     window.startQRScanner = function() {
@@ -363,15 +364,16 @@ const vipData = {
 
                 stopQRScanner(); 
 
-                if(scannedKey && vipKeys.hasOwnProperty(scannedKey)) {
-                    let rollFromKey = vipKeys[scannedKey]; 
+                if(scannedKey && vipData.hasOwnProperty(scannedKey)) {
+                    let rollFromKey = vipData[scannedKey].roll; 
+                    currentVipPin = vipData[scannedKey].pin; // Get correct PIN from DB
                     
                     // 🚀 THE NEW MAGIC: OPEN THE VIP PIN PAD 🚀
                     openPinPad(rollFromKey);
 
                 } else {
                     msgBox.style.color = "#ef4444"; 
-                    msgBox.innerHTML = "🚨 <b>नकली (FAKE) कार्ड पकड़ा गया!</b><br><small style='color:#f87171;'>आपकी GVCC चाबी गलत है या आपने फीस जमा नहीं की है।</small>";
+                    msgBox.innerHTML = "🚨 <b>नकली (FAKE) कार्ड पकड़ा गया!</b><br><small style='color:#f87171;'>आपकी GVCC चाबी गलत है या आपने फीस जमा नहीं की है।</small>";
                 }
             },
             (errorMessage) => { /* ignore */ }
@@ -414,46 +416,80 @@ const vipData = {
             enteredPin += num;
             updatePinDots();
             
-            // 🚀 FAST & SECURE VIP PIN VERIFICATION
-async function verifyVipPinLogin() {
-    const subText = document.getElementById("pinSubText");
-    subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying VIP PIN...`;
-    subText.style.color = "#fbbf24";
-
-    // मैच करें कि क्या डाला गया PIN उस रोल नंबर के VIP PIN के बराबर है
-    if (activeVipInfo && activeVipInfo.pin === String(enteredPin).trim()) {
-        subText.innerHTML = `✅ PIN Matched! Welcome...`;
-        subText.style.color = "#4ade80";
-
-        try {
-            const docSnap = await getDoc(doc(db, "students", currentVipRoll));
-            let studentClass = "8th";
-            let studentName = "VIP Student";
-
-            if (docSnap.exists()) {
-                let data = docSnap.data();
-                studentClass = data.class || "8th";
-                studentName = data["Name "] || data.Name || "VIP Student";
+            // As soon as 4 digits are entered, auto-verify!
+            if(enteredPin.length === 4) {
+                verifyVipPinLogin();
             }
-
-            localStorage.setItem("studentRoll", currentVipRoll);
-            localStorage.setItem("studentClass", studentClass);
-
-            await saveLoginLog(currentVipRoll, studentName);
-
-            setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
-        } catch (e) {
-            window.location.href = "dashboard.html";
         }
-    } else {
-        // गलत PIN डालने पर एरर
-        triggerPinError("❌ Wrong VIP PIN! Try Again.");
-    }
-} else { 
-                triggerPinError("❌ Roll Not Found in Database.");
+    };
+
+    window.deletePin = function() {
+        if(enteredPin.length > 0) {
+            enteredPin = enteredPin.slice(0, -1);
+            updatePinDots();
+        }
+    };
+
+    window.clearPin = function() {
+        enteredPin = "";
+        updatePinDots();
+    };
+
+    function updatePinDots() {
+        for(let i=1; i<=4; i++) {
+            let dot = document.getElementById("dot" + i);
+            if(i <= enteredPin.length) {
+                dot.classList.add("filled");
+            } else {
+                dot.classList.remove("filled");
             }
-        } catch (error) { 
-            triggerPinError("⚠️ Network Error.");
+        }
+    }
+
+    // 🚀 FAST & SECURE VIP PIN VERIFICATION
+    async function verifyVipPinLogin() {
+        const subText = document.getElementById("pinSubText");
+        subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying VIP PIN...`;
+        subText.style.color = "#fbbf24";
+
+        // मैच करें कि क्या डाला गया PIN उस रोल नंबर के VIP PIN के बराबर है
+        if (currentVipPin === String(enteredPin).trim()) {
+            subText.innerHTML = `✅ PIN Matched! Welcome...`;
+            subText.style.color = "#4ade80";
+
+            try {
+                const docSnap = await getDoc(doc(db, "students", currentVipRoll));
+                let studentClass = "8th";
+                let studentName = "VIP Student";
+
+                if (docSnap.exists()) {
+                    let data = docSnap.data();
+                    studentClass = data.class || "8th";
+                    studentName = data["Name "] || data.Name || "VIP Student";
+                    
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        try {
+                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                            if (token) { await setDoc(doc(db, "students", currentVipRoll), { notificationToken: token, class: data.class }, { merge: true }); }
+                        } catch (err) {}
+                    }
+                }
+
+                localStorage.setItem("studentRoll", currentVipRoll);
+                localStorage.setItem("studentClass", studentClass);
+
+                await saveLoginLog(currentVipRoll, studentName);
+
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
+            } catch (e) {
+                // Ignore network error for Firebase details if they just want to login fast
+                localStorage.setItem("studentRoll", currentVipRoll);
+                localStorage.setItem("studentClass", "8th");
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
+            }
+        } else {
+            // गलत PIN डालने पर एरर
+            triggerPinError("❌ Wrong VIP PIN! Try Again.");
         }
     }
 
