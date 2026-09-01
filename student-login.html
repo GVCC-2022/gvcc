@@ -134,7 +134,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
 
-
 /* 🔥 3. INSTALL APP BUTTON - CAPSULE / PILL SHAPE 🔥 */
 .install-btn { 
     display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
@@ -323,16 +322,44 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-   // 🌟 SECURE VIP DATABASE (Key, Roll & 4-Digit PIN) 🌟
-   const vipData = {
-        "GVCC-A4M8": { roll: "801", pin: "8011" }, // Anamika
-        "GVCC-R2N7": { roll: "803", pin: "8033" }, // Shabrun
-        "GVCC-Z9B2": { roll: "805", pin: "8055" }, // Zainab
-        "GVCC-B1Y6": { roll: "806", pin: "8066" }, // Sabiya
-        "GVCC-S3M4": { roll: "809", pin: "8099" }, // Sama
-        "GVCC-H8N9": { roll: "810", pin: "8100" }, // Sahnuma
-        "GVCC-S5N1": { roll: "820", pin: "8200" }  // Sonali
+    // ==============================================================
+    // 🌟 MAGIC FEATURE: AUTO-SYNC WITH FIREBASE (No Code Editing) 🌟
+    // ==============================================================
+    
+    // Default Fallback Data (अगर इंटरनेट स्लो हो तो यह काम करेगा)
+    let vipData = {
+        "GVCC-A4M8": { roll: "801", pin: "8011" }, 
+        "GVCC-R2N7": { roll: "803", pin: "8033" }, 
+        "GVCC-Z9B2": { roll: "805", pin: "8055" }, 
+        "GVCC-B1Y6": { roll: "806", pin: "8066" }, 
+        "GVCC-S3M4": { roll: "809", pin: "8099" }, 
+        "GVCC-H8N9": { roll: "810", pin: "8100" }, 
+        "GVCC-S5N1": { roll: "820", pin: "8200" }  
     };
+
+    // Firebase से फाइल को लोड और ऑटो-क्रिएट करने का फंक्शन
+    async function syncVIPDatabase() {
+        try {
+            // Firebase me 'admin_settings' folder ke andar 'vip_card_data' file check karega
+            const docRef = doc(db, "admin_settings", "vip_card_data");
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                // Agar file database me hai, to waha se naya PIN utha lega!
+                vipData = docSnap.data();
+            } else {
+                // Agar file nahi hai (Pehli baar), to ye AUTOMATIC Firebase me file bana dega!
+                await setDoc(docRef, vipData);
+                console.log("✅ VIP Data file created in Firebase Successfully!");
+            }
+        } catch (error) {
+            console.log("DB Sync Error, using local fallback.", error);
+        }
+    }
+    // पेज लोड होते ही यह बैकग्राउंड में फायरबेस से कनेक्ट हो जाएगा
+    syncVIPDatabase();
+
+    // ==============================================================
 
     // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
     let html5Qrcode = null;
@@ -340,8 +367,26 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     
     // 🌟 PIN PAD VARIABLES 🌟
     let currentVipRoll = "";
-    let currentVipPin = ""; // Store the correct PIN here
+    let currentVipPin = ""; 
     let enteredPin = "";
+
+    // 🌟 FAST & PREMIUM TAP SOUND (Web Audio API) 🌟
+    window.playTapSound = function() {
+        try {
+            let AudioContext = window.AudioContext || window.webkitAudioContext;
+            let ctx = new AudioContext();
+            let osc = ctx.createOscillator();
+            let gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = "sine"; 
+            osc.frequency.setValueAtTime(700, ctx.currentTime); // High pitch premium beep
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.05); // Short tick
+            osc.stop(ctx.currentTime + 0.05);
+        } catch(e) { /* ignore if audio not supported */ }
+    };
 
     window.startQRScanner = function() {
         document.getElementById("startScannerBtn").style.display = "none";
@@ -366,9 +411,8 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 
                 if(scannedKey && vipData.hasOwnProperty(scannedKey)) {
                     let rollFromKey = vipData[scannedKey].roll; 
-                    currentVipPin = vipData[scannedKey].pin; // Get correct PIN from DB
+                    currentVipPin = vipData[scannedKey].pin; 
                     
-                    // 🚀 THE NEW MAGIC: OPEN THE VIP PIN PAD 🚀
                     openPinPad(rollFromKey);
 
                 } else {
@@ -402,21 +446,22 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         
         document.getElementById("pinRollDisplay").innerText = roll;
         document.getElementById("pinSubText").innerText = `Enter 4-Digit PIN for Roll: ${roll}`;
-        document.getElementById("pinSubText").style.color = "#94a3b8"; // reset color
+        document.getElementById("pinSubText").style.color = "#94a3b8"; 
         document.getElementById("pinPadOverlay").style.display = "flex";
     };
 
     window.closePinPad = function() {
+        playTapSound();
         document.getElementById("pinPadOverlay").style.display = "none";
-        msgBox.innerHTML = ""; // Clear background messages
+        msgBox.innerHTML = ""; 
     };
 
     window.enterPin = function(num) {
+        playTapSound(); // 🔥 Play Sound on Tap!
         if(enteredPin.length < 4) {
             enteredPin += num;
             updatePinDots();
             
-            // As soon as 4 digits are entered, auto-verify!
             if(enteredPin.length === 4) {
                 verifyVipPinLogin();
             }
@@ -424,6 +469,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     };
 
     window.deletePin = function() {
+        playTapSound(); // 🔥 Play Sound on Tap!
         if(enteredPin.length > 0) {
             enteredPin = enteredPin.slice(0, -1);
             updatePinDots();
@@ -431,6 +477,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     };
 
     window.clearPin = function() {
+        playTapSound(); // 🔥 Play Sound on Tap!
         enteredPin = "";
         updatePinDots();
     };
@@ -446,13 +493,11 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         }
     }
 
-    // 🚀 FAST & SECURE VIP PIN VERIFICATION
     async function verifyVipPinLogin() {
         const subText = document.getElementById("pinSubText");
         subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying VIP PIN...`;
         subText.style.color = "#fbbf24";
 
-        // मैच करें कि क्या डाला गया PIN उस रोल नंबर के VIP PIN के बराबर है
         if (currentVipPin === String(enteredPin).trim()) {
             subText.innerHTML = `✅ PIN Matched! Welcome...`;
             subText.style.color = "#4ade80";
@@ -482,13 +527,11 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 
                 setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
             } catch (e) {
-                // Ignore network error for Firebase details if they just want to login fast
                 localStorage.setItem("studentRoll", currentVipRoll);
                 localStorage.setItem("studentClass", "8th");
                 setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
             }
         } else {
-            // गलत PIN डालने पर एरर
             triggerPinError("❌ Wrong VIP PIN! Try Again.");
         }
     }
@@ -500,19 +543,16 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         subText.innerHTML = errorMsg;
         subText.style.color = "#ef4444";
         
-        // Add shake animation
         modal.classList.add("shake-error");
-        
-        // Vibrate phone if supported
         if(navigator.vibrate) navigator.vibrate(200);
 
         setTimeout(() => {
             modal.classList.remove("shake-error");
-            clearPin(); // Auto clear so they can type again
+            enteredPin = "";
+            updatePinDots();
         }, 500);
     }
     // ==========================================
-
 
     // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
@@ -573,7 +613,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         } catch (error) {}
     }
 
-    // 🔒 MANUAL LOGIN SYSTEM (Standard Box logic remains untouched)
+    // 🔒 MANUAL LOGIN SYSTEM
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
         const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
