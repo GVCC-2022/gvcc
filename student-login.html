@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-<!-- 🔥 CORE QR CODE LIBRARY (Direct Camera, No File Upload) 🔥 -->
+<!-- 🔥 CORE QR CODE LIBRARY (Direct Camera) 🔥 -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <!-- GLOBAL THEME SYSTEM -->
@@ -19,8 +19,6 @@
 <script src="theme.js" defer></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
-
 * { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 input, textarea { -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; user-select: auto !important; }
 img { -webkit-user-drag: none; }
@@ -29,15 +27,17 @@ img { -webkit-user-drag: none; }
 :root {
     --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     --text-main: #1e293b;
-    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-bg: rgba(255, 255, 255, 0.6);
     --card-border: rgba(0, 0, 0, 0.1);
-    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-bg: rgba(255, 255, 255, 0.8);
     --input-text: #1e293b;
     --input-border: rgba(0, 0, 0, 0.15);
     --placeholder-color: #64748b;
     --divider-color: rgba(0, 0, 0, 0.1);
-    --btn-login-bg: #1e293b;
-    --btn-login-text: #ffffff;
+    --btn-login-bg: #ffffff;
+    --btn-login-text: #0f172a;
+    --btn-disabled-bg: rgba(0, 0, 0, 0.05);
+    --btn-disabled-text: #94a3b8;
     --glow-color: rgba(56, 189, 248, 0.4);
     --credit-color: #475569;
 }
@@ -45,90 +45,80 @@ img { -webkit-user-drag: none; }
 [data-theme="dark"] {
     --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     --text-main: white;
-    --card-bg: rgba(30, 41, 59, 0.6);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --input-bg: rgba(15, 23, 42, 0.6);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.05);
     --input-text: white;
     --input-border: rgba(255, 255, 255, 0.1);
     --placeholder-color: #94a3b8;
     --divider-color: rgba(255, 255, 255, 0.1);
     --btn-login-bg: #ffffff;
     --btn-login-text: #0f172a;
-    --glow-color: rgba(255, 255, 255, 0.3);
+    --btn-disabled-bg: rgba(255, 255, 255, 0.2);
+    --btn-disabled-text: #94a3b8;
+    --glow-color: rgba(255, 255, 255, 0.4);
     --credit-color: #64748b;
 }
 
 body { 
-    font-family: 'Poppins', sans-serif; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background: var(--page-bg); 
-    margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+    margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; 
     color: var(--text-main); overflow: hidden; overscroll-behavior-y: none; touch-action: manipulation; 
-    box-sizing: border-box;
+    transition: background 0.4s ease, color 0.4s ease;
 }
 
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(-3vh); } }
 
-/* 📱 COMPACT MOBILE FIXES */
-.login-container { position: relative; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.logo-glow-wrapper { position: relative; width: 100%; height: 110px; display: flex; justify-content: center; align-items: center; margin-bottom: -55px; z-index: 10; }
-.login-logo { width: 135px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; pointer-events: none; }
+/* 🌟 LOGO ANIMATION RESTORED 🌟 */
+.login-container { position: relative; width: 85%; max-width: 380px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.logo-glow-wrapper { position: relative; width: 100%; height: 160px; display: flex; justify-content: center; align-items: center; margin-bottom: -90px; z-index: 10; }
+.logo-glow-wrapper::before { content: ''; position: absolute; width: 180px; height: 180px; margin-top: 15px; margin-left: 5px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
+.logo-glow-wrapper::after { content: ''; position: absolute; width: 110px; height: 110px; margin-top: 15px; margin-left: 5px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
+@keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.login-card { 
-    background: var(--card-bg); backdrop-filter: blur(20px); 
-    padding: 65px 20px 20px 20px; border-radius: 20px; 
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); 
-    border: 1px solid var(--card-border); width: 100%; 
-    text-align: center; box-sizing: border-box; position: relative; 
-}
+.login-logo { width: 190px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; pointer-events: none; }
+.login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 95px 25px 25px 25px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
+.title { color: #38bdf8; font-size: 22px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
 
-.title { color: #38bdf8; font-size: 20px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
-
-/* 🌟 VIP SCAN BTN (Premium Large Button) */
-.btn-scan { 
-    background: linear-gradient(135deg, #fbbf24, #d4af37) !important; 
-    color: #0f172a !important; width: 100%; border: none; padding: 16px; 
-    border-radius: 14px; font-size: 16px; font-weight: 900; cursor: pointer; 
-    display: flex; justify-content: center; align-items: center; gap: 10px; 
-    transition: 0.3s; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35); 
-    text-transform: uppercase; letter-spacing: 1px;
-}
-.btn-scan:hover { box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5); transform: translateY(-2px); }
+/* 🌟 VIP BUTTON */
+.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); margin-bottom: 0px; }
+.btn-scan:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); transform: translateY(-2px); }
 .btn-scan:active { transform: scale(0.95); }
 
-/* QR SCANNER CONTAINER (Direct Camera) */
-#scanner-container { width: 100%; border-radius: 14px; overflow: hidden; display: none; border: 3px solid #fbbf24; margin-bottom: 15px; background: #000; box-shadow: 0 10px 25px rgba(0,0,0,0.5);}
+/* QR SCANNER CONTAINER */
+#scanner-container { width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 2px solid #10b981; margin-bottom: 10px; margin-top: 5px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
 #reader { width: 100%; }
-.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px; }
+.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px;}
 
-.divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 10px; font-weight: 700; margin: 18px 0; text-transform: uppercase; letter-spacing: 1px;}
+.divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 11px; font-weight: 600; margin: 15px 0; }
 .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--divider-color); }
 .divider:not(:empty)::before { margin-right: .5em; }
 .divider:not(:empty)::after { margin-left: .5em; }
 
-/* NORMAL LOGIN FORM */
-input { display: block; width: 100%; padding: 14px 15px; margin: 10px auto; border: 1px solid var(--input-border); border-radius: 12px; font-size: 14px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); font-family: 'Poppins', sans-serif;}
-input::placeholder { color: var(--placeholder-color); font-weight: 500;}
-input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); outline: none; }
+input { display: block; width: 100%; padding: 14px 16px; margin: 10px auto; border: 1px solid var(--input-border); border-radius: 12px; font-size: 15px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); }
+input::placeholder { color: var(--placeholder-color); }
+input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
-.btn-login { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-.btn-login:active { transform: scale(0.95); }
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 12px auto 5px auto; width: 100%; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+.btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
 
-/* INSTALL APP (Secondary Slim Button) */
-.install-btn { 
-    display: flex; align-items: center; justify-content: center; gap: 8px; 
-    width: 100%; padding: 10px; background: transparent !important; 
-    color: #38bdf8 !important; border: 1.5px solid #38bdf8 !important; 
-    border-radius: 10px !important; font-size: 13px !important; font-weight: bold; 
-    cursor: pointer; transition: all 0.3s ease; margin-top: 15px !important; 
-}
-.install-btn:hover { background: rgba(56, 189, 248, 0.1) !important; }
-.install-btn:active { transform: scale(0.95) !important; }
+/* 🌟 ORIGINAL INSTALL BUTTON RESTORED 🌟 */
+.install-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 12px !important; font-size: 15px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-top: 15px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
+.install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
+.install-btn:active, .btn-login:active:not(:disabled) { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
+.install-btn i { animation: bounce 2s infinite; font-size: 18px; }
 
-.credit-text { font-size: 10px; color: var(--credit-color); margin-top: 15px; font-weight: 600; letter-spacing: 0.5px; }
+.credit-text { font-size: 10px; color: var(--credit-color); margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.4s; }
+.spinner { width: 16px; height: 16px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-4px);} 60% {transform: translateY(-2px);} }
+@keyframes pulseGlow { from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); } to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); } }
 
-#dynamicName { font-size: 12px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 700; width: 100%; text-align: left; height: 16px; opacity: 0; padding-left: 5px; transition: 0.3s;}
-#dynamicName.show { opacity: 1; }
-#msg { font-weight: 700; font-size: 13px; margin-top: 10px; min-height: 18px;}
+#dynamicName { font-size: 13px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 600; width: 100%; text-align: left; height: 18px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
+#dynamicName.show { opacity: 1; transform: translateY(0); }
+#msg { font-weight: 600; font-size: 13px; margin-top: 12px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px;}
 </style>
 </head>
 <body>
@@ -140,32 +130,33 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
         
         <!-- 🔥 VIP SMART LOGIN SYSTEM 🔥 -->
         <button type="button" class="btn-scan" id="startScannerBtn" onclick="startQRScanner()">
-            <i class="fa-solid fa-expand"></i> Tap to Scan VIP Pass
+            <i class="fa-solid fa-qrcode"></i> Scan VIP Card
         </button>
 
         <div id="scanner-container">
             <div id="reader"></div>
-            <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Camera</button>
+            <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Scan</button>
         </div>
 
-        <div class="divider">Or Type Manual Code</div>
+        <div class="divider">OR TYPE MANUAL</div>
 
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
             <div id="dynamicName"></div>
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit" class="btn-login" id="loginBtn">
-                <span id="btnText">Secure Login <i class="fa-solid fa-arrow-right-to-bracket"></i></span>
+                <span class="spinner" id="btnSpinner"></span><span id="btnText">Login</span>
             </button>
         </form>
         
         <div id="msg"></div>
         
+        <!-- 🌟 ORIGINAL INSTALL BUTTON RESTORED 🌟 -->
         <button type="button" class="install-btn" onclick="installApp()">
-            <i class="fa-solid fa-download"></i> Download GVCC App
+            <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
         </button>
         
-        <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC Members</div>
+        <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
     </div>
 </div>
 
@@ -176,9 +167,11 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') console.log('App Installed!');
             deferredPrompt = null;
         } else {
-            alert("📲 Add to Home Screen via Browser Menu (⋮)");
+            // 🌟 ORIGINAL ALERT TEXT RESTORED 🌟
+            alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi aur aap login kar payenge.");
         }
     };
 </script>
@@ -218,23 +211,22 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
         // Using direct API to bypass file upload UI
         html5Qrcode = new Html5Qrcode("reader");
         html5Qrcode.start(
-            { facingMode: "environment" }, // Forces back camera
+            { facingMode: "environment" }, 
             { fps: 10, qrbox: { width: 220, height: 220 } },
             (decodedText) => {
-                // Success Scan!
                 let scannedRoll = "";
                 if (decodedText.includes("Roll: ")) {
                     scannedRoll = decodedText.split("Roll: ")[1].split("\n")[0].trim();
                 }
 
-                stopQRScanner(); // Stop camera instantly
+                stopQRScanner(); 
 
                 if(scannedRoll) {
                     if(activeVIPs.includes(scannedRoll)) {
                         autoLoginVIP(scannedRoll);
                     } else {
                         msgBox.style.color = "#ef4444"; 
-                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the VIP Fee. Pay at office to activate.</small>";
+                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee. Pay at office to activate scanner. Until then, use manual login.</small>";
                     }
                 } else {
                     msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Invalid QR Code!";
@@ -242,7 +234,7 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
             },
             (errorMessage) => { /* Background scan errors, ignore */ }
         ).then(() => {
-            msgBox.innerHTML = ""; // Clear loading message when camera is ready
+            msgBox.innerHTML = ""; 
         }).catch((err) => {
             msgBox.style.color = "#ef4444"; 
             msgBox.innerHTML = "❌ Camera access denied or not found.";
@@ -270,19 +262,44 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
             const docSnap = await getDoc(doc(db, "students", roll));
             if (docSnap.exists()) {
                 let data = docSnap.data();
-                msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ VIP Access Granted!";
+                msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ VIP Login Successful!";
                 localStorage.setItem("studentRoll", roll);
                 localStorage.setItem("studentClass", data.class); 
                 
                 await saveLoginLog(roll, data["Name "] || data.Name || "VIP Student");
                 
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+                msgBox.innerHTML = "🚀 Redirecting...";
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
             } else {
-                msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ VIP Roll Number Not Found.";
+                msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ VIP Roll Number Not Found in DB.";
             }
         } catch (error) { msgBox.style.color = "#ef4444"; msgBox.innerHTML = "⚠️ Network error."; }
     }
 
+    // 🌟 SMART NOTIFICATION SYSTEM 🌟
+    const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
+
+    setTimeout(async () => {
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (token) {
+                        await addDoc(collection(db, "notification_tokens"), { token: token, userType: "Student", timestamp: serverTimestamp() });
+                    }
+                }
+            } catch (error) {}
+        }
+    }, 2000);
+
+    // App Download Tracker
+    window.addEventListener('appinstalled', async () => {
+        try {
+            const statsRef = doc(db, "admin_stats", "app_downloads");
+            await setDoc(statsRef, { total_downloads: increment(1), last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) }, { merge: true });
+        } catch (e) {}
+    });
 
     const rollInput = document.getElementById("roll");
     const nameDiv = document.getElementById("dynamicName");
@@ -307,10 +324,14 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
             const now = new Date();
             const logRef = doc(db, "login_logs", rollNumber);
             await setDoc(logRef, {
-                roll: rollNumber, name: studentName,
+                roll: rollNumber,
+                name: studentName,
                 totalLoginCount: increment(1), 
                 lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                history: arrayUnion({ loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), timestamp: now.getTime() })
+                history: arrayUnion({
+                    loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    timestamp: now.getTime()
+                })
             }, { merge: true });
         } catch (error) {}
     }
@@ -318,10 +339,10 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
     // 🔒 MANUAL LOGIN SYSTEM (For Non-VIPs)
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
-        const loginBtn = document.getElementById("loginBtn"), btnText = document.getElementById("btnText");
+        const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
         let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
-        loginBtn.disabled = true; btnText.innerText = "Checking...";
+        loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
         msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying...";
 
         try {
@@ -329,18 +350,38 @@ input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 if (String(data["Password "] || data.Password || data["password "]).trim() === String(password).trim()) {
+                    
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        try {
+                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                            if (token) {
+                                await setDoc(doc(db, "students", roll), { notificationToken: token, class: data.class }, { merge: true });
+                            }
+                        } catch (err) {}
+                    }
+
                     msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ Login Successful!";
                     localStorage.setItem("studentRoll", roll);
                     localStorage.setItem("studentClass", data.class); 
+                    
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
-                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+                    
+                    msgBox.innerHTML = "🚀 Redirecting...";
+                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
                 } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Wrong Password"; resetButton(); }
             } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
         } catch (error) { msgBox.style.color = "#f87171"; msgBox.innerHTML = "⚠️ Network error."; resetButton(); }
 
-        function resetButton() { loginBtn.disabled = false; btnText.innerHTML = "Secure Login <i class='fa-solid fa-arrow-right-to-bracket'></i>"; }
+        function resetButton() { loginBtn.disabled = false; btnSpinner.style.display = "none"; btnText.innerText = "Login"; }
     });
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(function(error) {});
+  });
+}
+</script>
 </body>
 </html>
