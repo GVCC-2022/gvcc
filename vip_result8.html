@@ -374,7 +374,7 @@
                         let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
                         
                         if (scannedRoll !== loggedInRoll) {
-                            showError(`🚨 <b>SECURITY ALERT: CARD MISMATCH!</b><br><small style='color:#f87171;'>You are logged in as Roll ${loggedInRoll}. You cannot scan someone else's card (Roll ${scannedRoll}). Please scan YOUR OWN VIP card.</small>`);
+                            showError(`🚨 <b>सुरक्षा अलर्ट: कार्ड मैच नहीं हुआ!</b><br><small style='color:#f87171;'>आपने रोल नंबर ${loggedInRoll} से लॉगिन किया है। आप किसी दूसरे बच्चे का (रोल नंबर ${scannedRoll}) कार्ड स्कैन नहीं कर सकते। कृपया सिर्फ अपना खुद का VIP कार्ड स्कैन करें!</small>`);
                             return;
                         }
 
