@@ -63,34 +63,48 @@ img { -webkit-user-drag: none; }
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background: var(--page-bg); 
-    margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; 
-    color: var(--text-main); overflow: hidden; overscroll-behavior-y: none; touch-action: manipulation; 
+    margin: 0; 
+    padding: 50px 15px; /* MAGIC FIX: अब पेज कभी ऊपर-नीचे से नहीं कटेगा */
+    display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+    color: var(--text-main); 
+    overflow-y: auto; /* MAGIC FIX: छोटी स्क्रीन में स्क्रॉल हो जाएगा पर कटेगा नहीं */
+    overflow-x: hidden;
+    touch-action: manipulation; 
     transition: background 0.4s ease, color 0.4s ease; box-sizing: border-box;
 }
 
-/* 🌟 MAGIC FIX: TRANSLATE-Y(-6VH) SHIFTS THE WHOLE BOX SLIGHTLY UPWARDS! 🌟 */
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(-6vh); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
 .login-container { position: relative; width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.logo-glow-wrapper { position: relative; width: 100%; height: 130px; display: flex; justify-content: center; align-items: center; margin-bottom: -70px; z-index: 10; }
+
+/* 
+========================================================
+   🔥 LOGO SETTINGS (लोगो को ऊपर-नीचे/दायें-बायें करें) 🔥
+========================================================
+*/
+.logo-glow-wrapper { 
+    position: relative; width: 100%; height: 130px; display: flex; justify-content: center; align-items: center; 
+    margin-bottom: -65px; /* अगर कार्ड को लोगो के और करीब लाना है तो इसे -70px या -80px करें */
+    z-index: 10; 
+    
+    /* 👇 यहाँ से लोगो खिसकाएं (X , Y) 👇 */
+    transform: translate(0px, 15px); 
+    /* 
+       पहला नंबर (0px) = Left/Right (जैसे 10px दायें, -10px बायें)
+       दूसरा नंबर (15px) = Up/Down (जैसे 25px नीचे, -10px ऊपर)
+    */
+}
+/* ======================================================== */
+
 .logo-glow-wrapper::before { content: ''; position: absolute; width: 140px; height: 140px; margin-top: 15px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
 .logo-glow-wrapper::after { content: ''; position: absolute; width: 90px; height: 90px; margin-top: 15px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
 @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.login-logo { 
-    width: 170px; 
-    height: auto; 
-    filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); 
-    position: relative; 
-    z-index: 5; 
-    pointer-events: none;
-    
-    /* 👇 बस यह 1 जादुई लाइन लगाइए 👇 */
-    transform: translate(0px, 0px); 
-}
+.login-logo { width: 170px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; pointer-events: none; }
 
 .login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 80px 20px 20px 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
 .title { color: #38bdf8; font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
+
 
 /* 🔥 1. VIP SCAN BUTTON - HERO EFFECT 🔥 */
 .btn-scan { 
@@ -103,13 +117,11 @@ body {
     animation: vipPulse 2s infinite; 
     transition: transform 0.2s;
 }
-/* Glowing Pulse Effect */
 @keyframes vipPulse {
     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
     70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
-/* Shining Sweep Effect */
 .btn-scan::after {
     content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
@@ -135,6 +147,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 .btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
+
 
 /* 🔥 3. INSTALL APP BUTTON - CAPSULE / PILL SHAPE 🔥 */
 .install-btn { 
