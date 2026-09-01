@@ -341,7 +341,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     async function syncVIPDatabase() {
         try {
             // Firebase me 'admin_settings' folder ke andar 'vip_card_data' file check karega
-            const docRef = doc(db, "admin_settings", "vip_card_data");
+            const docRef = doc(db, "vip_access", "vip_card_data");
             const docSnap = await getDoc(docRef);
             
             if (docSnap.exists()) {
