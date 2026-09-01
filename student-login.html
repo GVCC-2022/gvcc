@@ -11,6 +11,9 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+<!-- 🔥 QR CODE SCANNER LIBRARY 🔥 -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 <!-- GLOBAL THEME SYSTEM -->
 <link rel="stylesheet" href="theme.css">
 <script src="theme.js" defer></script>
@@ -79,7 +82,20 @@ body {
 .login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 120px 30px 30px 30px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
 .title { color: #38bdf8; font-size: 26px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 1px; }
 
-.install-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 14px !important; font-size: 16px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 20px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
+/* SCAN VIP BTN */
+.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); margin-bottom: 5px; }
+.btn-scan:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); transform: translateY(-2px); }
+.btn-scan:active { transform: scale(0.95); }
+
+/* QR SCANNER CONTAINER */
+#scanner-container { width: 100%; border-radius: 15px; overflow: hidden; display: none; border: 2px solid #10b981; margin-bottom: 10px; background: #000; }
+#reader { width: 100%; }
+#reader button { background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 10px; }
+#reader span { color: white; }
+#reader a { color: #3b82f6; }
+.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; }
+
+.install-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 14px !important; font-size: 16px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-top: 15px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
 .install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
 .install-btn:active, .btn-login:active:not(:disabled) { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
 .install-btn i { animation: bounce 2s infinite; font-size: 20px; }
@@ -93,7 +109,7 @@ input { display: block; width: 100%; padding: 16px; margin: 18px auto; border: 1
 input::placeholder { color: var(--placeholder-color); }
 input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
-.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 16px; margin: 25px auto 5px auto; width: 100%; border: none; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 16px; margin: 10px auto 5px auto; width: 100%; border: none; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
 
@@ -115,11 +131,18 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     <div class="login-card">
         <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
         
-        <button type="button" class="install-btn" onclick="installApp()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
+        <!-- 🔥 VIP SMART LOGIN SYSTEM 🔥 -->
+        <button type="button" class="btn-scan" id="startScannerBtn" onclick="startQRScanner()">
+            <i class="fa-solid fa-qrcode"></i> Scan VIP Card
         </button>
 
-        <div class="divider">SELECT YOUR LOGIN</div>
+        <div id="scanner-container">
+            <div id="reader"></div>
+            <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Scan</button>
+        </div>
+
+        <div class="divider">OR TYPE MANUAL</div>
+
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
             <div id="dynamicName"></div>
@@ -130,6 +153,11 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         </form>
         
         <div id="msg"></div>
+        
+        <button type="button" class="install-btn" onclick="installApp()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Install App
+        </button>
+        
         <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
     </div>
 </div>
@@ -150,7 +178,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 </script>
 
 <script type="module">
-    // Yahan arrayUnion add kiya gaya hai
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc, increment, collection, addDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
@@ -168,7 +195,77 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-    // 🌟 SMART NOTIFICATION SYSTEM (Student) 🌟
+    // 🌟 SECURE DATABASE: ONLY PAID VIP STUDENTS LIST 🌟
+    // In bacchon ke alawa kisi ka VIP Card kaam nahi karega!
+    const activeVIPs = ["805", "809", "806", "810", "820", "801", "803"];
+
+    // 🌟 QR SCANNER LOGIC 🌟
+    let html5QrcodeScanner = null;
+    const msgBox = document.getElementById("msg");
+
+    window.startQRScanner = function() {
+        document.getElementById("startScannerBtn").style.display = "none";
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("scanner-container").style.display = "block";
+        msgBox.innerHTML = "";
+
+        html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+        
+        html5QrcodeScanner.render((decodedText) => {
+            // Extract Roll Number from Card
+            let scannedRoll = "";
+            if (decodedText.includes("Roll: ")) {
+                scannedRoll = decodedText.split("Roll: ")[1].split("\n")[0].trim();
+            }
+
+            stopQRScanner();
+
+            if(scannedRoll) {
+                // HACKER CHECK: Is this child in the PAID list?
+                if(activeVIPs.includes(scannedRoll)) {
+                    // YES! PAID STUDENT. Login Automatically!
+                    autoLoginVIP(scannedRoll);
+                } else {
+                    // FAKE/UNPAID STUDENT CAUGHT! 🚫
+                    msgBox.style.color = "#ef4444"; 
+                    msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee. Pay at office to activate scanner. Until then, use manual login.</small>";
+                }
+            } else {
+                msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Invalid QR Code!";
+            }
+        }, (err) => { /* ignore scan errors */ });
+    };
+
+    window.stopQRScanner = function() {
+        if (html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
+        document.getElementById("scanner-container").style.display = "none";
+        document.getElementById("startScannerBtn").style.display = "flex";
+        document.getElementById("loginForm").style.display = "block";
+    };
+
+    // 🚀 VIP AUTO LOGIN MAGIC (No Password Needed)
+    async function autoLoginVIP(roll) {
+        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying VIP Card...";
+        try {
+            const docSnap = await getDoc(doc(db, "students", roll));
+            if (docSnap.exists()) {
+                let data = docSnap.data();
+                msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ VIP Login Successful!";
+                localStorage.setItem("studentRoll", roll);
+                localStorage.setItem("studentClass", data.class); 
+                
+                await saveLoginLog(roll, data["Name "] || data.Name || "VIP Student");
+                
+                msgBox.innerHTML = "🚀 Redirecting to VIP Dashboard...";
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
+            } else {
+                msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ VIP Roll Number Not Found in DB.";
+            }
+        } catch (error) { msgBox.style.color = "#ef4444"; msgBox.innerHTML = "⚠️ Network error."; }
+    }
+
+
+    // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
 
     setTimeout(async () => {
@@ -176,18 +273,12 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             try {
                 const permission = await Notification.requestPermission();
                 if (permission === "granted") {
-                    console.log("🔔 Notification Permission Granted!");
                     const token = await getToken(messaging, { vapidKey: VAPID_KEY });
                     if (token) {
-                        await addDoc(collection(db, "notification_tokens"), {
-                            token: token,
-                            userType: "Student",
-                            timestamp: serverTimestamp()
-                        });
-                        console.log("✅ Device Token Saved!");
+                        await addDoc(collection(db, "notification_tokens"), { token: token, userType: "Student", timestamp: serverTimestamp() });
                     }
                 }
-            } catch (error) { console.log("⚠️ Notification Setup Error:", error); }
+            } catch (error) {}
         }
     }, 2000);
 
@@ -196,7 +287,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         try {
             const statsRef = doc(db, "admin_stats", "app_downloads");
             await setDoc(statsRef, { total_downloads: increment(1), last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) }, { merge: true });
-        } catch (e) { console.error("Error updating count:", e); }
+        } catch (e) {}
     });
 
     const rollInput = document.getElementById("roll");
@@ -212,40 +303,36 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                     nameDiv.innerText = `👤 ${data["Name "] || data.Name || "Unknown Student"}`;
                     nameDiv.classList.add("show");
                 } else { nameDiv.classList.remove("show"); }
-            } catch (error) { console.error("Live fetch error:", error); }
+            } catch (error) {}
         } else { nameDiv.classList.remove("show"); }
     });
 
-    // // 🚀 SMART LOGGING: Ek document mein pura data
+    // 🚀 SMART LOGGING
     async function saveLoginLog(rollNumber, studentName) {
         try {
             const now = new Date();
-            const logRef = doc(db, "login_logs", rollNumber); // Document ID sirf Roll Number hai
-            
+            const logRef = doc(db, "login_logs", rollNumber);
             await setDoc(logRef, {
                 roll: rollNumber,
                 name: studentName,
-                totalLoginCount: increment(1), // Life-time total login count
+                totalLoginCount: increment(1), 
                 lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
                 history: arrayUnion({
                     loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                    // 🚀 FIX: serverTimestamp() Array me allowed nahi hai, isliye now.getTime() use kiya hai
                     timestamp: now.getTime()
                 })
             }, { merge: true });
-
-        } catch (error) { 
-            console.error("Error saving log:", error); 
-        }
+        } catch (error) {}
     }
 
+    // 🔒 MANUAL LOGIN SYSTEM (For Non-VIPs)
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
-        const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText"), msg = document.getElementById("msg");
+        const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
         let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
         loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
-        msg.style.color = "#fbbf24"; msg.innerHTML = "🔄 Verifying...";
+        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying...";
 
         try {
             const docSnap = await getDoc(doc(db, "students", roll));
@@ -257,37 +344,31 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                         try {
                             const token = await getToken(messaging, { vapidKey: VAPID_KEY });
                             if (token) {
-                                await setDoc(doc(db, "students", roll), {
-                                    notificationToken: token,
-                                    class: data.class 
-                                }, { merge: true });
-                                console.log("✅ Student Token Updated in DB!");
+                                await setDoc(doc(db, "students", roll), { notificationToken: token, class: data.class }, { merge: true });
                             }
-                        } catch (err) { console.log("Token error:", err); }
+                        } catch (err) {}
                     }
 
-                    msg.style.color = "#4ade80"; msg.innerHTML = "✅ Login Successful!";
+                    msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ Login Successful!";
                     localStorage.setItem("studentRoll", roll);
                     localStorage.setItem("studentClass", data.class); 
                     
-                    // Call new Smart Login Log function
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
                     
-                    msg.innerHTML = "🚀 Redirecting...";
+                    msgBox.innerHTML = "🚀 Redirecting...";
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
-                } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Wrong Password"; resetButton(); }
-            } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
-        } catch (error) { msg.style.color = "#f87171"; msg.innerHTML = "⚠️ Network error."; resetButton(); }
+                } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Wrong Password"; resetButton(); }
+            } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
+        } catch (error) { msgBox.style.color = "#f87171"; msgBox.innerHTML = "⚠️ Network error."; resetButton(); }
 
         function resetButton() { loginBtn.disabled = false; btnSpinner.style.display = "none"; btnText.innerText = "Login"; }
     });
-
 </script>
 
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(function(error) { console.log("PWA Error:", error); });
+    navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(function(error) {});
   });
 }
 </script>
