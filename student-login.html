@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-<!-- 🔥 CORE QR CODE LIBRARY (Direct Camera) 🔥 -->
+<!-- 🔥 CORE QR CODE LIBRARY (DIRECT CAMERA) 🔥 -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <!-- GLOBAL THEME SYSTEM -->
@@ -25,7 +25,6 @@ img { -webkit-user-drag: none; }
 
 /* 🔥 VIP THEME VARIABLES 🔥 */
 :root {
-    /* LIGHT MODE */
     --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     --text-main: #1e293b;
     --card-bg: rgba(255, 255, 255, 0.6);
@@ -44,7 +43,6 @@ img { -webkit-user-drag: none; }
 }
 
 [data-theme="dark"] {
-    /* DARK MODE (Original Navy Blue) */
     --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     --text-main: white;
     --card-bg: rgba(255, 255, 255, 0.05);
@@ -65,61 +63,69 @@ img { -webkit-user-drag: none; }
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background: var(--page-bg); 
-    margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+    margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; 
     color: var(--text-main); overflow: hidden; overscroll-behavior-y: none; touch-action: manipulation; 
-    transition: background 0.4s ease, color 0.4s ease;
+    transition: background 0.4s ease, color 0.4s ease; box-sizing: border-box;
 }
 
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(-5vh); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-/* 🌟 EXACT SAME LOGO SIZE AND SPACING AS YOUR ORIGINAL CODE 🌟 */
-.login-container { position: relative; width: 85%; max-width: 400px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.logo-glow-wrapper { position: relative; width: 100%; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: -110px; z-index: 10; }
-.logo-glow-wrapper::before { content: ''; position: absolute; width: 190px; height: 190px; margin-top: 25px; margin-left: 10px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
-.logo-glow-wrapper::after { content: ''; position: absolute; width: 120px; height: 120px; margin-top: 25px; margin-left: 10px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
+/* 🌟 PERFECT MOBILE FIT: LOGO & SPACING COMPACTED 🌟 */
+.login-container { position: relative; width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.logo-glow-wrapper { position: relative; width: 100%; height: 130px; display: flex; justify-content: center; align-items: center; margin-bottom: -75px; z-index: 10; }
+.logo-glow-wrapper::before { content: ''; position: absolute; width: 140px; height: 140px; margin-top: 15px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
+.logo-glow-wrapper::after { content: ''; position: absolute; width: 90px; height: 90px; margin-top: 15px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
 @keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.login-logo { width: 250px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; left: 10px; pointer-events: none; }
-.login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 120px 30px 30px 30px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
-.title { color: #38bdf8; font-size: 26px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 1px; }
+.login-logo { width: 170px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; pointer-events: none; }
 
-/* 🌟 VIP BUTTON 🌟 */
-.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); margin-top: -5px; margin-bottom: -5px; }
+.login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 85px 20px 20px 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
+.title { color: #38bdf8; font-size: 22px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
+
+/* 🌟 VIP BUTTON (Same beautiful style + TAP FEEL) 🌟 */
+.btn-scan { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; width: 100%; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
 .btn-scan:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); transform: translateY(-2px); }
-.btn-scan:active { transform: scale(0.95); }
 
 /* QR SCANNER CONTAINER */
 #scanner-container { width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 2px solid #10b981; margin-top: 10px; margin-bottom: 5px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
 #reader { width: 100%; }
 .stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px;}
 
-.divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 12px; font-weight: 600; margin: 25px 0; }
+.divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 11px; font-weight: 600; margin: 15px 0; }
 .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--divider-color); }
 .divider:not(:empty)::before { margin-right: .5em; }
 .divider:not(:empty)::after { margin-left: .5em; }
 
-input { display: block; width: 100%; padding: 16px; margin: 18px auto; border: 1px solid var(--input-border); border-radius: 14px; font-size: 16px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); }
+/* 🌟 COMPACT INPUTS & BUTTONS 🌟 */
+input { display: block; width: 100%; padding: 13px; margin: 12px auto; border: 1px solid var(--input-border); border-radius: 12px; font-size: 15px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); }
 input::placeholder { color: var(--placeholder-color); }
 input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
-.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 16px; margin: 25px auto 5px auto; width: 100%; border: none; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 13px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
 
-.install-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 14px !important; font-size: 16px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-top: 20px !important; margin-bottom: 5px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
+.install-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px; background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; color: white !important; border: none !important; border-radius: 12px !important; font-size: 15px !important; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; margin-top: 15px !important; margin-bottom: 5px !important; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3) !important; animation: pulseGlow 2s infinite alternate; }
 .install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
-.install-btn:active, .btn-login:active:not(:disabled) { transform: scale(0.95) !important; opacity: 0.8; transition: all 0.1s ease; }
-.install-btn i { animation: bounce 2s infinite; font-size: 20px; }
 
-.credit-text { font-size: 11px; color: var(--credit-color); margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.4s; }
-.spinner { width: 18px; height: 18px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+/* 🔥 THE MAGIC TAP FEEL ADDED TO ALL BUTTONS HERE 🔥 */
+.install-btn:active, .btn-login:active:not(:disabled), .btn-scan:active, .stop-scan-btn:active { 
+    transform: scale(0.95) !important; 
+    opacity: 0.8; 
+    transition: all 0.1s ease; 
+}
+
+.install-btn i { animation: bounce 2s infinite; font-size: 18px; }
+
+.credit-text { font-size: 11px; color: var(--credit-color); margin-top: 12px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.4s; }
+.spinner { width: 16px; height: 16px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-4px);} 60% {transform: translateY(-2px);} }
 @keyframes pulseGlow { from { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); } to { box-shadow: 0 0 15px 8px rgba(14, 165, 233, 0); } }
 
-#dynamicName { font-size: 14px; color: #4ade80; margin: -10px auto 10px auto; font-weight: 600; width: 100%; text-align: left; height: 18px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
+#dynamicName { font-size: 13px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 600; width: 100%; text-align: left; height: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
 #dynamicName.show { opacity: 1; transform: translateY(0); }
-#msg { font-weight: 600; font-size: 14px; margin-top: 15px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 20px; }
+#msg { font-weight: 600; font-size: 13px; margin-top: 10px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px; }
 </style>
 </head>
 <body>
@@ -197,12 +203,11 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     // 🌟 SECURE DATABASE: ONLY PAID VIP STUDENTS LIST 🌟
     const activeVIPs = ["805", "809", "806", "810", "820", "801", "803"];
 
-    // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
+    // 🌟 DIRECT CAMERA QR SCANNER LOGIC (No File Upload option) 🌟
     let html5Qrcode = null;
-    
-    // NOTE: Scanner uses its own msg updater here so manual login msg doesn't conflict
+    const msgBox = document.getElementById("msg");
+
     window.startQRScanner = function() {
-        const msgBox = document.getElementById("msg");
         document.getElementById("startScannerBtn").style.display = "none";
         document.getElementById("loginForm").style.display = "none";
         document.querySelector(".install-btn").style.display = "none";
@@ -210,6 +215,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         msgBox.innerHTML = "📸 Opening Camera...";
         msgBox.style.color = "#38bdf8";
 
+        // Using direct Html5Qrcode API to bypass the file upload buttons
         html5Qrcode = new Html5Qrcode("reader");
         html5Qrcode.start(
             { facingMode: "environment" }, 
@@ -226,37 +232,36 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                     if(activeVIPs.includes(scannedRoll)) {
                         autoLoginVIP(scannedRoll);
                     } else {
-                        const m = document.getElementById("msg");
-                        m.style.color = "#ef4444"; 
-                        m.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee. Pay at office to activate scanner. Until then, use manual login.</small>";
+                        msgBox.style.color = "#ef4444"; 
+                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>You haven't paid the ₹50 VIP Fee. Pay at office to activate scanner. Until then, use manual login.</small>";
                     }
                 } else {
-                    const m = document.getElementById("msg");
-                    m.style.color = "#ef4444"; m.innerHTML = "❌ Invalid QR Code!";
+                    msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Invalid QR Code!";
                 }
             },
-            (errorMessage) => { /* ignore */ }
-        ).then(() => { document.getElementById("msg").innerHTML = ""; }).catch((err) => {
-            const m = document.getElementById("msg");
-            m.style.color = "#ef4444"; 
-            m.innerHTML = "❌ Camera access denied.";
+            (errorMessage) => { /* Background scan errors, ignore */ }
+        ).then(() => {
+            msgBox.innerHTML = ""; 
+        }).catch((err) => {
+            msgBox.style.color = "#ef4444"; 
+            msgBox.innerHTML = "❌ Camera access denied.";
+            console.error(err);
         });
     };
 
     window.stopQRScanner = function() {
         if (html5Qrcode) { 
-            html5Qrcode.stop().then(() => { html5Qrcode.clear(); html5Qrcode = null; }).catch(err => {});
+            html5Qrcode.stop().then(() => { html5Qrcode.clear(); html5Qrcode = null; }).catch(err => console.log(err));
         }
         document.getElementById("scanner-container").style.display = "none";
         document.getElementById("startScannerBtn").style.display = "flex";
         document.getElementById("loginForm").style.display = "block";
         document.querySelector(".install-btn").style.display = "flex";
-        document.getElementById("msg").innerHTML = "";
+        msgBox.innerHTML = "";
     };
 
     // 🚀 VIP AUTO LOGIN MAGIC
     async function autoLoginVIP(roll) {
-        const msgBox = document.getElementById("msg");
         msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying VIP Card...";
         try {
             const docSnap = await getDoc(doc(db, "students", roll));
@@ -275,7 +280,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             }
         } catch (error) { msgBox.style.color = "#ef4444"; msgBox.innerHTML = "⚠️ Network error."; }
     }
-
 
     // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
@@ -336,22 +340,14 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         } catch (error) {}
     }
 
-    // 🔒 MANUAL LOGIN SYSTEM (Restored internal msg assignment for flawless text feedback)
+    // 🔒 MANUAL LOGIN SYSTEM
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
-        const loginBtn = document.getElementById("loginBtn");
-        const btnSpinner = document.getElementById("btnSpinner");
-        const btnText = document.getElementById("btnText");
-        const msg = document.getElementById("msg"); // 🌟 THIS FIXES THE MANUAL LOGIN TEXT!
+        const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
+        let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
-        let roll = rollInput.value.trim();
-        let password = document.getElementById("password").value.trim();
-
-        loginBtn.disabled = true; 
-        btnSpinner.style.display = "block"; 
-        btnText.innerText = "Checking...";
-        msg.style.color = "#fbbf24"; 
-        msg.innerHTML = "🔄 Verifying...";
+        loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
+        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying...";
 
         try {
             const docSnap = await getDoc(doc(db, "students", roll));
@@ -368,24 +364,19 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                         } catch (err) {}
                     }
 
-                    msg.style.color = "#4ade80"; 
-                    msg.innerHTML = "✅ Login Successful!";
+                    msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ Login Successful!";
                     localStorage.setItem("studentRoll", roll);
                     localStorage.setItem("studentClass", data.class); 
                     
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
                     
-                    msg.innerHTML = "🚀 Redirecting...";
+                    msgBox.innerHTML = "🚀 Redirecting...";
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
-                } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Wrong Password"; resetButton(); }
-            } else { msg.style.color = "#f87171"; msg.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
-        } catch (error) { msg.style.color = "#f87171"; msg.innerHTML = "⚠️ Network error."; resetButton(); }
+                } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Wrong Password"; resetButton(); }
+            } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
+        } catch (error) { msgBox.style.color = "#f87171"; msgBox.innerHTML = "⚠️ Network error."; resetButton(); }
 
-        function resetButton() { 
-            loginBtn.disabled = false; 
-            btnSpinner.style.display = "none"; 
-            btnText.innerText = "Login"; 
-        }
+        function resetButton() { loginBtn.disabled = false; btnSpinner.style.display = "none"; btnText.innerText = "Login"; }
     });
 </script>
 
