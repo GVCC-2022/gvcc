@@ -144,6 +144,9 @@ input { display: block; width: 100%; padding: 14px; margin: 12px auto; border: 1
 input::placeholder { color: var(--placeholder-color); }
 input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
 
+/* 🔥 NEW VISUAL LOCK FOR AUTO-FILLED ROLL NUMBER 🔥 */
+input:disabled { background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-weight: 900; border-color: #38bdf8; cursor: not-allowed; }
+
 .btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
@@ -254,8 +257,18 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-    // 🌟 SECURE DATABASE: ONLY PAID VIP STUDENTS LIST 🌟
-    const activeVIPs = ["805", "809", "806", "810", "820", "801", "803"];
+    // 🌟 SECURE KEYS DATABASE (Har VIP bacche ki alag GVCC-Key) 🌟
+    // Note: Aadhe bachhon ka number yahan as an example diya gaya hai.
+    // Jab naya card banaye, to uski Key yahan zaroor jodein.
+    const vipKeys = {
+        "GVCC-A4M8": "801", // Anamika Kumari
+        "GVCC-R2N7": "803", // Shabrun Khatoon
+        "GVCC-Z9B2": "805", // Zainab Parveen
+        "GVCC-B1Y6": "806", // Sabiya Parveen
+        "GVCC-S3M4": "809", // Sama Parveen
+        "GVCC-H8N9": "810", // Sahnuma Parveen
+        "GVCC-S5N1": "820"  // Sonali Kumari
+    };
 
     // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
     let html5Qrcode = null;
@@ -273,23 +286,36 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         html5Qrcode.start(
             { facingMode: "environment" }, 
             { fps: 10, qrbox: { width: 220, height: 220 } },
-            (decodedText) => {
-                let scannedRoll = "";
-                if (decodedText.includes("Roll: ")) {
-                    scannedRoll = decodedText.split("Roll: ")[1].split("\n")[0].trim();
+            async (decodedText) => {
+                let scannedKey = "";
+                
+                // Text se 'GVCC-' wali chabi dhoondho
+                if (decodedText.includes("Key: GVCC-")) {
+                    scannedKey = "GVCC-" + decodedText.split("Key: GVCC-")[1].split("\n")[0].trim();
                 }
 
                 stopQRScanner(); 
 
-                if(scannedRoll) {
-                    if(activeVIPs.includes(scannedRoll)) {
-                        autoLoginVIP(scannedRoll);
-                    } else {
-                        msgBox.style.color = "#ef4444"; 
-                        msgBox.innerHTML = "🚨 <b>FAKE CARD DETECTED!</b><br><small style='color:#f87171;'>आपने ₹50 VIP फीस जमा नहीं की है। अपना स्कैनर चालू करवाने के लिए Md Faiyaz के पास फीस जमा करें। तब तक अपना Roll No. और Password टाइप करके Login करे।</small>";
-                    }
+                if(scannedKey && vipKeys.hasOwnProperty(scannedKey)) {
+                    let rollFromKey = vipKeys[scannedKey]; // Chabi se asli roll number nikala
+                    
+                    msgBox.style.color = "#4ade80"; 
+                    msgBox.innerHTML = `✅ <b>VIP Card Verified!</b><br><small style='color:#94a3b8;'>Enter your password to secure login.</small>`;
+                    
+                    // 🚀 THE MAGIC: Auto-fill roll number and lock it
+                    const rollInputBox = document.getElementById("roll");
+                    rollInputBox.value = rollFromKey;
+                    rollInputBox.disabled = true; // Lock the input so they can't change it
+                    
+                    // Trigger input event to fetch Name dynamically from Firebase
+                    rollInputBox.dispatchEvent(new Event('input'));
+                    
+                    // Put focus on password box automatically
+                    document.getElementById("password").focus();
+
                 } else {
-                    msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Invalid QR Code!";
+                    msgBox.style.color = "#ef4444"; 
+                    msgBox.innerHTML = "🚨 <b>नकली (FAKE) कार्ड पकड़ा गया!</b><br><small style='color:#f87171;'>आपकी GVCC चाबी गलत है या आपने फीस जमा नहीं की है।</small>";
                 }
             },
             (errorMessage) => { /* ignore */ }
@@ -309,29 +335,8 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         document.getElementById("startScannerBtn").style.display = "flex";
         document.getElementById("loginForm").style.display = "block";
         document.querySelector(".install-btn").style.display = "inline-flex"; // Restore Pill shape
-        msgBox.innerHTML = "";
+        // MsgBox clear nahi karenge taaki "Verified" wala message dikhta rahe
     };
-
-    // 🚀 VIP AUTO LOGIN MAGIC
-    async function autoLoginVIP(roll) {
-        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying VIP Card...";
-        try {
-            const docSnap = await getDoc(doc(db, "students", roll));
-            if (docSnap.exists()) {
-                let data = docSnap.data();
-                msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ VIP Login Successful!";
-                localStorage.setItem("studentRoll", roll);
-                localStorage.setItem("studentClass", data.class); 
-                
-                await saveLoginLog(roll, data["Name "] || data.Name || "VIP Student");
-                
-                msgBox.innerHTML = "🚀 Redirecting...";
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
-            } else {
-                msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ VIP Roll Number Not Found in DB.";
-            }
-        } catch (error) { msgBox.style.color = "#ef4444"; msgBox.innerHTML = "⚠️ Network error."; }
-    }
 
     // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
@@ -392,14 +397,16 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         } catch (error) {}
     }
 
-    // 🔒 MANUAL LOGIN SYSTEM
+    // 🔒 MANUAL LOGIN SYSTEM (Works for both Manual and Auto-filled VIP)
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
         e.preventDefault(); 
         const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
+        
+        // We use .value to get the roll number even if it's disabled/locked by the scanner
         let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
 
         loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
-        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying...";
+        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying Credentials...";
 
         try {
             const docSnap = await getDoc(doc(db, "students", roll));
