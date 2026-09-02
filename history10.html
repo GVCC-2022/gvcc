@@ -642,13 +642,15 @@ window.verifyAndStartTest = async function() {
             modalP.innerText = "Kripya tab close na karein, data server par save ho raha hai...";
             modalScore.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size: 40px; color: #38bdf8;"></i>';
             modalPercentage.innerText = "Wait...";
-            if(backBtn) backBtn.style.display = "none"; // ⛔ Button chhupa diya, bacha bhag nahi payega
+            if(backBtn) backBtn.style.display = "none"; // ⛔ Button chhupa diya
 
             modal.style.display = "flex";
 
             try {
                 const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
-                await setDoc(testDocRef, {
+                
+                // 🔥 NAYA JADU: SMART TIMEOUT (Max 3 seconds wait karega) 🔥
+                const saveTask = setDoc(testDocRef, {
                     submitted: true,
                     score: finalScoreStr,
                     percentage: pct,
@@ -657,7 +659,13 @@ window.verifyAndStartTest = async function() {
                     wrongAnswers: wrongAnswersList
                 }, { merge: true });
 
-                // ✅ SERVER ME DATA SAVE HONE KE BAAD ASLI SCORE DIKHAO ✅
+                // 3 second ka max timer
+                const timeoutTask = new Promise((resolve) => setTimeout(resolve, 3000));
+
+                // Dono me se jo pehle ho jaye (Ya toh save ho jaye fast net se, ya 3 second beet jaye)
+                await Promise.race([saveTask, timeoutTask]);
+
+                // ✅ MAX 3 SECOND BAAD ASLI SCORE DIKHAO (Chahe net slow ho ya fast) ✅
                 modalH2.innerText = "Test Submitted!";
                 modalP.innerText = "Your score has been successfully recorded in the main server.";
                 modalScore.innerText = finalScoreStr;
@@ -672,6 +680,7 @@ window.verifyAndStartTest = async function() {
                 modalScore.innerHTML = "⚠️";
                 modalPercentage.innerText = "";
                 hasSubmitted = false; // Baccha dobara submit kar sake
+                if(backBtn) backBtn.style.display = "block";
             }
         }
     </script>
