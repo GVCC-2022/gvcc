@@ -310,7 +310,6 @@ const correctAnswers = {
             if (currentTime >= testEndTime) {
                 timerDisplay.innerText = "00:00";
                 if (isTestStarted === true && hasSubmitted === false) {
-                    alert("⏰ Time is Up! Aapka test automatic submit kiya ja raha hai.");
                     window.processSubmission(true); 
                 } 
                 else if (isTestStarted === false) {
@@ -405,7 +404,6 @@ window.verifyAndStartTest = async function() {
             document.getElementById("testSection").style.display = "block";
             
             isTestStarted = true;
-            startTestTimer();
             activateAntiCheatSystem();
 
             try {
