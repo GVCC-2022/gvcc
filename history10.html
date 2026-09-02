@@ -297,8 +297,8 @@ const correctAnswers = {
 
         // 3. ⏰ AUTO-LOCK & AUTO-SUBMIT SYSTEM
         function checkTestTime() {
-            const testStartTime = new Date("2026-09-02T11:32:00").getTime(); 
-            const testEndTime = new Date("2026-09-02T11:33:00").getTime(); 
+            const testStartTime = new Date("2026-09-02T12:07:00").getTime(); 
+            const testEndTime = new Date("2026-09-02T12:09:00").getTime(); 
             const currentTime = new Date().getTime();
 
             const timeMsgElement = document.getElementById("timeLockMessage");
@@ -564,7 +564,7 @@ window.verifyAndStartTest = async function() {
             let score = 0;
             const form = document.getElementById("quizForm");
             
-            // 🔥 NAYA CODE: Galat Jawab ki list banayega
+            // 🔥 Galat Jawab ki list banayega
             let wrongAnswersList = []; 
             
             for (let q in correctAnswers) {
@@ -575,7 +575,6 @@ window.verifyAndStartTest = async function() {
                 if (selectedVal === correctVal) {
                     score++;
                 } else {
-                    // 🔥 NAYA CODE: Agar galat hai, toh question aur answer save karega
                     if (radios && radios.length > 0) {
                         try {
                             let qCard = radios[0].closest('.q-card');
@@ -606,9 +605,22 @@ window.verifyAndStartTest = async function() {
             const pct = ((score / totalQ) * 100).toFixed(0) + "%";
             const finalScoreStr = `${score}/${totalQ}`;
 
-            document.getElementById("modalScore").innerText = finalScoreStr;
-            document.getElementById("modalPercentage").innerText = `${pct} Marks Obtained`;
-            document.getElementById("resultModal").style.display = "flex";
+            // 🔥 MAIN FIX: SAVING KE WAQT LOADING DIKHAO AUR BUTTON CHHUPAO 🔥
+            const modal = document.getElementById("resultModal");
+            const modalScore = document.getElementById("modalScore");
+            const modalPercentage = document.getElementById("modalPercentage");
+            const modalH2 = modal.querySelector("h2");
+            const modalP = modal.querySelector("p");
+            const backBtn = modal.querySelector(".btn-premium");
+
+            // Modal ko Loading State me set karo
+            modalH2.innerText = "Submitting Test...";
+            modalP.innerText = "Kripya tab close na karein, data server par save ho raha hai...";
+            modalScore.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size: 40px; color: #38bdf8;"></i>';
+            modalPercentage.innerText = "Wait...";
+            if(backBtn) backBtn.style.display = "none"; // ⛔ Button chhupa diya, bacha bhag nahi payega
+
+            modal.style.display = "flex";
 
             try {
                 const testDocRef = doc(db, "tests", TARGET_TEST_ID, "students", currentRoll);
@@ -618,11 +630,24 @@ window.verifyAndStartTest = async function() {
                     percentage: pct,
                     cheatStatus: cheatCount > 0 ? `Detected (${cheatCount} Times)` : "Clean / No Cheating",
                     submittedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                    wrongAnswers: wrongAnswersList  // 🔥 NAYA CODE: Data Firebase bheja ja raha hai
+                    wrongAnswers: wrongAnswersList
                 }, { merge: true });
+
+                // ✅ SERVER ME DATA SAVE HONE KE BAAD ASLI SCORE DIKHAO ✅
+                modalH2.innerText = "Test Submitted!";
+                modalP.innerText = "Your score has been successfully recorded in the main server.";
+                modalScore.innerText = finalScoreStr;
+                modalPercentage.innerText = `${pct} Marks Obtained`;
+                if(backBtn) backBtn.style.display = "block"; // 🟢 Button wapas laao
+
             } catch (err) {
                 console.error("Data saving error: ", err);
-                alert("Score local update secure. Cloud synchronization delayed.");
+                modalH2.innerText = "Submission Failed!";
+                modalH2.style.color = "#ef4444";
+                modalP.innerText = "Internet problem! Data save nahi ho paya. Kripya page refresh karke dobara try karein.";
+                modalScore.innerHTML = "⚠️";
+                modalPercentage.innerText = "";
+                hasSubmitted = false; // Baccha dobara submit kar sake
             }
         }
     </script>
