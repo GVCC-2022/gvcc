@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - VIP Pocket Card Generator</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&display=swap');
+        /* ✍️ Signature Font */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+        /* 🔢 Machine Cut Font for Card Number */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* Force Browser to Print Colors */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: #e2e8f0; margin: 0; padding: 20px; 
+            text-align: center; 
+        }
+        
+        /* 🎛️ Controls */
+        .controls { 
+            background: #0f172a; padding: 20px 30px; border-radius: 15px; 
+            margin-bottom: 30px; color: white; display: inline-block; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 2px solid #fbbf24;
+        }
+        .controls button { 
+            padding: 12px 20px; font-size: 15px; border-radius: 8px; 
+            font-weight: bold; margin: 5px; cursor: pointer; border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-gen { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; transition: 0.2s;}
+        .btn-gen:active { transform: scale(0.95); }
+        .btn-print { background: linear-gradient(135deg, #10b981, #059669); color: white; transition: 0.2s;}
+        .btn-print:active { transform: scale(0.95); }
+
+        /* 📄 Print Area */
+        #printArea { 
+            display: flex; flex-wrap: wrap; justify-content: center; 
+            gap: 20px; max-width: 1050px; margin: 0 auto; 
+        }
+
+        /* 📦 CARD CONTAINER */
+        .card-container {
+            display: flex; gap: 4px; 
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        /* 💳 FRONT SIDE (PURE BLACK THEME) */
+        .wallet-card { 
+            width: 8.6cm; height: 5.4cm; 
+            background: #0a0a0c !important; /* Deep Matte Black */
+            border-radius: 10px; position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); 
+            display: flex; flex-direction: row; 
+            box-sizing: border-box; 
+            border: 2px solid #fbbf24 !important; 
+            overflow: hidden; color: white !important;
+        }
+
+        .card-left {
+            flex: 1; padding: 12px 15px; display: flex; 
+            flex-direction: column; justify-content: center; align-items: flex-start;
+            text-align: left; z-index: 2;
+        }
+
+        .coaching-title {
+            font-size: 11.5px; font-weight: 900; color: #fbbf24 !important; 
+            text-transform: uppercase; line-height: 1.2; letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .coaching-tagline {
+            font-family: 'Tiro Devanagari Hindi', serif;
+            font-size: 7.5px; color: #cbd5e1 !important; font-weight: bold;
+            margin-bottom: 2px; letter-spacing: 0.5px;
+        }
+        .coaching-address {
+            font-size: 7px; color: #94a3b8 !important; text-transform: uppercase; 
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 10px;
+        }
+
+        .vip-badge {
+            background: rgba(251, 191, 36, 0.15) !important; color: #fbbf24 !important; 
+            font-size: 9px; font-weight: 800; padding: 3px 10px; 
+            border-radius: 4px; text-transform: uppercase; 
+            letter-spacing: 1px; margin-bottom: 12px; border: 1px solid rgba(251, 191, 36, 0.4) !important;
+        }
+
+        .student-name { 
+            font-size: 15px; font-weight: 900; color: #ffffff !important; 
+            text-transform: uppercase; margin: 0 0 2px 0; 
+            white-space: nowrap; overflow: hidden; 
+            text-overflow: ellipsis; width: 100%; letter-spacing: 0.5px;
+        }
+        .student-roll { 
+            font-size: 10px; color: #cbd5e1 !important; font-weight: 700; letter-spacing: 1px;
+        }
+
+        .card-right {
+            width: 3.2cm; background: rgba(255, 255, 255, 0.03) !important; 
+            border-left: 1px solid rgba(251, 191, 36, 0.2) !important;
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            padding: 10px; z-index: 2;
+        }
+
+        .qr-wrapper {
+            background: #ffffff !important; padding: 5px; border-radius: 8px; 
+            border: 2px solid #fbbf24 !important; 
+            width: 80px; height: 80px; display: flex; 
+            justify-content: center; align-items: center;
+            margin-bottom: 6px; box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+        }
+        .qr-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+
+        .scan-text {
+            font-size: 6.5px; color: #94a3b8 !important; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.5px; text-align: center;
+        }
+
+        /* 💎 BACK SIDE (PURE BLACK THEME) 💎 */
+        .wallet-card-back {
+            width: 8.6cm; height: 5.4cm; 
+            background: #0a0a0c !important; /* Deep Matte Black */
+            border-radius: 10px; position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6); 
+            box-sizing: border-box; padding: 15px;
+            border: 2px solid #fbbf24 !important; 
+            color: white !important; 
+            display: flex; flex-direction: column; justify-content: flex-start;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .back-top {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            width: 100%; z-index: 2; margin-bottom: 12px;
+        }
+        .chip-group { display: flex; align-items: center; gap: 10px;}
+        .chip-icon { color: #fbbf24 !important; font-size: 24px; filter: drop-shadow(0 0 2px rgba(251,191,36,0.3));}
+        .nfc-icon { color: #fbbf24 !important; font-size: 14px; transform: rotate(90deg); opacity: 0.8;}
+        .vip-title-text { font-size: 7.5px; color: #fbbf24 !important; font-weight: 900; letter-spacing: 2.5px; text-transform: uppercase; margin: 0;}
+
+        /* Middle Details */
+        .back-middle { text-align: left; width: 100%; z-index: 2; margin-bottom: 8px;}
+        
+        .card-number { 
+            font-family: 'Share Tech Mono', monospace; font-size: 15px; 
+            color: #fbbf24 !important; letter-spacing: 3px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,1); margin-bottom: 6px;
+        }
+        
+        .card-details-row { display: flex; justify-content: space-between; align-items: flex-end; padding-right: 5px;}
+        .detail-label { font-size: 5px; color: #94a3b8 !important; letter-spacing: 1.5px; font-weight: 900; margin-bottom: 2px;}
+        
+        .embossed-name { 
+            font-size: 11.5px; font-weight: 900; color: #ffffff !important; 
+            letter-spacing: 1px; text-transform: uppercase; 
+        }
+        
+        .valid-thru-val { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: #fbbf24 !important; }
+
+        /* Security Rules Text (With Lines) */
+        .security-text {
+            font-size: 4.5px; color: #cbd5e1 !important; text-align: left;
+            line-height: 1.4; margin-bottom: auto; z-index: 2; margin-top: 3px;
+            border-top: 1px solid rgba(255,255,255,0.15); 
+            border-bottom: 1px solid rgba(255,255,255,0.15); 
+            padding: 4px 0;
+        }
+        .security-text b { color: #fbbf24 !important; font-family: 'Poppins', sans-serif;}
+        .hindi-rule { font-family: 'Tiro Devanagari Hindi', serif; font-size: 4.8px; color: #a1a1aa !important; letter-spacing: 0.1px; }
+
+        /* Premium Signature & Barcode Footer */
+        .back-footer-new { 
+            text-align: left; width: 100%; z-index: 2; 
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-top: 6px;
+        }
+        
+        .signature-box { position: relative; }
+        .signature { 
+            font-family: 'Great Vibes', cursive; font-size: 16px; /* 🔥 Signature Size Made Even Smaller 🔥 */
+            color: #ffffff !important; 
+            line-height: 1; margin-bottom: 0px; opacity: 0.95;
+        }
+        .auth-text { 
+            font-size: 4.5px; color: #fbbf24 !important; font-weight: 900; 
+            letter-spacing: 1.5px; text-transform: uppercase; 
+            border-top: 1px solid rgba(251,191,36,0.4); padding-top: 3px; 
+            width: 85px; text-align: left;
+        }
+
+        /* Barcode */
+        .barcode-section { display: flex; flex-direction: column; align-items: flex-end;}
+        .barcode {
+            font-size: 24px; color: #64748b !important; line-height: 1;
+            letter-spacing: -3px; opacity: 0.7; 
+            transform: scaleY(1.4) scaleX(1.1);
+            margin-bottom: 4px; margin-right: 2px;
+        }
+        .barcode-label { font-size: 4.5px; color: #64748b !important; letter-spacing: 3px;}
+
+        /* 🖨️ PRINT RULES */
+        @media print {
+            body { background: white !important; padding: 0; }
+            .controls { display: none !important; }
+            #printArea { gap: 15px; }
+            .wallet-card, .wallet-card-back { box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h2 style="margin-top:0; color:#fbbf24;"><i class="fa-solid fa-wallet"></i> GVCC Ultra-VIP Pass Studio</h2>
+        <p style="margin-top: -10px; font-size: 13px; color: #94a3b8;">Generate High-End Secure Cards for VIP STUDENTS</p>
+        
+        <button class="btn-gen" onclick="generateVIPCards()"><i class="fa-solid fa-bolt"></i> Generate VIP Cards</button>
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Cards</button>
+    </div>
+
+    <div id="printArea">
+        <h3 style="color: #64748b; width: 100%;">Click "Generate" to load the Premium "Black Card" Pocket IDs ✨</h3>
+    </div>
+
+    <script>
+        const class8VIPStudents = [
+            { roll: "801", name: "Anamika Kumari", code: "GVCC-A4M8" },
+            { roll: "803", name: "Shabrun Khatoon", code: "GVCC-R2N7" },
+            { roll: "805", name: "Zainab Parveen", code: "GVCC-Z9B2" },
+            { roll: "806", name: "Sabiya Parveen", code: "GVCC-B1Y6" },
+            { roll: "809", name: "Sama Parveen", code: "GVCC-S3M4" },
+            { roll: "810", name: "Sahnuma Parveen", code: "GVCC-H8N9" },
+            { roll: "820", name: "Sonali Kumari", code: "GVCC-S5N1" }
+        ];
+
+        function generateVIPCards() {
+            const printArea = document.getElementById("printArea");
+            printArea.innerHTML = "";
+
+            class8VIPStudents.forEach((student) => {
+                
+                const cardContainer = document.createElement("div");
+                cardContainer.className = "card-container";
+                
+                // 🔥 FRONT CARD 🔥
+                const frontCard = document.createElement("div");
+                frontCard.className = "wallet-card";
+                
+                const qrDataText = `🎓 GYAN VARSHA COACHING CENTER\n📍 Hirauta Ward No.13\n👤 Name: ${student.name}\n📚 Class: 8TH\n🔖 Roll: ${student.roll}\n\n\n\n\n\n\n\n\n🔑 Key: ${student.code}\n✨ आपकी सफलता ही हमारी पहचान है...!`;
+                const encodedData = encodeURIComponent(qrDataText);
+                const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodedData}&margin=0&color=000000&bgcolor=ffffff`;
+
+                frontCard.innerHTML = `
+                    <div class="card-left">
+                        <div class="coaching-title">GYAN VARSHA COACHING CENTER</div>
+                        <div class="coaching-tagline">आपकी सफलता ही हमारी पहचान है...!</div>
+                        <div class="coaching-address">Hirauta Ward No.13</div>
+                        
+                        <div class="vip-badge"><i class="fa-solid fa-crown"></i> VIP ACCESS</div>
+                        
+                        <div class="student-name">${student.name}</div>
+                        <div class="student-roll">CLASS: 8TH &nbsp;|&nbsp; ROLL: ${student.roll}</div>
+                    </div>
+                    
+                    <div class="card-right">
+                        <div class="qr-wrapper">
+                            <img src="${qrImageUrl}" alt="QR Code" crossorigin="anonymous">
+                        </div>
+                        <div class="scan-text">SCAN FOR SECURE LOGIN</div>
+                    </div>
+                `;
+
+                // 💎 THE NEW BACK CARD 💎
+                const backCard = document.createElement("div");
+                backCard.className = "wallet-card-back";
+                
+                const paddedRoll = student.roll.padStart(4, '0');
+                const cardNumber = `8800 5520 GVCC ${paddedRoll}`;
+                const barcodeVisual = `<i class="fa-solid fa-barcode"></i><i class="fa-solid fa-barcode"></i><i class="fa-solid fa-barcode"></i>`;
+
+                backCard.innerHTML = `
+                    <div class="back-top">
+                        <div class="chip-group">
+                            <i class="fa-solid fa-microchip chip-icon"></i>
+                            <i class="fa-solid fa-wifi nfc-icon"></i>
+                        </div>
+                        <p class="vip-title-text">Centurion Pass</p>
+                    </div>
+
+                    <div class="back-middle">
+                        <div class="card-number">${cardNumber}</div>
+                        
+                        <div class="card-details-row">
+                            <div>
+                                <div class="detail-label">CARDHOLDER</div>
+                                <div class="embossed-name">${student.name}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="detail-label">VALID THRU</div>
+                                <div class="valid-thru-val">03/27</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-text">
+                        <b>SECURITY NOTICE:</b> This VIP Pass is strictly non-transferable. Keep your 4-Digit Secret PIN confidential. System auto-detects cloning and will permanently block unauthorized scans.<br>
+                        <span class="hindi-rule"><b>सुरक्षित लॉगिन:</b> रिज़ल्ट और पोर्टल देखने के लिए इस कार्ड को अपने 4-Digit PIN के साथ इस्तेमाल करें। कार्ड की क्लोनिंग करने पर अकाउंट ब्लॉक कर दिया जाएगा।</span>
+                    </div>
+
+                    <div class="back-footer-new">
+                        <div class="signature-box">
+                            <div class="signature">Md Faiyaz</div>
+                            <div class="auth-text">AUTHORIZED SIGNATORY</div>
+                        </div>
+                        
+                        <div class="barcode-section">
+                            <div class="barcode">${barcodeVisual}</div>
+                            <div class="barcode-label">SECURE ID SCAN</div>
+                        </div>
+                    </div>
+                `;
+
+                cardContainer.appendChild(frontCard);
+                cardContainer.appendChild(backCard);
+                printArea.appendChild(cardContainer);
+            });
+        }
+    </script>
+</body>
+</html>
