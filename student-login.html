@@ -645,7 +645,20 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                     await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
                     
                     msgBox.innerHTML = "🚀 Redirecting...";
-                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
+                                        // ... (Aapka pehle ka saveLoginLog tak ka code)
+                    await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
+                    
+                    msgBox.innerHTML = "🚀 Redirecting...";
+                    
+                    // ✨ Yahan humne 2357 ke liye condition add ki hai ✨
+                    setTimeout(() => { 
+                        if (roll === "2357") {
+                            window.location.href = "special-dashboard.html"; 
+                        } else {
+                            window.location.href = "dashboard.html"; 
+                        }
+                    }, 1200);
+
                 } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Wrong Password"; resetButton(); }
             } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
         } catch (error) { msgBox.style.color = "#f87171"; msgBox.innerHTML = "⚠️ Network error."; resetButton(); }
