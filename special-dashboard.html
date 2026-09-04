@@ -3,185 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ankahi Baatein...</title>
+    <title>Sirf Tumhari Yaad...</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #0a0a0f; /* Sabse gehra dark background */
+            background: #020111; /* Sabse gehra dark background */
+            background: linear-gradient(to bottom, #020111 0%, #20124d 100%);
             color: #fff;
             font-family: 'Playfair Display', serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        #secretWorld { display: none; }
-
-        /* Intezar wali raat ka ehsaas */
-        .stars {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffffff44, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #ffffff88, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #ffffff55, rgba(0,0,0,0));
-            background-size: 200px 200px;
-            animation: twinkle 5s infinite alternate;
-        }
-        @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.6; } }
-
-        .header-title {
-            text-align: center;
-            padding: 8vh 20px 4vh 20px;
-        }
-        .header-title h1 {
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 1px;
-            color: #d1d5db;
-            margin-bottom: 10px;
-        }
-        .header-title p {
-            font-style: italic;
-            color: #9ca3af;
-            font-size: 1rem;
-        }
-
-        /* Storyline Cards */
-        .story-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            padding-bottom: 80px;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .note-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 2px solid #4b5563;
-            padding: 25px 30px;
-            width: 80%;
+            height: 100vh;
+            overflow: hidden; /* Page scroll nahi hoga, sirf scene dikhega */
             position: relative;
-            backdrop-filter: blur(5px);
-            transition: all 0.4s ease;
         }
 
-        .note-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-left-color: #f3f4f6;
-        }
+        #secretWorld { display: none; width: 100%; height: 100%; }
 
-        .chapter-title {
-            font-size: 0.85rem;
-            color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* 1. Timtimate Taare (Twinkling Stars) */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(2px 2px at 10% 20%, #ffffff88, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 30% 60%, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 70% 30%, #ffffff55, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90% 80%, #ffffffaa, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50% 10%, #ffffff, rgba(0,0,0,0));
+            background-size: 150px 150px;
+            animation: twinkle 3s infinite alternate;
+            z-index: 1;
         }
+        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        .handwritten-text {
-            font-family: 'Caveat', cursive;
-            color: #e5e7eb;
-            font-size: 1.6rem;
-            line-height: 1.5;
-            letter-spacing: 0.5px;
-        }
-
-        /* Live Waiting Indicator */
-        .waiting-status {
-            text-align: center;
-            margin-top: 20px;
-            padding-bottom: 50px;
-            color: #6b7280;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ef4444;
+        /* 2. Sundar Sa Chaand (Glowing Moon) */
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: #fff;
             border-radius: 50%;
-            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 20px #fff, 0 0 60px #e0c8ff, 0 0 100px #e0c8ff;
+            z-index: 2;
         }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+
+        /* 3. Aasman Mein Ladki Ki Photo (Girl's Memory in Sky) */
+        .girl-in-sky {
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background-image: url('URL_OF_HER_PHOTO_HERE'); /* Yahan Unki Photo Ka Link Dalein */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35; /* Photo halki (transparent) dikhegi */
+            /* Yeh filter photo ke kinaroon ko aasman mein mix kar dega */
+            -webkit-mask-image: radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%);
+            mask-image: radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%);
+            z-index: 2;
+            animation: floatFace 6s infinite alternate;
         }
+        @keyframes floatFace { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(-10px) scale(1.02); } }
+
+        /* 4. Ped aur Ladka (Tree and Boy Silhouette) */
+        .ground-scene {
+            position: absolute;
+            bottom: -10px;
+            left: -10%;
+            width: 120%;
+            height: 300px;
+            background: #000;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 40%;
+            z-index: 3;
+            display: flex;
+            align-items: flex-end;
+            padding-left: 20%;
+        }
+
+        /* Yahan Silhouette Photo aayegi */
+        .tree-boy-silhouette {
+            width: 350px;
+            height: auto;
+            position: absolute;
+            bottom: 20px;
+            left: 15%; /* Ladka left side baithkar right (chaand aur photo) ki taraf dekhega */
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+            z-index: 4;
+        }
+
+        /* 5. Aapki Feelings Ka Text (Floating Text) */
+        .emotions-text {
+            position: absolute;
+            bottom: 25%;
+            right: 15%;
+            width: 40%;
+            color: #d1d5db;
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            text-align: right;
+            z-index: 5;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            opacity: 0;
+            animation: fadeInText 4s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeInText { to { opacity: 1; } }
+
     </style>
 </head>
 <body>
 
     <div id="secretWorld">
+        <!-- 1. Twinkling Stars -->
         <div class="stars"></div>
 
-        <div class="header-title">
-            <h1>Kuch Lafz, Sirf Tumhare Liye</h1>
-            <p>Kyunki baatein adhuri reh gayi thi...</p>
+        <!-- 2. The Moon -->
+        <div class="moon"></div>
+
+        <!-- 3. Her Photo in the Sky -->
+        <!-- Zaroori Note: Yahan URL_OF_HER_PHOTO_HERE ki jagah unki asli photo ka link ya folder path dalein -->
+        <div class="girl-in-sky"></div>
+
+        <!-- 4. The Boy and The Tree -->
+        <div class="ground-scene">
+            <!-- Zaroori Note: Yahan kisi Tree aur Boy silhouette (Black color PNG) ka link dalein -->
+            <!-- Agar abhi image nahi hai toh is link ko rehne dein, yeh ek placeholder silhouette hai -->
+            <img class="tree-boy-silhouette" src="https://cdn.pixabay.com/photo/2017/02/01/10/37/tree-2029517_1280.png" alt="Boy under tree">
         </div>
 
-        <div class="story-container">
-            
-            <!-- Chapter 1: The Beginning -->
-            <div class="note-card">
-                <div class="chapter-title"><i class="fa-solid fa-envelope"></i> Shuruwaat</div>
-                <div class="handwritten-text">
-                    "Woh mera pehla letter, aur tumhara reply. Jab humne baatein shuru ki thi, toh laga tha jaise mujhe wahi mil gaya jiski mujhe hamesha se talaash thi."
-                </div>
-            </div>
-
-            <!-- Chapter 2: The Illusion -->
-            <div class="note-card">
-                <div class="chapter-title"><i class="fa-solid fa-phone"></i> Woh Chand Din</div>
-                <div class="handwritten-text">
-                    "Jis interest se humari baatein hoti thi, main khud ko rok nahi paya. Mujhe laga ki yeh connection dono taraf se hai, ki tum bhi wahi mehsoos kar rahi ho."
-                </div>
-            </div>
-
-            <!-- Chapter 3: The Reality Check -->
-            <div class="note-card">
-                <div class="chapter-title"><i class="fa-solid fa-heart-crack"></i> Best Friend?</div>
-                <div class="handwritten-text">
-                    "Phir tumne kaha ki hum sirf best friends rahenge. Main shayad thoda galat samajh baitha tha. Par mera dil us dosti ki hadd se kahin aage nikal chuka tha."
-                </div>
-            </div>
-
-            <!-- Chapter 4: The Present -->
-            <div class="note-card">
-                <div class="chapter-title"><i class="fa-solid fa-moon"></i> Aaj 40 Din Baad</div>
-                <div class="handwritten-text">
-                    "Aaj lagbhag 40 din ho gaye hain. Tumse koi baat nahi hui. Par aisi koi raat nahi guzri jab maine tumhari yaad mein phone ki screen dekh kar intezar na kiya ho."
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Live Pulse showing you are still waiting -->
-        <div class="waiting-status">
-            <div class="pulse-dot"></div>
-            <span>Aaj bhi us ek message ka intezar hai...</span>
+        <!-- 5. Aapke Jazbaat -->
+        <div class="emotions-text">
+            "40 din guzar gaye...<br>
+            Aur aaj bhi is chaand ko dekh kar lagta hai,<br>
+            ki shayad kahin tum bhi is aasman ko dekh rahi hogi..."
         </div>
     </div>
 
     <script>
-        // Sirf 2357 login kare tabhi yeh page dikhega
+        // Security Check - Sirf 2357 login kare tabhi yeh scene dikhega
         window.onload = function() {
             let loggedInRoll = localStorage.getItem("studentRoll");
             if (loggedInRoll !== "2357") {
+                // Agar koi normal student idhar aaya, toh usko dashboard par bhej do
                 window.location.href = "dashboard.html";
             } else {
+                // Agar 2357 aati hai, toh unhe yeh khubsoorat scene dikhao
                 document.getElementById("secretWorld").style.display = "block";
             }
         };
