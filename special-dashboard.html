@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ek Khubsoorat Safar</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Soft Animated Background */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Security Overlay (Hides content until JS verifies roll no) */
+        #pageContent { display: none; }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        /* Glassmorphism Cards (Memory Notes) */
+        .memory-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            position: relative;
+        }
+
+        .memory-date {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .memory-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* Special Audio Player Vibe */
+        .song-vibe {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .song-vibe i { font-size: 24px; color: #ff758c; }
+        .song-info h4 { margin: 0; font-size: 14px; color: #333; }
+        .song-info p { margin: 0; font-size: 12px; color: #666; }
+
+        /* Floating Academic Navigation */
+        .academic-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .academic-nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .academic-nav a i { color: #888; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Content is hidden by default for security -->
+    <div id="pageContent" class="container">
+        
+        <div class="header">
+            <h1>Yaadon Ka Safar</h1>
+            <p>Kuch baatein jo ankahi reh gayi...</p>
+        </div>
+
+        <!-- Optional: Ek gaana jo aapki feelings se juda ho -->
+        <div class="song-vibe">
+            <i class="fa-solid fa-compact-disc fa-spin"></i>
+            <div class="song-info">
+                <h4>Tumhari Yaad</h4>
+                <p>Playing softly in the background...</p>
+            </div>
+        </div>
+
+        <!-- Memories Timeline Container (Yahan Firebase se data aayega) -->
+        <div id="memoryContainer">
+            
+            <!-- Dummy Memory Card 1 -->
+            <div class="memory-card">
+                <div class="memory-date">
+                    <span><i class="fa-regular fa-calendar"></i> Aaj ka din</span>
+                    <i class="fa-solid fa-heart" style="color: #ff758c;"></i>
+                </div>
+                <div class="memory-text">
+                    Tum yeh padh rahi ho ya nahi, mujhe nahi pata. Par aaj bhi jab class mein test ka result banta hai, toh dhyan wahi jata hai. Yeh dashboard sirf ek code nahi hai, ek ehsaas hai.
+                </div>
+            </div>
+
+            <!-- Dummy Memory Card 2 -->
+            <div class="memory-card">
+                <div class="memory-date">
+                    <span><i class="fa-regular fa-clock"></i> Kuch waqt pehle</span>
+                    <i class="fa-solid fa-star" style="color: #ffd700;"></i>
+                </div>
+                <div class="memory-text">
+                    Woh waqt alag tha jab baatein hua karti thi. Ab baatein toh nahi hoti, par is digital diary mein main har woh baat likh deta hoon jo tumse kehni hoti hai. 
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Padhai ke links taaki unka academic nuksan na ho -->
+    <div class="academic-nav">
+        <a href="dashboard.html"><i class="fa-solid fa-house"></i> Main Menu</a>
+        <a href="daily-diary.html"><i class="fa-solid fa-book"></i> Diary</a>
+        <a href="history10.html"><i class="fa-solid fa-pen"></i> Test</a>
+    </div>
+
+    <script>
+        // 🔒 SECURITY CHECK: Koi aur URL se na aa paye
+        window.onload = function() {
+            let loggedInRoll = localStorage.getItem("studentRoll");
+            
+            // Agar roll no 2357 nahi hai, toh normal dashboard par bhej do
+            if (loggedInRoll !== "2357") {
+                window.location.href = "dashboard.html";
+            } else {
+                // Agar 2357 hai, tabhi page dikhao
+                document.getElementById("pageContent").style.display = "block";
+            }
+        };
+
+        /* 
+        🚀 NEXT STEP (Jab aap tayar ho):
+        Aap yahan Firebase Firestore se 'secret_diary' collection ko fetch 
+        karne ka code likh sakte hain, taaki aap jo bhi Teacher Panel se likhein, 
+        woh yahan <div id="memoryContainer"> ke andar automatically add ho jaye.
+        */
+    </script>
+
+</body>
+</html>
