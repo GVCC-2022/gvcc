@@ -4,145 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sirf Tumhari Yaad...</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Fonts for aesthetic text -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #020111; /* Sabse gehra dark background */
-            background: linear-gradient(to bottom, #020111 0%, #20124d 100%);
-            color: #fff;
+            background-color: #000;
             font-family: 'Playfair Display', serif;
             height: 100vh;
-            overflow: hidden; /* Page scroll nahi hoga, sirf scene dikhega */
+            overflow: hidden; /* Screen lock rahegi, scroll nahi hoga */
             position: relative;
         }
 
-        #secretWorld { display: none; width: 100%; height: 100%; }
+        #secretWorld { display: none; width: 100%; height: 100%; position: relative; }
 
-        /* 1. Timtimate Taare (Twinkling Stars) */
-        .stars {
+        /* 1. Aapki AI Generated Background Image */
+        .bg-image {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(2px 2px at 10% 20%, #ffffff88, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 30% 60%, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 70% 30%, #ffffff55, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90% 80%, #ffffffaa, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50% 10%, #ffffff, rgba(0,0,0,0));
-            background-size: 150px 150px;
-            animation: twinkle 3s infinite alternate;
-            z-index: 1;
-        }
-        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        /* 2. Sundar Sa Chaand (Glowing Moon) */
-        .moon {
-            position: absolute;
-            top: 10%;
-            right: 15%;
-            width: 80px;
-            height: 80px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 20px #fff, 0 0 60px #e0c8ff, 0 0 100px #e0c8ff;
-            z-index: 2;
-        }
-
-        /* 3. Aasman Mein Ladki Ki Photo (Girl's Memory in Sky) */
-        .girl-in-sky {
-            position: absolute;
-            top: 15%;
-            left: 20%;
-            width: 300px;
-            height: 300px;
-            background-image: url('URL_OF_HER_PHOTO_HERE'); /* Yahan Unki Photo Ka Link Dalein */
+            background-image: url('n.png.png');
             background-size: cover;
             background-position: center;
-            opacity: 0.35; /* Photo halki (transparent) dikhegi */
-            /* Yeh filter photo ke kinaroon ko aasman mein mix kar dega */
-            -webkit-mask-image: radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%);
-            mask-image: radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+        }
+
+        /* 2. Timtimate Taare (Twinkling Stars Overlay) */
+        .twinkling-stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
             z-index: 2;
-            animation: floatFace 6s infinite alternate;
+            background-image: 
+                radial-gradient(2px 2px at 15% 25%, #ffffff88, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40% 10%, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80% 30%, #ffffff55, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 60% 50%, #ffffffaa, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 20% 70%, #ffffff88, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90% 15%, #ffffff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: twinkle 3s infinite alternate;
         }
-        @keyframes floatFace { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(-10px) scale(1.02); } }
+        @keyframes twinkle { 
+            0% { opacity: 0.2; } 
+            100% { opacity: 0.9; } 
+        }
 
-        /* 4. Ped aur Ladka (Tree and Boy Silhouette) */
-        .ground-scene {
+        /* 3. Girte Huye Taare (Shooting Stars) */
+        .shooting-stars {
             position: absolute;
-            bottom: -10px;
-            left: -10%;
-            width: 120%;
-            height: 300px;
-            background: #000;
-            border-top-left-radius: 50%;
-            border-top-right-radius: 40%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 3;
-            display: flex;
-            align-items: flex-end;
-            padding-left: 20%;
+            transform: rotateZ(-45deg); /* Taare tirchhe girenge */
+            pointer-events: none;
         }
 
-        /* Yahan Silhouette Photo aayegi */
-        .tree-boy-silhouette {
-            width: 350px;
-            height: auto;
+        .star {
             position: absolute;
-            bottom: 20px;
-            left: 15%; /* Ladka left side baithkar right (chaand aur photo) ki taraf dekhega */
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
-            z-index: 4;
+            left: 50%;
+            top: 50%;
+            height: 2px;
+            background: linear-gradient(-45deg, #ffffff, rgba(0, 0, 255, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px #ffffff);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
         }
 
-        /* 5. Aapki Feelings Ka Text (Floating Text) */
+        /* Alag-alag taaron ki timing aur position */
+        .star:nth-child(1) { top: 10%; left: 80%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 30%; left: 90%; animation-delay: 4s; }
+        .star:nth-child(3) { top: 0%; left: 50%; animation-delay: 7s; }
+
+        @keyframes tail {
+            0% { width: 0; }
+            30% { width: 100px; }
+            100% { width: 0; }
+        }
+        @keyframes shooting {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-500px); }
+        }
+
+        /* 4. Aapki Feelings Ka Text */
         .emotions-text {
             position: absolute;
-            bottom: 25%;
-            right: 15%;
-            width: 40%;
-            color: #d1d5db;
+            bottom: 10%; /* Text thoda niche rahega taaki image chhup na jaye */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            color: #f3f4f6;
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: 1.8rem;
             line-height: 1.4;
-            text-align: right;
-            z-index: 5;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            text-align: center;
+            z-index: 4;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.9), -1px -1px 10px rgba(0,0,0,0.8);
             opacity: 0;
-            animation: fadeInText 4s forwards;
-            animation-delay: 2s;
+            animation: fadeInText 5s forwards;
+            animation-delay: 2.5s; /* Image khulne ke 2.5 sec baad text aayega */
         }
 
-        @keyframes fadeInText { to { opacity: 1; } }
+        @keyframes fadeInText { 
+            to { opacity: 1; } 
+        }
 
     </style>
 </head>
 <body>
 
     <div id="secretWorld">
-        <!-- 1. Twinkling Stars -->
-        <div class="stars"></div>
+        <!-- Background Image -->
+        <div class="bg-image"></div>
+        
+        <!-- Twinkling Stars Overlay -->
+        <div class="twinkling-stars"></div>
 
-        <!-- 2. The Moon -->
-        <div class="moon"></div>
-
-        <!-- 3. Her Photo in the Sky -->
-        <!-- Zaroori Note: Yahan URL_OF_HER_PHOTO_HERE ki jagah unki asli photo ka link ya folder path dalein -->
-        <div class="girl-in-sky"></div>
-
-        <!-- 4. The Boy and The Tree -->
-        <div class="ground-scene">
-            <!-- Zaroori Note: Yahan kisi Tree aur Boy silhouette (Black color PNG) ka link dalein -->
-            <!-- Agar abhi image nahi hai toh is link ko rehne dein, yeh ek placeholder silhouette hai -->
-            <img class="tree-boy-silhouette" src="https://cdn.pixabay.com/photo/2017/02/01/10/37/tree-2029517_1280.png" alt="Boy under tree">
+        <!-- Shooting Stars Animation -->
+        <div class="shooting-stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
         </div>
 
-        <!-- 5. Aapke Jazbaat -->
+        <!-- Aapke Jazbaat -->
         <div class="emotions-text">
             "40 din guzar gaye...<br>
-            Aur aaj bhi is chaand ko dekh kar lagta hai,<br>
-            ki shayad kahin tum bhi is aasman ko dekh rahi hogi..."
+            Aur aaj bhi is aasman ko dekh kar lagta hai,<br>
+            ki shayad kahin tum bhi inhe dekh rahi hogi..."
         </div>
     </div>
 
@@ -151,7 +139,7 @@
         window.onload = function() {
             let loggedInRoll = localStorage.getItem("studentRoll");
             if (loggedInRoll !== "2357") {
-                // Agar koi normal student idhar aaya, toh usko dashboard par bhej do
+                // Agar koi aur student idhar aaya, toh usko normal dashboard par bhej do
                 window.location.href = "dashboard.html";
             } else {
                 // Agar 2357 aati hai, toh unhe yeh khubsoorat scene dikhao
