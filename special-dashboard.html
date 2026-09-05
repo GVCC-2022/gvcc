@@ -105,9 +105,9 @@
         }
         @keyframes fadeInText { to { opacity: 1; } }
 
-        /* --- 5. GLASSMORPHISM UI (BUTTONS, DIARY, REPLY) --- */
+        /* --- 5. GLASSMORPHISM UI --- */
         .action-buttons {
-            position: absolute; bottom: 30px; right: 30px;
+            position: absolute; top: 30px; right: 30px; /* Top Right Position */
             display: flex; flex-direction: column; gap: 15px; z-index: 10;
         }
         .action-btn {
@@ -120,7 +120,7 @@
         .action-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
 
         .glass-panel {
-            position: absolute; background: rgba(10, 10, 15, 0.7);
+            position: absolute; background: rgba(10, 10, 15, 0.75);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1); color: #e5e7eb;
             z-index: 20; transition: all 0.4s ease-in-out;
@@ -171,11 +171,17 @@
 </head>
 <body>
 
+    <!-- 🎵 AUDIO FILES 🎵 -->
+    <audio id="bgMusic" src="awara.mp3" loop></audio>
+    <audio id="diaryMusic" src="Hayorabba.mp3" loop></audio>
+    <audio id="pankhMusic" src="yaaraoyaara.mp3" loop></audio>
+
     <div id="secretWorld">
         <!-- Cinematic Background & Animations -->
         <div class="bg-image"></div>
         <div class="twinkling-stars"></div>
         <div class="star-container">
+            <!-- 12 Stars -->
             <div class="shooting-star s1"></div><div class="shooting-star s2"></div>
             <div class="shooting-star s3"></div><div class="shooting-star s4"></div>
             <div class="shooting-star s5"></div><div class="shooting-star s6"></div>
@@ -184,21 +190,22 @@
             <div class="shooting-star s11"></div><div class="shooting-star s12"></div>
         </div>
         <div class="falling-leaves">
+            <!-- Leaves -->
             <div class="leaf l1"></div><div class="leaf l2"></div>
             <div class="leaf l3"></div><div class="leaf l4"></div>
         </div>
         
         <!-- Text -->
         <div class="emotions-text">
-            "Aaj 40 din guzar gaye...<br>
+            "Aaj <span id="daysCount">...</span> din guzar gaye...<br>
             Aur is akelepan mein bas yehi lagta hai,<br>
             ki shayad kahin tum bhi is aasman ko dekh rahi hogi..."
         </div>
 
-        <!-- Floating Action Buttons -->
+        <!-- Floating Action Buttons (Top Right) -->
         <div class="action-buttons">
             <button class="action-btn" id="openDiary" title="Yaadon Ki Kitab"><i class="fa-solid fa-book-open"></i></button>
-            <button class="action-btn" id="openReply" title="Kuch Kehna Hai?"><i class="fa-solid fa-feather-pointed"></i></button>
+            <button class="action-btn" id="openReply" title="Kuch Kehna Hai?"><i class="fa-solid fa-pen-fancy"></i></button>
         </div>
 
         <!-- Diary Sidebar (Yaadon ka Safar) -->
@@ -220,7 +227,6 @@
             
             <textarea id="replyMessage" class="reply-textarea" placeholder="Jo bhi dil mein ho, befikar yahan likh do..."></textarea>
             
-            <!-- Trust aur Security wali line -->
             <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-align: center; margin-top: 10px; font-family: sans-serif; line-height: 1.4;">
                 <i class="fa-solid fa-lock" style="font-size: 0.75rem; color: #a3c2ff;"></i> 
                 Befikar likho... yeh sirf mujh tak aayega. Kisi aur ko kabhi pata nahi chalega aur tumhare phone mein bhi kuch save nahi hoga.
@@ -233,13 +239,65 @@
 
     <!-- 🔥 FIREBASE & JAVASCRIPT LOGIC 🔥 -->
     <script type="module">
-        // 1. Security Check (Koi aur na khol paye)
+        // 1. Security Check
         let loggedInRoll = localStorage.getItem("studentRoll");
         if (loggedInRoll !== "2357") {
             window.location.href = "dashboard.html";
         } else {
             document.getElementById("secretWorld").style.display = "block";
         }
+
+        // 🎵 MUSIC SYSTEM LOGIC 🎵
+        let currentAudio = document.getElementById('bgMusic');
+        
+        // Halka awaz (20% volume)
+        document.getElementById('bgMusic').volume = 0.2;
+        document.getElementById('diaryMusic').volume = 0.2;
+        document.getElementById('pankhMusic').volume = 0.2;
+
+        // Auto-play try karna (Agar browser roke, toh pehle tap par start hoga)
+        let playPromise = currentAudio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => {
+                document.body.addEventListener('click', function playOnTap() {
+                    currentAudio.play();
+                    document.body.removeEventListener('click', playOnTap);
+                }, { once: true });
+            });
+        }
+        // ⏳ AUTOMATIC DAY COUNTER ⏳
+        // Yahan 20 July (2:15 AM) ki date aur time set hai
+        const lastTalkDate = new Date("2026-07-20T02:15:00").getTime();
+        
+        function calculateDays() {
+            const now = new Date().getTime();
+            const difference = now - lastTalkDate;
+            
+            // Milliseconds ko din (days) mein convert karna
+            const daysPassed = Math.floor(difference / (1000 * 60 * 60 * 24));
+            
+            // HTML mein id="daysCount" ki jagah par din likh dena
+            document.getElementById('daysCount').innerText = daysPassed;
+        }
+        
+        // Page load hote hi function chala do
+        calculateDays();
+
+        // Gaana Switch karne ka function
+        function switchAudio(newAudioId) {
+            currentAudio.pause();
+            currentAudio = document.getElementById(newAudioId);
+            currentAudio.play().catch(e => console.log("Audio switch blocked by browser."));
+        }
+
+        // APP CUT / MINIMIZE HONE PAR MUSIC BAND KARNA
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                currentAudio.pause(); // Jab app back ya minimize ho
+            } else {
+                currentAudio.play().catch(e => console.log("Play blocked.")); // Jab wapas aaye
+            }
+        });
 
         // 2. Firebase Import 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -258,17 +316,34 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 4. UI Open/Close Logic
+        // 4. UI Open/Close & Music Change Logic
         const diarySidebar = document.getElementById('diarySidebar');
         const replyModal = document.getElementById('replyModal');
 
-        document.getElementById('openDiary').addEventListener('click', () => diarySidebar.classList.add('open'));
-        document.getElementById('closeDiary').addEventListener('click', () => diarySidebar.classList.remove('open'));
+        // Jab Diary khule -> 'Hayorabba' bajega
+        document.getElementById('openDiary').addEventListener('click', () => {
+            diarySidebar.classList.add('open');
+            switchAudio('diaryMusic');
+        });
+        
+        // Jab Diary band ho -> Wapas 'awara' bajega
+        document.getElementById('closeDiary').addEventListener('click', () => {
+            diarySidebar.classList.remove('open');
+            switchAudio('bgMusic');
+        });
 
-        document.getElementById('openReply').addEventListener('click', () => replyModal.classList.add('open'));
-        document.getElementById('closeReply').addEventListener('click', () => replyModal.classList.remove('open'));
+        // Jab Pankh (Reply) khule -> 'IshqNaKarna' bajega
+        document.getElementById('openReply').addEventListener('click', () => {
+            replyModal.classList.add('open');
+            switchAudio('pankhMusic');
+        });
 
-        // Memory click logic (Attached to window so HTML buttons can find it)
+        // Jab Pankh (Reply) band ho -> Wapas 'awara' bajega
+        document.getElementById('closeReply').addEventListener('click', () => {
+            replyModal.classList.remove('open');
+            switchAudio('bgMusic');
+        });
+
         window.showMemory = function(text) {
             document.getElementById('memoryDisplay').innerText = `"${text}"`;
         };
@@ -282,21 +357,19 @@
             btn.innerText = "Bhej raha hoon...";
             
             try {
-                // 'replies_from_2357' naam ka collection banega database mein
                 await addDoc(collection(db, "replies_from_2357"), {
                     message: msg,
                     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
                 }); 
                 
-                // Success hone par
                 document.getElementById('replyMessage').value = "";
                 btn.innerHTML = 'Bhej Do <i class="fa-solid fa-heart"></i>';
                 document.getElementById('replyStatus').style.display = "block";
                 
-                // 3 second baad popup band kar do
                 setTimeout(() => {
                     replyModal.classList.remove('open');
                     document.getElementById('replyStatus').style.display = "none";
+                    switchAudio('bgMusic'); // Bhejne ke baad wapas main song
                 }, 3000);
 
             } catch (error) {
