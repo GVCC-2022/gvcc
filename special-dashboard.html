@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- MOBILE ZOOM LOCK -->
+    <!-- MOBILE ZOOM LOCK & RESPONSIVE VIEWPORT -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sirf Tumhari Yaad...</title>
     
@@ -20,12 +20,13 @@
 
         #secretWorld { display: none; width: 100%; height: 100%; position: relative; }
 
-        /* --- 1. CINEMATIC BACKGROUND --- */
+        /* --- 1. CINEMATIC BACKGROUND (Mobile & PC Fix) --- */
         .bg-image {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background-image: url('n.png.png');
-            background-size: cover; background-position: center;
-            width: 100vw; height: 100vh; z-index: 1;
+            background-size: cover; 
+            background-position: center; /* Har device par center me focus rahega */
+            width: 100%; height: 100%; z-index: 1;
         }
 
         .twinkling-stars {
@@ -95,88 +96,95 @@
             100% { transform: translate(150px, 400px) rotate(360deg); opacity: 0; }
         }
 
-       /* --- 4. EMOTIONAL TEXT --- */
+        /* --- 4. EMOTIONAL TEXT (Auto Adjust for PC & Mobile) --- */
         .emotions-text {
             position: absolute; 
-            bottom: 8%; 
-            right: 5%; /* Text ko screen ke right side shift kar dega */
-            width: 70%; /* Width thodi kam ki hai taaki left side (ladke) tak na pahuche */
+            bottom: clamp(5%, 8vh, 10%); /* Screen height ke hisab se set */
+            right: 5%; 
+            width: 85%; 
+            max-width: 350px; /* Computer me bhi 350px se lamba nahi hoga */
             color: #e5e7eb; 
             font-family: 'Caveat', cursive; 
-            font-size: 1.7rem; 
+            font-size: clamp(1.3rem, 5vw, 1.8rem); /* Font auto-resize hoga */
             line-height: 1.4; 
-            text-align: right; /* Text ki alignment ko right kar diya hai */
+            text-align: right; 
             z-index: 5;
             text-shadow: 2px 2px 15px rgba(0,0,0,1), -1px -1px 10px rgba(0,0,0,1);
-            opacity: 0; 
-            animation: fadeInText 5s forwards; 
-            animation-delay: 2.5s; 
+            opacity: 0; animation: fadeInText 5s forwards; animation-delay: 2.5s; 
         }
         @keyframes fadeInText { to { opacity: 1; } }
 
-        /* --- 5. GLASSMORPHISM UI --- */
+        /* --- 5. GLASSMORPHISM UI & RESPONSIVE BUTTONS --- */
         .action-buttons {
-            position: absolute; top: 30px; right: 30px; /* Top Right Position */
+            position: absolute; 
+            top: clamp(20px, 5vh, 40px); /* Top space fix */
+            right: clamp(20px, 5vw, 40px); /* Right space fix */
             display: flex; flex-direction: column; gap: 15px; z-index: 10;
         }
         .action-btn {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
-            width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem;
+            width: clamp(40px, 12vw, 55px); /* Button auto-resize hoga */
+            height: clamp(40px, 12vw, 55px); 
+            border-radius: 50%; 
+            font-size: clamp(1rem, 4vw, 1.3rem); /* Icon ka size fix rahega */
             cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.5);
             transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;
         }
         .action-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
 
         .glass-panel {
-            position: absolute; background: rgba(10, 10, 15, 0.75);
+            position: absolute; background: rgba(10, 10, 15, 0.85); /* Thoda aur dark taki text saaf dikhe */
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1); color: #e5e7eb;
             z-index: 20; transition: all 0.4s ease-in-out;
         }
 
-        /* YAHAN HUA HAI BADLAAV - SCROLL ADD KIYA GAYA HAI */
+        /* --- DIARY SIDEBAR (SCROLLABLE & RESPONSIVE) --- */
         #diarySidebar {
-            top: 0; right: -100%; width: 320px; height: 100vh;
-            padding: 30px 20px; box-sizing: border-box;
+            top: 0; right: -100%; 
+            width: 100%; max-width: 350px; /* Mobile pe full, PC par sirf side me dikhega */
+            height: 100vh;
+            padding: clamp(20px, 5vh, 40px) 20px; box-sizing: border-box;
             border-left: 1px solid rgba(255, 255, 255, 0.2);
-            overflow-y: auto; /* Yeh line scroll enable karti hai */
+            overflow-y: auto; /* Scroll enabled */
         }
         #diarySidebar.open { right: 0; }
         
-        /* Custom Scrollbar ka Design (Taaki theme kharab na ho) */
-        #diarySidebar::-webkit-scrollbar { width: 4px; }
-        #diarySidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        #diarySidebar::-webkit-scrollbar { width: 5px; }
+        #diarySidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 10px; }
         
-        .sidebar-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+        .sidebar-title { font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
         
         .memory-btn {
             background: rgba(255,255,255,0.05); border: none; border-left: 2px solid #a3c2ff;
             color: #d1d5db; width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; 
-            cursor: pointer; font-family: 'Playfair Display', serif; font-size: 1rem; transition: 0.3s;
+            cursor: pointer; font-family: 'Playfair Display', serif; font-size: clamp(0.9rem, 3vw, 1.1rem); transition: 0.3s;
         }
         .memory-btn:hover { background: rgba(255,255,255,0.1); border-left-color: #ffa3e6; }
-        .memory-display { margin-top: 20px; font-family: 'Caveat', cursive; font-size: 1.5rem; line-height: 1.4; color: #fff; padding-bottom: 20px; }
+        .memory-display { margin-top: 20px; font-family: 'Caveat', cursive; font-size: clamp(1.2rem, 4vw, 1.6rem); line-height: 1.5; color: #fff; padding-bottom: 30px; }
 
+        /* --- REPLY MODAL (AUTO FIT FOR MOBILE & PC) --- */
         #replyModal {
             top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
-            width: 85%; max-width: 400px; border-radius: 20px; padding: 25px;
-            opacity: 0; pointer-events: none;
+            width: 90%; max-width: 450px; /* Fix for cut-off on small screens */
+            border-radius: 20px; padding: clamp(15px, 5vw, 30px);
+            opacity: 0; pointer-events: none; box-sizing: border-box;
         }
         #replyModal.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
         
         .reply-textarea {
-            width: 100%; height: 120px; background: rgba(255,255,255,0.05);
+            width: 100%; height: clamp(100px, 20vh, 150px); background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; 
-            box-sizing: border-box; color: #fff; font-family: 'Caveat', cursive; font-size: 1.5rem;
+            box-sizing: border-box; color: #fff; font-family: 'Caveat', cursive; font-size: clamp(1.2rem, 4vw, 1.5rem);
             resize: none; margin-top: 15px; outline: none;
         }
-        .reply-textarea::placeholder { color: rgba(255,255,255,0.3); }
+        .reply-textarea::placeholder { color: rgba(255,255,255,0.4); }
         
         .send-btn {
             background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a;
-            padding: 10px 20px; border-radius: 30px; cursor: pointer;
-            margin-top: 15px; width: 100%; font-size: 1.1rem; font-family: 'Playfair Display', serif;
+            padding: clamp(10px, 3vh, 15px) 20px; border-radius: 30px; cursor: pointer;
+            margin-top: 15px; width: 100%; font-size: clamp(1rem, 3vw, 1.2rem); font-family: 'Playfair Display', serif;
             transition: 0.3s;
         }
         .send-btn:hover { background: #ffbc7a; color: #000; }
@@ -210,7 +218,7 @@
             <div class="leaf l3"></div><div class="leaf l4"></div>
         </div>
         
-        <!-- Text -->
+        <!-- Text (Right Aligned, Auto Scaling) -->
         <div class="emotions-text">
             "Aaj <span id="daysCount">...</span> din guzar gaye...<br>
             Aur is akelepan mein bas yehi lagta hai,<br>
@@ -228,24 +236,24 @@
             <button class="close-btn" id="closeDiary">&times;</button>
             <div class="sidebar-title">Yaadon Ka Safar</div>
             <div id="memoryList">
-    <button class="memory-btn" onclick="window.showMemory('Pehla letter aur tumhara reply... ek khubsoorat shuruaat thi. Main bahut khush tha, mera total board wala exam isi khushi mein nikla ki tum mujhe mil gayi ho. Woh ek alag hi feeling thi... aisa lag raha tha ki koi khoyi hui cheez mujhe wapas mil gayi hai.. 💫')">Pehli Mulaqat</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Aur kuchh din mere isi khushi mein guzre ki... agar tumko mujhse kuchh nahi tha, to letter padhkar mujhe message kyu kiya... zaroor tumhare dil mein bhi kuchh hai kyunki letter mein koi tumhare upar dabaav nahi tha. Sab tumhari marzi thi, fir bhi tumne message kiya. Yah baat mujhe ek alag hi khushi de rahi thi... lekin shayad main galat tha.')">Khushi Ke Kuchh Deen</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Ab tumko bhi malum chal gaya tha ki main tumse mohabbat karta hu. Aur 24 February ko pehli baar main tumko dekhne wala tha, aur yah pehle jaisa bilkul nahi tha. Jab tumko maine bazaar par dekha, yakeen mano ek pal ke liye aisa laga ki jo barson se mujhse door tha, wo mere samne aa gaya hai. Us din coaching mein bhi tumhe dekhkar itna sukoon mila mat pucho. Lekin main tumko us din bhi rubaru kuchh na kah paya... kyunki tum akeli nahi thi shayad isiliye. Mere dil mein us waqt bhi wahi feeling thi ki shayad tum bhi mujhe chahti ho, par shayad main yahan par bhi galat tha 😐')">24 February Ka Deen</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Fir kuchh din baad tumne mujhe yah ehsas dila hi diya ki... tumhare dil mein mere liye ratti bhar bhi jagah nahi hai. Aur shayad woh raat mere liye sabse bhayanak raat thi... kyunki us raat aisa laga ki apni sabse keemti cheez maine fir se kho di. Woh feeling lafzon mein nahi batayi ja sakti.')">Fir Kuchh Deen Baad</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Jab tumhare dil mein mere liye koi jagah nahi thi to tumne letter padhkar jawab kyu diya... kyuuuu? Jabki maine letter mein sirf tumhari marzi puchi thi. Agar tum reply nahi deti aur mujhse baat nahi karti, to main samajh jata ki tumko mujhse kuchh nahi hai. Lekin tumne mujhe itna dilasa dilakar aisa kyu kiya? Bas yahi ek sawal abhi bhi adhura hai. Iska jawab mujhe hamesha intezar rahega... jab tak zinda rahunga, maut aa gayi to khair koi baat hi nahi hai.')">Ab 1 Hi Sawal</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Itna kuchh hone ke baad bhi tumne mujhse baat ki... aur hamesha yahi bolti thi ki mujhe in sab cheezon se darr lagta hai. Maine kaha koi baat nahi, thoda sambhal kar, shayad tumko aur time chahiye le lo. Lekin tum har baar yahi bolti thi ki.. \'A Faiyaz.... hamse e sab na ho payega\'. Fir bhi tumne bahut din baat ki... aur mujhse tumhare bagair baat kiye raha hi nahi jata tha... thanks.')">Darr Aur Majboori</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Us raat jab tumne achanak Instagram par keh diya ki \'Aaj se hamari baaten band, baat ke liye good bye\', mera dil jaise ruk sa gaya tha. Main tumhare aage gidgidaya, baar-baar request ki, kaha ki mera man nahi lagega... Aadhi raat ko mujhe nind nahi aa rahi thi, bas ek hi darr lag raha tha ki ab tumse kabhi baat nahi hogi. Maine kaha tha na, main sirf apne mahboob ka intezar karta hu. Woh raat maine akele tadap kar kaise guzari hai, iska hisaab sirf mera Khuda janta hai.')">Woh Aakhiri Alvida Aur Meri Tadap</button>
+                <button class="memory-btn" onclick="window.showMemory('Pehla letter aur tumhara reply... ek khubsoorat shuruaat thi. Main bahut khush tha, mera total board wala exam isi khushi mein nikla ki tum mujhe mil gayi ho. Woh ek alag hi feeling thi... aisa lag raha tha ki koi khoyi hui cheez mujhe wapas mil gayi hai.. 💫')">Pehli Mulaqat</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Aur kuchh din mere isi khushi mein guzre ki... agar tumko mujhse kuchh nahi tha, to letter padhkar mujhe message kyu kiya... zaroor tumhare dil mein bhi kuchh hai kyunki letter mein koi tumhare upar dabaav nahi tha. Sab tumhari marzi thi, fir bhi tumne message kiya. Yah baat mujhe ek alag hi khushi de rahi thi... lekin shayad main galat tha.')">Khushi Ke Kuchh Deen</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Ab tumko bhi malum chal gaya tha ki main tumse mohabbat karta hu. Aur 24 February ko pehli baar main tumko dekhne wala tha, aur yah pehle jaisa bilkul nahi tha. Jab tumko maine bazaar par dekha, yakeen mano ek pal ke liye aisa laga ki jo barson se mujhse door tha, wo mere samne aa gaya hai. Us din coaching mein bhi tumhe dekhkar itna sukoon mila mat pucho. Lekin main tumko us din bhi rubaru kuchh na kah paya... kyunki tum akeli nahi thi shayad isiliye. Mere dil mein us waqt bhi wahi feeling thi ki shayad tum bhi mujhe chahti ho, par shayad main yahan par bhi galat tha 😐')">24 February Ka Deen</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Fir kuchh din baad tumne mujhe yah ehsas dila hi diya ki... tumhare dil mein mere liye ratti bhar bhi jagah nahi hai. Aur shayad woh raat mere liye sabse bhayanak raat thi... kyunki us raat aisa laga ki apni sabse keemti cheez maine fir se kho di. Woh feeling lafzon mein nahi batayi ja sakti.')">Fir Kuchh Deen Baad</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Jab tumhare dil mein mere liye koi jagah nahi thi to tumne letter padhkar jawab kyu diya... kyuuuu? Jabki maine letter mein sirf tumhari marzi puchi thi. Agar tum reply nahi deti aur mujhse baat nahi karti, to main samajh jata ki tumko mujhse kuchh nahi hai. Lekin tumne mujhe itna dilasa dilakar aisa kyu kiya? Bas yahi ek sawal abhi bhi adhura hai. Iska jawab mujhe hamesha intezar rahega... jab tak zinda rahunga, maut aa gayi to khair koi baat hi nahi hai.')">Ab 1 Hi Sawal</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Itna kuchh hone ke baad bhi tumne mujhse baat ki... aur hamesha yahi bolti thi ki mujhe in sab cheezon se darr lagta hai. Maine kaha koi baat nahi, thoda sambhal kar, shayad tumko aur time chahiye le lo. Lekin tum har baar yahi bolti thi ki.. \'A Faiyaz.... hamse e sab na ho payega\'. Fir bhi tumne bahut din baat ki... aur mujhse tumhare bagair baat kiye raha hi nahi jata tha... thanks.')">Darr Aur Majboori</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Us raat jab tumne achanak Instagram par keh diya ki \'Aaj se hamari baaten band, baat ke liye good bye\', mera dil jaise ruk sa gaya tha. Main tumhare aage gidgidaya, baar-baar request ki, kaha ki mera man nahi lagega... Aadhi raat ko mujhe nind nahi aa rahi thi, bas ek hi darr lag raha tha ki ab tumse kabhi baat nahi hogi. Maine kaha tha na, main sirf apne mahboob ka intezar karta hu. Woh raat maine akele tadap kar kaise guzari hai, iska hisaab sirf mera Khuda janta hai.')">Woh Aakhiri Alvida Aur Meri Tadap</button>
 
-    <button class="memory-btn" onclick="window.showMemory('26 August ko julus mein main sirf is umeed se gaya tha ki tumhari ek jhalak mil jaye, kyunki tumhe dekhe bahut din ho gaye the. Lekin shayad tum nahi aayi. Waise to har raat tumhare message ka intezar karta hu, par kuch raatein aisi hoti hain jo sone nahi deti. 27 August ki raat intezar karte-karte 2 baje meri aankh lag gayi... aur uske baad hi tumhara wo message aaya. Khud ko itna kosa ki kaash thodi der aur jaag leta! Uske baad agle 5 din tak main subah 4 baje tak jaagta raha, is umeed mein ki shayad aaj phir message aayega... lekin aisa na hua. Aaj bhi tumhara intezar hai, aur hamesha rahega.')">26 August Ka Julus Aur Wo Raat</button>
-    
-    <button class="memory-btn" onclick="window.showMemory('Aaj us aakhiri Insta message ko 48 din ho gaye hain. In 48 dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge...hamesha tumhara intezar rahega.')">Aaj Bhi Intezar Hain Tumhara...</button>
-</div>
+                <button class="memory-btn" onclick="window.showMemory('26 August ko julus mein main sirf is umeed se gaya tha ki tumhari ek jhalak mil jaye, kyunki tumhe dekhe bahut din ho gaye the. Lekin shayad tum nahi aayi. Waise to har raat tumhare message ka intezar karta hu, par kuch raatein aisi hoti hain jo sone nahi deti. 27 August ki raat intezar karte-karte 2 baje meri aankh lag gayi... aur uske baad hi tumhara wo message aaya. Khud ko itna kosa ki kaash thodi der aur jaag leta! Uske baad agle 5 din tak main subah 4 baje tak jaagta raha, is umeed mein ki shayad aaj phir message aayega... lekin aisa na hua. Aaj bhi tumhara intezar hai, aur hamesha rahega.')">26 August Ka Julus Aur Wo Raat</button>
+                
+                <button class="memory-btn" onclick="window.showMemory('Aaj us aakhiri Insta message ko 48 din ho gaye hain. In 48 dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge...hamesha tumhara intezar rahega.')">Aaj Bhi Intezar Hain Tumhara...</button>
+            </div>
             <div class="memory-display" id="memoryDisplay"></div>
         </div>
 
@@ -256,7 +264,7 @@
             
             <textarea id="replyMessage" class="reply-textarea" placeholder="Jo bhi dil mein ho, befikar yahan likh do..."></textarea>
             
-            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-align: center; margin-top: 10px; font-family: sans-serif; line-height: 1.4;">
+            <div style="font-size: clamp(0.7rem, 2vw, 0.85rem); color: rgba(255,255,255,0.7); text-align: center; margin-top: 10px; font-family: sans-serif; line-height: 1.4;">
                 <i class="fa-solid fa-lock" style="font-size: 0.75rem; color: #a3c2ff;"></i> 
                 Befikar likho... yeh sirf mujh tak aayega. Kisi aur ko kabhi pata nahi chalega aur tumhare phone mein bhi kuch save nahi hoga.
             </div>
@@ -294,6 +302,7 @@
                 }, { once: true });
             });
         }
+        
         // ⏳ AUTOMATIC DAY COUNTER ⏳
         // Yahan 20 July (2:15 AM) ki date aur time set hai
         const lastTalkDate = new Date("2026-07-20T02:15:00").getTime();
@@ -301,15 +310,9 @@
         function calculateDays() {
             const now = new Date().getTime();
             const difference = now - lastTalkDate;
-            
-            // Milliseconds ko din (days) mein convert karna
             const daysPassed = Math.floor(difference / (1000 * 60 * 60 * 24));
-            
-            // HTML mein id="daysCount" ki jagah par din likh dena
             document.getElementById('daysCount').innerText = daysPassed;
         }
-        
-        // Page load hote hi function chala do
         calculateDays();
 
         // Gaana Switch karne ka function
