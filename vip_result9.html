@@ -148,7 +148,7 @@
         /* 📋 DETAILS TABLE */
         .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
         .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
-        .td-label { width: 40%; font-weight: 900; color: #29438e; text-transform: uppercase; }
+        .td-label { width: 45%; font-weight: 900; color: #29438e; text-transform: uppercase; white-space: nowrap; }
         .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
 
         /* 📊 MARKS BOX */
@@ -200,7 +200,7 @@
         <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
         <div id="resultSection">
-            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. M9F911...)">
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. P9R901...)">
             <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
             <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
                 <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
@@ -248,7 +248,7 @@
                     <td class="td-value" id="hdName">STUDENT NAME</td>
                 </tr>
                 <tr>
-                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
+                    <td class="td-label" style="letter-spacing: 6px;">SUBJECT</td>
                     <td class="td-value">HISTORY</td>
                 </tr>
                 <tr>
@@ -318,7 +318,7 @@
             "922": { code: "U9K922A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
             "923": { code: "N9K923A", set: "A", marks: "16", obj: "12", short: "4", long: "0" },
             "924": { code: "R9S924A", set: "A", marks: "19.5", obj: "12", short: "3.5", long: "4" },
-            "925": { code: "S9N925A", set: "A", marks: "20.5", obj: "13", short: "5.5", long: "2" }
+            "925": { code: "L9K925A", set: "A", marks: "20.5", obj: "13", short: "5.5", long: "2" }
         };
 
         window.onload = function() {
