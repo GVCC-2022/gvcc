@@ -262,7 +262,7 @@
                     <i class="fa-solid fa-book-open"></i><span>Notes</span>
                 </button>
 
-                <button class="menu-card card-notice" onclick="navigateWithAnimation('vip_result9.html')">
+                <button class="menu-card card-notice" onclick="navigateWithAnimation('notice.html')">
                     <i class="fa-solid fa-bullhorn"></i><span>Notice Board</span>
                 </button>
 
@@ -529,7 +529,7 @@
         window.routeToResult = function() {
             let roll = localStorage.getItem("studentRoll") || "";
             if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
-            else if (roll.startsWith("9")) { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
+            else if (roll.startsWith("9")) { navigateWithAnimation("vip_result9.html"); }
             else if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
             else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
         }
