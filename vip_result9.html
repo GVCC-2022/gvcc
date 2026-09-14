@@ -174,6 +174,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             border: 4px dashed #f5c518; 
             width: 70%; text-align: center;
+            transition: all 0.3s ease;
         }
 
         /* 🟢 GREEN SEAL LOGO */
@@ -248,7 +249,7 @@
                     <td class="td-value" id="hdName">STUDENT NAME</td>
                 </tr>
                 <tr>
-                    <td class="td-label" style="letter-spacing: 6px;">SUBJECT</td>
+                    <td class="td-label" style="letter-spacing: 6px; white-space: nowrap;">SUBJECT</td>
                     <td class="td-value">HISTORY</td>
                 </tr>
                 <tr>
@@ -384,35 +385,59 @@
                 if (isPassed) {
                     if(marksInt === 40) {
                         badge.innerHTML = "🏆 RANK 1 - CLASS TOPPER 👑";
-                        badge.style.color = "#b8860b";
-                        badge.style.border = "5px solid #d4af37";
-                        badge.style.background = "#fffde7";
+                        badge.style.color = "#ffffff";
+                        badge.style.background = "linear-gradient(135deg, #fbbf24, #f59e0b, #d4af37)";
+                        badge.style.border = "6px solid #b45309";
+                        badge.style.boxShadow = "0 15px 35px rgba(245, 158, 11, 0.5)";
+                        badge.style.textShadow = "3px 3px 6px rgba(0,0,0,0.4)";
+                        badge.style.transform = "scale(1.1)";
+                        badge.style.borderRadius = "50px";
                     } else if(marksInt >= 39) {
                         badge.innerHTML = "🥈 RANK 2 - OUTSTANDING 🌟";
-                        badge.style.color = "#475569";
-                        badge.style.border = "4px dashed #94a3b8";
-                        badge.style.background = "#f1f5f9";
+                        badge.style.color = "#ffffff";
+                        badge.style.background = "linear-gradient(135deg, #cbd5e1, #94a3b8, #64748b)";
+                        badge.style.border = "6px solid #475569";
+                        badge.style.boxShadow = "0 15px 35px rgba(148, 163, 184, 0.5)";
+                        badge.style.textShadow = "2px 2px 5px rgba(0,0,0,0.4)";
+                        badge.style.transform = "scale(1.05)";
+                        badge.style.borderRadius = "50px";
                     } else if(marksInt >= 38) {
                         badge.innerHTML = "🥉 RANK 3 - EXCELLENT ⭐";
-                        badge.style.color = "#9a3412";
-                        badge.style.border = "4px dashed #ea580c";
-                        badge.style.background = "#fff7ed";
+                        badge.style.color = "#ffffff";
+                        badge.style.background = "linear-gradient(135deg, #fdba74, #ea580c, #c2410c)";
+                        badge.style.border = "6px solid #9a3412";
+                        badge.style.boxShadow = "0 15px 35px rgba(234, 88, 12, 0.5)";
+                        badge.style.textShadow = "2px 2px 5px rgba(0,0,0,0.4)";
+                        badge.style.transform = "scale(1.05)";
+                        badge.style.borderRadius = "50px";
                     } else if(marksInt >= 30) {
                         badge.innerHTML = "Remarks: Very Good 🌟";
                         badge.style.color = "#e32726";
-                        badge.style.border = "4px dashed #f5c518";
                         badge.style.background = "#fffde7";
+                        badge.style.border = "4px dashed #f5c518";
+                        badge.style.boxShadow = "0 5px 15px rgba(0,0,0,0.08)";
+                        badge.style.textShadow = "none";
+                        badge.style.transform = "scale(1)";
+                        badge.style.borderRadius = "12px";
                     } else {
                         badge.innerHTML = "Remarks: Good Progress 👍";
                         badge.style.color = "#29438e";
-                        badge.style.border = "4px dashed #29438e";
                         badge.style.background = "#eef2ff";
+                        badge.style.border = "4px dashed #29438e";
+                        badge.style.boxShadow = "0 5px 15px rgba(0,0,0,0.08)";
+                        badge.style.textShadow = "none";
+                        badge.style.transform = "scale(1)";
+                        badge.style.borderRadius = "12px";
                     }
                 } else {
                     badge.innerHTML = "Remarks: Needs Improvement 📖";
                     badge.style.color = "#d32f2f";
-                    badge.style.border = "4px dashed #d32f2f";
                     badge.style.background = "#fef2f2";
+                    badge.style.border = "4px dashed #d32f2f";
+                    badge.style.boxShadow = "0 5px 15px rgba(0,0,0,0.08)";
+                    badge.style.textShadow = "none";
+                    badge.style.transform = "scale(1)";
+                    badge.style.borderRadius = "12px";
                 }
 
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
