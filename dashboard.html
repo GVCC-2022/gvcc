@@ -1,547 +1,479 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>GVCC - Student Dashboard</title>
-    
-    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GVCC - Final Result Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 🔥 GLOBAL THEME SYSTEM 🔥 -->
-    <link rel="stylesheet" href="theme.css">
-    <script src="theme.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        /* 👇 APP FEELING CODE 👇 */
-        * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+        /* ===========================
+             🔥 ULTRA-PREMIUM UI DASHBOARD 🔥
+        =========================== */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: radial-gradient(circle at top, #1e293b, #090e17); 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; padding: 20px 0; box-sizing: border-box; 
         }
-
-        input, textarea {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
-
-        img { -webkit-user-drag: none; }
-
-        /* 🔥 DASHBOARD SPECIFIC THEME VARIABLES 🔥 */
-        :root {
-            --primary: #003366;
-            --secondary: #007bff;
-            --success: #28a745;
-            --danger: #dc3545;
-            --card-bg: #ffffff;
-            --card-border: rgba(0,0,0,0.02);
-            --border-line: #f1f5f9;
-            --label-text: #64748b;
-            
-            /* Custom Colored Cards */
-            --diary-bg: #faf5ff;
-            --diary-text: #6b21a8;
-            --gallery-bg: linear-gradient(135deg, #fdf2f8, #fce7f3);
-            --gallery-border: #fbcfe8;
-            --gallery-text: #c026d3;
-            --install-bg: linear-gradient(135deg, #e0f2fe, #bae6fd);
-            --install-border: #7dd3fc;
-            --install-text: #0284c7;
-        }
-
-        /* 🌙 DASHBOARD SPECIFIC DARK VARIABLES */
-        [data-theme="dark"] {
-            --card-bg: #1e293b;
-            --card-border: rgba(255,255,255,0.05);
-            --border-line: #334155;
-            --label-text: #94a3b8;
-            
-            /* Custom Colored Cards Dark */
-            --diary-bg: #2e1065;
-            --diary-text: #d8b4fe;
-            --gallery-bg: linear-gradient(135deg, #4a044e, #2e1065);
-            --gallery-border: #701a75;
-            --gallery-text: #f0abfc;
-            --install-bg: linear-gradient(135deg, #075985, #0f172a);
-            --install-border: #0ea5e9;
-            --install-text: #38bdf8;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overscroll-behavior-y: none; 
-            touch-action: manipulation;  
-        }
-
-        .page-exit { animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
-
-        @keyframes zoomOutUp {
-            from { opacity: 1; transform: translateY(0) scale(1); }
-            to { opacity: 0; transform: translateY(-10vh) scale(0.95); }
-        }
-
-        #loading {
-            margin: 120px auto;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .smart-loader { position: relative; width: 75px; height: 75px; margin-bottom: 25px; }
-        .smart-loader::before, .smart-loader::after {
-            content: ""; position: absolute; border-radius: 50%; border: 4px solid transparent;
-        }
-        .smart-loader::before {
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-top-color: #003366; border-bottom-color: #007bff;
-            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-        }
-        .smart-loader::after {
-            top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border-left-color: #f59e0b; border-right-color: #10b981;
-            animation: spin-reverse 1s linear infinite;
-        }
-
-        .loader-icon {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); font-size: 26px; color: #003366;
-            animation: pulse-icon 1.5s ease-in-out infinite;
-        }
-
-        .loading-text {
-            font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
-            background: linear-gradient(90deg, #003366, #10b981, #007bff, #003366);
-            background-size: 200% auto; -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; animation: shine 2s linear infinite;
-        }
-
-        #mainContent { display: none; flex-direction: column; min-height: 100vh; }
-
-        header {
-            background: linear-gradient(135deg, #002244, var(--primary));
-            color: white; padding: 30px 15px 35px 15px; text-align: center;
-            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .container { max-width: 450px; width: 90%; margin: -25px auto 30px auto; flex: 1; }
-
-        .profile-card {
-            background: var(--card-bg); border-radius: 16px; padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--card-border);
-            margin-bottom: 25px; transition: all 0.3s ease;
-        }
-
-        .profile-header {
-            font-size: 16px; font-weight: 700; color: #007bff; margin-bottom: 15px;
-            display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--border-line); padding-bottom: 8px;
-        }
-
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--border-line); }
-        .info-row:last-child { border: none; }
-        .info-label { color: var(--label-text); font-weight: 500; }
-        .info-value { font-weight: 600; transition: color 0.3s; } 
-
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .full-width { grid-column: span 2; }
-
-        .menu-card {
-            background: var(--card-bg) !important; border: none; border-radius: 14px; padding: 18px 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent; color: inherit;
-        }
-        .menu-card:active { transform: scale(0.92) !important; opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-
-        .menu-card i { font-size: 24px; }
-        .menu-card span { font-size: 14px; font-weight: 600; }
-
-        .card-live { background: linear-gradient(135deg, #23d5ab, var(--success)) !important; color: white !important; flex-direction: row; padding: 14px; }
-        .card-live i { font-size: 20px; animation: pulse 1.5s infinite; }
-        .card-notes { color: #3b82f6; border-top: 4px solid #3b82f6; }
-        .card-notice { color: #f59e0b; border-top: 4px solid #f59e0b; }
-        .card-test { color: #ec4899; border-top: 4px solid #ec4899; }
-        .card-result { color: #10b981; border-top: 4px solid #10b981; }
         
-        .card-install { 
-            background: var(--install-bg) !important;
-            color: var(--install-text) !important; border: 1px solid var(--install-border); flex-direction: row; padding: 14px;
+        .container { 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 30px 20px; border-radius: 20px; width: 90%; max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
         }
-        .card-install i { font-size: 20px; animation: bounce 2s infinite; }
-
-        .btn-logout {
-            width: 100%; background: #ffe4e6; color: var(--danger); border: 1px solid #fecdd3;
-            padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.1s ease;
+        
+        .hidden { display: none; }
+        
+        .btn { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+            color: white; border: none; padding: 15px 20px; font-size: 16px; font-weight: bold; 
+            border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; 
+            margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); letter-spacing: 1px;
         }
-        .btn-logout:active { background: #fecdd3; transform: scale(0.95); }
-
-        footer {
-            background: #001529; color: #94a3b8; text-align: center; padding: 15px; font-size: 12px;
-            margin-top: auto; border-top-left-radius: 15px; border-top-right-radius: 15px;
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5); }
+        .btn:active { transform: translateY(1px); }
+        
+        .input-box { 
+            width: 90%; padding: 16px; border-radius: 10px; 
+            border: 2px solid #334155; background: rgba(0, 0, 0, 0.3); 
+            color: #f8fafc; font-size: 16px; text-transform: uppercase; 
+            text-align: center; margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+            box-sizing: border-box; letter-spacing: 2px; font-weight: bold;
         }
-        footer p { margin: 4px 0; }
-        footer strong { color: white; }
+        .input-box:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); background: rgba(0, 0, 0, 0.5); }
+        .input-box::placeholder { color: #64748b; font-weight: normal; letter-spacing: normal; text-transform: none; }
+        
+        .back-link { 
+            color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px;
+        }
+        .back-link:hover { color: white; background: rgba(255,255,255,0.1); }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
-        @keyframes pulse-icon { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } }
-        @keyframes shine { to { background-position: 200% center; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
+        /* 🔥 VIP MOBILE PREVIEW CARD 🔥 */
+        .mobile-preview-card {
+            margin-top: 15px; padding: 25px 15px; 
+            background: linear-gradient(145deg, #1e3a8a, #0f172a); 
+            border-radius: 16px; border: 2px solid #d4af37; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.15);
+            position: relative; overflow: hidden;
+            animation: cardReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; color: white;
+        }
+        @keyframes cardReveal { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .mobile-preview-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .preview-logo { width: 130px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+        .preview-class { margin: 0; color: #d4af37; font-size: 13px; letter-spacing: 3px; font-weight: 900; }
+        .preview-subject { color: #ffffff; font-size: 22px; margin: 5px 0 15px 0; font-weight: 900; text-transform: uppercase; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .preview-name { color: #ffd700; font-size: 20px; margin: 5px 0; font-weight: bold; letter-spacing: 1px; }
+        
+        .preview-marks-box { 
+            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 12px; 
+            padding: 15px; margin-top: 15px; background: rgba(0,0,0,0.4); 
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .preview-marks-label { margin: 0; color: #94a3b8; font-size: 11px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+        .preview-marks-value { margin: 5px 0 0 0; color: #ffffff; font-weight: 900; font-size: 38px; line-height: 1; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+
+        .share-btn {
+            background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; 
+            padding: 15px 20px; font-size: 16px; font-weight: 900; border-radius: 10px; 
+            cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; 
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.6); }
+        .share-btn:active { transform: translateY(1px); }
+
+        /* ===========================
+          HD PAPER MARKSHEET (1080x1920)
+        =========================== */
+        #resultCard {
+            width: 1080px; height: 1920px; position: relative; background-color: #f8fafc; 
+            display: flex; flex-direction: column; align-items: center; padding: 70px 80px;
+            box-sizing: border-box; color: #000000; 
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        /* EXACT BORDERS */
+        #resultCard::before { content: ""; position: absolute; inset: 25px; border: 8px solid #29438e; pointer-events: none; z-index: 10; }
+        #resultCard::after { content: ""; position: absolute; inset: 40px; border: 4px solid #f5c518; pointer-events: none; z-index: 10; }
+
+        /* SIDE TEXT INSIDE GOLDEN LINE */
+        .side-text-container {
+            position: absolute;
+            top: 0;
+            left: 45px; 
+            width: 35px; 
+            height: 1920px; 
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            z-index: 20;
+        }
+        .side-text { 
+            transform: rotate(-90deg); 
+            font-size: 24px; 
+            color: #29438e; 
+            font-weight: 900; 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            white-space: nowrap; 
+        }
+
+        /* 🪶 WATERMARK */
+        .watermark { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 850px; opacity: 0.08; z-index: 1; pointer-events: none; }
+
+        /* 🏫 HEADER */
+        .header { width: 100%; text-align: center; z-index: 5; margin-top: 15px; margin-bottom: 25px; }
+        .school-name { font-size: 58px; font-weight: 900; color: #e32726; margin: 0; font-family: 'Arial Black', Impact, sans-serif; letter-spacing: 1px; }
+        .school-address { font-size: 28px; color: #000; font-weight: 900; margin: 10px 0; }
+        .school-tagline { font-size: 32px; color: #000; font-weight: 900; margin: 10px 0; font-family: 'Segoe UI', Tahoma, sans-serif;}
+
+        /* 📜 TITLE BOX */
+        .document-title { font-size: 55px; font-weight: 900; color: #29438e; background: #ffffff; padding: 25px 50px; border: 3px solid #29438e; border-radius: 15px; z-index: 5; margin-bottom: 40px; width: 82%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        /* 📋 DETAILS TABLE */
+        .details-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 35px; margin-bottom: 35px; background: #fff; }
+        .details-table td { border: 3px solid #29438e; padding: 22px 30px; }
+        .td-label { width: 45%; font-weight: 900; color: #29438e; text-transform: uppercase; white-space: nowrap; }
+        .td-value { font-weight: 900; color: #000; text-transform: uppercase; text-align: center; }
+
+        /* 📊 MARKS BOX */
+        .marks-container { display: flex; width: 82%; border: 3px solid #29438e; z-index: 5; overflow: hidden; border-radius: 20px; margin-bottom: 35px; background: #fff; box-shadow: 0 4px 15px rgba(41, 67, 142, 0.1); }
+        .mark-box { flex: 1; text-align: center; padding: 30px 20px; }
+        .mark-box.total { border-right: 3px solid #29438e; }
+        .mark-label { font-size: 26px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;}
+        
+        .mark-value { font-size: 160px; font-weight: 900; margin-top: 5px; line-height: 1; letter-spacing: -2px; font-family: 'Arial Black', sans-serif;}
+        .val-total { color: #29438e; }
+        .val-obtained { color: #e32726; }
+
+        /* 📝 BREAKDOWN TABLE */
+        .breakdown-table { width: 82%; z-index: 5; border-collapse: collapse; font-size: 28px; margin-bottom: 40px; text-align: center; background: #fff; }
+        .breakdown-table th { border: 3px solid #29438e; color: #29438e; padding: 15px; font-weight: 900; font-size: 30px; }
+        .breakdown-table td { border: 3px solid #29438e; padding: 15px; font-size: 45px; font-weight: 900; color: #e32726; }
+
+        /* ⭐ VIP REMARKS BOX */
+        .remarks-box { 
+            font-size: 40px; font-weight: 900; padding: 18px 60px; 
+            border-radius: 12px; z-index: 5; background: #fffde7; 
+            color: #e32726; margin-bottom: auto; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 4px dashed #f5c518; 
+            width: 70%; text-align: center;
+        }
+
+        /* 🟢 GREEN SEAL LOGO */
+        .footer-logo { width: 220px; object-fit: contain; z-index: 5; margin-bottom: 15px; }
+        
+        /* 🌐 WEBSITE TEXT */
+        .footer-web { font-size: 26px; color: #7f8c8d; z-index: 5; font-family: 'Segoe UI', sans-serif;}
+
     </style>
+    <!-- GLOBAL THEME SYSTEM -->
+<link rel="stylesheet" href="theme.css">
+<script src="theme.js" defer></script>
 </head>
 <body>
 
-    <div id="loading">
-        <div class="smart-loader"><i class="fa-solid fa-book-open-reader loader-icon"></i></div>
-        <div class="loading-text">Getting Your Profile Ready...</div>
-    </div>
+    <div class="container">
+        <div style="text-align: left;">
+            <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+        
+        <h2 style="color: #60a5fa; margin-top: 0; font-size: 26px; font-weight: 800; text-shadow: 0 2px 10px rgba(59,130,246,0.3);">
+            <i class="fa-solid fa-file-contract" style="color: #3b82f6;"></i> History Result
+        </h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">Verify and download your official marksheet.</p>
 
-    <div id="mainContent">
-        <header>
-            <div style="position: fixed !important; top: 0; left: 0; width: 100%; background: linear-gradient(135deg, #002244 0%, #003366 100%); height: 95px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000 !important; display: flex; align-items: center; padding-left: 100px;">
-                <div style="position: absolute !important; left: 10px; top: -4px;">
-                    <img src="20260620_144347.png" alt="GVCC Logo" style="width: 100px !important; height: auto !important; background: transparent !important; border: none !important; box-shadow: none !important; pointer-events: none;">
-                </div>
-                <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; margin-left: 20px !important;">
-                    <h1 style="margin: 0 !important; padding: 0 !important; color: #ffffff !important; font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important;">Gyan Varsha Coaching Center</h1>
-                    <p style="margin: 2px 0 6px 0 !important; padding: 0 !important; color: #cfdef3 !important; font-size: 11px !important; font-weight: 500; letter-spacing: 0.5px !important;">Learn • Practice • Succeed</p>
-                    <div style="display: inline-block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 20px; color: #ffd700 !important; font-size: 10px !important; font-weight: bold; width: fit-content;">
-                        ✨ आपकी सफ़लता ही हमारी पहचान हैं..! ✨
-                    </div>
-                </div>
-            </div>
-            <div style="height: 110px; width: 100%; background: transparent;"></div>
-        </header>
-
-        <div class="container">
-            <div class="profile-card">
-                <div class="profile-header"><i class="fa-solid fa-id-card"></i> 👤 Student Profile</div>
-                <div class="info-row"><span class="info-label">Name:</span><span class="info-value" id="studentName">--</span></div>
-                <div class="info-row"><span class="info-label">Roll Number:</span><span class="info-value" id="studentRollDisplay">--</span></div>
-                <div class="info-row"><span class="info-label">Class:</span><span class="info-value" id="studentClass">--</span></div>
-            </div> 
-
-            <!-- 📌 NOTICES & EXAMS -->
-            <div id="live-updates-section" style="margin-top: 20px; margin-bottom: 25px; text-align: left;">
-                <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; font-size: 18px;">
-                    <i class="fa-solid fa-bell fa-shake"></i> Notice & Live Tests
-                </h3>
-                <div id="studentNotices"></div>
-                <div id="studentTests"></div>
-            </div>
-
-            <!-- 📌 CLEAN 2x2 GRID MENU -->
-            <div class="grid-menu">
-                <button class="menu-card full-width" style="border-left: 4px solid #8b5cf6; background: var(--diary-bg) !important; flex-direction: row; padding: 15px;" onclick="navigateWithAnimation('daily-diary.html')">
-                    <i class="fa-solid fa-clipboard-list fa-bounce" style="color: #8b5cf6; font-size: 22px; --fa-animation-duration: 2s;"></i>
-                    <span style="font-size: 16px; color: var(--diary-text); font-weight: 800;">Daily Class Diary (होमवर्क यहाँ देखें)</span>
-                </button>
-
-                <a href="https://meet.google.com/gon-jpoz-ptm" class="menu-card card-live full-width" target="_blank">
-                    <i class="fa-solid fa-video"></i><span>Join Live Class</span>
-                </a>
-
-                <button class="menu-card card-notes" onclick="navigateWithAnimation('notesmenu.html')">
-                    <i class="fa-solid fa-book-open"></i><span>Notes</span>
-                </button>
-
-                <button class="menu-card card-notice" onclick="navigateWithAnimation('vip_result9.html')">     <!-- notice.html -->
-                    <i class="fa-solid fa-bullhorn"></i><span>Notice Board</span>
-                </button>
-
-                <button class="menu-card card-test" onclick="routeToLiveTest()">
-                    <i class="fa-solid fa-pen-to-square"></i><span>Online Test</span>
-                </button>
-
-                <button class="menu-card card-result" onclick="routeToResult()">
-                    <i class="fa-solid fa-chart-bar"></i><span>Result</span>
-                </button>
-
-                <button class="menu-card full-width" style="color: var(--gallery-text); border: 1px solid var(--gallery-border); background: var(--gallery-bg) !important; flex-direction: row; padding: 14px;" onclick="navigateWithAnimation('gallery.html')">
-                    <i class="fa-solid fa-photo-film" style="font-size: 24px; animation: pulse 2s infinite;"></i>
-                    <span style="font-size: 15px; font-weight: 700;">✨ GVCC की कुछ सुनहरी यादें 🎞️</span>
-                </button>
-
-                <button class="menu-card card-install full-width" onclick="installApp()">
-                    <i class="fa-solid fa-download"></i><span>Install GVCC App</span>
-                </button>
-            </div>
-
-            <button class="btn-logout" id="logoutBtn">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
-            </button>
+        <div id="resultSection">
+            <input type="text" id="questionCodeInput" class="input-box" placeholder="Enter Exam Code (e.g. P9R901...)">
+            <button class="btn" onclick="verifyResult()">Fetch Result 🚀</button>
+            <p id="codeError" style="color: #ef4444; font-size: 14px; margin-top: 15px; display: none; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; border: 1px solid #ef4444;">
+                <i class="fa-solid fa-circle-exclamation"></i> Invalid Code! Access Denied.
+            </p>
         </div>
 
-        <footer>
-            <p>📝 Created By: <strong>Md Faiyaz Reza</strong></p>
-            <p>📍 Hirauta, Sheohar</p>
-            <p>© Gyan Varsha Coaching Center</p>
-        </footer>
+        <div id="cardWrapper" style="display: none;">
+            <div class="mobile-preview-card">
+                <img src="20260620_144347.png" alt="GVCC Logo" class="preview-logo">
+                <h3 class="preview-class">CLASS 9TH</h3>
+                <h2 class="preview-subject">HISTORY RESULT</h2>
+                <h2 class="preview-name" id="resNamePrev">Student Name</h2>
+                <div class="preview-marks-box">
+                    <p class="preview-marks-label">Marks Obtained</p>
+                    <p class="preview-marks-value" id="resMarksPrev">--/40</p>
+                    <p style="margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #ffd700;" id="resStatusPrev">Status: --</p>
+                </div>
+            </div>
+            <button class="share-btn" onclick="generateAndShareImage()" id="shareBtnObj">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download Marksheet
+            </button>
+        </div>
     </div>
 
-    <!-- UI Scripts -->
-    <script>
-        function navigateWithAnimation(url) {
-            document.body.classList.add('page-exit');
-            setTimeout(() => { window.location.href = url; }, 300);
-        }
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                document.body.classList.remove('page-exit');
-            }
-        });
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        window.installApp = async function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null;
-            } else {
-                alert("📲 App Install Kaise Karein:\n\n1. Browser menu (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.");
-            }
-        };
-    </script>
-
-    <!-- Notification Permission Script -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/firebase-messaging-sw.js').catch(err => console.log('SW Error:', err));
-        }
-        function askNotificationPermission() {
-            if (!("Notification" in window)) return;
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted" && window.generateFCMToken) window.generateFCMToken();
-            });
-        }
-        window.onload = function() { setTimeout(askNotificationPermission, 2500); };
-    </script>
-
-    <!-- 🌟 FIREBASE MAIN SCRIPT 🌟 -->
-    <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, setDoc, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-        import { getAnalytics, setUserProperties } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
-            authDomain: "gvcc-database.firebaseapp.com",
-            projectId: "gvcc-database",
-            storageBucket: "gvcc-database.firebasestorage.app",
-            messagingSenderId: "1063216875940",
-            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
-        };
-
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const db = getFirestore(app);
-        
-        let analytics = null; try { analytics = getAnalytics(app); } catch(e) {}
-        let messaging; try { if (typeof window !== "undefined" && "Notification" in window) messaging = getMessaging(app); } catch(e) {}
-
-        let studentClassGlobal = "10th";
-        
-        const activeRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
-        
-        // 🔥 SUPER FIX: Sirf LocalStorage se valid naam uthao. Agar NA/Data Not Found ho toh mat lo.
-        let savedName = localStorage.getItem("studentName") || localStorage.getItem("Name");
-        let savedClass = localStorage.getItem("studentClass") || localStorage.getItem("Class");
-
-        // Agar galti se NA save ho gaya hai, to use clear maano
-        if(savedName === "N/A" || savedName === "Data Not Found" || savedName === "undefined") {
-            savedName = null;
-        }
-
-        if (!activeRoll) {
-            window.location.replace("student-login.html"); 
-        } else {
-            // UI FORAN UPDATE KAREIN (0.01 seconds me)
-            if (savedName) {
-                document.getElementById("studentName").innerText = savedName;
-            }
-            if (savedClass && savedClass !== "N/A") {
-                document.getElementById("studentClass").innerText = savedClass + (String(savedClass).toLowerCase().includes('th') ? '' : 'th');
-            }
-            document.getElementById("studentRollDisplay").innerText = activeRoll;
+    <div style="position: absolute; top: -9999px; left: -9999px;">
+        <div id="resultCard">
             
-            // Screen turant dikha do, loader mat dikhao
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("mainContent").style.display = "flex";
+            <div class="side-text-container">
+                <div class="side-text" id="dynamicDateText">MONTHLY TEST : 2026-09-13</div>
+            </div>
+            
+            <img src="20260620_144347.png" class="watermark">
 
-            // Peeche chupke se Firebase check karega (Agar Local data nahi tha toh loader ke bina text replace karega)
-            fetchStudentData(activeRoll);
-        }
+            <div class="header">
+                <h1 class="school-name">GYAN VARSHA COACHING CENTER</h1>
+                <h2 class="school-address">स्थान :- Hirauta Ward no.13</h2>
+                <h3 class="school-tagline">आपकी सफलता ही हमारी पहचान है...!</h3>
+            </div>
 
-        async function fetchStudentData(roll) {
-            try {
-                const docRef = doc(db, "students", roll);
-                const docSnap = await getDoc(docRef);
+            <div class="document-title">History Result - Class 9th</div>
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    let fbName = data["Name "] || data.Name || data.name || data.StudentName;
-                    let fbClass = data["Class "] || data.Class || data.class || data.stdClass;
+            <table class="details-table">
+                <tr>
+                    <td class="td-label">STUDENT NAME</td>
+                    <td class="td-value" id="hdName">STUDENT NAME</td>
+                </tr>
+                <tr>
+                    <td class="td-label" style="letter-spacing: 6px;">SUBJECT</td>
+                    <td class="td-value">HISTORY</td>
+                </tr>
+                <tr>
+                    <td class="td-label">QUESTION SET CODE</td>
+                    <td class="td-value" id="hdSet" style="font-size: 45px;">A</td>
+                </tr>
+                <tr>
+                    <td class="td-label">RESULT STATUS</td>
+                    <td class="td-value" id="hdStatus" style="font-weight: 900;">--</td>
+                </tr>
+            </table>
 
-                    // FIREBASE MEIN ASLI NAAM HAI TABHI UPDATE KAREGA, WARNA "NA" KABHI NAHI LIKHEGA!
-                    if (fbName && fbName.trim() !== "") {
-                        document.getElementById("studentName").innerText = fbName;
-                        localStorage.setItem("studentName", fbName);
-                        localStorage.setItem("Name", fbName);
+            <div class="marks-container">
+                <div class="mark-box total">
+                    <div class="mark-label">MAXIMUM MARKS</div>
+                    <div class="mark-value val-total">40</div>
+                </div>
+                <div class="mark-box obtained">
+                    <div class="mark-label">MARKS OBTAINED</div>
+                    <div class="mark-value val-obtained" id="hdObtained">--</div>
+                </div>
+            </div>
+
+            <table class="breakdown-table">
+                <tr>
+                    <th>Objective</th>
+                    <th>Short Answer</th>
+                    <th>Long Answer</th>
+                </tr>
+                <tr>
+                    <td id="hdObj">--</td>
+                    <td id="hdShort">--</td>
+                    <td id="hdLong">--</td>
+                </tr>
+            </table>
+
+            <div id="performanceBadge" class="remarks-box">
+                Remarks: Outstanding 🌟
+            </div>
+
+            <img src="20260714_163333.png" class="footer-logo">
+            
+            <div class="footer-web">Visit Our Website: https://www.gvcc.online</div>
+        </div>
+    </div>
+
+    <script>
+        const resultDatabase = {
+            "901": { code: "P9R901A", set: "A", marks: "40", obj: "20", short: "10", long: "10" },
+            "902": { code: "A9K902A", set: "A", marks: "38", obj: "20", short: "8", long: "10" },
+            "903": { code: "S9K903A", set: "A", marks: "39", obj: "19", short: "10", long: "10" },
+            "904": { code: "K9K904A", set: "A", marks: "25", obj: "17", short: "4", long: "4" },
+            "905": { code: "N9P905A", set: "A", marks: "36", obj: "18", short: "10", long: "8" },
+            "906": { code: "S9K906A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "907": { code: "A9S907A", set: "A", marks: "13.5", obj: "10", short: "1.5", long: "2" },
+            "908": { code: "G9K908A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "910": { code: "P9K910A", set: "A", marks: "20", obj: "12", short: "8", long: "0" },
+            "911": { code: "M9K911A", set: "A", marks: "15.5", obj: "10", short: "5.5", long: "0" },
+            "912": { code: "A9K912A", set: "A", marks: "22.5", obj: "14", short: "6.5", long: "2" },
+            "913": { code: "R9K913A", set: "A", marks: "25.5", obj: "16", short: "4.5", long: "5" },
+            "914": { code: "S9A914A", set: "A", marks: "21", obj: "18", short: "3", long: "0" },
+            "915": { code: "P9K915A", set: "A", marks: "16", obj: "12", short: "2.5", long: "1.5" },
+            "916": { code: "R9R916A", set: "A", marks: "20", obj: "14", short: "6", long: "0" },
+            "918": { code: "A9M918A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "919": { code: "P9K919A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "920": { code: "K9K920A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "922": { code: "U9K922A", set: "A", marks: "00", obj: "00", short: "00", long: "00" }, // Absent
+            "923": { code: "N9K923A", set: "A", marks: "16", obj: "12", short: "4", long: "0" },
+            "924": { code: "R9S924A", set: "A", marks: "19.5", obj: "12", short: "3.5", long: "4" },
+            "925": { code: "L9K925A", set: "A", marks: "20.5", obj: "13", short: "5.5", long: "2" }
+        };
+
+        window.onload = function() {
+            let loggedInClass = localStorage.getItem("studentClass") || localStorage.getItem("Class"); 
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo");
+
+            if (!loggedInRoll || !loggedInClass) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            if (loggedInClass.includes("9")) {
+                document.getElementById("resultSection").classList.remove("hidden");
+            } else {
+                document.getElementById("classErrorBox").classList.remove("hidden");
+            }
+        };
+
+        function verifyResult() {
+            let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
+            let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
+            let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
+            let errorMsg = document.getElementById("codeError");
+
+            if (!loggedInRoll || !loggedInName) {
+                alert("⚠️ Kripya pehle Dashboard se login karein!");
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+            let studentData = resultDatabase[loggedInRoll];
+            
+            if (studentData && enteredCode === studentData.code) {
+                errorMsg.style.display = "none";
+                document.getElementById("resultSection").style.display = "none"; 
+                document.getElementById("cardWrapper").style.display = "block";
+                
+                // Common Details
+                document.getElementById("hdName").innerText = loggedInName;
+                document.getElementById("hdSet").innerText = studentData.set;
+                document.getElementById("resNamePrev").innerText = loggedInName;
+
+                // PASS/FAIL & RANKING LOGIC
+                let marksInt = parseFloat(studentData.marks);
+                let isPassed = marksInt >= 16; // 40% of 40 is 16
+
+                // Mobile View Preview Setup
+                document.getElementById("resMarksPrev").innerText = studentData.marks + "/40";
+                document.getElementById("resStatusPrev").innerText = "Status: " + (isPassed ? "PASSED ✅" : "FAILED ❌");
+                document.getElementById("resStatusPrev").style.color = isPassed ? "#34d399" : "#f87171";
+
+                // HD Marksheet Setup
+                document.getElementById("hdObtained").innerText = studentData.marks;
+                document.getElementById("hdObj").innerText = studentData.obj;
+                document.getElementById("hdShort").innerText = studentData.short;
+                document.getElementById("hdLong").innerText = studentData.long;
+                
+                document.getElementById("hdStatus").innerText = isPassed ? "PASSED" : "FAILED";
+                document.getElementById("hdStatus").style.color = isPassed ? "#29be39" : "#ed4337";
+
+                const badge = document.getElementById("performanceBadge");
+                if (isPassed) {
+                    if(marksInt === 40) {
+                        badge.innerHTML = "🏆 RANK 1 - CLASS TOPPER 👑";
+                        badge.style.color = "#b8860b";
+                        badge.style.border = "5px solid #d4af37";
+                        badge.style.background = "#fffde7";
+                    } else if(marksInt >= 39) {
+                        badge.innerHTML = "🥈 RANK 2 - OUTSTANDING 🌟";
+                        badge.style.color = "#475569";
+                        badge.style.border = "4px dashed #94a3b8";
+                        badge.style.background = "#f1f5f9";
+                    } else if(marksInt >= 38) {
+                        badge.innerHTML = "🥉 RANK 3 - EXCELLENT ⭐";
+                        badge.style.color = "#9a3412";
+                        badge.style.border = "4px dashed #ea580c";
+                        badge.style.background = "#fff7ed";
+                    } else if(marksInt >= 30) {
+                        badge.innerHTML = "Remarks: Very Good 🌟";
+                        badge.style.color = "#e32726";
+                        badge.style.border = "4px dashed #f5c518";
+                        badge.style.background = "#fffde7";
+                    } else {
+                        badge.innerHTML = "Remarks: Good Progress 👍";
+                        badge.style.color = "#29438e";
+                        badge.style.border = "4px dashed #29438e";
+                        badge.style.background = "#eef2ff";
                     }
-                    if (fbClass) {
-                        let cleanClass = String(fbClass).trim();
-                        studentClassGlobal = cleanClass;
-                        document.getElementById("studentClass").innerText = cleanClass + (cleanClass.toLowerCase().includes('th') ? '' : 'th');
-                        localStorage.setItem("studentClass", cleanClass);
-                        localStorage.setItem("Class", cleanClass);
-                        if (analytics) { try { setUserProperties(analytics, { class_group: cleanClass }); } catch(e) {} }
-                    }
+                } else {
+                    badge.innerHTML = "Remarks: Needs Improvement 📖";
+                    badge.style.color = "#d32f2f";
+                    badge.style.border = "4px dashed #d32f2f";
+                    badge.style.background = "#fef2f2";
                 }
-            } catch (error) {
-                console.log("Network slow, using local data only.");
+
+                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
+                
+            } else {
+                errorMsg.style.display = "block";
+                document.getElementById("cardWrapper").style.display = "none";
             }
         }
 
-        // Notices Load
-        const qNotices = query(collection(db, "notices"), orderBy("timestamp", "desc"));
-        onSnapshot(qNotices, (snapshot) => {
-            const noticeBox = document.getElementById("studentNotices");
-            if(noticeBox) noticeBox.innerHTML = ""; 
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                if(noticeBox) noticeBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
-                        <div style="color: #94a3b8; font-size: 13px; margin-bottom: 5px;">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || 'General'}) • Target: ${data.targetClass || 'All'}
-                        </div>
-                        <div style="color: #f8fafc; font-size: 15px;">${data.message || ''}</div>
-                    </div>
-                `;
-            });
-        });
+        function generateAndShareImage() {
+            const btn = document.getElementById("shareBtnObj");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
 
-        // Popup Radar
-        const popupQuery = query(collection(db, "notices"), orderBy("timestamp", "desc"), limit(1));
-        onSnapshot(popupQuery, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const notice = change.doc.data();
-                    const noticeId = change.doc.id;
-                    let cleanNoticeClass = String(notice.targetClass).replace(/\D/g, "");
-                    let cleanStudentClass = String(studentClassGlobal).replace(/\D/g, "");
-                    if (notice.targetClass === "All" || cleanNoticeClass === cleanStudentClass) {
-                        const seenNotices = JSON.parse(localStorage.getItem("seenNotices") || "[]");
-                        if (!seenNotices.includes(noticeId)) {
-                            showNoticePopup(notice.teacherName || "GVCC Faculty", notice.message);
-                            seenNotices.push(noticeId);
-                            localStorage.setItem("seenNotices", JSON.stringify(seenNotices));
+            html2canvas(document.querySelector("#resultCard"), {
+                scale: 2,           
+                useCORS: true,
+                backgroundColor: "#f8fafc",
+                logging: false
+            }).then(canvas => {
+                const imageData = canvas.toDataURL("image/png", 1.0);
+                const fileName = `GVCC_${document.getElementById("hdName").innerText.replace(/ /g,"_")}_Marksheet.png`;
+
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], fileName, { type: blob.type });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                title: 'GVCC Formal Marksheet',
+                                text: 'Mera GVCC Class 9th History ka Monthly Test ka Result. 📄',
+                                files: [file]
+                            }).catch(err => forceDownload(imageData, fileName));
+                        } else {
+                            forceDownload(imageData, fileName);
                         }
-                    }
-                }
+                    });
+
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }).catch(err => {
+                alert("⚠️ Document generate karne mein problem aayi.");
+                btn.innerHTML = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
             });
-        });
-
-        function showNoticePopup(sender, text) {
-            try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e){}
-            const pop = document.createElement("div");
-            pop.style.position = "fixed"; pop.style.top = "20px"; pop.style.left = "50%"; 
-            pop.style.transform = "translateX(-50%)"; pop.style.zIndex = "99999"; pop.style.width = "90vw"; pop.style.maxWidth = "350px";
-            pop.innerHTML = `
-                <div style="background:#1e293b; border:2px solid #f59e0b; padding:20px; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.7); animation: dropDownNotice 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-                    <h3 style="margin:0 0 10px 0; color:#f59e0b; font-size: 18px;"><i class="fa-solid fa-bell fa-shake"></i> New Notice • ${sender}</h3>
-                    <p style="margin:0; font-size:15px; color:#f8fafc; line-height: 1.5;">${text}</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top:15px; width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; padding:10px; font-weight:bold; border-radius:8px; cursor:pointer; font-size: 14px;">OK, Got It!</button>
-                </div>
-                <style>@keyframes dropDownNotice { from { transform: translateY(-150px); opacity:0; } to { transform: translateY(0); opacity:1; } }</style>
-            `;
-            document.body.appendChild(pop);
         }
 
-        // Active Tests
-        const qTests = query(collection(db, "active_tests"), orderBy("timestamp", "desc"));
-        onSnapshot(qTests, (snapshot) => {
-            const testBox = document.getElementById("studentTests");
-            if(!testBox) return;
-            testBox.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                testBox.innerHTML += `
-                    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #10b981; padding: 15px; margin-bottom: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <div>
-                            <div style="color: #94a3b8; font-size: 13px; margin-bottom: 3px;">
-                                <i class="fa-solid fa-file-signature"></i> <strong>${data.teacherName || 'Teacher'}</strong> (${data.subject || ''}) • ${data.targetClass || ''}
-                            </div>
-                            <div style="color: #f8fafc; font-size: 16px; font-weight: bold;">${data.testName || 'Online Test'}</div>
-                        </div>
-                        <a href="live-exam.html?testId=${doc.id}" style="background: #10b981; color: #0f172a; padding: 8px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: 0.3s; white-space: nowrap;">
-                            Start Test <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-            });
-        });
-
-        window.generateFCMToken = async function() {
-            if(!messaging) return;
-            try {
-                const registration = await navigator.serviceWorker.ready; 
-                const currentToken = await getToken(messaging, { 
-                    vapidKey: "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM",
-                    serviceWorkerRegistration: registration 
-                });
-                if (currentToken && activeRoll) await setDoc(doc(db, "students", activeRoll), { fcmToken: currentToken }, { merge: true });
-            } catch (err) { console.log("FCM Token Error:", err); }
+        function forceDownload(imageData, fileName) {
+            const link = document.createElement("a");
+            link.download = fileName;
+            link.href = imageData;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert("✅ Aapka HD Marksheet Download ho gaya hai!");
         }
-        if ("Notification" in window && Notification.permission === "granted") window.generateFCMToken();
-
-        // Routing Logic
-        window.routeToVIPResult = function() {
-            let roll = localStorage.getItem("studentRoll") || "";
-            if (!roll) { alert("⚠️ Please login first!"); return; }
-            if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
-            else if (roll.startsWith("9")) { navigateWithAnimation("vip_result9.html"); }
-            else if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("vip_result10.html"); }
-            else { alert("⚠️ Error: Aapki class ke liye koi VIP result nahi hai."); }
-        }
-        window.routeToLiveTest = function() {
-            let roll = localStorage.getItem("studentRoll") || "";
-            if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("history10.html"); }
-            else if (roll.startsWith("9")) { alert("⚠️ Error: Aapki class ke liye koi Online Test nahi hai."); }
-            else if (roll.startsWith("8")) { alert("⚠️ Error: Aapki class ke liye koi Online Test nahi hai."); }
-            else { alert("⚠️ Error: Aapki class ke liye koi active test nahi hai."); }
-        }
-        window.routeToResult = function() {
-            let roll = localStorage.getItem("studentRoll") || "";
-            if (roll.startsWith("10") || roll === "2356") { navigateWithAnimation("result10.html"); }
-            else if (roll.startsWith("9")) { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
-            else if (roll.startsWith("8")) { navigateWithAnimation("vip_result8.html"); }
-            else { alert("⚠️ Error: Aapki class ke liye koi result nahi hai."); }
-        }
-
-        window.logout = function() { 
-            document.body.classList.add('page-exit'); 
-            setTimeout(() => {
-                localStorage.clear(); 
-                window.location.replace("student-login.html"); 
-            }, 300);
-        }
-        document.getElementById("logoutBtn").addEventListener("click", window.logout);
     </script>
 </body>
 </html>
