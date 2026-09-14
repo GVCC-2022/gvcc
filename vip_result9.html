@@ -185,8 +185,8 @@
 
     </style>
     <!-- GLOBAL THEME SYSTEM -->
-<link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
 </head>
 <body>
 
@@ -296,7 +296,22 @@
         </div>
     </div>
 
-    <script>
+    <!-- 🔥 FIREBASE TRACKING MODULE 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI", 
+            authDomain: "gvcc-database.firebaseapp.com", 
+            projectId: "gvcc-database", 
+            storageBucket: "gvcc-database.firebasestorage.app", 
+            messagingSenderId: "1063216875940", 
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const resultDatabase = {
             "901": { code: "P9R901A", set: "A", marks: "40", obj: "20", short: "10", long: "10" },
             "902": { code: "A9K902A", set: "A", marks: "38", obj: "20", short: "8", long: "10" },
@@ -339,7 +354,7 @@
             }
         };
 
-        function verifyResult() {
+        window.verifyResult = async function() {
             let enteredCode = document.getElementById("questionCodeInput").value.trim().toUpperCase();
             let loggedInRoll = localStorage.getItem("studentRoll") || localStorage.getItem("loggedInRollNo"); 
             let loggedInName = localStorage.getItem("studentName") || localStorage.getItem("Name");
@@ -365,7 +380,7 @@
 
                 // PASS/FAIL & RANKING LOGIC
                 let marksInt = parseFloat(studentData.marks);
-                let isPassed = marksInt >= 16; // 40% of 40 is 16
+                let isPassed = marksInt >= 16; 
 
                 // Mobile View Preview Setup
                 document.getElementById("resMarksPrev").innerText = studentData.marks + "/40";
@@ -392,7 +407,7 @@
                         badge.style.textShadow = "1px 1px 5px rgba(255,215,0,0.5)";
                         badge.style.transform = "scale(1.05)";
                         badge.style.borderRadius = "15px";
-                        badge.style.letterSpacing = "2px";
+                        badge.style.letterSpacing = "3px";
                     } else if(marksInt >= 39) {
                         badge.innerHTML = "🥈 RANK 2 : OUTSTANDING 🥈";
                         badge.style.color = "#f8fafc";
@@ -402,7 +417,7 @@
                         badge.style.textShadow = "1px 1px 5px rgba(255,255,255,0.4)";
                         badge.style.transform = "scale(1.05)";
                         badge.style.borderRadius = "15px";
-                        badge.style.letterSpacing = "2px";
+                        badge.style.letterSpacing = "3px";
                     } else if(marksInt >= 38) {
                         badge.innerHTML = "🥉 RANK 3 : EXCELLENT 🥉";
                         badge.style.color = "#ffedd5";
@@ -412,7 +427,7 @@
                         badge.style.textShadow = "1px 1px 5px rgba(234,88,12,0.4)";
                         badge.style.transform = "scale(1.05)";
                         badge.style.borderRadius = "15px";
-                        badge.style.letterSpacing = "2px";
+                        badge.style.letterSpacing = "3px";
                     } else if(marksInt >= 30) {
                         badge.innerHTML = "Remarks: Very Good 🌟";
                         badge.style.color = "#e32726";
@@ -446,15 +461,28 @@
                     badge.style.letterSpacing = "1px";
                 }
 
+                // 🔥 DATABASE TRACKING LOGIC 🔥
+                try {
+                    const statusRef = doc(db, "vip_results_status", loggedInRoll);
+                    await setDoc(statusRef, { 
+                        checked: true, 
+                        checkedAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), 
+                        className: "9th" 
+                    }, { merge: true });
+                    console.log("Success: Database updated to 'Checked'");
+                } catch (error) { 
+                    console.error("Database error: ", error); 
+                }
+
                 try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e){}
                 
             } else {
                 errorMsg.style.display = "block";
                 document.getElementById("cardWrapper").style.display = "none";
             }
-        }
+        };
 
-        function generateAndShareImage() {
+        window.generateAndShareImage = function() {
             const btn = document.getElementById("shareBtnObj");
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing HD Result...';
@@ -494,9 +522,9 @@
                 btn.style.opacity = "1";
                 btn.style.pointerEvents = "auto";
             });
-        }
+        };
 
-        function forceDownload(imageData, fileName) {
+        window.forceDownload = function(imageData, fileName) {
             const link = document.createElement("a");
             link.download = fileName;
             link.href = imageData;
@@ -504,7 +532,7 @@
             link.click();
             document.body.removeChild(link);
             alert("✅ Aapka HD Marksheet Download ho gaya hai!");
-        }
+        };
     </script>
 </body>
 </html>
