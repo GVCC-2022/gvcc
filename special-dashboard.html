@@ -149,6 +149,26 @@
             .send-btn { background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a; padding: 15px 30px; border-radius: 30px; cursor: pointer; margin-top: 25px; width: 100%; font-size: 22px; font-family: 'Playfair Display', serif; }
             .close-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
         }
+        /* --- LIVE TIMER CSS --- */
+        .live-timer {
+            position: absolute;
+            top: 25px; /* Screen ke upar se gap */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            text-align: center;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            white-space: nowrap; /* Taki text ek hi line me rahe */
+        }
+        .ms-text { color: #ffbc7a; font-family: monospace; font-size: 1.1em; } /* Millisecond ka rang alag */
     </style>
 </head>
 <body>
@@ -159,6 +179,8 @@
     <audio id="pankhMusic" src="songs/rahna.mp3" loop></audio>
 
     <div id="secretWorld">
+        <!-- LIVE TIME ELAPSED TIMER (TOP) -->
+        <div id="liveTimer" class="live-timer"></div>
         <!-- Cinematic Background & Animations -->
         <div class="bg-image"></div>
         <div class="twinkling-stars"></div>
@@ -250,20 +272,39 @@
             });
         }
         
-        // ⏳ AUTOMATIC DAY COUNTER & DYNAMIC BUTTON TEXT ⏳
+        // ⏳ SUPER FAST LIVE TIMER (Time Elapsed) ⏳
         const lastTalkDate = new Date("2026-07-20T02:04:00").getTime();
         
-        function calculateDays() {
+        function updateLiveTimer() {
             const now = new Date().getTime();
             const difference = now - lastTalkDate;
-            const daysPassed = Math.floor(difference / (1000 * 60 * 60 * 24));
             
-            // Screen par "Aaj X din guzar gaye..." update karna
-            document.getElementById('daysCount').innerText = daysPassed;
+            // Time calculate karna
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((difference / 1000 / 60) % 60);
+            const secs = Math.floor((difference / 1000) % 60);
+            const ms = Math.floor((difference % 1000));
             
-            // YAHAN AAPKA NAYA FEATURE HAI:
-            // Aakhiri button ka text jisme automatic din (daysPassed) jud jayega
-            const lastMemoryText = `Aaj tumse baat kiye ${daysPassed} din ho gaye hain........ In ${daysPassed} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
+            // Single digit ko double digit banana (jaise 5 ko 05)
+            const h = hours.toString().padStart(2, '0');
+            const m = mins.toString().padStart(2, '0');
+            const s = secs.toString().padStart(2, '0');
+            const mill = ms.toString().padStart(3, '0'); // MS 3 digit ka hoga
+            
+            // Upar wale timer me text dikhana
+            const timerDiv = document.getElementById('liveTimer');
+            if(timerDiv) {
+                timerDiv.innerHTML = `${days} Days, ${h}:${m}:${s} : <span class="ms-text">${mill}</span>`;
+            }
+            
+            // Niche aapke 'emotions-text' aur button me sirf din (days) update karna
+            const daysCountSpan = document.getElementById('daysCount');
+            if(daysCountSpan) {
+                daysCountSpan.innerText = days;
+            }
+            
+            const lastMemoryText = `Aaj tumse baat kiye ${days} din ho gaye hain........ In ${days} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
             
             const lastBtn = document.getElementById('lastMemoryBtn');
             if(lastBtn) {
@@ -272,6 +313,9 @@
                 };
             }
         }
+        
+        // Har 10 millisecond me timer ko update karo (isse millisecond bhagta hua dikhega)
+        setInterval(updateLiveTimer, 10);
         calculateDays();
 
         function switchAudio(newAudioId) {
