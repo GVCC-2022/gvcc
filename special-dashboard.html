@@ -149,26 +149,34 @@
             .send-btn { background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a; padding: 15px 30px; border-radius: 30px; cursor: pointer; margin-top: 25px; width: 100%; font-size: 22px; font-family: 'Playfair Display', serif; }
             .close-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
         }
-        /* --- LIVE TIMER CSS --- */
+
+        /* =========================================
+           4. ⏱️ LIVE TIMER FLIP CSS ⏱️
+        ========================================= */
         .live-timer {
-            position: absolute;
-            top: 25px; /* Screen ke upar se gap */
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1rem, 3vw, 1.4rem);
-            text-align: center;
-            z-index: 10;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            white-space: nowrap; /* Taki text ek hi line me rahe */
+            position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 10;
         }
-        .ms-text { color: #ffbc7a; font-family: monospace; font-size: 1.1em; } /* Millisecond ka rang alag */
+        .flip-card { display: flex; flex-direction: column; align-items: center; }
+        
+        .flip-card span {
+            background: rgba(25, 25, 25, 0.8); color: #fff; font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: bold;
+            padding: 8px 10px; border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.1);
+            position: relative; border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+        }
+        /* Flip clock ki middle line (Kat ka nishan) */
+        .flip-card span::after {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0;
+            height: 2px; background: rgba(0,0,0,0.8); box-shadow: 0 1px 1px rgba(255,255,255,0.1);
+            margin-top: -1px;
+        }
+        .flip-card small {
+            color: #ffbc7a; font-family: sans-serif; font-size: 10px; margin-top: 5px; 
+            text-transform: uppercase; letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -179,8 +187,15 @@
     <audio id="pankhMusic" src="songs/rahna.mp3" loop></audio>
 
     <div id="secretWorld">
-        <!-- LIVE TIME ELAPSED TIMER (TOP) -->
-        <div id="liveTimer" class="live-timer"></div>
+        
+        <!-- ⏱️ FLIP STYLE LIVE TIMER ⏱️ -->
+        <div id="liveTimer" class="live-timer">
+            <div class="flip-card"><span id="t-days">00</span><small>Days</small></div>
+            <div class="flip-card"><span id="t-hours">00</span><small>Hrs</small></div>
+            <div class="flip-card"><span id="t-mins">00</span><small>Min</small></div>
+            <div class="flip-card"><span id="t-secs">00</span><small>Sec</small></div>
+        </div>
+
         <!-- Cinematic Background & Animations -->
         <div class="bg-image"></div>
         <div class="twinkling-stars"></div>
@@ -224,7 +239,6 @@
                 <button class="memory-btn" onclick="window.showMemory('Us raat jab tumne achanak Instagram par keh diya ki \'Aaj se hamari baaten band, baat ke liye good bye\', mera dil jaise ruk sa gaya tha. Main tumhare aage gidgidaya, baar-baar request ki, kaha ki mera man nahi lagega... Aadhi raat ko mujhe nind nahi aa rahi thi, bas ek hi darr lag raha tha ki ab tumse kabhi baat nahi hogi. Maine kaha tha na, main sirf apne mahboob ka intezar karta hu. Woh raat maine akele tadap kar kaise guzari hai, iska hisaab sirf mera Khuda janta hai.')">Woh Aakhiri Alvida Aur Meri Tadap</button>
                 <button class="memory-btn" onclick="window.showMemory('26 August ko julus mein main sirf is umeed se gaya tha ki tumhari ek jhalak mil jaye, kyunki tumhe dekhe bahut din ho gaye the. Lekin shayad tum nahi aayi. Waise to har raat tumhare message ka intezar karta hu, par kuch raatein aisi hoti hain jo sone nahi deti. 27 August ki raat intezar karte-karte 2 baje meri aankh lag gayi... aur uske baad hi tumhara wo message aaya. Khud ko itna kosa ki kaash thodi der aur jaag leta! Uske baad agle 5 din tak main subah 4 baje tak jaagta raha, is umeed mein ki shayad aaj phir message aayega... lekin aisa na hua. Aaj bhi tumhara intezar hai, aur hamesha rahega.')">26 August Ka Julus Aur Wo Raat</button>
                 
-                <!-- Yahan ID add ki gayi hai taaki JS ise automatically update kar sake -->
                 <button class="memory-btn" id="lastMemoryBtn">Aaj Bhi Intezar Hain Tumhara...</button>
             </div>
             <div class="memory-display" id="memoryDisplay"></div>
@@ -272,51 +286,50 @@
             });
         }
         
-        // ⏳ SUPER FAST LIVE TIMER (Time Elapsed) ⏳
+        // ⏳ LIVE FLIP TIMER & BUTTON FIX ⏳
         const lastTalkDate = new Date("2026-07-20T02:04:00").getTime();
         
         function updateLiveTimer() {
             const now = new Date().getTime();
             const difference = now - lastTalkDate;
             
-            // Time calculate karna
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
             const mins = Math.floor((difference / 1000 / 60) % 60);
             const secs = Math.floor((difference / 1000) % 60);
-            const ms = Math.floor((difference % 1000));
             
-            // Single digit ko double digit banana (jaise 5 ko 05)
             const h = hours.toString().padStart(2, '0');
             const m = mins.toString().padStart(2, '0');
             const s = secs.toString().padStart(2, '0');
-            const mill = ms.toString().padStart(3, '0'); // MS 3 digit ka hoga
             
-            // Upar wale timer me text dikhana
-            const timerDiv = document.getElementById('liveTimer');
-            if(timerDiv) {
-                timerDiv.innerHTML = `${days} Days, ${h}:${m}:${s} : <span class="ms-text">${mill}</span>`;
-            }
+            // UI me flip cards ko update karna
+            document.getElementById('t-days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('t-hours').innerText = h;
+            document.getElementById('t-mins').innerText = m;
+            document.getElementById('t-secs').innerText = s;
             
-            // Niche aapke 'emotions-text' aur button me sirf din (days) update karna
+            // Niche wale paragraph me din update
             const daysCountSpan = document.getElementById('daysCount');
             if(daysCountSpan) {
                 daysCountSpan.innerText = days;
             }
-            
-            const lastMemoryText = `Aaj tumse baat kiye ${days} din ho gaye hain........ In ${days} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
-            
-            const lastBtn = document.getElementById('lastMemoryBtn');
-            if(lastBtn) {
-                lastBtn.onclick = function() {
-                    window.showMemory(lastMemoryText);
-                };
-            }
         }
         
-        // Har 10 millisecond me timer ko update karo (isse millisecond bhagta hua dikhega)
-        setInterval(updateLiveTimer, 10);
-        calculateDays();
+        // Har 1 second (1000ms) me time badhlega, isse code crash nahi hoga
+        setInterval(updateLiveTimer, 1000);
+        updateLiveTimer(); // Page khulte hi run karne ke liye
+
+        // Yahan par humne "Last Button" ka function theek kiya hai
+        const lastBtn = document.getElementById('lastMemoryBtn');
+        if(lastBtn) {
+            lastBtn.onclick = function() {
+                // Click karte hi exact din nikalega
+                const diff = new Date().getTime() - lastTalkDate;
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const text = `Aaj tumse baat kiye ${d} din ho gaye hain........ In ${d} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
+                window.showMemory(text);
+            };
+        }
 
         function switchAudio(newAudioId) {
             currentAudio.pause();
@@ -392,7 +405,7 @@
                 }); 
                 
                 document.getElementById('replyMessage').value = "";
-                btn.innerHTML = 'Bhej Do <i class="fa-solid fa-heart"></i>';
+                btn.innerHTML = 'Message Bhej Do <i class="fa-solid fa-heart"></i>';
                 document.getElementById('replyStatus').style.display = "block";
                 
                 setTimeout(() => {
