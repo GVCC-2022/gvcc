@@ -151,31 +151,42 @@
         }
 
         /* =========================================
-           4. ⏱️ LIVE TIMER FLIP CSS ⏱️
+           4. ⏱️ REAL 3D PAGE FLIP TIMER CSS ⏱️
         ========================================= */
         .live-timer {
             position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 8px; z-index: 10;
+            perspective: 800px; /* 3D effect ke liye zaroori hai */
         }
         .flip-card { display: flex; flex-direction: column; align-items: center; }
         
+        /* Box ka basic design (ab koi cut-line nahi hai) */
         .flip-card span {
-            background: rgba(25, 25, 25, 0.8); color: #fff; font-family: 'Courier New', Courier, monospace;
-            font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: bold;
-            padding: 8px 10px; border-radius: 8px;
+            background: rgba(25, 25, 25, 0.85); color: #fff; font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.4rem, 5vw, 1.8rem); font-weight: bold;
+            padding: 10px 14px; border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.1);
-            position: relative; border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(5px);
+            display: inline-block;
         }
-        /* Flip clock ki middle line (Kat ka nishan) */
-        .flip-card span::after {
-            content: ''; position: absolute; top: 50%; left: 0; right: 0;
-            height: 2px; background: rgba(0,0,0,0.8); box-shadow: 0 1px 1px rgba(255,255,255,0.1);
-            margin-top: -1px;
+
+        /* Yeh class JavaScript lagayega jab number paltega */
+        .flip-anim {
+            animation: flipPage 0.4s ease-in-out;
         }
+
+        /* Page Flip Animation (90 degree ghoom kar wapas aana) */
+        @keyframes flipPage {
+            0% { transform: rotateX(0deg); }
+            49% { transform: rotateX(90deg); opacity: 0.5; } /* Upar se niche palat raha hai */
+            51% { transform: rotateX(-90deg); opacity: 0.5; } /* Naya number yahan aayega */
+            100% { transform: rotateX(0deg); }
+        }
+
         .flip-card small {
-            color: #ffbc7a; font-family: sans-serif; font-size: 10px; margin-top: 5px; 
-            text-transform: uppercase; letter-spacing: 1px;
+            color: #ffbc7a; font-family: sans-serif; font-size: 11px; margin-top: 6px; 
+            text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
         }
     </style>
 </head>
@@ -188,7 +199,7 @@
 
     <div id="secretWorld">
         
-        <!-- ⏱️ FLIP STYLE LIVE TIMER ⏱️ -->
+        <!-- ⏱️ 3D FLIP LIVE TIMER ⏱️ -->
         <div id="liveTimer" class="live-timer">
             <div class="flip-card"><span id="t-days">00</span><small>Days</small></div>
             <div class="flip-card"><span id="t-hours">00</span><small>Hrs</small></div>
@@ -286,9 +297,27 @@
             });
         }
         
-        // ⏳ LIVE FLIP TIMER & BUTTON FIX ⏳
+        // ⏳ 3D FLIP TIMER LOGIC ⏳
         const lastTalkDate = new Date("2026-07-20T02:04:00").getTime();
         
+        // Yeh function box ko page ki tarah palatne ka kaam karega
+        function updateDigit(id, newValue) {
+            const el = document.getElementById(id);
+            if (el.innerText !== newValue) {
+                // Agar pehle se animation chal raha hai, toh hata do
+                el.classList.remove('flip-anim');
+                void el.offsetWidth; // Refresh the browser's animation state
+                
+                // Animation lagao
+                el.classList.add('flip-anim');
+                
+                // Theek aadhi animation (200 milliseconds) par number change karo (Jab page flat ho jata hai)
+                setTimeout(() => {
+                    el.innerText = newValue;
+                }, 200);
+            }
+        }
+
         function updateLiveTimer() {
             const now = new Date().getTime();
             const difference = now - lastTalkDate;
@@ -298,15 +327,16 @@
             const mins = Math.floor((difference / 1000 / 60) % 60);
             const secs = Math.floor((difference / 1000) % 60);
             
-            const h = hours.toString().padStart(2, '0');
-            const m = mins.toString().padStart(2, '0');
-            const s = secs.toString().padStart(2, '0');
+            const dStr = days.toString().padStart(2, '0');
+            const hStr = hours.toString().padStart(2, '0');
+            const mStr = mins.toString().padStart(2, '0');
+            const sStr = secs.toString().padStart(2, '0');
             
-            // UI me flip cards ko update karna
-            document.getElementById('t-days').innerText = days.toString().padStart(2, '0');
-            document.getElementById('t-hours').innerText = h;
-            document.getElementById('t-mins').innerText = m;
-            document.getElementById('t-secs').innerText = s;
+            // Flip wale boxes me value daalna
+            updateDigit('t-days', dStr);
+            updateDigit('t-hours', hStr);
+            updateDigit('t-mins', mStr);
+            updateDigit('t-secs', sStr);
             
             // Niche wale paragraph me din update
             const daysCountSpan = document.getElementById('daysCount');
@@ -315,15 +345,14 @@
             }
         }
         
-        // Har 1 second (1000ms) me time badhlega, isse code crash nahi hoga
+        // Har 1 second (1000ms) me time check karega
         setInterval(updateLiveTimer, 1000);
-        updateLiveTimer(); // Page khulte hi run karne ke liye
+        updateLiveTimer(); 
 
-        // Yahan par humne "Last Button" ka function theek kiya hai
+        // "Last Memory Button" ko automatic click banane ka formula
         const lastBtn = document.getElementById('lastMemoryBtn');
         if(lastBtn) {
             lastBtn.onclick = function() {
-                // Click karte hi exact din nikalega
                 const diff = new Date().getTime() - lastTalkDate;
                 const d = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const text = `Aaj tumse baat kiye ${d} din ho gaye hain........ In ${d} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
@@ -331,6 +360,7 @@
             };
         }
 
+        // --- BUTTONS AUR AUDIO KA LOGIC ---
         function switchAudio(newAudioId) {
             currentAudio.pause();
             currentAudio = document.getElementById(newAudioId);
@@ -362,7 +392,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 4. UI Open/Close & Music Change Logic
+        // 4. UI Open/Close Logic
         const diarySidebar = document.getElementById('diarySidebar');
         const replyModal = document.getElementById('replyModal');
 
