@@ -101,11 +101,11 @@
         ========================================= */
         @media (max-width: 768px) {
             .emotions-text {
-                position: absolute; bottom: 8%; right: 5%; width: 250px; 
-                color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 22px; 
+                position: absolute; bottom: 8%; right: 5%; width: 280px; 
+                color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 20px; 
                 line-height: 1.4; text-align: right; z-index: 5;
                 text-shadow: 2px 2px 15px rgba(0,0,0,1), -1px -1px 10px rgba(0,0,0,1);
-                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 2.5s; 
+                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 1.5s; 
             }
             .action-buttons { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 10; }
             .action-btn { width: 45px; height: 45px; border-radius: 50%; font-size: 18px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; display: flex; justify-content: center; align-items: center; }
@@ -132,7 +132,7 @@
                 color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 38px; 
                 line-height: 1.5; text-align: right; z-index: 5;
                 text-shadow: 2px 2px 20px rgba(0,0,0,1), -1px -1px 15px rgba(0,0,0,1);
-                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 2.5s; 
+                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 1.5s; 
             }
             .action-buttons { position: absolute; top: 30px; right: 30px; display: flex; flex-direction: column; gap: 20px; z-index: 10; }
             .action-btn { width: 65px; height: 65px; border-radius: 50%; font-size: 26px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; display: flex; justify-content: center; align-items: center; }
@@ -156,11 +156,10 @@
         .live-timer {
             position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 8px; z-index: 10;
-            perspective: 800px; /* 3D effect ke liye zaroori hai */
+            perspective: 800px; 
         }
         .flip-card { display: flex; flex-direction: column; align-items: center; }
         
-        /* Box ka basic design (ab koi cut-line nahi hai) */
         .flip-card span {
             background: rgba(25, 25, 25, 0.85); color: #fff; font-family: 'Courier New', Courier, monospace;
             font-size: clamp(1.4rem, 5vw, 1.8rem); font-weight: bold;
@@ -169,19 +168,6 @@
             border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(5px);
             display: inline-block;
-        }
-
-        /* Yeh class JavaScript lagayega jab number paltega */
-        .flip-anim {
-            animation: flipPage 0.4s ease-in-out;
-        }
-
-        /* Page Flip Animation (90 degree ghoom kar wapas aana) */
-        @keyframes flipPage {
-            0% { transform: rotateX(0deg); }
-            49% { transform: rotateX(90deg); opacity: 0.5; } /* Upar se niche palat raha hai */
-            51% { transform: rotateX(-90deg); opacity: 0.5; } /* Naya number yahan aayega */
-            100% { transform: rotateX(0deg); }
         }
 
         .flip-card small {
@@ -199,7 +185,7 @@
 
     <div id="secretWorld">
         
-        <!-- ⏱️ 3D FLIP LIVE TIMER ⏱️ -->
+        <!-- ⏱️ 3D FLIP LIVE TIMER (FROZEN/LOCKED) ⏱️ -->
         <div id="liveTimer" class="live-timer">
             <div class="flip-card"><span id="t-days">00</span><small>Days</small></div>
             <div class="flip-card"><span id="t-hours">00</span><small>Hrs</small></div>
@@ -223,11 +209,12 @@
             <div class="leaf l3"></div><div class="leaf l4"></div>
         </div>
         
-        <!-- Text -->
+        <!-- Naya Text (Umeed Wala) -->
         <div class="emotions-text">
-            "Aaj <span id="daysCount">...</span> din guzar gaye...<br>
-            Aur is akelepan mein bas yehi lagta hai,<br>
-            ki shayad kahin tum bhi is aasman ko dekh rahi hogi..."
+            "61 din aur kuch ghanton ka wo lamba intezar...<br>
+            Aaj tumhari aahat ek meethay khawab jaisi lagti hai.<br>
+            Pata nahi yeh khawab kabhi haqeeqat banega ya nahi...<br>
+            par is ek 'umeed' ne is akelepan ko ek naya sukoon diya hai."
         </div>
 
         <!-- Floating Action Buttons -->
@@ -250,7 +237,8 @@
                 <button class="memory-btn" onclick="window.showMemory('Us raat jab tumne achanak Instagram par keh diya ki \'Aaj se hamari baaten band, baat ke liye good bye\', mera dil jaise ruk sa gaya tha. Main tumhare aage gidgidaya, baar-baar request ki, kaha ki mera man nahi lagega... Aadhi raat ko mujhe nind nahi aa rahi thi, bas ek hi darr lag raha tha ki ab tumse kabhi baat nahi hogi. Maine kaha tha na, main sirf apne mahboob ka intezar karta hu. Woh raat maine akele tadap kar kaise guzari hai, iska hisaab sirf mera Khuda janta hai.')">Woh Aakhiri Alvida Aur Meri Tadap</button>
                 <button class="memory-btn" onclick="window.showMemory('26 August ko julus mein main sirf is umeed se gaya tha ki tumhari ek jhalak mil jaye, kyunki tumhe dekhe bahut din ho gaye the. Lekin shayad tum nahi aayi. Waise to har raat tumhare message ka intezar karta hu, par kuch raatein aisi hoti hain jo sone nahi deti. 27 August ki raat intezar karte-karte 2 baje meri aankh lag gayi... aur uske baad hi tumhara wo message aaya. Khud ko itna kosa ki kaash thodi der aur jaag leta! Uske baad agle 5 din tak main subah 4 baje tak jaagta raha, is umeed mein ki shayad aaj phir message aayega... lekin aisa na hua. Aaj bhi tumhara intezar hai, aur hamesha rahega.')">26 August Ka Julus Aur Wo Raat</button>
                 
-                <button class="memory-btn" id="lastMemoryBtn">Aaj Bhi Intezar Hain Tumhara...</button>
+                <!-- Naya Button -->
+                <button class="memory-btn" id="lastMemoryBtn">Ek Nayi Umeed (19 September)...</button>
             </div>
             <div class="memory-display" id="memoryDisplay"></div>
         </div>
@@ -297,30 +285,12 @@
             });
         }
         
-        // ⏳ 3D FLIP TIMER LOGIC ⏳
-        const lastTalkDate = new Date("2026-07-20T02:04:00").getTime();
+        // ⏳ FROZEN FLIP TIMER LOGIC (Intezar Ka Thappa) ⏳
+        const startDate = new Date("2026-07-20T02:04:00").getTime();
+        const endDate = new Date("2026-09-19T05:50:00").getTime();
         
-        // Yeh function box ko page ki tarah palatne ka kaam karega
-        function updateDigit(id, newValue) {
-            const el = document.getElementById(id);
-            if (el.innerText !== newValue) {
-                // Agar pehle se animation chal raha hai, toh hata do
-                el.classList.remove('flip-anim');
-                void el.offsetWidth; // Refresh the browser's animation state
-                
-                // Animation lagao
-                el.classList.add('flip-anim');
-                
-                // Theek aadhi animation (200 milliseconds) par number change karo (Jab page flat ho jata hai)
-                setTimeout(() => {
-                    el.innerText = newValue;
-                }, 200);
-            }
-        }
-
-        function updateLiveTimer() {
-            const now = new Date().getTime();
-            const difference = now - lastTalkDate;
+        function setFrozenTimer() {
+            const difference = endDate - startDate;
             
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
@@ -332,30 +302,20 @@
             const mStr = mins.toString().padStart(2, '0');
             const sStr = secs.toString().padStart(2, '0');
             
-            // Flip wale boxes me value daalna
-            updateDigit('t-days', dStr);
-            updateDigit('t-hours', hStr);
-            updateDigit('t-mins', mStr);
-            updateDigit('t-secs', sStr);
-            
-            // Niche wale paragraph me din update
-            const daysCountSpan = document.getElementById('daysCount');
-            if(daysCountSpan) {
-                daysCountSpan.innerText = days;
-            }
+            // Fixed values show karna screen par
+            document.getElementById('t-days').innerText = dStr;
+            document.getElementById('t-hours').innerText = hStr;
+            document.getElementById('t-mins').innerText = mStr;
+            document.getElementById('t-secs').innerText = sStr;
         }
-        
-        // Har 1 second (1000ms) me time check karega
-        setInterval(updateLiveTimer, 1000);
-        updateLiveTimer(); 
+        // Sirf ek baar function chalega (koi setInterval nahi hai ab)
+        setFrozenTimer(); 
 
-        // "Last Memory Button" ko automatic click banane ka formula
+        // "Ek Nayi Umeed" Button Logic
         const lastBtn = document.getElementById('lastMemoryBtn');
         if(lastBtn) {
             lastBtn.onclick = function() {
-                const diff = new Date().getTime() - lastTalkDate;
-                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const text = `Aaj tumse baat kiye ${d} din ho gaye hain........ In ${d} dino ki ek bhi raat aisi nahi guzri jab tumhari yaad na aayi ho. Har raat bas is umeed mein phone ki screen dekh kar guzarti hai ki shayad ek baar fir tumhara message aa jaye. Zindagi rahi to milenge, nahi to hashr ke din milenge... hamesha tumhara intezar rahega.`;
+                const text = `19 September ki wo subah 5:50 AM... Jab tumne kaha 'Yaad roz karte hai', toh ek pal ke liye saans ruk si gayi thi. In 61 dino mein ek bhi raat aisi nahi guzri jab phone ki screen dekh kar tumhara intezar na kiya ho. Tum wapas haqeeqat mein aaogi ya nahi, pata nahi... par tumhara wo ek message meri aakhiri saans tak ek pyare khawab ki tarah mere sath rahega. Faiyaz ko hamesha tumhara intezar rahega.`;
                 window.showMemory(text);
             };
         }
