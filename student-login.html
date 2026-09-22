@@ -525,11 +525,11 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 
                 await saveLoginLog(currentVipRoll, studentName);
 
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
+                setTimeout(() => { window.location.href = "index1.html"; }, 700);
             } catch (e) {
                 localStorage.setItem("studentRoll", currentVipRoll);
                 localStorage.setItem("studentClass", "8th");
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
+                setTimeout(() => { window.location.href = "index1.html"; }, 700);
             }
         } else {
             triggerPinError("❌ Wrong VIP PIN! Try Again.");
@@ -655,7 +655,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                         if (roll === "2357") {
                             window.location.href = "special-dashboard.html"; 
                         } else {
-                            window.location.href = "dashboard.html"; 
+                            window.location.href = "index1.html"; 
                         }
                     }, 1200);
 
