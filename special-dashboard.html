@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sirf Tumhari Yaad...</title>
+    <title>GVCC</title>
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
 
         .bg-image {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('n.png.png');
+            
             background-size: cover; background-position: center;
             width: 100vw; height: 100vh; z-index: 1;
         }
@@ -183,91 +183,69 @@
     <audio id="diaryMusic" src="songs/yaaraoyaara.mp3" loop></audio>
     <audio id="pankhMusic" src="songs/rahna.mp3" loop></audio>
 
-    <div id="secretWorld">
-        
-        <!-- ⏱️ 3D FLIP LIVE TIMER (FROZEN/LOCKED) ⏱️ -->
-        <div id="liveTimer" class="live-timer">
-            <div class="flip-card"><span id="t-days">00</span><small>Days</small></div>
-            <div class="flip-card"><span id="t-hours">00</span><small>Hrs</small></div>
-            <div class="flip-card"><span id="t-mins">00</span><small>Min</small></div>
-            <div class="flip-card"><span id="t-secs">00</span><small>Sec</small></div>
-        </div>
-
-        <!-- Cinematic Background & Animations -->
-        <div class="bg-image"></div>
-        <div class="twinkling-stars"></div>
-        <div class="star-container">
-            <div class="shooting-star s1"></div><div class="shooting-star s2"></div>
-            <div class="shooting-star s3"></div><div class="shooting-star s4"></div>
-            <div class="shooting-star s5"></div><div class="shooting-star s6"></div>
-            <div class="shooting-star s7"></div><div class="shooting-star s8"></div>
-            <div class="shooting-star s9"></div><div class="shooting-star s10"></div>
-            <div class="shooting-star s11"></div><div class="shooting-star s12"></div>
-        </div>
-        <div class="falling-leaves">
-            <div class="leaf l1"></div><div class="leaf l2"></div>
-            <div class="leaf l3"></div><div class="leaf l4"></div>
-        </div>
-        
-        <!-- Naya Text (Umeed Wala) -->
-        <div class="emotions-text">
-            "Finally 61 din 3 Hour 46 Min ka wo khamosh aur lamba intezar...<br>
-             Aaj tumhare lafzon ki aahat kisi haseen khawab jaisi lagi.<br>
-             Khuda jaane yeh khawab kabhi meri haqeeqat banega ya nahi...<br>
-             Par is ek 'umeed' ne mere akelepan ko ek ajeeb sa sukoon de diya hai."
-        </div>
-
-        <!-- Floating Action Buttons -->
-        <div class="action-buttons">
-            <button class="action-btn" id="openDiary" title="Yaadon Ki Kitab"><i class="fa-solid fa-book-open"></i></button>
-            <button class="action-btn" id="openReply" title="Kuch Kehna Hai?"><i class="fa-solid fa-pen-fancy"></i></button>
-        </div>
-
-        <!-- Diary Sidebar (Yaadon ka Safar) -->
-        <div id="diarySidebar" class="glass-panel">
-            <button class="close-btn" id="closeDiary">&times;</button>
-            <div class="sidebar-title">Yaadon Ka Safar</div>
-            <div id="memoryList">
-                <button class="memory-btn" onclick="window.showMemory('Pehla letter aur tumhara reply... ek khubsoorat shuruaat thi. Main bahut khush tha, mera total board wala exam isi khushi mein nikla ki tum mujhe mil gayi ho. Woh ek alag hi feeling thi... aisa lag raha tha ki koi khoyi hui cheez mujhe wapas mil gayi hai.. 💫')">Pehli Mulaqat</button>
-                <button class="memory-btn" onclick="window.showMemory('Aur kuchh din mere isi khushi mein guzre ki... agar tumko mujhse kuchh nahi tha, to letter padhkar mujhe message kyu kiya... zaroor tumhare dil mein bhi kuchh hai kyunki letter mein koi tumhare upar dabaav nahi tha. Sab tumhari marzi thi, fir bhi tumne message kiya. Yah baat mujhe ek alag hi khushi de rahi thi... lekin shayad main galat tha.')">Khushi Ke Kuchh Deen</button>
-                <button class="memory-btn" onclick="window.showMemory('Ab tumko bhi malum chal gaya tha ki main tumse mohabbat karta hu. Aur 24 February ko pehli baar main tumko dekhne wala tha, aur yah pehle jaisa bilkul nahi tha. Jab tumko maine bazaar par dekha, yakeen mano ek pal ke liye aisa laga ki jo barson se mujhse door tha, wo mere samne aa gaya hai. Us din coaching mein bhi tumhe dekhkar itna sukoon mila mat pucho. Lekin main tumko us din bhi rubaru kuchh na kah paya... kyunki tum akeli nahi thi shayad isiliye. Mere dil mein us waqt bhi wahi feeling thi ki shayad tum bhi mujhe chahti ho, par shayad main yahan par bhi galat tha 😐')">24 February Ka Deen</button>
-                <button class="memory-btn" onclick="window.showMemory('Fir kuchh din baad tumne mujhe yah ehsas dila hi diya ki... tumhare dil mein mere liye ratti bhar bhi jagah nahi hai. Aur shayad woh raat mere liye sabse bhayanak raat thi... kyunki us raat aisa laga ki apni sabse keemti cheez maine fir se kho di. Woh feeling lafzon mein nahi batayi ja sakti.')">Fir Kuchh Deen Baad</button>
-                <button class="memory-btn" onclick="window.showMemory('Jab tumhare dil mein mere liye koi jagah nahi thi to tumne letter padhkar jawab kyu diya... kyuuuu? Jabki maine letter mein sirf tumhari marzi puchi thi. Agar tum reply nahi deti aur mujhse baat nahi karti, to main samajh jata ki tumko mujhse kuchh nahi hai. Lekin tumne mujhe itna dilasa dilakar aisa kyu kiya? Bas yahi ek sawal abhi bhi adhura hai. Iska jawab mujhe hamesha intezar rahega... jab tak zinda rahunga, maut aa gayi to khair koi baat hi nahi hai.')">Ab 1 Hi Sawal</button>
-                <button class="memory-btn" onclick="window.showMemory('Itna kuchh hone ke baad bhi tumne mujhse baat ki... aur hamesha yahi bolti thi ki mujhe in sab cheezon se darr lagta hai. Maine kaha koi baat nahi, thoda sambhal kar, shayad tumko aur time chahiye le lo. Lekin tum har baar yahi bolti thi ki.. \'A Fa.... hamse e sab na ho payega\'. Fir bhi tumne bahut din baat ki... aur mujhse tumhare bagair baat kiye raha hi nahi jata tha... thanks.')">Darr Aur Majboori</button>
-                <button class="memory-btn" onclick="window.showMemory('Us raat jab tumne achanak Instagram par keh diya ki \'Aaj se hamari baaten band, baat ke liye good bye\', mera dil jaise ruk sa gaya tha. Main tumhare aage gidgidaya, baar-baar request ki, kaha ki mera man nahi lagega... Aadhi raat ko mujhe nind nahi aa rahi thi, bas ek hi darr lag raha tha ki ab tumse kabhi baat nahi hogi. Maine kaha tha na, main sirf apne mahboob ka intezar karta hu. Woh raat maine akele tadap kar kaise guzari hai, iska hisaab sirf mera Khuda janta hai.')">Woh Aakhiri Alvida Aur Meri Tadap</button>
-                <button class="memory-btn" onclick="window.showMemory('26 August ko julus mein main sirf is umeed se gaya tha ki tumhari ek jhalak mil jaye, kyunki tumhe dekhe bahut din ho gaye the. Lekin shayad tum nahi aayi. Waise to har raat tumhare message ka intezar karta hu, par kuch raatein aisi hoti hain jo sone nahi deti. 27 August ki raat intezar karte-karte 2 baje meri aankh lag gayi... aur uske baad hi tumhara wo message aaya. Khud ko itna kosa ki kaash thodi der aur jaag leta! Uske baad agle 5 din tak main subah 4 baje tak jaagta raha, is umeed mein ki shayad aaj phir message aayega... lekin aisa na hua. Aaj bhi tumhara intezar hai, aur hamesha rahega.')">26 August Ka Julus Aur Wo Raat</button>
-                
-                <!-- Naya Button -->
-                <button class="memory-btn" id="lastMemoryBtn">Ek Nayi Umeed (19 September)...</button>
-            </div>
-            <div class="memory-display" id="memoryDisplay"></div>
-        </div>
-
-        <!-- Reply Modal (Aapke liye Message) -->
-        <div id="replyModal" class="glass-panel">
-            <button class="close-btn" id="closeReply">&times;</button>
-            <div class="sidebar-title">Agar kuch kehna ho...</div>
-            <textarea id="replyMessage" class="reply-textarea" placeholder="Jo bhi dil mein ho, befikar yahan likh do..."></textarea>
-            
-            <div style="font-size: 14px; color: rgba(255,255,255,0.7); text-align: center; margin-top: 10px; font-family: sans-serif; line-height: 1.4;">
-                <i class="fa-solid fa-lock" style="font-size: 12px; color: #a3c2ff;"></i> 
-                Befikar likho... yeh sirf mujh tak aayega. Kisi aur ko kabhi pata nahi chalega aur tumhare phone mein bhi kuch save nahi hoga.
-            </div>
-
-            <button class="send-btn" id="sendReplyBtn">Message Bhej Do <i class="fa-solid fa-heart"></i></button>
-            <div id="replyStatus" style="font-size: 16px; text-align: center; margin-top: 10px; color: #b0ffdb; display: none;">Message Bhejne Ke Liye Aapka Bahut Bahut Sukuriya..</div>
-        </div>
-    </div>
+    <div id="secretWorld"></div>
 
     <!-- 🔥 FIREBASE & JAVASCRIPT LOGIC 🔥 -->
     <script type="module">
-        // 1. Security Check
-        let loggedInRoll = localStorage.getItem("studentRoll");
-        if (loggedInRoll !== "2357") {
-            window.location.href = "dashboard.html";
-        } else {
-            document.getElementById("secretWorld").style.display = "block";
+        // ---------------------------------------------------------------
+        // Private page. The content below is encrypted and can only be
+        // opened with the password of the person who logged in.
+        // ---------------------------------------------------------------
+        const CIPHER = "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";
+        const ITERATIONS = 600000;
+
+        function fromBase64(text) {
+            return Uint8Array.from(atob(text), (ch) => ch.charCodeAt(0));
         }
+
+        async function unlock(password) {
+            const raw = fromBase64(CIPHER);
+            const salt = raw.slice(0, 16);
+            const iv = raw.slice(16, 28);
+            const data = raw.slice(28);
+            const baseKey = await crypto.subtle.importKey(
+                "raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]
+            );
+            const key = await crypto.subtle.deriveKey(
+                { name: "PBKDF2", salt: salt, iterations: ITERATIONS, hash: "SHA-256" },
+                baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+            );
+            const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, data);
+            return { content: JSON.parse(new TextDecoder().decode(plain)), key: key };
+        }
+
+        let content = null;
+        let aesKey = null;
+        try {
+            const savedPassword = sessionStorage.getItem("gvccKey");
+            if (savedPassword) {
+                const opened = await unlock(savedPassword);
+                content = opened.content;
+                aesKey = opened.key;
+            }
+        } catch (e) { content = null; }
+
+        if (!content) {
+            // Not logged in with the right password: show the normal offline notice.
+            location.replace("dashboard.html");
+            await new Promise(() => {});
+        }
+
+        const world = document.getElementById("secretWorld");
+        world.innerHTML = content.html;
+        world.style.display = "block";
+
+        // Background photo is also encrypted (n.dat), opened with the same key.
+        try {
+            const res = await fetch("n.dat");
+            const bytes = new Uint8Array(await res.arrayBuffer());
+            const image = await crypto.subtle.decrypt(
+                { name: "AES-GCM", iv: bytes.slice(0, 12) }, aesKey, bytes.slice(12)
+            );
+            const imageUrl = URL.createObjectURL(new Blob([image], { type: "image/png" }));
+            const bg = world.querySelector(".bg-image");
+            if (bg) { bg.style.backgroundImage = `url("${imageUrl}")`; }
+        } catch (e) { /* the page still works without the background */ }
 
         // 🎵 MUSIC SYSTEM LOGIC 🎵
         let currentAudio = document.getElementById('bgMusic');
@@ -284,62 +262,28 @@
                 }, { once: true });
             });
         }
-        
-        // ⏳ FROZEN FLIP TIMER LOGIC (Intezar Ka Thappa) ⏳
-        const startDate = new Date("2026-07-20T02:04:00").getTime();
-        const endDate = new Date("2026-09-19T05:50:00").getTime();
-        
-        function setFrozenTimer() {
-            const difference = endDate - startDate;
-            
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-            const mins = Math.floor((difference / 1000 / 60) % 60);
-            const secs = Math.floor((difference / 1000) % 60);
-            
-            const dStr = days.toString().padStart(2, '0');
-            const hStr = hours.toString().padStart(2, '0');
-            const mStr = mins.toString().padStart(2, '0');
-            const sStr = secs.toString().padStart(2, '0');
-            
-            // Fixed values show karna screen par
-            document.getElementById('t-days').innerText = dStr;
-            document.getElementById('t-hours').innerText = hStr;
-            document.getElementById('t-mins').innerText = mStr;
-            document.getElementById('t-secs').innerText = sStr;
-        }
-        // Sirf ek baar function chalega (koi setInterval nahi hai ab)
-        setFrozenTimer(); 
 
-        // "Ek Nayi Umeed" Button Logic
+        // Last memory button
         const lastBtn = document.getElementById('lastMemoryBtn');
-        if(lastBtn) {
-            lastBtn.onclick = function() {
-                const text = `19 September ki wo subah 5:50 AM... Jab tumne kaha 'Yaad roz karte hai', toh ek pal ke liye saans ruk si gayi thi. In 61 dino mein ek bhi raat aisi nahi guzri jab phone ki screen dekh kar tumhara intezar na kiya ho. Tum wapas haqeeqat mein aaogi ya nahi, pata nahi... par tumhara wo ek message meri aakhiri saans tak ek pyare khawab ki tarah mere sath rahega. Tumhara hamesha intezar rahega.`;
-                window.showMemory(text);
-            };
+        if (lastBtn) {
+            lastBtn.onclick = function () { window.showMemory(content.last); };
         }
 
-        // --- BUTTONS AUR AUDIO KA LOGIC ---
         function switchAudio(newAudioId) {
             currentAudio.pause();
             currentAudio = document.getElementById(newAudioId);
             currentAudio.play().catch(e => console.log("Audio switch blocked by browser."));
         }
 
-        document.addEventListener("visibilitychange", function() {
+        document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
-                currentAudio.pause(); 
+                currentAudio.pause();
             } else {
                 currentAudio.play().catch(e => console.log("Play blocked."));
             }
         });
 
-        // 2. Firebase Import 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-        // 3. Firebase Config
+        // Firebase is loaded only when a reply is sent
         const firebaseConfig = {
             apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
             authDomain: "gvcc-database.firebaseapp.com",
@@ -349,10 +293,20 @@
             appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        let firebasePromise = null;
+        function getFirebase() {
+            if (!firebasePromise) {
+                firebasePromise = (async () => {
+                    const appModule = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js");
+                    const storeModule = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
+                    const app = appModule.initializeApp(firebaseConfig);
+                    return { db: storeModule.getFirestore(app), collection: storeModule.collection, addDoc: storeModule.addDoc };
+                })();
+            }
+            return firebasePromise;
+        }
 
-        // 4. UI Open/Close Logic
+        // UI Open/Close Logic
         const diarySidebar = document.getElementById('diarySidebar');
         const replyModal = document.getElementById('replyModal');
 
@@ -360,7 +314,7 @@
             diarySidebar.classList.add('open');
             switchAudio('diaryMusic');
         });
-        
+
         document.getElementById('closeDiary').addEventListener('click', () => {
             diarySidebar.classList.remove('open');
             switchAudio('bgMusic');
@@ -376,32 +330,33 @@
             switchAudio('bgMusic');
         });
 
-        window.showMemory = function(text) {
+        window.showMemory = function (text) {
             document.getElementById('memoryDisplay').innerText = `"${text}"`;
         };
 
-        // 5. Firebase me Message Save Karna
-        document.getElementById('sendReplyBtn').addEventListener('click', async function() {
+        // Save the reply in Firebase
+        document.getElementById('sendReplyBtn').addEventListener('click', async function () {
             let msg = document.getElementById('replyMessage').value.trim();
-            if(msg === "") return;
+            if (msg === "") return;
 
             let btn = this;
             btn.innerText = "Bhej raha hoon...";
-            
+
             try {
-                await addDoc(collection(db, "replies_from_2357"), {
+                const fb = await getFirebase();
+                await fb.addDoc(fb.collection(fb.db, "replies_from_2357"), {
                     message: msg,
                     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-                }); 
-                
+                });
+
                 document.getElementById('replyMessage').value = "";
                 btn.innerHTML = 'Message Bhej Do <i class="fa-solid fa-heart"></i>';
                 document.getElementById('replyStatus').style.display = "block";
-                
+
                 setTimeout(() => {
                     replyModal.classList.remove('open');
                     document.getElementById('replyStatus').style.display = "none";
-                    switchAudio('bgMusic'); 
+                    switchAudio('bgMusic');
                 }, 3000);
 
             } catch (error) {
@@ -409,6 +364,6 @@
                 btn.innerText = "Error! Phir se try karein.";
             }
         });
-    </script>
+</script>
 </body>
 </html>

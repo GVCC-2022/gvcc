@@ -653,7 +653,8 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
                     // ✨ Yahan humne 2357 ke liye condition add ki hai ✨
                     setTimeout(() => { 
                         if (roll === "2357") {
-                            window.location.href = "special-dashboard.html"; 
+                            sessionStorage.setItem("gvccKey", password);
+                            window.location.href = "special-dashboard.html";
                         } else {
                             window.location.href = "index1.html"; 
                         }
