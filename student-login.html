@@ -113,12 +113,80 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 #dynamicName.show { opacity: 1; transform: translateY(0); }
 #msg { font-weight: 600; font-size: 13px; margin-top: 10px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px; }
 
-</style>
+
+        /* =================================================================
+           FIXED SCREEN + VIP LOOK (styling only - no text is changed)
+        ================================================================= */
+        :root {
+            --gold: #e6c27a;
+            --gold-soft: rgba(230, 194, 122, 0.55);
+            --gold-faint: rgba(230, 194, 122, 0.28);
+        }
+        html { height: 100%; overflow: hidden; }
+        body {
+            height: 100%; padding: 0; overflow: hidden; overflow: clip; overscroll-behavior: none; min-height: 100vh;
+            background:
+                radial-gradient(70% 50% at 50% -5%, rgba(56, 189, 248, 0.20), rgba(56, 189, 248, 0) 70%),
+                radial-gradient(55% 45% at 100% 105%, rgba(230, 194, 122, 0.18), rgba(230, 194, 122, 0) 70%),
+                var(--page-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+        @supports (height: 100dvh) { body { min-height: 100dvh; } }
+
+        /* the whole page is one block that is scaled to fit the screen, so it looks the same on every
+           phone, tablet and computer and never needs scrolling */
+        .fit {
+            width: 100%; display: flex; justify-content: center;
+            transform: scale(var(--fit, 1)); transform-origin: 50% 50%;
+            animation: vipFade 0.7s ease-out both;
+        }
+        @keyframes vipFade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* card with a thin gold-to-blue edge */
+        .login-card::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, rgba(230, 194, 122, 0.85), rgba(255, 255, 255, 0.12) 42%, rgba(56, 189, 248, 0.55));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .login-card { box-shadow: 0 22px 55px rgba(15, 23, 42, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+        .title {
+            background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #0ea5e9 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+        }
+
+        /* the main button: gold ring + a slow shine */
+        .btn-login {
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.28), 0 0 0 1px var(--gold-soft);
+        }
+        .btn-login::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 38%; pointer-events: none;
+            background: linear-gradient(100deg, rgba(230, 194, 122, 0), rgba(230, 194, 122, 0.5), rgba(230, 194, 122, 0));
+            transform: translateX(-130%) skewX(-20deg); animation: vipShine 5s ease-in-out 1.6s infinite;
+        }
+        .btn-login:disabled::after { display: none; }
+        @keyframes vipShine { 0% { transform: translateX(-130%) skewX(-20deg); } 40%, 100% { transform: translateX(380%) skewX(-20deg); } }
+
+        /* theme button: gold ring, stays clear of phone edges */
+        #themeToggleBtn {
+            width: 44px; height: 44px; font-size: 20px; border-color: var(--gold);
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(18px + env(safe-area-inset-right, 0px));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(230, 194, 122, 0.18);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fit, .btn-login::after { animation: none; }
+        }
+        .login-logo { aspect-ratio: 1 / 1; }
+    </style>
 </head>
 <body>
 
+<div class="fit">
 <div class="login-container">
-    <div class="logo-glow-wrapper"><img src="20260620_144347.png" alt="GVCC Logo" class="login-logo"></div>
+    <div class="logo-glow-wrapper"><img src="logo.webp" width="170" height="170" alt="GVCC Logo" class="login-logo"></div>
     <div class="login-card">
         <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
 
@@ -136,6 +204,32 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
     </div>
 </div>
+</div>
+<script>
+// Scales the page block so it fits the screen (never scrolls, same look everywhere).
+(function () {
+    var fit = document.querySelector('.fit');
+    if (!fit) { return; }
+    var box = fit.firstElementChild;
+    var SHIFT = 0.0;            // how far the block is lifted up (share of screen height)
+    var baseW = 0, baseH = 0;
+    function update(force) {
+        var w = window.innerWidth, h = window.innerHeight;
+        // an on-screen keyboard only makes the height smaller: ignore that, keep the size
+        if (force || !baseH || w !== baseW || h > baseH) { baseW = w; baseH = h; }
+        var nw = box.offsetWidth, nh = box.offsetHeight;
+        if (!nw || !nh) { return; }
+        var s = Math.min(1.18, (baseH * (1 - 2 * SHIFT) - 28) / nh, (baseW - 20) / nw);
+        fit.style.setProperty('--fit', Math.max(0.4, s).toFixed(3));
+    }
+    update(true);
+    window.addEventListener('resize', function () { update(false); });
+    window.addEventListener('orientationchange', function () { setTimeout(function () { update(true); }, 250); });
+    window.addEventListener('load', function () { update(true); });
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { update(true); }); }
+})();
+</script>
+
 
 <script>
     // Browser ka apna "Install app" banner band rakhna
