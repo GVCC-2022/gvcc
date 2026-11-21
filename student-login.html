@@ -11,9 +11,6 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-<!-- 🔥 CORE QR CODE LIBRARY (DIRECT CAMERA) 🔥 -->
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
 <!-- GLOBAL THEME SYSTEM -->
 <link rel="stylesheet" href="theme.css">
 <script src="theme.js" defer></script>
@@ -23,7 +20,7 @@
 input, textarea { -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; user-select: auto !important; }
 img { -webkit-user-drag: none; }
 
-/* 🔥 VIP THEME VARIABLES 🔥 */
+/* THEME VARIABLES */
 :root {
     --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     --text-main: #1e293b;
@@ -92,39 +89,6 @@ body {
 .login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 80px 20px 20px 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
 .title { color: #38bdf8; font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
 
-/* 🔥 1. VIP SCAN BUTTON - HERO EFFECT 🔥 */
-.btn-scan { 
-    background: linear-gradient(135deg, #10b981, #059669) !important; 
-    color: white !important; width: 100%; border: 2px solid #34d399; 
-    padding: 16px; border-radius: 16px; font-size: 17px; font-weight: 900; 
-    text-transform: uppercase; letter-spacing: 1px; cursor: pointer; 
-    display: flex; justify-content: center; align-items: center; gap: 10px; 
-    position: relative; overflow: hidden;
-    animation: vipPulse 2s infinite; 
-    transition: transform 0.2s;
-}
-@keyframes vipPulse {
-    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-    70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-.btn-scan::after {
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-    transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
-}
-@keyframes shine { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
-
-/* QR SCANNER CONTAINER */
-#scanner-container { width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 2px solid #10b981; margin-top: 10px; margin-bottom: 5px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
-#reader { width: 100%; }
-.stop-scan-btn { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; letter-spacing: 1px; font-size: 14px;}
-
-.divider { display: flex; align-items: center; text-align: center; color: var(--placeholder-color); font-size: 11px; font-weight: 700; margin: 20px 0; }
-.divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--divider-color); }
-.divider:not(:empty)::before { margin-right: .5em; }
-.divider:not(:empty)::after { margin-left: .5em; }
-
 /* 🔥 2. LOGIN FORM & BUTTON - STANDARD SOLID 🔥 */
 input { display: block; width: 100%; padding: 14px; margin: 12px auto; border: 1px solid var(--input-border); border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); }
 input::placeholder { color: var(--placeholder-color); }
@@ -134,86 +98,21 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
 .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 .btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
 
-/* 🔥 3. INSTALL APP BUTTON - CAPSULE / PILL SHAPE 🔥 */
-.install-btn { 
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
-    width: auto !important; 
-    padding: 10px 25px !important; 
-    background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; 
-    color: white !important; border: none !important; 
-    border-radius: 50px !important; 
-    font-size: 14px !important; font-weight: bold; cursor: pointer; 
-    transition: all 0.3s ease; 
-    margin: 15px auto 5px auto !important; 
-    box-shadow: 0 6px 15px rgba(14, 165, 233, 0.3) !important; 
-}
-.install-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5) !important; }
-
 /* THE MAGIC TAP FEEL */
-.install-btn:active, .btn-login:active:not(:disabled), .btn-scan:active, .stop-scan-btn:active { 
+.btn-login:active:not(:disabled) { 
     transform: scale(0.92) !important; 
     opacity: 0.8; 
     transition: all 0.1s ease; 
 }
-.install-btn i { animation: bounce 2s infinite; font-size: 16px; }
 
 .credit-text { font-size: 11px; color: var(--credit-color); margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.4s; }
 .spinner { width: 16px; height: 16px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-4px);} 60% {transform: translateY(-2px);} }
 
 #dynamicName { font-size: 13px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 600; width: 100%; text-align: left; height: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
 #dynamicName.show { opacity: 1; transform: translateY(0); }
 #msg { font-weight: 600; font-size: 13px; margin-top: 10px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px; }
 
-/* ========================================================
-   🌟 NEW: VIP PIN PAD OVERLAY UI 🌟
-======================================================== */
-#pinPadOverlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-    z-index: 9999; display: none; justify-content: center; align-items: center;
-    animation: fadeInPin 0.3s ease;
-}
-@keyframes fadeInPin { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
-.pin-modal {
-    background: linear-gradient(145deg, #1e293b, #0f172a);
-    padding: 30px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    border: 1px solid rgba(56, 189, 248, 0.3); text-align: center;
-    width: 85%; max-width: 320px; color: white;
-}
-.pin-modal h3 { margin: 0; color: #38bdf8; font-size: 20px; font-weight: 800; letter-spacing: 1px;}
-.pin-modal p { color: #94a3b8; font-size: 13px; margin-top: 5px; margin-bottom: 20px;}
-
-.pin-dots { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-.pin-dot {
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid #38bdf8; transition: all 0.2s ease;
-    background: transparent;
-}
-.pin-dot.filled { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; transform: scale(1.2); }
-
-.pin-keypad {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-    justify-items: center;
-}
-.pin-btn {
-    width: 65px; height: 65px; border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05); color: white;
-    font-size: 24px; font-weight: 700; border: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.pin-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
-.pin-btn:active { transform: scale(0.9); background: #38bdf8; }
-.pin-action-btn { background: transparent; border: none; font-size: 20px; color: #ef4444; }
-.pin-action-btn:hover { background: rgba(239, 68, 68, 0.1); }
-.pin-cancel-btn { color: #94a3b8; font-size: 14px; font-weight: bold; border: none; background: transparent; margin-top: 20px; padding: 10px; cursor: pointer; transition: 0.2s;}
-.pin-cancel-btn:active { transform: scale(0.9); }
-
-.shake-error { animation: shake 0.4s; }
-@keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 </style>
 </head>
 <body>
@@ -222,18 +121,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     <div class="logo-glow-wrapper"><img src="20260620_144347.png" alt="GVCC Logo" class="login-logo"></div>
     <div class="login-card">
         <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
-
-        <!-- 🔥 VIP BUTTON 🔥 -->
-        <button type="button" class="btn-scan" id="startScannerBtn" onclick="startQRScanner()">
-            <i class="fa-solid fa-expand"></i> Scan VIP Card
-        </button>
-
-        <div id="scanner-container">
-            <div id="reader"></div>
-            <button type="button" class="stop-scan-btn" onclick="stopQRScanner()"><i class="fa-solid fa-xmark"></i> Cancel Camera</button>
-        </div>
-
-        <div class="divider">OR TYPE MANUAL</div>
 
         <form id="loginForm">
             <input type="number" id="roll" placeholder="Roll Number" required>
@@ -246,62 +133,13 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         
         <div id="msg"></div>
         
-        <!-- 🌟 INSTALL BUTTON (Pill Shape) 🌟 -->
-        <button type="button" class="install-btn" onclick="installApp()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Install GVCC App
-        </button>
-        
         <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
     </div>
 </div>
 
-<!-- ========================================================
-   🌟 NEW: VIP PIN PAD OVERLAY HTML 🌟
-======================================================== -->
-<div id="pinPadOverlay">
-    <div class="pin-modal" id="pinModal">
-        <h3><i class="fa-solid fa-shield-halved"></i> VIP Verified</h3>
-        <p id="pinSubText">Enter 4-Digit PIN for Roll: <strong id="pinRollDisplay">---</strong></p>
-        
-        <div class="pin-dots">
-            <div class="pin-dot" id="dot1"></div>
-            <div class="pin-dot" id="dot2"></div>
-            <div class="pin-dot" id="dot3"></div>
-            <div class="pin-dot" id="dot4"></div>
-        </div>
-
-        <div class="pin-keypad">
-            <button class="pin-btn" onclick="enterPin(1)">1</button>
-            <button class="pin-btn" onclick="enterPin(2)">2</button>
-            <button class="pin-btn" onclick="enterPin(3)">3</button>
-            <button class="pin-btn" onclick="enterPin(4)">4</button>
-            <button class="pin-btn" onclick="enterPin(5)">5</button>
-            <button class="pin-btn" onclick="enterPin(6)">6</button>
-            <button class="pin-btn" onclick="enterPin(7)">7</button>
-            <button class="pin-btn" onclick="enterPin(8)">8</button>
-            <button class="pin-btn" onclick="enterPin(9)">9</button>
-            <button class="pin-btn pin-action-btn" onclick="clearPin()"><i class="fa-solid fa-xmark"></i></button>
-            <button class="pin-btn" onclick="enterPin(0)">0</button>
-            <button class="pin-btn pin-action-btn" onclick="deletePin()"><i class="fa-solid fa-delete-left"></i></button>
-        </div>
-        
-        <button class="pin-cancel-btn" onclick="closePinPad()">Cancel Login</button>
-    </div>
-</div>
-
 <script>
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-    window.installApp = async function() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') console.log('App Installed!');
-            deferredPrompt = null;
-        } else {
-            alert("📲 App Install Kaise Karein:\n\n1. Apne browser ke upar ya niche 3 dots (⋮) par click karein.\n2. 'Add to Home Screen' ya 'Install App' par click karein.\n3. Bas! Ab app aapke phone me install ho jayegi aur aap login kar payenge.");
-        }
-    };
+    // Browser ka apna "Install app" banner band rakhna
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); });
 </script>
 
 <script type="module">
@@ -322,237 +160,7 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-    // ==============================================================
-    // 🌟 MAGIC FEATURE: AUTO-SYNC WITH FIREBASE (No Code Editing) 🌟
-    // ==============================================================
-    
-    // Default Fallback Data (अगर इंटरनेट स्लो हो तो यह काम करेगा)
-    let vipData = {
-        "GVCC-A4M8": { roll: "801", pin: "8011" }, 
-        "GVCC-R2N7": { roll: "803", pin: "8033" }, 
-        "GVCC-Z9B2": { roll: "805", pin: "8055" }, 
-        "GVCC-B1Y6": { roll: "806", pin: "8066" }, 
-        "GVCC-S3M4": { roll: "809", pin: "8099" }, 
-        "GVCC-H8N9": { roll: "810", pin: "8100" }, 
-        "GVCC-S5N1": { roll: "820", pin: "8200" }  
-    };
-
-    // Firebase से फाइल को लोड और ऑटो-क्रिएट करने का फंक्शन
-    async function syncVIPDatabase() {
-        try {
-            // Firebase me 'admin_settings' folder ke andar 'vip_card_data' file check karega
-            const docRef = doc(db, "vip_access", "vip_card_data");
-            const docSnap = await getDoc(docRef);
-            
-            if (docSnap.exists()) {
-                // Agar file database me hai, to waha se naya PIN utha lega!
-                vipData = docSnap.data();
-            } else {
-                // Agar file nahi hai (Pehli baar), to ye AUTOMATIC Firebase me file bana dega!
-                await setDoc(docRef, vipData);
-                console.log("✅ VIP Data file created in Firebase Successfully!");
-            }
-        } catch (error) {
-            console.log("DB Sync Error, using local fallback.", error);
-        }
-    }
-    // पेज लोड होते ही यह बैकग्राउंड में फायरबेस से कनेक्ट हो जाएगा
-    syncVIPDatabase();
-
-    // ==============================================================
-
-    // 🌟 DIRECT CAMERA QR SCANNER LOGIC 🌟
-    let html5Qrcode = null;
     const msgBox = document.getElementById("msg");
-    
-    // 🌟 PIN PAD VARIABLES 🌟
-    let currentVipRoll = "";
-    let currentVipPin = ""; 
-    let enteredPin = "";
-
-    // 🌟 FAST & PREMIUM TAP SOUND (Web Audio API) 🌟
-    window.playTapSound = function() {
-        try {
-            let AudioContext = window.AudioContext || window.webkitAudioContext;
-            let ctx = new AudioContext();
-            let osc = ctx.createOscillator();
-            let gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.type = "sine"; 
-            osc.frequency.setValueAtTime(700, ctx.currentTime); // High pitch premium beep
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            osc.start();
-            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.05); // Short tick
-            osc.stop(ctx.currentTime + 0.05);
-        } catch(e) { /* ignore if audio not supported */ }
-    };
-
-    window.startQRScanner = function() {
-        document.getElementById("startScannerBtn").style.display = "none";
-        document.getElementById("loginForm").style.display = "none";
-        document.querySelector(".install-btn").style.display = "none";
-        document.getElementById("scanner-container").style.display = "block";
-        msgBox.innerHTML = "📸 Opening Camera...";
-        msgBox.style.color = "#38bdf8";
-
-        html5Qrcode = new Html5Qrcode("reader");
-        html5Qrcode.start(
-            { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 220, height: 220 } },
-            async (decodedText) => {
-                let scannedKey = "";
-                
-                if (decodedText.includes("Key: GVCC-")) {
-                    scannedKey = "GVCC-" + decodedText.split("Key: GVCC-")[1].split("\n")[0].trim();
-                }
-
-                stopQRScanner(); 
-
-                if(scannedKey && vipData.hasOwnProperty(scannedKey)) {
-                    let rollFromKey = vipData[scannedKey].roll; 
-                    currentVipPin = vipData[scannedKey].pin; 
-                    
-                    openPinPad(rollFromKey);
-
-                } else {
-                    msgBox.style.color = "#ef4444"; 
-                    msgBox.innerHTML = "🚨 <b>नकली (FAKE) कार्ड पकड़ा गया!</b><br><small style='color:#f87171;'>आपकी GVCC चाबी गलत है या आपने फीस जमा नहीं की है।</small>";
-                }
-            },
-            (errorMessage) => { /* ignore */ }
-        ).then(() => { msgBox.innerHTML = ""; }).catch((err) => {
-            msgBox.style.color = "#ef4444"; msgBox.innerHTML = "❌ Camera access denied.";
-        });
-    };
-
-    window.stopQRScanner = function() {
-        if (html5Qrcode) { 
-            html5Qrcode.stop().then(() => { html5Qrcode.clear(); html5Qrcode = null; }).catch(err => console.log(err));
-        }
-        document.getElementById("scanner-container").style.display = "none";
-        document.getElementById("startScannerBtn").style.display = "flex";
-        document.getElementById("loginForm").style.display = "block";
-        document.querySelector(".install-btn").style.display = "inline-flex"; 
-    };
-
-    // ==========================================
-    // 🌟 VIP PIN PAD JAVASCRIPT LOGIC 🌟
-    // ==========================================
-    window.openPinPad = function(roll) {
-        currentVipRoll = roll;
-        enteredPin = "";
-        updatePinDots();
-        
-        document.getElementById("pinRollDisplay").innerText = roll;
-        document.getElementById("pinSubText").innerText = `Enter 4-Digit PIN for Roll: ${roll}`;
-        document.getElementById("pinSubText").style.color = "#94a3b8"; 
-        document.getElementById("pinPadOverlay").style.display = "flex";
-    };
-
-    window.closePinPad = function() {
-        playTapSound();
-        document.getElementById("pinPadOverlay").style.display = "none";
-        msgBox.innerHTML = ""; 
-    };
-
-    window.enterPin = function(num) {
-        playTapSound(); // 🔥 Play Sound on Tap!
-        if(enteredPin.length < 4) {
-            enteredPin += num;
-            updatePinDots();
-            
-            if(enteredPin.length === 4) {
-                verifyVipPinLogin();
-            }
-        }
-    };
-
-    window.deletePin = function() {
-        playTapSound(); // 🔥 Play Sound on Tap!
-        if(enteredPin.length > 0) {
-            enteredPin = enteredPin.slice(0, -1);
-            updatePinDots();
-        }
-    };
-
-    window.clearPin = function() {
-        playTapSound(); // 🔥 Play Sound on Tap!
-        enteredPin = "";
-        updatePinDots();
-    };
-
-    function updatePinDots() {
-        for(let i=1; i<=4; i++) {
-            let dot = document.getElementById("dot" + i);
-            if(i <= enteredPin.length) {
-                dot.classList.add("filled");
-            } else {
-                dot.classList.remove("filled");
-            }
-        }
-    }
-
-    async function verifyVipPinLogin() {
-        const subText = document.getElementById("pinSubText");
-        subText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying VIP PIN...`;
-        subText.style.color = "#fbbf24";
-
-        if (currentVipPin === String(enteredPin).trim()) {
-            subText.innerHTML = `✅ PIN Matched! Welcome...`;
-            subText.style.color = "#4ade80";
-
-            try {
-                const docSnap = await getDoc(doc(db, "students", currentVipRoll));
-                let studentClass = "8th";
-                let studentName = "VIP Student";
-
-                if (docSnap.exists()) {
-                    let data = docSnap.data();
-                    studentClass = data.class || "8th";
-                    studentName = data["Name "] || data.Name || "VIP Student";
-                    
-                    if ("Notification" in window && Notification.permission === "granted") {
-                        try {
-                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-                            if (token) { await setDoc(doc(db, "students", currentVipRoll), { notificationToken: token, class: data.class }, { merge: true }); }
-                        } catch (err) {}
-                    }
-                }
-
-                localStorage.setItem("studentRoll", currentVipRoll);
-                localStorage.setItem("studentClass", studentClass);
-
-                await saveLoginLog(currentVipRoll, studentName);
-
-                setTimeout(() => { window.location.href = "index1.html"; }, 700);
-            } catch (e) {
-                localStorage.setItem("studentRoll", currentVipRoll);
-                localStorage.setItem("studentClass", "8th");
-                setTimeout(() => { window.location.href = "index1.html"; }, 700);
-            }
-        } else {
-            triggerPinError("❌ Wrong VIP PIN! Try Again.");
-        }
-    }
-
-    function triggerPinError(errorMsg) {
-        const modal = document.getElementById("pinModal");
-        const subText = document.getElementById("pinSubText");
-        
-        subText.innerHTML = errorMsg;
-        subText.style.color = "#ef4444";
-        
-        modal.classList.add("shake-error");
-        if(navigator.vibrate) navigator.vibrate(200);
-
-        setTimeout(() => {
-            modal.classList.remove("shake-error");
-            enteredPin = "";
-            updatePinDots();
-        }, 500);
-    }
-    // ==========================================
 
     // 🌟 SMART NOTIFICATION SYSTEM 🌟
     const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
@@ -570,13 +178,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
             } catch (error) {}
         }
     }, 2000);
-
-    window.addEventListener('appinstalled', async () => {
-        try {
-            const statsRef = doc(db, "admin_stats", "app_downloads");
-            await setDoc(statsRef, { total_downloads: increment(1), last_installed_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) }, { merge: true });
-        } catch (e) {}
-    });
 
     const rollInput = document.getElementById("roll");
     const nameDiv = document.getElementById("dynamicName");
