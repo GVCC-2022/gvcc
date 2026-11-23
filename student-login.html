@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -13,7 +13,6 @@
     
 <!-- GLOBAL THEME SYSTEM -->
 <link rel="stylesheet" href="theme.css">
-<script src="theme.js" defer></script>
 
 <style>
 * { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -22,24 +21,6 @@ img { -webkit-user-drag: none; }
 
 /* THEME VARIABLES */
 :root {
-    --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    --text-main: #1e293b;
-    --card-bg: rgba(255, 255, 255, 0.6);
-    --card-border: rgba(0, 0, 0, 0.1);
-    --input-bg: rgba(255, 255, 255, 0.8);
-    --input-text: #1e293b;
-    --input-border: rgba(0, 0, 0, 0.15);
-    --placeholder-color: #64748b;
-    --divider-color: rgba(0, 0, 0, 0.1);
-    --btn-login-bg: #ffffff;
-    --btn-login-text: #0f172a;
-    --btn-disabled-bg: rgba(0, 0, 0, 0.05);
-    --btn-disabled-text: #94a3b8;
-    --glow-color: rgba(56, 189, 248, 0.4);
-    --credit-color: #475569;
-}
-
-[data-theme="dark"] {
     --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     --text-main: white;
     --card-bg: rgba(255, 255, 255, 0.05);
@@ -168,14 +149,6 @@ input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0
         }
         .btn-login:disabled::after { display: none; }
         @keyframes vipShine { 0% { transform: translateX(-130%) skewX(-20deg); } 40%, 100% { transform: translateX(380%) skewX(-20deg); } }
-
-        /* theme button: gold ring, stays clear of phone edges */
-        #themeToggleBtn {
-            width: 44px; height: 44px; font-size: 20px; border-color: var(--gold);
-            bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(18px + env(safe-area-inset-right, 0px));
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(230, 194, 122, 0.18);
-        }
-
         @media (prefers-reduced-motion: reduce) {
             .fit, .btn-login::after { animation: none; }
         }

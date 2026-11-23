@@ -90,9 +90,8 @@
     // ---------- tap sparkles ----------
     var layer = null;
     var SKY = ["#ffd7e6", "#ff9fc2", "#ffe3a3", "#ecd09a", "#ffffff", "#c9d6ff"];          // special page (dark photo)
-    var NIGHT = ["#7dd3fc", "#c4b5fd", "#f9a8d4", "#fde68a", "#86efac", "#ffffff"];       // dark theme
-    var DAY = ["#0ea5e9", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#6366f1"];         // light theme (stronger, so they show on pale glass)
-    function palette() { return special ? SKY : (root.getAttribute("data-theme") === "dark" ? NIGHT : DAY); }
+    var NIGHT = ["#7dd3fc", "#c4b5fd", "#f9a8d4", "#fde68a", "#86efac", "#ffffff"];       // home + login (night only)
+    function palette() { return special ? SKY : NIGHT; }
     var KINDS = special ? ["heart", "star", "heart", "dot", "star"] : ["star", "dot", "diamond", "star", "dot"];
     var BASE = { dot: 12, star: 18, diamond: 14, heart: 20 };
 
@@ -232,6 +231,8 @@
         parTargets.push(w);
         var bg = world.querySelector(".bg-image");
         if (bg) { parTargets.push(bg); }
+        var art = world.querySelector(".vp-art");           // the thread / lights follow the photo
+        if (art) { parTargets.push(art); }
         function shoot() {
             if (!doc.hidden && !reduce && !lite && w.isConnected) {
                 var s = el("i", "fx-shoot");

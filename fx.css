@@ -49,19 +49,6 @@ html.fx-lite .fx-liquid { -webkit-backdrop-filter: blur(8px); backdrop-filter: b
    Styling only - no text is changed.
    ===================================================================== */
 :root {
-    --fx-base: #e9efff;
-    --fx-bg-a: #eef4ff; --fx-bg-b: #f7ecff;
-    --fx-blob-op: 0.85;
-    --fx-b1: #8ad8ff; --fx-b2: #c9b8ff; --fx-b3: #ffb3d9; --fx-b4: #ffe39a; --fx-b5: #9ff0c6;
-    --fx-glass-a: rgba(255, 255, 255, 0.55); --fx-glass-b: rgba(255, 255, 255, 0.18);
-    --fx-rim: rgba(255, 255, 255, 0.85);
-    --fx-shadow: rgba(76, 63, 170, 0.36);
-    --fx-clay-a: #ffffff; --fx-clay-b: #dde4ff; --fx-clay-shade: rgba(99, 102, 241, 0.32); --fx-clay-ink: #1e1b4b;
-    --fx-field: rgba(255, 255, 255, 0.58); --fx-field-hi: rgba(255, 255, 255, 0.95); --fx-field-lo: rgba(99, 102, 241, 0.22);
-    --fx-sheen: rgba(255, 255, 255, 0.6);
-    --fx-hi: rgba(255, 255, 255, 0.95);
-}
-[data-theme="dark"] {
     --fx-base: #070a1c;
     --fx-bg-a: #0a1030; --fx-bg-b: #170a30;
     --fx-blob-op: 0.6;
@@ -256,26 +243,6 @@ input:focus {
     box-shadow: inset 5px 6px 12px var(--fx-field-lo), inset -5px -6px 10px var(--fx-field-hi), 0 0 0 4px rgba(99, 102, 241, 0.16), 0 10px 26px -8px rgba(99, 102, 241, 0.5);
 }
 
-/* ---------- the moon / sun button ---------- */
-#themeToggleBtn {
-    width: 56px; height: 56px; font-size: 22px; color: #f59e0b; border: 1px solid rgba(255, 255, 255, 0.85);
-    background:
-        radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4) 46%, rgba(255, 255, 255, 0.16) 100%);
-    -webkit-backdrop-filter: blur(10px) saturate(170%); backdrop-filter: blur(10px) saturate(170%);
-    box-shadow: 0 16px 22px -10px var(--fx-shadow), inset 0 4px 6px #ffffff, inset 0 -8px 12px rgba(99, 102, 241, 0.2);
-    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-    animation: fxSpring 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s backwards, fxBobY 5s ease-in-out 2s infinite;
-}
-#themeToggleBtn i { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.55)); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-#themeToggleBtn:hover i { transform: rotate(40deg) scale(1.15); }
-#themeToggleBtn:active { transform: scale(0.88); }
-[data-theme="dark"] #themeToggleBtn {
-    color: #fde68a; border-color: rgba(255, 255, 255, 0.3);
-    background: radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 100%);
-    box-shadow: 0 16px 22px -10px rgba(0, 0, 0, 0.7), inset 0 3px 5px rgba(255, 255, 255, 0.35), inset 0 -8px 12px rgba(99, 102, 241, 0.3);
-}
-[data-theme="dark"] #themeToggleBtn i { filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.6)); }
-
 /* ---------- the notification question (first touch): same glass look ---------- */
 #notificationBlocker {
     background:
@@ -314,6 +281,6 @@ html.fx-lite .landing-card, html.fx-lite .login-card { -webkit-backdrop-filter: 
 html.fx-lite .landing-card::after, html.fx-lite .login-card::after, html.fx-lite .btn-student::after, html.fx-lite .btn-login::after { animation: none; display: none; }
 @media (prefers-reduced-motion: reduce) {
     .fx-blob, .fx-b, .landing-card::after, .login-card::after, .btn-student::after, .btn-login::after, .landing-logo, .login-logo,
-    .title, #themeToggleBtn, #notificationBlocker > i { animation: none !important; }
+    .title, #notificationBlocker > i { animation: none !important; }
     .landing-card, .login-card, .landing-card > *, .login-card > *, #roll, #password, #loginBtn { animation-duration: 0.01s !important; animation-delay: 0s !important; }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta name="google-site-verification" content="smTR7T7o1MeEBFJU_zg880rkDG2EWxsQRT0eMnzZXpE" />
     <meta charset="UTF-8">
@@ -16,8 +16,7 @@
     
     <!-- GLOBAL THEME SYSTEM -->
     <link rel="stylesheet" href="theme.css">
-    <script src="theme.js" defer></script>
-    
+        
     <style>
         * {
             -webkit-touch-callout: none;
@@ -42,20 +41,6 @@
 
         /* THEME VARIABLES */
         :root {
-            /* LIGHT MODE (Premium Bright Look) */
-            --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            --text-main: #1e293b;
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --card-border: rgba(0, 0, 0, 0.1);
-            --subtitle-color: #64748b;
-            --teacher-btn-bg: rgba(0, 0, 0, 0.05);
-            --teacher-btn-text: #475569;
-            --teacher-btn-border: rgba(0, 0, 0, 0.1);
-            --teacher-btn-hover: rgba(0, 0, 0, 0.1);
-            --divider-color: rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="dark"] {
             /* DARK MODE (Aapka Original Navy Blue Look) */
             --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --text-main: white;
@@ -260,14 +245,6 @@
         }
         .btn-student:disabled::after { display: none; }
         @keyframes vipShine { 0% { transform: translateX(-130%) skewX(-20deg); } 40%, 100% { transform: translateX(380%) skewX(-20deg); } }
-
-        /* theme button: gold ring, stays clear of phone edges */
-        #themeToggleBtn {
-            width: 44px; height: 44px; font-size: 20px; border-color: var(--gold);
-            bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(18px + env(safe-area-inset-right, 0px));
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(230, 194, 122, 0.18);
-        }
-
         @media (prefers-reduced-motion: reduce) {
             .fit, .btn-student::after { animation: none; }
         }
