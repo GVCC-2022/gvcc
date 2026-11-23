@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Gyan Varsha Coaching Center - Student Login</title>
+<link rel="icon" type="image/png" href="20260620_144347.png">
+<meta name="description" content="ज्ञान वर्षा कोचिंग सेंटर (GVCC) का स्मार्ट स्टूडेंट पोर्टल। अपने रोल नंबर और पासवर्ड से सुरक्षित लॉगिन करें और अपना डैशबोर्ड देखें।">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+<!-- GLOBAL THEME SYSTEM -->
+<link rel="stylesheet" href="theme.css">
+<script src="theme.js" defer></script>
+
+<style>
+* { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+input, textarea { -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; user-select: auto !important; }
+img { -webkit-user-drag: none; }
+
+/* THEME VARIABLES */
+:root {
+    --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --text-main: #1e293b;
+    --card-bg: rgba(255, 255, 255, 0.6);
+    --card-border: rgba(0, 0, 0, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-text: #1e293b;
+    --input-border: rgba(0, 0, 0, 0.15);
+    --placeholder-color: #64748b;
+    --divider-color: rgba(0, 0, 0, 0.1);
+    --btn-login-bg: #ffffff;
+    --btn-login-text: #0f172a;
+    --btn-disabled-bg: rgba(0, 0, 0, 0.05);
+    --btn-disabled-text: #94a3b8;
+    --glow-color: rgba(56, 189, 248, 0.4);
+    --credit-color: #475569;
+}
+
+[data-theme="dark"] {
+    --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --text-main: white;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --input-text: white;
+    --input-border: rgba(255, 255, 255, 0.1);
+    --placeholder-color: #94a3b8;
+    --divider-color: rgba(255, 255, 255, 0.1);
+    --btn-login-bg: #ffffff;
+    --btn-login-text: #0f172a;
+    --btn-disabled-bg: rgba(255, 255, 255, 0.2);
+    --btn-disabled-text: #94a3b8;
+    --glow-color: rgba(255, 255, 255, 0.4);
+    --credit-color: #64748b;
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: var(--page-bg); 
+    margin: 0; 
+    padding: 50px 15px; 
+    display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+    color: var(--text-main); 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    touch-action: manipulation; 
+    transition: background 0.4s ease, color 0.4s ease; box-sizing: border-box;
+}
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.login-container { position: relative; width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+.logo-glow-wrapper { 
+    position: relative; width: 100%; height: 130px; display: flex; justify-content: center; align-items: center; 
+    margin-bottom: -65px; 
+    z-index: 10; 
+    transform: translate(2px, 15px); 
+}
+.logo-glow-wrapper::before { content: ''; position: absolute; width: 140px; height: 140px; margin-top: 15px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, var(--glow-color) 0deg 3deg, transparent 3deg 10deg); -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 70%); animation: rotateRays 25s linear infinite; z-index: -1; transition: background 0.4s; }
+.logo-glow-wrapper::after { content: ''; position: absolute; width: 90px; height: 90px; margin-top: 15px; border-radius: 50%; background: var(--glow-color); filter: blur(20px); z-index: -1; transition: background 0.4s; }
+@keyframes rotateRays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.login-logo { width: 170px; height: auto; filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.5)); position: relative; z-index: 5; pointer-events: none; }
+
+.login-card { background: var(--card-bg); backdrop-filter: blur(15px); padding: 80px 20px 20px 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); width: 100%; text-align: center; box-sizing: border-box; position: relative; transition: background 0.4s, border 0.4s; }
+.title { color: #38bdf8; font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 1px; }
+
+/* 🔥 2. LOGIN FORM & BUTTON - STANDARD SOLID 🔥 */
+input { display: block; width: 100%; padding: 14px; margin: 12px auto; border: 1px solid var(--input-border); border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--input-text); }
+input::placeholder { color: var(--placeholder-color); }
+input:focus { border-color: #38bdf8; background: var(--card-bg); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); outline: none; }
+
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--btn-login-bg); color: var(--btn-login-text); padding: 14px; margin: 15px auto 5px auto; width: 100%; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+.btn-login:disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: not-allowed; box-shadow: none; }
+
+/* THE MAGIC TAP FEEL */
+.btn-login:active:not(:disabled) { 
+    transform: scale(0.92) !important; 
+    opacity: 0.8; 
+    transition: all 0.1s ease; 
+}
+
+.credit-text { font-size: 11px; color: var(--credit-color); margin-top: 15px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.4s; }
+.spinner { width: 16px; height: 16px; border: 3px solid rgba(15, 23, 42, 0.3); border-top-color: #0f172a; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#dynamicName { font-size: 13px; color: #4ade80; margin: -5px auto 5px auto; font-weight: 600; width: 100%; text-align: left; height: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding-left: 5px; }
+#dynamicName.show { opacity: 1; transform: translateY(0); }
+#msg { font-weight: 600; font-size: 13px; margin-top: 10px; transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.1); min-height: 18px; }
+
+
+        /* =================================================================
+           FIXED SCREEN + VIP LOOK (styling only - no text is changed)
+        ================================================================= */
+        :root {
+            --gold: #e6c27a;
+            --gold-soft: rgba(230, 194, 122, 0.55);
+            --gold-faint: rgba(230, 194, 122, 0.28);
+        }
+        html { height: 100%; overflow: hidden; }
+        body {
+            height: 100%; padding: 0; overflow: hidden; overflow: clip; overscroll-behavior: none; min-height: 100vh;
+            background:
+                radial-gradient(70% 50% at 50% -5%, rgba(56, 189, 248, 0.20), rgba(56, 189, 248, 0) 70%),
+                radial-gradient(55% 45% at 100% 105%, rgba(230, 194, 122, 0.18), rgba(230, 194, 122, 0) 70%),
+                var(--page-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+        @supports (height: 100dvh) { body { min-height: 100dvh; } }
+
+        /* the whole page is one block that is scaled to fit the screen, so it looks the same on every
+           phone, tablet and computer and never needs scrolling */
+        .fit {
+            width: 100%; display: flex; justify-content: center;
+            transform: scale(var(--fit, 1)); transform-origin: 50% 50%;
+            animation: vipFade 0.7s ease-out both;
+        }
+        @keyframes vipFade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* card with a thin gold-to-blue edge */
+        .login-card::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, rgba(230, 194, 122, 0.85), rgba(255, 255, 255, 0.12) 42%, rgba(56, 189, 248, 0.55));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .login-card { box-shadow: 0 22px 55px rgba(15, 23, 42, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+        .title {
+            background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #0ea5e9 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+        }
+
+        /* the main button: gold ring + a slow shine */
+        .btn-login {
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.28), 0 0 0 1px var(--gold-soft);
+        }
+        .btn-login::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 38%; pointer-events: none;
+            background: linear-gradient(100deg, rgba(230, 194, 122, 0), rgba(230, 194, 122, 0.5), rgba(230, 194, 122, 0));
+            transform: translateX(-130%) skewX(-20deg); animation: vipShine 5s ease-in-out 1.6s infinite;
+        }
+        .btn-login:disabled::after { display: none; }
+        @keyframes vipShine { 0% { transform: translateX(-130%) skewX(-20deg); } 40%, 100% { transform: translateX(380%) skewX(-20deg); } }
+
+        /* theme button: gold ring, stays clear of phone edges */
+        #themeToggleBtn {
+            width: 44px; height: 44px; font-size: 20px; border-color: var(--gold);
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(18px + env(safe-area-inset-right, 0px));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(230, 194, 122, 0.18);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fit, .btn-login::after { animation: none; }
+        }
+        .login-logo { aspect-ratio: 1 / 1; }
+    </style>
+<link rel="stylesheet" href="fx.css">
+<script src="fx.js" defer></script>
+</head>
+<body>
+
+<div class="fit">
+<div class="login-container">
+    <div class="logo-glow-wrapper"><img src="logo.webp" width="170" height="170" alt="GVCC Logo" class="login-logo"></div>
+    <div class="login-card">
+        <div class="title"><i class="fa-solid fa-user-graduate"></i> Student Portal</div>
+
+        <form id="loginForm">
+            <input type="number" id="roll" placeholder="Roll Number" required>
+            <div id="dynamicName"></div>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="btn-login" id="loginBtn">
+                <span class="spinner" id="btnSpinner"></span><span id="btnText">Login</span>
+            </button>
+        </form>
+        
+        <div id="msg"></div>
+        
+        <div class="credit-text"><i class="fa-solid fa-code-branch"></i> Manage by: GVCC All Members</div>
+    </div>
+</div>
+</div>
+<script>
+// Scales the page block so it fits the screen (never scrolls, same look everywhere).
+(function () {
+    var fit = document.querySelector('.fit');
+    if (!fit) { return; }
+    var box = fit.firstElementChild;
+    var SHIFT = 0.0;            // how far the block is lifted up (share of screen height)
+    var baseW = 0, baseH = 0;
+    function update(force) {
+        var w = window.innerWidth, h = window.innerHeight;
+        // an on-screen keyboard only makes the height smaller: ignore that, keep the size
+        if (force || !baseH || w !== baseW || h > baseH) { baseW = w; baseH = h; }
+        var nw = box.offsetWidth, nh = box.offsetHeight;
+        if (!nw || !nh) { return; }
+        var s = Math.min(1.18, (baseH * (1 - 2 * SHIFT) - 28) / nh, (baseW - 20) / nw);
+        fit.style.setProperty('--fit', Math.max(0.4, s).toFixed(3));
+    }
+    update(true);
+    window.addEventListener('resize', function () { update(false); });
+    window.addEventListener('orientationchange', function () { setTimeout(function () { update(true); }, 250); });
+    window.addEventListener('load', function () { update(true); });
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { update(true); }); }
+})();
+</script>
+
+
+<script>
+    // Browser ka apna "Install app" banner band rakhna
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); });
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, increment, collection, addDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messaging = getMessaging(app);
+
+    const msgBox = document.getElementById("msg");
+
+    // 🌟 SMART NOTIFICATION SYSTEM 🌟
+    const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
+
+    setTimeout(async () => {
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (token) {
+                        await addDoc(collection(db, "notification_tokens"), { token: token, userType: "Student", timestamp: serverTimestamp() });
+                    }
+                }
+            } catch (error) {}
+        }
+    }, 2000);
+
+    const rollInput = document.getElementById("roll");
+    const nameDiv = document.getElementById("dynamicName");
+
+    rollInput.addEventListener("input", async function() {
+        let roll = this.value.trim();
+        if (roll.length >= 3) { 
+            try {
+                const docSnap = await getDoc(doc(db, "students", roll));
+                if (docSnap.exists()) {
+                    let data = docSnap.data();
+                    nameDiv.innerText = `👤 ${data["Name "] || data.Name || "Unknown Student"}`;
+                    nameDiv.classList.add("show");
+                } else { nameDiv.classList.remove("show"); }
+            } catch (error) {}
+        } else { nameDiv.classList.remove("show"); }
+    });
+
+    // 🚀 SMART LOGGING
+    async function saveLoginLog(rollNumber, studentName) {
+        try {
+            const now = new Date();
+            const logRef = doc(db, "login_logs", rollNumber);
+            await setDoc(logRef, {
+                roll: rollNumber,
+                name: studentName,
+                totalLoginCount: increment(1), 
+                lastLoginAt: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                history: arrayUnion({
+                    loginTime: now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    timestamp: now.getTime()
+                })
+            }, { merge: true });
+        } catch (error) {}
+    }
+
+    // 🔒 MANUAL LOGIN SYSTEM
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+        e.preventDefault(); 
+        const loginBtn = document.getElementById("loginBtn"), btnSpinner = document.getElementById("btnSpinner"), btnText = document.getElementById("btnText");
+        
+        let roll = rollInput.value.trim(), password = document.getElementById("password").value.trim();
+
+        loginBtn.disabled = true; btnSpinner.style.display = "block"; btnText.innerText = "Checking...";
+        msgBox.style.color = "#fbbf24"; msgBox.innerHTML = "🔄 Verifying Credentials...";
+
+        try {
+            const docSnap = await getDoc(doc(db, "students", roll));
+            if (docSnap.exists()) {
+                let data = docSnap.data();
+                if (String(data["Password "] || data.Password || data["password "]).trim() === String(password).trim()) {
+                    
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        try {
+                            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                            if (token) {
+                                await setDoc(doc(db, "students", roll), { notificationToken: token, class: data.class }, { merge: true });
+                            }
+                        } catch (err) {}
+                    }
+
+                    msgBox.style.color = "#4ade80"; msgBox.innerHTML = "✅ Login Successful!";
+                    localStorage.setItem("studentRoll", roll);
+                    localStorage.setItem("studentClass", data.class); 
+                    
+                    await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
+                    
+                    msgBox.innerHTML = "🚀 Redirecting...";
+                                        // ... (Aapka pehle ka saveLoginLog tak ka code)
+                    await saveLoginLog(roll, data["Name "] || data.Name || "Unknown Student");
+                    
+                    msgBox.innerHTML = "🚀 Redirecting...";
+                    
+                    // ✨ Yahan humne 2357 ke liye condition add ki hai ✨
+                    setTimeout(() => { 
+                        if (roll === "2357") {
+                            sessionStorage.setItem("gvccKey", password);
+                            window.location.href = "special-dashboard.html";
+                        } else {
+                            window.location.href = "index1.html"; 
+                        }
+                    }, 1200);
+
+                } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Wrong Password"; resetButton(); }
+            } else { msgBox.style.color = "#f87171"; msgBox.innerHTML = "❌ Roll Number Not Found"; resetButton(); }
+        } catch (error) { msgBox.style.color = "#f87171"; msgBox.innerHTML = "⚠️ Network error."; resetButton(); }
+
+        function resetButton() { loginBtn.disabled = false; btnSpinner.style.display = "none"; btnText.innerText = "Login"; }
+    });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(function(error) {});
+  });
+}
+</script>
+</body>
+</html>

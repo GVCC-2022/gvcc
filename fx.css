@@ -1,0 +1,319 @@
+/* =====================================================================
+   GVCC soft-glass look - shared parts (tap sparkles, lights, liquid glass).
+   Decoration only: nothing here adds or changes any text.
+   ===================================================================== */
+
+/* tap sparkles live in one layer above everything; it never catches a touch */
+.fx-layer { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 2147483000; pointer-events: none; overflow: hidden; contain: layout paint; }
+.fx-p {
+    position: absolute; left: 0; top: 0; display: block; pointer-events: none; will-change: transform, opacity;
+    background: radial-gradient(circle at 34% 28%, #ffffff 0, var(--pc, #fff) 58%, var(--pc, #fff) 100%);
+}
+.fx-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 5px rgba(20, 20, 60, 0.22), inset -2px -3px 4px rgba(0, 0, 0, 0.12); }
+.fx-star { width: 18px; height: 18px; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.fx-diamond { width: 14px; height: 14px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.fx-heart { width: 20px; height: 18px; clip-path: path("M10 18 C2 12 0 8.5 0 5.2 C0 2.2 2.4 0 5.1 0 C7.1 0 9 1.2 10 3 C11 1.2 12.9 0 14.9 0 C17.6 0 20 2.2 20 5.2 C20 8.5 18 12 10 18 Z"); }
+.fx-ripple {
+    position: absolute; width: 130px; height: 130px; border-radius: 50%; pointer-events: none; will-change: transform, opacity;
+    border: 2px solid var(--pc, #fff);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 68%);
+    box-shadow: 0 0 22px var(--pc, #fff), inset 0 0 18px var(--pc, #fff);
+}
+
+/* the shared world layer (blobs, shapes, lights) */
+.fx-world {
+    position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    --px: 0; --py: 0;
+}
+
+@keyframes fxRise { from { opacity: 0; translate: 0 22px; scale: 0.96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes fxSpring { 0% { opacity: 0; scale: 0.5; translate: 0 -26px; } 55% { opacity: 1; } 100% { opacity: 1; scale: 1; translate: 0 0; } }
+@keyframes fxShimmer { from { background-position: 0% 50%; } to { background-position: 250% 50%; } }
+@keyframes fxSweep { 0% { transform: translateX(-190%) skewX(-18deg); } 46%, 100% { transform: translateX(420%) skewX(-18deg); } }
+@keyframes fxBobY { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+@keyframes fxSquish { 0% { scale: 1; } 22% { scale: 1.16 0.82; } 48% { scale: 0.9 1.14; } 72% { scale: 1.06 0.97; } 100% { scale: 1; } }
+
+/* liquid glass helpers: blur first (every browser), then the bending filter (Chrome/Edge only) */
+html:not(.fx-lite) .fx-liquid {
+    -webkit-backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid);
+    backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid);
+}
+html.fx-lite .fx-liquid { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-layer { display: none; }
+}
+/* =====================================================================
+   GVCC soft-glass look for the home page and the login page:
+   claymorphism (puffy buttons) + glassmorphism (frosted cards) + liquid glass (bending rim).
+   Styling only - no text is changed.
+   ===================================================================== */
+:root {
+    --fx-base: #e9efff;
+    --fx-bg-a: #eef4ff; --fx-bg-b: #f7ecff;
+    --fx-blob-op: 0.85;
+    --fx-b1: #8ad8ff; --fx-b2: #c9b8ff; --fx-b3: #ffb3d9; --fx-b4: #ffe39a; --fx-b5: #9ff0c6;
+    --fx-glass-a: rgba(255, 255, 255, 0.55); --fx-glass-b: rgba(255, 255, 255, 0.18);
+    --fx-rim: rgba(255, 255, 255, 0.85);
+    --fx-shadow: rgba(76, 63, 170, 0.36);
+    --fx-clay-a: #ffffff; --fx-clay-b: #dde4ff; --fx-clay-shade: rgba(99, 102, 241, 0.32); --fx-clay-ink: #1e1b4b;
+    --fx-field: rgba(255, 255, 255, 0.58); --fx-field-hi: rgba(255, 255, 255, 0.95); --fx-field-lo: rgba(99, 102, 241, 0.22);
+    --fx-sheen: rgba(255, 255, 255, 0.6);
+    --fx-hi: rgba(255, 255, 255, 0.95);
+}
+[data-theme="dark"] {
+    --fx-base: #070a1c;
+    --fx-bg-a: #0a1030; --fx-bg-b: #170a30;
+    --fx-blob-op: 0.6;
+    --fx-b1: #2563eb; --fx-b2: #7c3aed; --fx-b3: #db2777; --fx-b4: #b8892f; --fx-b5: #0891b2;
+    --fx-glass-a: rgba(255, 255, 255, 0.13); --fx-glass-b: rgba(255, 255, 255, 0.035);
+    --fx-rim: rgba(255, 255, 255, 0.3);
+    --fx-shadow: rgba(0, 0, 0, 0.62);
+    --fx-clay-a: #ffffff; --fx-clay-b: #ccd5ff; --fx-clay-shade: rgba(79, 70, 229, 0.38); --fx-clay-ink: #12163a;
+    --fx-field: rgba(255, 255, 255, 0.07); --fx-field-hi: rgba(255, 255, 255, 0.1); --fx-field-lo: rgba(0, 0, 0, 0.5);
+    --fx-sheen: rgba(255, 255, 255, 0.25);
+    --fx-hi: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- the room: a slowly moving liquid colour mesh ---------- */
+html body {
+    background-color: var(--fx-base) !important;
+    background-image: linear-gradient(160deg, var(--fx-bg-a) 0%, var(--fx-bg-b) 100%) !important;
+    background-repeat: no-repeat !important;
+}
+.fit { position: relative; z-index: 1; animation: none; }
+/* an ancestor that fades (opacity animation) hides the shapes from the glass, so the old fade-in is replaced:
+   the lift is now fixed and every part animates by itself */
+.landing-container { animation: none; transform: translateY(-8vh); }
+.login-container { animation: none; }
+
+.fx-blob {
+    position: absolute; width: var(--w); height: var(--h); border-radius: 50%; opacity: var(--fx-blob-op);
+    background: radial-gradient(closest-side, var(--c) 0%, rgba(255, 255, 255, 0) 74%);
+    will-change: transform; animation: fxBlob var(--d) ease-in-out var(--dl) infinite alternate;
+}
+@keyframes fxBlob {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
+    33%  { transform: translate(9vw, -7vh) rotate(70deg) scale(1.18, 0.88); }
+    66%  { transform: translate(-7vw, 8vh) rotate(150deg) scale(0.9, 1.15); }
+    100% { transform: translate(6vw, 5vh) rotate(230deg) scale(1.12, 1); }
+}
+
+/* ---------- floating clay + glass shapes (behind the card, so the glass frosts them) ---------- */
+.fx-s {
+    position: absolute; display: block; width: 0; height: 0;
+    translate: calc(var(--px, 0) * var(--z, 1) * -26px) calc(var(--py, 0) * var(--z, 1) * -22px);
+}
+.fx-s.pop { animation: fxPop 0.95s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes fxPop { 0% { scale: 1; } 20% { scale: 1.5 0.62; } 45% { scale: 0.72 1.38; } 70% { scale: 1.18 0.9; } 100% { scale: 1; } }
+.fx-b {
+    --sz: clamp(34px, calc(var(--s) * 1vmin), 200px);
+    position: absolute; left: 0; top: 0; display: block; width: var(--sz); height: var(--sz);
+    margin: calc(var(--sz) * -0.5) 0 0 calc(var(--sz) * -0.5);
+    will-change: transform; animation: fxFloat var(--d) ease-in-out var(--dl) infinite alternate;
+}
+@keyframes fxFloat {
+    0%   { translate: 0 0; rotate: 0deg; }
+    50%  { translate: var(--fx) var(--fy); rotate: calc(var(--r) * 0.5); }
+    100% { translate: calc(var(--fx) * -0.7) calc(var(--fy) * -1); rotate: var(--r); }
+}
+.fx-pink  { --c1: #ffd3e8; --c2: #f472b6; --sh: rgba(236, 72, 153, 0.42); }
+.fx-sky   { --c1: #cdefff; --c2: #38bdf8; --sh: rgba(14, 165, 233, 0.42); }
+.fx-lilac { --c1: #e6ddff; --c2: #8b5cf6; --sh: rgba(124, 58, 237, 0.42); }
+.fx-peach { --c1: #ffe4c4; --c2: #fb923c; --sh: rgba(249, 115, 22, 0.38); }
+.fx-mint  { --c1: #d6ffe8; --c2: #34d399; --sh: rgba(16, 185, 129, 0.38); }
+
+.fx-sphere, .fx-squircle, .fx-pill {
+    background:
+        radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.95) 0, rgba(255, 255, 255, 0) 26%),
+        radial-gradient(circle at 36% 30%, var(--c1), var(--c2) 78%);
+    box-shadow: inset -9px -12px 20px rgba(0, 0, 0, 0.2), inset 7px 9px 14px rgba(255, 255, 255, 0.55), 0 22px 30px -12px var(--sh);
+}
+.fx-sphere { border-radius: 50%; }
+.fx-squircle { border-radius: 32%; }
+.fx-pill { border-radius: 999px; height: calc(var(--sz) * 0.44); margin-top: calc(var(--sz) * -0.22); }
+.fx-ring { border-radius: 50%; filter: drop-shadow(0 14px 12px var(--sh)); }
+.fx-ring::before {
+    content: ""; position: absolute; left: 0; top: 0; right: 0; bottom: 0; border-radius: 50%;
+    background:
+        radial-gradient(circle at 28% 20%, rgba(255, 255, 255, 0.95) 0, rgba(255, 255, 255, 0) 24%),
+        linear-gradient(145deg, var(--c1) 0%, var(--c2) 85%);
+    box-shadow: inset -6px -8px 14px rgba(0, 0, 0, 0.2), inset 5px 6px 10px rgba(255, 255, 255, 0.5);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--sz) * 0.21), #000 calc(100% - var(--sz) * 0.21 + 1px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--sz) * 0.21), #000 calc(100% - var(--sz) * 0.21 + 1px));
+}
+.fx-bubble {
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0) 22%),
+        radial-gradient(circle at 70% 78%, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 36%),
+        rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(5px) saturate(170%); backdrop-filter: blur(5px) saturate(170%);
+    box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.5), inset 0 -8px 14px rgba(124, 58, 237, 0.12), 0 16px 26px -14px rgba(76, 63, 170, 0.4);
+}
+
+/* ---------- the frosted card ---------- */
+.landing-card, .login-card {
+    border-radius: 34px; overflow: hidden;
+    background:
+        radial-gradient(120% 80% at var(--mx, 24%) var(--my, 0%), var(--fx-sheen), rgba(255, 255, 255, 0) 58%),
+        linear-gradient(150deg, var(--fx-glass-a), var(--fx-glass-b));
+    -webkit-backdrop-filter: blur(24px) saturate(185%); backdrop-filter: blur(24px) saturate(185%);
+    border: 1px solid var(--fx-rim);
+    box-shadow:
+        0 38px 70px -28px var(--fx-shadow), 0 12px 26px -12px var(--fx-shadow),
+        inset 0 1.5px 1px var(--fx-hi), inset 0 -16px 30px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+    animation: fxCardIn 1.05s cubic-bezier(0.34, 1.3, 0.64, 1) 0.08s backwards;
+}
+/* on a computer the card also bends the lights behind it (liquid glass) */
+html.fx-fine:not(.fx-lite) .landing-card, html.fx-fine:not(.fx-lite) .login-card {
+    -webkit-backdrop-filter: blur(16px) saturate(185%) url(#fxLiquid);
+    backdrop-filter: blur(16px) saturate(185%) url(#fxLiquid);
+}
+@keyframes fxCardIn { from { opacity: 0; scale: 0.88; translate: 0 34px; } to { opacity: 1; scale: 1; translate: 0 0; } }
+/* gradient edge: gold -> white -> sky -> pink */
+.landing-card::before, .login-card::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 214, 150, 0.95), rgba(255, 255, 255, 0.2) 38%, rgba(125, 211, 252, 0.6) 70%, rgba(244, 114, 182, 0.7));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+}
+/* a soft shine that glides over the glass now and then */
+.landing-card::after, .login-card::after {
+    content: ""; position: absolute; top: -25%; bottom: -25%; left: 0; width: 34%; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    transform: translateX(-190%) skewX(-18deg); animation: fxSweep 8.5s ease-in-out 2s infinite;
+}
+
+/* ---------- logo: a gentle float, a glow, and it squishes when tapped ---------- */
+.landing-logo, .login-logo {
+    filter: drop-shadow(0 16px 18px rgba(30, 27, 75, 0.32)) drop-shadow(0 0 26px rgba(125, 211, 252, 0.55));
+    animation: fxLogoIn 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards, fxBob 6.5s ease-in-out 1.2s infinite;
+}
+@keyframes fxLogoIn { from { opacity: 0; scale: 0.55; translate: 0 -40px; rotate: -8deg; } to { opacity: 1; scale: 1; translate: 0 0; rotate: 0deg; } }
+@keyframes fxBob { 0%, 100% { translate: 0 0; rotate: -1.2deg; } 50% { translate: 0 -9px; rotate: 1.4deg; } }
+.landing-logo.fx-bounce, .login-logo.fx-bounce { animation: fxSquish 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), fxBob 6.5s ease-in-out 0.8s infinite; }
+
+/* ---------- words: colour that moves, then each block rises in turn ---------- */
+.title {
+    background: linear-gradient(100deg, #0ea5e9 0%, #6366f1 28%, #ec4899 52%, #6366f1 74%, #0ea5e9 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+    animation: fxShimmer 7s linear infinite, fxRise 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards;
+    filter: drop-shadow(0 4px 10px rgba(99, 102, 241, 0.22));
+}
+.landing-card > .subtitle, .landing-card > .divider, .landing-card > .btn, .login-card > #msg, .login-card > .credit-text,
+#roll, #password, #loginBtn {
+    animation: fxRise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(0.42s + var(--k, 0) * 0.1s) backwards;
+}
+.landing-card > .subtitle { --k: 0; } .landing-card > .divider { --k: 1; } .landing-card > .btn { --k: 2; }
+#roll { --k: 0; } #password { --k: 1; } #loginBtn { --k: 2; } .login-card > #msg { --k: 3; } .login-card > .credit-text { --k: 3; }
+.divider::before, .divider::after { border-bottom: 0; height: 1px; background: linear-gradient(90deg, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.5)); }
+.divider::after { background: linear-gradient(90deg, rgba(99, 102, 241, 0.5), rgba(99, 102, 241, 0)); }
+.divider { color: var(--subtitle-color, #64748b); letter-spacing: 0.08em; }
+
+/* ---------- clay buttons: puffy, they squash when pressed and spring back ---------- */
+.btn-student, .btn-login {
+    position: relative; overflow: hidden; border-radius: 26px; color: var(--fx-clay-ink);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    background:
+        radial-gradient(120% 90% at 50% -10%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 60%),
+        linear-gradient(170deg, var(--fx-clay-a) 0%, var(--fx-clay-b) 100%);
+    box-shadow:
+        0 22px 26px -14px rgba(79, 70, 229, 0.55), 0 8px 14px -8px rgba(15, 23, 42, 0.35),
+        inset 0 2px 1px #ffffff, inset 0 -9px 14px var(--fx-clay-shade), 0 0 0 1px rgba(230, 194, 122, 0.4);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, filter 0.3s ease;
+}
+.btn-student:hover, .btn-login:hover:not(:disabled) { transform: translateY(-3px) scale(1.025); filter: brightness(1.03); }
+.btn-student:active, .btn-login:active:not(:disabled) {
+    transform: translateY(2px) scale(0.93) !important; opacity: 1 !important;
+    box-shadow: 0 8px 12px -8px rgba(79, 70, 229, 0.5), inset 0 2px 1px #ffffff, inset 0 -4px 8px var(--fx-clay-shade), 0 0 0 1px rgba(230, 194, 122, 0.4);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-student::after { animation: fxSweep 5.2s ease-in-out 1.8s infinite; background: linear-gradient(100deg, rgba(255, 214, 150, 0), rgba(255, 214, 150, 0.55), rgba(255, 214, 150, 0)); }
+.btn-login::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 34%; pointer-events: none;
+    background: linear-gradient(100deg, rgba(255, 214, 150, 0), rgba(255, 214, 150, 0.5), rgba(255, 214, 150, 0));
+    transform: translateX(-190%) skewX(-18deg); animation: fxSweep 5.6s ease-in-out 2.2s infinite;
+}
+.btn-login:disabled {
+    background: linear-gradient(170deg, rgba(226, 232, 240, 0.9), rgba(203, 213, 225, 0.85)); color: #64748b;
+    box-shadow: inset 0 3px 8px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+.btn-login:disabled::after { display: none; }
+.btn i { filter: drop-shadow(0 2px 3px rgba(79, 70, 229, 0.35)); }
+
+/* ---------- clay fields (pressed into the card) ---------- */
+input {
+    border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.55); background: var(--fx-field);
+    box-shadow: inset 5px 6px 12px var(--fx-field-lo), inset -5px -6px 10px var(--fx-field-hi);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+input:focus {
+    transform: scale(1.025); border-color: rgba(99, 102, 241, 0.65); background: var(--fx-field);
+    box-shadow: inset 5px 6px 12px var(--fx-field-lo), inset -5px -6px 10px var(--fx-field-hi), 0 0 0 4px rgba(99, 102, 241, 0.16), 0 10px 26px -8px rgba(99, 102, 241, 0.5);
+}
+
+/* ---------- the moon / sun button ---------- */
+#themeToggleBtn {
+    width: 56px; height: 56px; font-size: 22px; color: #f59e0b; border: 1px solid rgba(255, 255, 255, 0.85);
+    background:
+        radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4) 46%, rgba(255, 255, 255, 0.16) 100%);
+    -webkit-backdrop-filter: blur(10px) saturate(170%); backdrop-filter: blur(10px) saturate(170%);
+    box-shadow: 0 16px 22px -10px var(--fx-shadow), inset 0 4px 6px #ffffff, inset 0 -8px 12px rgba(99, 102, 241, 0.2);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    animation: fxSpring 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s backwards, fxBobY 5s ease-in-out 2s infinite;
+}
+#themeToggleBtn i { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.55)); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+#themeToggleBtn:hover i { transform: rotate(40deg) scale(1.15); }
+#themeToggleBtn:active { transform: scale(0.88); }
+[data-theme="dark"] #themeToggleBtn {
+    color: #fde68a; border-color: rgba(255, 255, 255, 0.3);
+    background: radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 100%);
+    box-shadow: 0 16px 22px -10px rgba(0, 0, 0, 0.7), inset 0 3px 5px rgba(255, 255, 255, 0.35), inset 0 -8px 12px rgba(99, 102, 241, 0.3);
+}
+[data-theme="dark"] #themeToggleBtn i { filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.6)); }
+
+/* ---------- the notification question (first touch): same glass look ---------- */
+#notificationBlocker {
+    background:
+        radial-gradient(60% 40% at 50% 0%, rgba(99, 102, 241, 0.4), rgba(99, 102, 241, 0) 70%),
+        radial-gradient(50% 40% at 100% 100%, rgba(236, 72, 153, 0.25), rgba(236, 72, 153, 0) 70%),
+        rgba(9, 12, 32, 0.74) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(170%) !important; backdrop-filter: blur(24px) saturate(170%) !important;
+}
+#notificationBlocker > * { animation: fxRise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+#notificationBlocker > :nth-child(2) { animation-delay: 0.08s; } #notificationBlocker > :nth-child(3) { animation-delay: 0.16s; }
+#notificationBlocker > :nth-child(4) { animation-delay: 0.24s; } #notificationBlocker > :nth-child(5) { animation-delay: 0.32s; }
+#notificationBlocker > i { filter: drop-shadow(0 0 18px rgba(96, 165, 250, 0.7)); animation: fxRise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards, fxBell 3.2s ease-in-out 1s infinite; transform-origin: 50% 0; }
+@keyframes fxBell { 0%, 70%, 100% { rotate: 0deg; } 74% { rotate: 14deg; } 80% { rotate: -12deg; } 86% { rotate: 8deg; } 92% { rotate: -4deg; } }
+#permBtn {
+    border-radius: 26px !important; border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    background: radial-gradient(120% 90% at 50% -10%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 60%), linear-gradient(170deg, #60a5fa, #2563eb) !important;
+    box-shadow: 0 20px 26px -14px rgba(37, 99, 235, 0.8), inset 0 2px 1px rgba(255, 255, 255, 0.75), inset 0 -9px 14px rgba(30, 58, 138, 0.45) !important;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+#permBtn:active { transform: translateY(2px) scale(0.93) !important; transition: transform 0.12s ease !important; }
+#closeNotificationUiBtn {
+    border-radius: 20px !important; border: 1px solid rgba(255, 255, 255, 0.3) !important; color: #dbe4ff !important;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)) !important;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.35);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+#closeNotificationUiBtn:active { transform: scale(0.93); }
+
+/* ---------- slow phones / people who switched animations off ---------- */
+html.fx-lite .fx-blob, html.fx-lite .fx-b { animation: none; }
+html.fx-lite .fx-blob:nth-child(n+4) { display: none; }
+html.fx-lite .fx-s:nth-child(n+11) { display: none; }
+html.fx-lite .fx-bubble { -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.fx-lite .landing-card, html.fx-lite .login-card { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+html.fx-lite .landing-card::after, html.fx-lite .login-card::after, html.fx-lite .btn-student::after, html.fx-lite .btn-login::after { animation: none; display: none; }
+@media (prefers-reduced-motion: reduce) {
+    .fx-blob, .fx-b, .landing-card::after, .login-card::after, .btn-student::after, .btn-login::after, .landing-logo, .login-logo,
+    .title, #themeToggleBtn, #notificationBlocker > i { animation: none !important; }
+    .landing-card, .login-card, .landing-card > *, .login-card > *, #roll, #password, #loginBtn { animation-duration: 0.01s !important; animation-delay: 0s !important; }
+}

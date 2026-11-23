@@ -1,0 +1,44 @@
+/* LIGHT MODE COLORS */
+:root {
+    --page-bg: #f8fafc;
+    --text-color: #1e293b;
+}
+
+/* DARK MODE COLORS */
+[data-theme="dark"] {
+    --page-bg: #0f172a;
+    --text-color: #f8fafc;
+}
+
+/* HAR FILE KI BODY PAR YE APPLY HOGA */
+body {
+    background-color: var(--page-bg) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* CHAND/SURAJ WALA BUTTON JO KONE ME DIKHEGA */
+#themeToggleBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #1e293b;
+    color: #fbbf24;
+    font-size: 24px;
+    border: 2px solid #fbbf24;
+    cursor: pointer;
+    z-index: 999999;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+[data-theme="dark"] #themeToggleBtn {
+    background: #f8fafc;
+    color: #1e293b;
+    border: 2px solid #1e293b;
+}

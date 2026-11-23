@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>GVCC</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* =========================================
+           1. SHARED DESIGN (Dono Mode ke liye same)
+        ========================================= */
+        body {
+            margin: 0; padding: 0; background-color: #000;
+            font-family: 'Playfair Display', serif;
+            height: 100vh; width: 100vw; overflow: hidden; 
+            position: relative;
+        }
+
+        #secretWorld { display: none; width: 100%; height: 100%; position: relative; }
+
+        .bg-image {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            
+            background-size: cover; background-position: center;
+            width: 100vw; height: 100vh; z-index: 1;
+        }
+
+        /* Taare aur Any Animations */
+        .twinkling-stars {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2;
+            background-image: 
+                radial-gradient(2px 2px at 15% 25%, #ffffff88, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40% 10%, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80% 30%, #ffffff55, rgba(0,0,0,0));
+            background-size: 200px 200px; animation: twinkle 4s infinite alternate;
+        }
+        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.9; } }
+
+        .star-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+        .shooting-star {
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: var(--star-color, #fff); box-shadow: 0 0 10px var(--star-color, #fff);
+            opacity: 0; animation: fall 4s infinite linear;
+        }
+        .shooting-star::after {
+            content: ''; position: absolute; top: 50%; right: 50%; transform: translateY(-50%);
+            width: 120px; height: 1.5px; background: linear-gradient(to right, transparent, var(--star-color, #fff));
+        }
+        @keyframes fall {
+            0% { transform: rotate(135deg) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            30% { transform: rotate(135deg) translateX(250px); opacity: 0; } 
+            100% { transform: rotate(135deg) translateX(250px); opacity: 0; }
+        }
+        
+        .s1 { left: 24.2%; top: 31.1%; --star-color: #a3c2ff; animation-delay: 0s; }
+        .s2 { left: 38.3%; top: 34.1%; --star-color: #ffbc7a; animation-delay: 2s; }
+        .s3 { left: 50.8%; top: 44.5%; --star-color: #d4e1ff; animation-delay: 1.5s; }
+        .s4 { left: 41.1%; top: 63.2%; --star-color: #ffa3e6; animation-delay: 3.5s; }
+        .s5 { left: 77.9%; top: 0%;    --star-color: #ffffff; animation-delay: 1s; }
+        .s6 { left: 92.8%; top: 5.7%;  --star-color: #b0ffdb; animation-delay: 4.5s; }
+        .s7 { left: 96%;   top: 50.9%; --star-color: #ffc987; animation-delay: 2.8s; }
+        .s8 { left: 60%; top: 15%; --star-color: #ffffff; animation-delay: 0.5s; animation-duration: 5s; }
+        .s9 { left: 85%; top: 25%; --star-color: #a3c2ff; animation-delay: 3s; animation-duration: 3.5s; }
+        .s10 { left: 70%; top: 55%; --star-color: #ffbc7a; animation-delay: 1.2s; animation-duration: 4.2s; }
+        .s11 { left: 45%; top: 10%; --star-color: #d4e1ff; animation-delay: 4.8s; animation-duration: 3.8s; }
+        .s12 { left: 30%; top: 60%; --star-color: #ffa3e6; animation-delay: 2.5s; animation-duration: 4.5s; }
+
+        .falling-leaves { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; overflow: hidden; }
+        .leaf {
+            position: absolute; width: 8px; height: 12px; background: #080808; 
+            border-radius: 0 10px 0 10px; opacity: 0.7; animation: drift 7s infinite ease-in-out;
+        }
+        .l1 { left: 5%; top: 10%; animation-duration: 8s; animation-delay: 0s; }
+        .l2 { left: 15%; top: -5%; animation-duration: 6s; animation-delay: 2s; }
+        .l3 { left: 10%; top: 20%; animation-duration: 9s; animation-delay: 4s; }
+        .l4 { left: 20%; top: 15%; animation-duration: 7s; animation-delay: 1s; }
+        @keyframes drift {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            50% { transform: translate(80px, 200px) rotate(180deg); } 
+            100% { transform: translate(150px, 400px) rotate(360deg); opacity: 0; }
+        }
+
+        .glass-panel {
+            position: absolute; background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #e5e7eb;
+            z-index: 20; transition: all 0.4s ease-in-out;
+        }
+        #diarySidebar::-webkit-scrollbar { width: 4px; }
+        #diarySidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        @keyframes fadeInText { to { opacity: 1; } }
+
+        /* =========================================
+           2. 📱 MOBILE PAGE DESIGN 📱
+        ========================================= */
+        @media (max-width: 768px) {
+            .emotions-text {
+                position: absolute; bottom: 8%; right: 5%; width: 280px; 
+                color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 20px; 
+                line-height: 1.4; text-align: right; z-index: 5;
+                text-shadow: 2px 2px 15px rgba(0,0,0,1), -1px -1px 10px rgba(0,0,0,1);
+                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 1.5s; 
+            }
+            .action-buttons { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 10; }
+            .action-btn { width: 45px; height: 45px; border-radius: 50%; font-size: 18px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; display: flex; justify-content: center; align-items: center; }
+            
+            #diarySidebar { top: 0; right: -100%; width: 320px; height: 100vh; padding: 25px 15px; box-sizing: border-box; border-left: 1px solid rgba(255, 255, 255, 0.2); overflow-y: auto; }
+            #diarySidebar.open { right: 0; }
+            .sidebar-title { font-size: 24px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+            .memory-btn { background: rgba(255,255,255,0.05); border: none; border-left: 2px solid #a3c2ff; color: #d1d5db; width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 15px; }
+            .memory-display { margin-top: 20px; font-family: 'Caveat', cursive; font-size: 22px; line-height: 1.4; color: #fff; padding-bottom: 20px; }
+
+            #replyModal { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 90%; max-width: 350px; border-radius: 20px; padding: 20px; opacity: 0; pointer-events: none; box-sizing: border-box; }
+            #replyModal.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
+            .reply-textarea { width: 100%; height: 110px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; box-sizing: border-box; color: #fff; font-family: 'Caveat', cursive; font-size: 18px; resize: none; margin-top: 15px; }
+            .send-btn { background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; font-size: 16px; font-family: 'Playfair Display', serif; }
+            .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        }
+
+        /* =========================================
+           3. 💻 DESKTOP PAGE DESIGN 💻
+        ========================================= */
+        @media (min-width: 769px) {
+            .emotions-text {
+                position: absolute; bottom: 10%; right: 5%; width: 450px; 
+                color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 38px; 
+                line-height: 1.5; text-align: right; z-index: 5;
+                text-shadow: 2px 2px 20px rgba(0,0,0,1), -1px -1px 15px rgba(0,0,0,1);
+                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 1.5s; 
+            }
+            .action-buttons { position: absolute; top: 30px; right: 30px; display: flex; flex-direction: column; gap: 20px; z-index: 10; }
+            .action-btn { width: 65px; height: 65px; border-radius: 50%; font-size: 26px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; display: flex; justify-content: center; align-items: center; }
+            
+            #diarySidebar { top: 0; right: -100%; width: 450px; height: 100vh; padding: 40px 30px; box-sizing: border-box; border-left: 1px solid rgba(255, 255, 255, 0.2); overflow-y: auto; }
+            #diarySidebar.open { right: 0; }
+            .sidebar-title { font-size: 34px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; }
+            .memory-btn { background: rgba(255,255,255,0.05); border: none; border-left: 3px solid #a3c2ff; color: #d1d5db; width: 100%; text-align: left; padding: 18px; margin-bottom: 15px; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 18px; }
+            .memory-display { margin-top: 30px; font-family: 'Caveat', cursive; font-size: 32px; line-height: 1.5; color: #fff; padding-bottom: 30px; }
+
+            #replyModal { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 500px; border-radius: 20px; padding: 40px; opacity: 0; pointer-events: none; box-sizing: border-box; }
+            #replyModal.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
+            .reply-textarea { width: 100%; height: 150px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 20px; box-sizing: border-box; color: #fff; font-family: 'Caveat', cursive; font-size: 26px; resize: none; margin-top: 20px; }
+            .send-btn { background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a; padding: 15px 30px; border-radius: 30px; cursor: pointer; margin-top: 25px; width: 100%; font-size: 22px; font-family: 'Playfair Display', serif; }
+            .close-btn { position: absolute; top: 20px; right: 25px; background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
+        }
+
+        /* =========================================
+           4. ⏱️ REAL 3D PAGE FLIP TIMER CSS ⏱️
+        ========================================= */
+        .live-timer {
+            position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 10;
+            perspective: 800px; 
+        }
+        .flip-card { display: flex; flex-direction: column; align-items: center; }
+        
+        .flip-card span {
+            background: rgba(25, 25, 25, 0.85); color: #fff; font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.4rem, 5vw, 1.8rem); font-weight: bold;
+            padding: 10px 14px; border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            display: inline-block;
+        }
+
+        .flip-card small {
+            color: #ffbc7a; font-family: sans-serif; font-size: 11px; margin-top: 6px; 
+            text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
+        }
+    
+        /* ===== Fixed screen: the same picture on phone, tablet and desktop ===== */
+        @media (min-width: 769px) {
+            .emotions-text {
+                position: absolute; bottom: 8%; right: 5%; width: 280px; 
+                color: #e5e7eb; font-family: 'Caveat', cursive; font-size: 20px; 
+                line-height: 1.4; text-align: right; z-index: 5;
+                text-shadow: 2px 2px 15px rgba(0,0,0,1), -1px -1px 10px rgba(0,0,0,1);
+                opacity: 0; animation: fadeInText 5s forwards; animation-delay: 1.5s; 
+            }
+            .action-buttons { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 10; }
+            .action-btn { width: 45px; height: 45px; border-radius: 50%; font-size: 18px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); color: #fff; display: flex; justify-content: center; align-items: center; }
+            
+            #diarySidebar { top: 0; right: -100%; width: 320px; height: 100vh; padding: 25px 15px; box-sizing: border-box; border-left: 1px solid rgba(255, 255, 255, 0.2); overflow-y: auto; }
+            #diarySidebar.open { right: 0; }
+            .sidebar-title { font-size: 24px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+            .memory-btn { background: rgba(255,255,255,0.05); border: none; border-left: 2px solid #a3c2ff; color: #d1d5db; width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 15px; }
+            .memory-display { margin-top: 20px; font-family: 'Caveat', cursive; font-size: 22px; line-height: 1.4; color: #fff; padding-bottom: 20px; }
+
+            #replyModal { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 90%; max-width: 350px; border-radius: 20px; padding: 20px; opacity: 0; pointer-events: none; box-sizing: border-box; }
+            #replyModal.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
+            .reply-textarea { width: 100%; height: 110px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; box-sizing: border-box; color: #fff; font-family: 'Caveat', cursive; font-size: 18px; resize: none; margin-top: 15px; }
+            .send-btn { background: transparent; border: 1px solid #ffbc7a; color: #ffbc7a; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; font-size: 16px; font-family: 'Playfair Display', serif; }
+            .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        }
+        html, body { overflow: hidden; overscroll-behavior: none; background: #000; }
+        #secretWorld { overflow: hidden; width: min(100vw, calc(100vh * 0.56280)); height: 100vh; margin: 0 auto; }
+        @supports (height: 100dvh) { #secretWorld { width: min(100vw, calc(100dvh * 0.56280)); height: 100dvh; } }
+        .bg-image { width: 100%; height: 100%; }
+        #diarySidebar { height: 100%; }
+/* =====================================================================
+   GVCC soft-glass look - shared parts (tap sparkles, lights, liquid glass).
+   Decoration only: nothing here adds or changes any text.
+   ===================================================================== */
+
+/* tap sparkles live in one layer above everything; it never catches a touch */
+.fx-layer { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 2147483000; pointer-events: none; overflow: hidden; contain: layout paint; }
+.fx-p {
+    position: absolute; left: 0; top: 0; display: block; pointer-events: none; will-change: transform, opacity;
+    background: radial-gradient(circle at 34% 28%, #ffffff 0, var(--pc, #fff) 58%, var(--pc, #fff) 100%);
+}
+.fx-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 5px rgba(20, 20, 60, 0.22), inset -2px -3px 4px rgba(0, 0, 0, 0.12); }
+.fx-star { width: 18px; height: 18px; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.fx-diamond { width: 14px; height: 14px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.fx-heart { width: 20px; height: 18px; clip-path: path("M10 18 C2 12 0 8.5 0 5.2 C0 2.2 2.4 0 5.1 0 C7.1 0 9 1.2 10 3 C11 1.2 12.9 0 14.9 0 C17.6 0 20 2.2 20 5.2 C20 8.5 18 12 10 18 Z"); }
+.fx-ripple {
+    position: absolute; width: 130px; height: 130px; border-radius: 50%; pointer-events: none; will-change: transform, opacity;
+    border: 2px solid var(--pc, #fff);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 68%);
+    box-shadow: 0 0 22px var(--pc, #fff), inset 0 0 18px var(--pc, #fff);
+}
+
+/* the shared world layer (blobs, shapes, lights) */
+.fx-world {
+    position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    --px: 0; --py: 0;
+}
+
+@keyframes fxRise { from { opacity: 0; translate: 0 22px; scale: 0.96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes fxSpring { 0% { opacity: 0; scale: 0.5; translate: 0 -26px; } 55% { opacity: 1; } 100% { opacity: 1; scale: 1; translate: 0 0; } }
+@keyframes fxShimmer { from { background-position: 0% 50%; } to { background-position: 250% 50%; } }
+@keyframes fxSweep { 0% { transform: translateX(-190%) skewX(-18deg); } 46%, 100% { transform: translateX(420%) skewX(-18deg); } }
+@keyframes fxBobY { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+@keyframes fxSquish { 0% { scale: 1; } 22% { scale: 1.16 0.82; } 48% { scale: 0.9 1.14; } 72% { scale: 1.06 0.97; } 100% { scale: 1; } }
+
+/* liquid glass helpers: blur first (every browser), then the bending filter (Chrome/Edge only) */
+html:not(.fx-lite) .fx-liquid {
+    -webkit-backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid);
+    backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid);
+}
+html.fx-lite .fx-liquid { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-layer { display: none; }
+}
+
+        /* =================================================================
+           VIP LOOK  (only styling - no text is changed anywhere)
+        ================================================================= */
+        :root {
+            --gold: #ecd09a;
+            --gold-soft: rgba(236, 208, 154, 0.55);
+            --gold-faint: rgba(236, 208, 154, 0.22);
+            --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        html, body { background: #000; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+        button { touch-action: manipulation; -webkit-touch-callout: none; }
+
+        /* waiting blob while the page is being unlocked */
+        #vipLoader {
+            position: fixed; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; z-index: 50;
+            border-radius: 50% 45% 55% 50% / 55% 50% 45% 50%;
+            background: radial-gradient(circle at 32% 28%, #fff8e6 0, #ecd09a 52%, #c79a4a 100%);
+            box-shadow: 0 0 34px rgba(236, 208, 154, 0.55), inset -6px -8px 12px rgba(120, 70, 0, 0.32), inset 5px 6px 9px rgba(255, 255, 255, 0.6);
+            animation: fxMorph 2.6s ease-in-out infinite;
+        }
+        #vipLoader::before, #vipLoader::after {
+            content: ""; position: absolute; left: -10px; right: -10px; top: -10px; bottom: -10px; border-radius: 50%;
+            border: 1px solid rgba(236, 208, 154, 0.55); opacity: 0; animation: vipRing 2.6s ease-out infinite;
+        }
+        #vipLoader::after { animation-delay: 1.3s; }
+        @keyframes fxMorph {
+            0%, 100% { border-radius: 50% 45% 55% 50% / 55% 50% 45% 50%; transform: rotate(0deg) scale(1); }
+            25% { border-radius: 42% 58% 46% 54% / 58% 44% 56% 42%; transform: rotate(90deg) scale(1.14); }
+            50% { border-radius: 56% 44% 58% 42% / 44% 58% 42% 56%; transform: rotate(180deg) scale(0.92); }
+            75% { border-radius: 46% 54% 42% 58% / 52% 46% 54% 48%; transform: rotate(270deg) scale(1.08); }
+        }
+        @keyframes vipSpin { to { transform: rotate(360deg); } }
+
+        /* cinematic entrance: black -> scene, photo fades in and slowly settles */
+        #secretWorld { background: #000; animation: vipFade 1.6s ease-out both; }
+        @keyframes vipFade { from { opacity: 0; } to { opacity: 1; } }
+        .bg-image {
+            opacity: 0; transform: scale(1.1); will-change: transform, opacity;
+            transition: opacity 1.8s ease, transform 16s var(--ease-out);
+        }
+        #secretWorld.vip-ready .bg-image { opacity: 1; transform: scale(1.07); }
+        .bg-image { translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -10px); }
+
+        /* soft vignette + darker top/bottom, so the timer and the words are easy to read */
+        #secretWorld::after {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 4; pointer-events: none;
+            background:
+                radial-gradient(125% 90% at 50% 42%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.55) 100%),
+                linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 40%),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 24%);
+        }
+
+        /* the four lines of words appear one after another */
+        .emotions-text { animation: none; opacity: 1; text-wrap: pretty; }
+        .emotions-text::before {
+            content: ""; position: absolute; left: -16px; right: -18px; top: -14px; bottom: -12px; z-index: -1; pointer-events: none;
+            border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.16);
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)), rgba(8, 10, 30, 0.26);
+            -webkit-backdrop-filter: blur(4px) saturate(150%); backdrop-filter: blur(4px) saturate(150%);
+            box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.28), inset 0 -10px 22px rgba(120, 130, 255, 0.08), 0 22px 40px -18px rgba(0, 0, 0, 0.7);
+            opacity: 0; animation: fxFade 1.6s ease 1.1s forwards;
+        }
+        @keyframes fxFade { to { opacity: 1; } }
+        .emotions-text .vl {
+            display: block; opacity: 0; transform: translateY(10px); filter: blur(5px);
+            animation: vipLine 1.8s var(--ease-out) forwards;
+            animation-delay: calc(1.8s + var(--i, 0) * 1.2s);
+        }
+        @keyframes vipLine { to { opacity: 1; transform: none; filter: blur(0); } }
+
+        /* timer: liquid-glass cards with a puffy rim; they drop in, then float gently */
+        .live-timer { top: calc(22px + env(safe-area-inset-top, 0px)); gap: 10px; }
+        .flip-card { animation: fxSpring 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.2s + var(--n, 0) * 0.12s) backwards, fxBobY 5.5s ease-in-out calc(1.8s + var(--n, 0) * 0.55s) infinite; }
+        .flip-card:nth-child(1) { --n: 0; } .flip-card:nth-child(2) { --n: 1; } .flip-card:nth-child(3) { --n: 2; } .flip-card:nth-child(4) { --n: 3; }
+        .flip-card span {
+            position: relative; color: #fffaf0; min-width: 1.45em; text-align: center; padding: 10px 9px; border-radius: 16px;
+            background:
+                radial-gradient(130% 110% at 28% 0%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 58%),
+                linear-gradient(180deg, rgba(96, 108, 200, 0.3), rgba(14, 16, 46, 0.52));
+            border: 1px solid rgba(255, 255, 255, 0.36);
+            -webkit-backdrop-filter: blur(12px) saturate(180%); backdrop-filter: blur(12px) saturate(180%);
+            box-shadow: 0 16px 24px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(236, 208, 154, 0.16), inset 0 2px 1px rgba(255, 255, 255, 0.5), inset 0 -9px 14px rgba(120, 130, 255, 0.24);
+            text-shadow: 0 0 18px rgba(236, 208, 154, 0.65), 0 1px 0 rgba(0, 0, 0, 0.45);
+        }
+        html:not(.fx-lite) .flip-card span { -webkit-backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid); backdrop-filter: blur(10px) saturate(180%) url(#fxLiquid); }
+        .flip-card span::after {
+            content: ""; position: absolute; left: 7px; right: 7px; top: 50%; height: 1px;
+            background: rgba(255, 255, 255, 0.14); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+        }
+        .flip-card small { color: var(--gold); letter-spacing: 0.2em; font-size: 10px; margin-top: 7px; text-shadow: 0 0 10px rgba(236, 208, 154, 0.45); }
+
+        /* narrow phones (360-400px wide): slightly smaller cards so the timer never touches the round buttons */
+        @media (max-width: 400px) {
+            .live-timer { gap: 7px; }
+            .flip-card span { padding: 9px 7px; font-size: 1.3rem; }
+        }
+
+        @media (max-width: 340px) {
+            .live-timer { gap: 5px; }
+            .flip-card span { padding: 8px 5px; font-size: 1.1rem; }
+        }
+
+        /* floating round buttons: liquid glass + clay highlights, they pop in and float */
+        .action-buttons { top: calc(20px + env(safe-area-inset-top, 0px)); right: calc(20px + env(safe-area-inset-right, 0px)); }
+        .action-btn {
+            position: relative; color: #fff6e0; border: 1px solid rgba(255, 255, 255, 0.46);
+            background:
+                radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.08) 52%, rgba(255, 255, 255, 0) 100%),
+                rgba(22, 24, 60, 0.34);
+            -webkit-backdrop-filter: blur(10px) saturate(180%); backdrop-filter: blur(10px) saturate(180%);
+            box-shadow: 0 14px 22px -10px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(236, 208, 154, 0.24), inset 0 3px 3px rgba(255, 255, 255, 0.55), inset 0 -8px 12px rgba(110, 120, 255, 0.3);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+            animation: fxSpring 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.9s + var(--n, 0) * 0.14s) backwards, fxBobY 5s ease-in-out calc(2.3s + var(--n, 0) * 0.7s) infinite;
+        }
+        html:not(.fx-lite) .action-btn { -webkit-backdrop-filter: blur(8px) saturate(180%) url(#fxLiquid); backdrop-filter: blur(8px) saturate(180%) url(#fxLiquid); }
+        .action-btn:nth-child(1) { --n: 0; } .action-btn:nth-child(2) { --n: 1; } .action-btn:nth-child(3) { --n: 2; }
+        .action-btn i { filter: drop-shadow(0 0 7px rgba(236, 208, 154, 0.6)); }
+        .action-btn:active { transform: scale(0.84); transition: transform 0.1s ease; }
+        .action-btn::after {
+            content: ""; position: absolute; left: -5px; right: -5px; top: -5px; bottom: -5px;
+            border-radius: 50%; border: 1px solid var(--gold-soft); opacity: 0; pointer-events: none;
+        }
+        #openDiary::after, #openReply::after { animation: vipRing 3.8s ease-out infinite; }
+        #openReply::after { animation-delay: 1.3s; }
+        @keyframes vipRing { 0% { transform: scale(0.82); opacity: 0; } 25% { opacity: 0.75; } 100% { transform: scale(1.4); opacity: 0; } }
+        @media (hover: hover) {
+            .action-btn:hover { transform: translateY(-2px) scale(1.06); border-color: var(--gold); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 22px rgba(236, 208, 154, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+        }
+
+        /* music button (icon only): bars dance while the song plays */
+        .music-btn .eq { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 16px; width: 20px; }
+        .music-btn .eq b { display: block; width: 3px; height: 16px; border-radius: 2px; background: currentColor; transform-origin: 50% 100%; transform: scaleY(0.28); transition: transform 0.3s ease; }
+        .music-btn.on .eq b { animation: vipEq 1.1s ease-in-out infinite; }
+        .music-btn.on .eq b:nth-child(2) { animation-delay: -0.35s; }
+        .music-btn.on .eq b:nth-child(3) { animation-delay: -0.7s; }
+        @keyframes vipEq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+        .music-btn.off { opacity: 0.6; }
+        .music-btn.off .eq::after {
+            content: ""; position: absolute; left: -3px; right: -3px; top: 50%; height: 2px; margin-top: -1px;
+            background: currentColor; border-radius: 2px; transform: rotate(-40deg); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+        }
+        .music-btn.load .eq b { animation: vipEq 2.4s ease-in-out infinite; opacity: 0.55; }
+        .music-btn.load .eq b:nth-child(2) { animation-delay: -0.8s; }
+        .music-btn.load .eq b:nth-child(3) { animation-delay: -1.6s; }
+        .music-btn.load::after { opacity: 1; border-color: var(--gold-faint); border-top-color: var(--gold); animation: vipSpin 0.9s linear infinite; }
+        .music-btn.wait { border-color: var(--gold); }
+        .music-btn.wait::after { border-color: var(--gold); animation: vipRing 1.7s ease-out infinite; }
+
+        /* glass panels (diary + message box) */
+        .glass-panel {
+            background: linear-gradient(160deg, rgba(48, 54, 112, 0.5) 0%, rgba(10, 12, 34, 0.74) 100%);
+            -webkit-backdrop-filter: blur(26px) saturate(190%); backdrop-filter: blur(26px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1.5px 1px rgba(255, 255, 255, 0.36), inset 0 0 44px rgba(130, 140, 255, 0.08);
+        }
+        html.fx-fine:not(.fx-lite) .glass-panel { -webkit-backdrop-filter: blur(20px) saturate(190%) url(#fxLiquid); backdrop-filter: blur(20px) saturate(190%) url(#fxLiquid); }
+        #diarySidebar {
+            border-left: 1px solid var(--gold-soft); box-shadow: -24px 0 60px rgba(0, 0, 0, 0.55);
+            visibility: hidden; transition: right 0.6s var(--ease-out), visibility 0s linear 0.6s;
+            scrollbar-width: thin; scrollbar-color: rgba(236, 208, 154, 0.4) transparent;
+        }
+        #diarySidebar.open { visibility: visible; transition: right 0.6s var(--ease-out), visibility 0s; }
+        #diarySidebar::-webkit-scrollbar-thumb { background: rgba(236, 208, 154, 0.4); }
+        #replyModal {
+            visibility: hidden; border-radius: 30px;
+            transition: transform 0.65s cubic-bezier(0.34, 1.45, 0.64, 1), opacity 0.4s ease, visibility 0s linear 0.65s;
+        }
+        #replyModal.open { visibility: visible; transition: transform 0.65s cubic-bezier(0.34, 1.45, 0.64, 1), opacity 0.4s ease, visibility 0s; }
+
+        .sidebar-title {
+            position: relative; border-bottom-color: transparent; letter-spacing: 0.04em;
+            background: linear-gradient(90deg, #fff3d6, var(--gold)); -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .sidebar-title::after {
+            content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+            background: linear-gradient(90deg, var(--gold-soft), rgba(236, 208, 154, 0));
+        }
+        .close-btn {
+            z-index: 3; width: 40px; height: 40px; padding: 0; top: 12px; right: 14px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; line-height: 1; border: 1px solid rgba(255, 255, 255, 0.4);
+            background: radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.06) 60%), rgba(255, 255, 255, 0.04);
+            box-shadow: 0 10px 16px -8px rgba(0, 0, 0, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.45), inset 0 -5px 8px rgba(110, 120, 255, 0.25);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease, box-shadow 0.3s ease;
+        }
+        .close-btn:active { transform: scale(0.84); transition: transform 0.1s ease; }
+        @media (hover: hover) { .close-btn:hover { color: var(--gold); transform: rotate(90deg) scale(1.08); } }
+
+        /* diary entries: little clay pills that slide in one after another when the diary opens */
+        .memory-btn {
+            border-radius: 8px 22px 22px 8px; letter-spacing: 0.01em; color: #eceeff;
+            background: linear-gradient(100deg, rgba(150, 172, 255, 0.22), rgba(255, 255, 255, 0.05));
+            box-shadow: 0 12px 18px -12px rgba(0, 0, 0, 0.8), inset 0 1.5px 1px rgba(255, 255, 255, 0.26), inset 0 -7px 10px rgba(110, 120, 255, 0.14);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.3s ease;
+        }
+        #diarySidebar.open .memory-btn { animation: fxSlide 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) calc(0.2s + var(--i, 0) * 0.06s) backwards; }
+        @keyframes fxSlide { from { opacity: 0; translate: 46px 0; scale: 0.95; } to { opacity: 1; translate: 0 0; scale: 1; } }
+        .memory-btn:nth-child(1) { --i: 0; } .memory-btn:nth-child(2) { --i: 1; } .memory-btn:nth-child(3) { --i: 2; } .memory-btn:nth-child(4) { --i: 3; }
+        .memory-btn:nth-child(5) { --i: 4; } .memory-btn:nth-child(6) { --i: 5; } .memory-btn:nth-child(7) { --i: 6; } .memory-btn:nth-child(8) { --i: 7; }
+        .memory-btn:nth-child(9) { --i: 8; } .memory-btn:nth-child(10) { --i: 9; } .memory-btn:nth-child(11) { --i: 10; } .memory-btn:nth-child(12) { --i: 11; }
+        .memory-btn:active { transform: scale(0.96); }
+        .memory-btn.active {
+            border-left-color: var(--gold); color: #fff6e0;
+            background: linear-gradient(100deg, rgba(236, 208, 154, 0.3), rgba(255, 255, 255, 0.06));
+            box-shadow: 0 12px 20px -12px rgba(236, 208, 154, 0.5), inset 0 1.5px 1px rgba(255, 255, 255, 0.3), inset 0 -7px 10px rgba(236, 208, 154, 0.16);
+        }
+        @media (hover: hover) { .memory-btn:hover { transform: translateX(5px) scale(1.01); color: #fff; } }
+
+        .memory-display {
+            padding-left: 14px; border-left: 2px solid var(--gold-soft); text-wrap: pretty;
+            background: linear-gradient(90deg, rgba(236, 208, 154, 0.07), rgba(236, 208, 154, 0));
+        }
+        .memory-display:empty { border-left-color: transparent; background: none; }
+        .memory-display.swap { animation: vipText 0.9s var(--ease-out) both; }
+        @keyframes vipText { from { opacity: 0; transform: translateY(8px); filter: blur(4px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
+        .reply-textarea {
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 5px 6px 12px rgba(0, 0, 0, 0.4), inset -4px -5px 10px rgba(255, 255, 255, 0.06);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .reply-textarea::placeholder { color: rgba(255, 255, 255, 0.45); }
+        .reply-textarea:focus {
+            outline: none; border-color: var(--gold-soft); background: rgba(255, 255, 255, 0.07);
+            box-shadow: inset 5px 6px 12px rgba(0, 0, 0, 0.4), inset -4px -5px 10px rgba(255, 255, 255, 0.06), 0 0 0 3px rgba(236, 208, 154, 0.14), 0 0 26px rgba(236, 208, 154, 0.16);
+        }
+        .send-btn {
+            border-color: rgba(255, 214, 160, 0.6); color: #ffe2bd;
+            background:
+                radial-gradient(120% 90% at 50% -10%, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 60%),
+                linear-gradient(165deg, rgba(255, 188, 122, 0.44), rgba(255, 140, 100, 0.18));
+            box-shadow: 0 16px 22px -12px rgba(255, 150, 90, 0.65), inset 0 2px 1px rgba(255, 255, 255, 0.45), inset 0 -8px 12px rgba(255, 120, 80, 0.26);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .send-btn:active { transform: translateY(2px) scale(0.94); transition: transform 0.1s ease; }
+        .send-btn i { display: inline-block; animation: vipBeat 1.7s ease-in-out infinite; }
+        @keyframes vipBeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.25); } 28% { transform: scale(1); } 42% { transform: scale(1.18); } 56% { transform: scale(1); } }
+        @media (hover: hover) { .send-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 28px -12px rgba(255, 150, 90, 0.8), inset 0 2px 1px rgba(255, 255, 255, 0.5), inset 0 -8px 12px rgba(255, 120, 80, 0.26); } }
+        #replyStatus { animation: vipText 0.8s var(--ease-out) both; }
+
+        /* status box: only appears when the music button is held pressed for a while */
+        #vipDiag {
+            display: none; position: fixed; left: 8px; right: 8px; bottom: 8px; z-index: 100; margin: 0; padding: 10px 12px;
+            max-height: 45vh; overflow: auto; border-radius: 10px; background: rgba(0, 0, 0, 0.82); color: #cfe9ff;
+            font: 11px/1.45 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; word-break: break-all;
+            border: 1px solid var(--gold-faint);
+        }
+
+        /* drifting lights and a shooting star over the photo (they are added by fx.js) */
+        .fx-sky-world { position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 3; overflow: hidden; pointer-events: none; }
+        .fx-orb {
+            position: absolute; bottom: -30px; border-radius: 50%; opacity: 0; will-change: transform, opacity;
+            background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95), rgba(255, 226, 170, 0.55) 46%, rgba(255, 214, 150, 0) 74%);
+            box-shadow: 0 0 14px rgba(255, 220, 160, 0.5);
+            translate: calc(var(--px, 0) * -16px) calc(var(--py, 0) * -12px);
+            animation: fxDrift var(--d) linear var(--dl) infinite;
+        }
+        @keyframes fxDrift {
+            0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+            12% { opacity: var(--o); }
+            50% { transform: translate(var(--sw), -52vh) scale(1); }
+            88% { opacity: var(--o); }
+            100% { transform: translate(calc(var(--sw) * -1), -108vh) scale(0.8); opacity: 0; }
+        }
+        .fx-shoot {
+            position: absolute; width: 150px; height: 2px; border-radius: 2px; transform-origin: 0 50%; opacity: 0; pointer-events: none;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95)); box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        html.fx-lite .fx-orb { animation-duration: 40s; }
+        html.fx-lite .flip-card, html.fx-lite .action-btn { animation-name: fxSpring; }
+        html.fx-lite .emotions-text::before { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+        /* people who switched animations off keep a calm version of the new effects */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-image { transform: none; translate: none; transition: opacity 0.6s ease; }
+            .fx-orb, .flip-card, .action-btn, .memory-btn, #vipLoader { animation: none !important; }
+            .fx-orb { display: none; }
+            .emotions-text::before { animation-duration: 0.01s; animation-delay: 0s; }
+            .action-btn::after, .send-btn i { animation: none; }
+            .emotions-text .vl { animation-duration: 0.01s; animation-delay: 0s; filter: none; }
+        }
+
+        /* =================================================================
+           QUESTION SCREEN (before the private page opens): night glass card,
+           three clay fields, one round gold button. No answer is written anywhere.
+        ================================================================= */
+        #vipLock {
+            position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 60; overflow-x: hidden; overflow-y: auto;
+            display: flex; align-items: center; justify-content: center; padding: 22px 16px; box-sizing: border-box;
+            background:
+                radial-gradient(75% 50% at 50% -6%, rgba(99, 102, 241, 0.42), rgba(99, 102, 241, 0) 70%),
+                radial-gradient(60% 46% at 100% 100%, rgba(236, 72, 153, 0.26), rgba(236, 72, 153, 0) 70%),
+                radial-gradient(55% 40% at 0% 78%, rgba(236, 208, 154, 0.16), rgba(236, 208, 154, 0) 70%),
+                linear-gradient(170deg, #060919 0%, #0c0b26 58%, #130a22 100%);
+            transition: opacity 0.8s ease, transform 0.9s var(--ease-out), visibility 0s linear 0.9s;
+        }
+        #vipLock[hidden] { display: none; }
+        #vipLock.done { opacity: 0; transform: scale(1.06); visibility: hidden; pointer-events: none; }
+        #vipLock::before, #vipLock::after {
+            content: ""; position: fixed; z-index: 0; border-radius: 50%; pointer-events: none; will-change: transform;
+            animation: fxBlobLock 24s ease-in-out infinite alternate;
+        }
+        #vipLock::before { width: 62vmax; height: 52vmax; left: -22vmax; top: -16vmax; background: radial-gradient(closest-side, rgba(56, 189, 248, 0.34), rgba(56, 189, 248, 0) 74%); }
+        #vipLock::after { width: 56vmax; height: 56vmax; right: -20vmax; bottom: -20vmax; background: radial-gradient(closest-side, rgba(244, 114, 182, 0.3), rgba(244, 114, 182, 0) 74%); animation-delay: -9s; }
+        @keyframes fxBlobLock {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
+            50% { transform: translate(7vw, 6vh) rotate(100deg) scale(1.15, 0.9); }
+            100% { transform: translate(-5vw, 9vh) rotate(210deg) scale(0.92, 1.12); }
+        }
+        #vipLockForm {
+            position: relative; z-index: 4; width: min(100%, 400px); margin: auto; box-sizing: border-box; padding: 26px 20px 30px;
+            border-radius: 34px; border: 1px solid rgba(255, 255, 255, 0.26);
+            background:
+                radial-gradient(120% 70% at 20% 0%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 58%),
+                linear-gradient(155deg, rgba(60, 66, 130, 0.42), rgba(12, 14, 40, 0.62));
+            -webkit-backdrop-filter: blur(24px) saturate(185%); backdrop-filter: blur(24px) saturate(185%);
+            box-shadow: 0 38px 70px -26px rgba(0, 0, 0, 0.85), inset 0 1.5px 1px rgba(255, 255, 255, 0.4), inset 0 -14px 28px rgba(120, 130, 255, 0.1);
+            animation: fxCardInLock 1.05s cubic-bezier(0.34, 1.3, 0.64, 1) 0.1s backwards;
+        }
+        html.fx-fine:not(.fx-lite) #vipLockForm { -webkit-backdrop-filter: blur(18px) saturate(185%) url(#fxLiquid); backdrop-filter: blur(18px) saturate(185%) url(#fxLiquid); }
+        @keyframes fxCardInLock { from { opacity: 0; scale: 0.88; translate: 0 34px; } to { opacity: 1; scale: 1; translate: 0 0; } }
+        #vipLockForm::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+            background: linear-gradient(135deg, rgba(236, 208, 154, 0.95), rgba(255, 255, 255, 0.12) 40%, rgba(125, 211, 252, 0.5) 72%, rgba(244, 114, 182, 0.6));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+        }
+        #vipLockForm { counter-reset: vq; }
+        #vipLockForm.shake { animation: fxShake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+        @keyframes fxShake {
+            10%, 90% { translate: -2px 0; } 20%, 80% { translate: 4px 0; } 30%, 50%, 70% { translate: -8px 0; } 40%, 60% { translate: 8px 0; }
+        }
+        .vq {
+            position: relative; display: grid; grid-template-columns: 30px 1fr; column-gap: 12px; row-gap: 9px; margin: 0 0 20px; counter-increment: vq;
+            animation: fxRise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(0.45s + var(--q, 0) * 0.14s) backwards;
+        }
+        .vq:nth-of-type(1) { --q: 0; } .vq:nth-of-type(2) { --q: 1; } .vq:nth-of-type(3) { --q: 2; }
+        .vq-n {
+            width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+            font: 600 15px/1 'Playfair Display', serif; color: #3b2a08;
+            background: radial-gradient(120% 90% at 35% 20%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 55%), linear-gradient(160deg, #f6e2b3, #d9a95a);
+            box-shadow: 0 8px 12px -6px rgba(0, 0, 0, 0.7), inset 0 2px 1px rgba(255, 255, 255, 0.75), inset 0 -4px 6px rgba(150, 100, 20, 0.35);
+        }
+        .vq-n::before { content: counter(vq); }
+        .vq-t {
+            align-self: center; color: #fff4dc; font: 400 23px/1.2 'Caveat', cursive; letter-spacing: 0.01em; text-wrap: pretty;
+            text-shadow: 0 0 16px rgba(236, 208, 154, 0.35), 0 1px 0 rgba(0, 0, 0, 0.5);
+        }
+        .vq input {
+            grid-column: 1 / -1; width: 100%; box-sizing: border-box; padding: 12px 18px; border-radius: 20px; color: #fff; caret-color: var(--gold);
+            font: 400 24px/1.2 'Caveat', cursive; outline: none; -webkit-user-select: text; user-select: text;
+            border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 5px 6px 12px rgba(0, 0, 0, 0.45), inset -4px -5px 10px rgba(255, 255, 255, 0.06);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .vq input:focus {
+            transform: scale(1.02); border-color: rgba(236, 208, 154, 0.7); background: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 5px 6px 12px rgba(0, 0, 0, 0.45), inset -4px -5px 10px rgba(255, 255, 255, 0.06), 0 0 0 4px rgba(236, 208, 154, 0.15), 0 10px 28px -8px rgba(236, 208, 154, 0.45);
+        }
+        .vq input.bad { border-color: rgba(248, 113, 113, 0.85); box-shadow: inset 5px 6px 12px rgba(0, 0, 0, 0.45), 0 0 0 4px rgba(248, 113, 113, 0.18), 0 0 26px rgba(248, 113, 113, 0.35); }
+        #vipLockGo {
+            position: relative; display: block; width: 66px; height: 66px; margin: 6px auto 0; padding: 0; border-radius: 50%; cursor: pointer;
+            border: 1px solid rgba(255, 244, 214, 0.75); -webkit-tap-highlight-color: transparent;
+            background: radial-gradient(120% 90% at 35% 14%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 55%), linear-gradient(165deg, #f6e2b3 0%, #d9a95a 100%);
+            box-shadow: 0 20px 26px -12px rgba(217, 169, 90, 0.7), 0 8px 12px -8px rgba(0, 0, 0, 0.6), inset 0 2px 1px rgba(255, 255, 255, 0.85), inset 0 -8px 12px rgba(150, 100, 20, 0.4);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            animation: fxRise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.95s backwards;
+        }
+        #vipLockGo::after {
+            content: ""; position: absolute; left: -7px; right: -7px; top: -7px; bottom: -7px; border-radius: 50%;
+            border: 1px solid rgba(236, 208, 154, 0.6); opacity: 0; animation: vipRing 3s ease-out 1.6s infinite; pointer-events: none;
+        }
+        #vipLockGo:active { transform: translateY(2px) scale(0.9); transition: transform 0.1s ease; }
+        @media (hover: hover) { #vipLockGo:hover { transform: translateY(-3px) scale(1.06); } }
+        .vgo { position: absolute; left: 50%; top: 50%; width: 15px; height: 15px; margin: -7px 0 0 -11px; border-top: 4px solid #4a3208; border-right: 4px solid #4a3208; border-radius: 2px; transform: rotate(45deg); transition: opacity 0.2s ease; }
+        .vgo::after { content: ""; position: absolute; left: -9px; top: 3px; width: 17px; height: 4px; background: #4a3208; border-radius: 2px; transform: rotate(-45deg); transform-origin: 100% 50%; display: none; }
+        .busy #vipLockGo { pointer-events: none; }
+        .busy .vgo { opacity: 0; }
+        .busy #vipLockGo::before {
+            content: ""; position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%;
+            border: 3px solid rgba(74, 50, 8, 0.25); border-top-color: #4a3208; animation: vipSpin 0.8s linear infinite;
+        }
+        @media (max-height: 640px) { .vq { margin-bottom: 14px; } .vq-t { font-size: 21px; } #vipLockForm { padding: 20px 18px 24px; } }
+        @media (prefers-reduced-motion: reduce) {
+            #vipLock::before, #vipLock::after, #vipLockForm, .vq, #vipLockGo, #vipLockGo::after { animation: none !important; }
+            #vipLockForm.shake { animation: none !important; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 AUDIO FILES 🎵 -->
+    <audio id="bgMusic" src="songs/awara.lite.mp3" preload="auto" loop></audio>
+    <audio id="diaryMusic" src="songs/yaaraoyaara.lite.mp3" preload="none" loop></audio>
+    <audio id="pankhMusic" src="songs/rahna.lite.mp3" preload="none" loop></audio>
+
+    <div id="vipLoader"></div>
+    <div id="vipLock" hidden>
+        <form id="vipLockForm" autocomplete="off" novalidate>
+            <label class="vq"><span class="vq-n"></span><span class="vq-t">Kya tumko us QR code ka password yaad hain? Kya tha...</span><input type="text" id="vqa1" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next"></label>
+            <label class="vq"><span class="vq-n"></span><span class="vq-t">Tum mujhe kya kahti thi...</span><input type="text" id="vqa2" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next"></label>
+            <label class="vq"><span class="vq-n"></span><span class="vq-t">Ham log Qayamat kise kahte the...</span><input type="text" id="vqa3" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"></label>
+            <button type="submit" id="vipLockGo" aria-label="Open"><span class="vgo"></span></button>
+        </form>
+    </div>
+    <div id="secretWorld"></div>
+
+    <!-- 🔥 FIREBASE & JAVASCRIPT LOGIC 🔥 -->
+    <script>/* GVCC soft-glass look: floating shapes, liquid glass filter, tap sparkles, light parallax.
+   This file only adds decoration (empty boxes drawn with CSS). It never reads or changes any text. */
+(function () {
+    "use strict";
+    if (window.gvccFx) { return; }
+
+    var doc = document, root = doc.documentElement;
+    var SVGNS = "http://www.w3.org/2000/svg";
+    function mm(s) { try { return window.matchMedia(s).matches; } catch (e) { return false; } }
+    function qa(s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); }
+    function el(tag, cls, css) { var e = doc.createElement(tag); if (cls) { e.className = cls; } if (css) { e.style.cssText = css; } return e; }
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+    function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+    function onReady(fn) { if (doc.readyState === "loading") { doc.addEventListener("DOMContentLoaded", fn); } else { fn(); } }
+
+    var reduce = mm("(prefers-reduced-motion: reduce)");
+    var fine = mm("(hover: hover) and (pointer: fine)");
+    var special = !!doc.getElementById("secretWorld");
+    var lite = false;
+    var forced = (/[?&]fx=(full|lite)/.exec(location.search) || [])[1];
+    try {
+        var stamp = Number(localStorage.getItem("gvccFxLite"));      // time when this phone was found slow
+        if (stamp > 1 && Date.now() - stamp < 3 * 86400000) { lite = true; }
+        else if (stamp) { localStorage.removeItem("gvccFxLite"); }    // look again after 3 days
+    } catch (e) { }
+    if (forced === "lite") { lite = true; }
+    if (forced === "full") { lite = false; }
+    if (lite) { root.classList.add("fx-lite"); }
+    if (fine) { root.classList.add("fx-fine"); }
+    if (reduce) { root.classList.add("fx-calm"); }
+    if (special) { root.classList.add("fx-special"); }
+
+    // ---------- liquid glass: an SVG filter that bends what is behind the glass (Chrome/Edge; other browsers just blur) ----------
+    function addFilter() {
+        if (doc.getElementById("fxLiquidSvg") || !doc.body) { return; }
+        var s = doc.createElementNS(SVGNS, "svg");
+        s.setAttribute("id", "fxLiquidSvg");
+        s.setAttribute("width", "0");
+        s.setAttribute("height", "0");
+        s.setAttribute("aria-hidden", "true");
+        s.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
+        s.innerHTML = '<defs>' +
+            '<filter id="fxLiquid" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+            '<feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="11" result="n"/>' +
+            '<feGaussianBlur in="n" stdDeviation="1.6" result="m"/>' +
+            '<feDisplacementMap in="SourceGraphic" in2="m" scale="22" xChannelSelector="R" yChannelSelector="G"/>' +
+            '</filter></defs>';
+        doc.body.appendChild(s);
+    }
+
+    // ---------- parallax: pointer / finger / phone tilt move the layers a little ----------
+    var par = { x: 0, y: 0, tx: 0, ty: 0, raf: 0 };
+    var parTargets = [];
+    var cards = [];
+    function parApply() {
+        var px = par.x.toFixed(3), py = par.y.toFixed(3);
+        for (var i = 0; i < parTargets.length; i++) {
+            parTargets[i].style.setProperty("--px", px);
+            parTargets[i].style.setProperty("--py", py);
+        }
+        for (var c = 0; c < cards.length; c++) {
+            var ry = par.x * 7, rx = -par.y * 5;
+            if (Math.abs(rx) < 0.06 && Math.abs(ry) < 0.06) { cards[c].style.transform = ""; }
+            else { cards[c].style.transform = "perspective(900px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)"; }
+        }
+    }
+    function parTick() {
+        par.raf = 0;
+        par.x += (par.tx - par.x) * 0.1;
+        par.y += (par.ty - par.y) * 0.1;
+        parApply();
+        if (Math.abs(par.tx - par.x) > 0.002 || Math.abs(par.ty - par.y) > 0.002) { par.raf = requestAnimationFrame(parTick); }
+    }
+    function parSet(x, y) {
+        if (reduce) { return; }
+        par.tx = clamp(x, -1, 1);
+        par.ty = clamp(y, -1, 1);
+        if (!par.raf) { par.raf = requestAnimationFrame(parTick); }
+    }
+    function spot(x, y) {
+        for (var c = 0; c < cards.length; c++) {
+            var r = cards[c].getBoundingClientRect();
+            if (!r.width) { continue; }
+            cards[c].style.setProperty("--mx", clamp((x - r.left) / r.width * 100, -20, 120).toFixed(1) + "%");
+            cards[c].style.setProperty("--my", clamp((y - r.top) / r.height * 100, -20, 120).toFixed(1) + "%");
+        }
+    }
+
+    // ---------- tap sparkles ----------
+    var layer = null;
+    var SKY = ["#ffd7e6", "#ff9fc2", "#ffe3a3", "#ecd09a", "#ffffff", "#c9d6ff"];          // special page (dark photo)
+    var NIGHT = ["#7dd3fc", "#c4b5fd", "#f9a8d4", "#fde68a", "#86efac", "#ffffff"];       // dark theme
+    var DAY = ["#0ea5e9", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#6366f1"];         // light theme (stronger, so they show on pale glass)
+    function palette() { return special ? SKY : (root.getAttribute("data-theme") === "dark" ? NIGHT : DAY); }
+    var KINDS = special ? ["heart", "star", "heart", "dot", "star"] : ["star", "dot", "diamond", "star", "dot"];
+    var BASE = { dot: 12, star: 18, diamond: 14, heart: 20 };
+
+    function room() { return layer && layer.childElementCount < 90; }
+    function particle(kind, color) {
+        var p = el("i", "fx-p fx-" + kind);
+        p.style.setProperty("--pc", color);
+        return p;
+    }
+    function fly(p, x, y, dx, dy, fall, dur, spin, size) {
+        p.style.left = x + "px";
+        p.style.top = y + "px";
+        layer.appendChild(p);
+        var k = size / BASE[p.className.split(" ")[1].slice(3)];
+        if (!p.animate) { setTimeout(function () { p.remove(); }, dur); return; }
+        var a = p.animate([
+            { transform: "translate(-50%,-50%) translate(0,0) scale(" + (k * 0.2) + ") rotate(0deg)", opacity: 1 },
+            { transform: "translate(-50%,-50%) translate(" + (dx * 0.65) + "px," + (dy * 0.65) + "px) scale(" + k + ") rotate(" + (spin * 0.5) + "deg)", opacity: 1, offset: 0.38 },
+            { transform: "translate(-50%,-50%) translate(" + dx + "px," + (dy + fall) + "px) scale(" + (k * 0.15) + ") rotate(" + spin + "deg)", opacity: 0 }
+        ], { duration: dur, easing: "cubic-bezier(.2,.7,.3,1)", fill: "forwards" });
+        a.onfinish = function () { p.remove(); };
+    }
+    function ring(x, y, color) {
+        var r = el("i", "fx-ripple");
+        r.style.left = x + "px";
+        r.style.top = y + "px";
+        r.style.setProperty("--pc", color || "#ffffff");
+        layer.appendChild(r);
+        if (!r.animate) { setTimeout(function () { r.remove(); }, 700); return; }
+        r.animate([
+            { transform: "translate(-50%,-50%) scale(0.12)", opacity: 0.85 },
+            { transform: "translate(-50%,-50%) scale(1)", opacity: 0 }
+        ], { duration: 720, easing: "cubic-bezier(.15,.7,.25,1)", fill: "forwards" }).onfinish = function () { r.remove(); };
+    }
+    function burst(x, y, n, tint) {
+        if (reduce || !layer) { return; }
+        var free = 90 - layer.childElementCount;          // never more than 90 pieces at a time
+        if (free < 3) { return; }
+        var pal = palette();
+        ring(x, y, tint || pal[0]);
+        if (lite) { n = Math.ceil(n / 2); }
+        n = Math.min(n, free - 1);
+        for (var i = 0; i < n; i++) {
+            var kind = pick(KINDS), a = rnd(0, 6.2832), d = rnd(34, 96);
+            fly(particle(kind, tint && i % 2 ? tint : pick(pal)), x, y,
+                Math.cos(a) * d, Math.sin(a) * d - 10, rnd(18, 46), rnd(650, 1150), rnd(-160, 160), rnd(11, 24));
+        }
+    }
+    function trail(x, y) {
+        if (reduce || !layer || !room()) { return; }
+        var kind = Math.random() < 0.5 ? "dot" : "star";
+        fly(particle(kind, pick(palette())), x + rnd(-4, 4), y + rnd(-4, 4), rnd(-16, 16), rnd(6, 22), 18, rnd(480, 760), rnd(-90, 90), rnd(6, 11));
+    }
+    function rain() {
+        if (reduce || !layer) { return; }
+        var h = window.innerHeight, w = window.innerWidth;
+        var pal = palette();
+        var total = Math.min(lite ? 22 : 44, 120 - layer.childElementCount);
+        for (var i = 0; i < total; i++) {
+            var kind = pick(KINDS);
+            var p = particle(kind, pick(pal));
+            p.style.left = rnd(0, w) + "px";
+            p.style.top = "-24px";
+            layer.appendChild(p);
+            var k = rnd(0.7, 1.35), sway = rnd(-70, 70);
+            if (!p.animate) { p.remove(); continue; }
+            p.animate([
+                { transform: "translate(-50%,-50%) translate(0,0) scale(" + k + ") rotate(0deg)", opacity: 1 },
+                { transform: "translate(-50%,-50%) translate(" + sway + "px," + (h * 0.55) + "px) scale(" + k + ") rotate(" + rnd(120, 420) + "deg)", opacity: 1, offset: 0.6 },
+                { transform: "translate(-50%,-50%) translate(" + (sway * -0.4) + "px," + (h + 50) + "px) scale(" + k + ") rotate(" + rnd(300, 700) + "deg)", opacity: 0.9 }
+            ], { duration: rnd(2200, 3800), delay: rnd(0, 700), easing: "cubic-bezier(.3,.1,.5,1)", fill: "both" }).onfinish = (function (n) { return function () { n.remove(); }; })(p);
+        }
+    }
+
+    // ---------- floating shapes (home + login) ----------
+    var BLOBS = [
+        "--w:54vmax;--h:44vmax;left:-20vmax;top:-17vmax;--c:var(--fx-b1);--d:26s;--dl:-3s",
+        "--w:46vmax;--h:52vmax;right:-18vmax;top:-6vmax;--c:var(--fx-b2);--d:31s;--dl:-11s",
+        "--w:52vmax;--h:40vmax;left:-15vmax;bottom:-17vmax;--c:var(--fx-b3);--d:29s;--dl:-7s",
+        "--w:42vmax;--h:42vmax;right:-11vmax;bottom:-15vmax;--c:var(--fx-b4);--d:34s;--dl:-16s",
+        "--w:38vmax;--h:34vmax;left:28vw;top:34vh;--c:var(--fx-b5);--d:37s;--dl:-9s"
+    ];
+    // kind, left %, top %, size (vmin), colour, depth, float seconds
+    var SHAPES = [
+        ["sphere", 6, 9, 15, "pink", 0.95, 9],
+        ["ring", 78, 6, 21, "sky", 0.7, 12],
+        ["pill", 66, 76, 24, "lilac", 1, 10],
+        ["bubble", 3, 60, 26, "", 0.55, 13],
+        ["squircle", 85, 38, 12, "peach", 0.85, 8.5],
+        ["sphere", 22, 86, 9, "mint", 1.1, 7.5],
+        ["bubble", 88, 80, 12, "", 0.6, 11],
+        ["ring", 12, 36, 9, "pink", 0.8, 9.5],
+        ["sphere", 58, 3, 7, "sky", 1.2, 8],
+        ["pill", -2, 88, 18, "peach", 0.65, 12]
+    ];
+    function buildHome() {
+        var w = el("div", "fx-world");
+        w.setAttribute("aria-hidden", "true");
+        BLOBS.forEach(function (css) { w.appendChild(el("i", "fx-blob", css)); });
+        SHAPES.forEach(function (s, i) {
+            var wrap = el("i", "fx-s", "left:" + s[1] + "%;top:" + s[2] + "%;--z:" + s[5]);
+            var b = el("b", "fx-b fx-" + s[0] + (s[4] ? " fx-" + s[4] : ""),
+                "--s:" + s[3] + ";--d:" + s[6] + "s;--dl:" + (-i * 1.7).toFixed(1) + "s;--fx:" + Math.round(rnd(-16, 16)) + "px;--fy:" + Math.round(rnd(-26, -10)) + "px;--r:" + Math.round(rnd(-40, 40)) + "deg");
+            wrap.appendChild(b);
+            w.appendChild(wrap);
+        });
+        doc.body.insertBefore(w, doc.body.firstChild);
+        return w;
+    }
+    function popShapes(x, y) {
+        qa(".fx-s").forEach(function (s) {
+            var b = s.firstChild.getBoundingClientRect();
+            var cx = b.left + b.width / 2, cy = b.top + b.height / 2, r = Math.max(b.width, b.height) / 2 + 8;
+            if ((x - cx) * (x - cx) + (y - cy) * (y - cy) < r * r) {
+                s.classList.remove("pop");
+                void s.offsetWidth;
+                s.classList.add("pop");
+                burst(cx, cy, 14, getComputedStyle(s.firstChild).getPropertyValue("--c2").trim() || null);
+            }
+        });
+    }
+
+    // ---------- special page: drifting lights + a shooting star ----------
+    function attach(world) {
+        if (!world || world.querySelector(".fx-world")) { return; }
+        addFilter();
+        var w = el("div", "fx-world fx-sky-world");
+        w.setAttribute("aria-hidden", "true");
+        var n = lite ? 6 : 13;
+        for (var i = 0; i < n; i++) {
+            var size = rnd(5, 26);
+            w.appendChild(el("i", "fx-orb",
+                "left:" + rnd(2, 96).toFixed(1) + "%;width:" + size.toFixed(1) + "px;height:" + size.toFixed(1) + "px;--o:" + rnd(0.25, 0.7).toFixed(2) +
+                ";--d:" + rnd(15, 30).toFixed(1) + "s;--dl:" + (-rnd(0, 30)).toFixed(1) + "s;--sw:" + Math.round(rnd(-26, 26)) + "px"));
+        }
+        world.insertBefore(w, world.firstChild);
+        parTargets.push(w);
+        var bg = world.querySelector(".bg-image");
+        if (bg) { parTargets.push(bg); }
+        function shoot() {
+            if (!doc.hidden && !reduce && !lite && w.isConnected) {
+                var s = el("i", "fx-shoot");
+                var W = world.clientWidth || 360, H = world.clientHeight || 640;
+                var sx = rnd(W * 0.45, W * 1.0), sy = rnd(H * 0.04, H * 0.26);
+                var len = rnd(190, 300), ang = rnd(28, 40) * Math.PI / 180;
+                s.style.left = sx + "px";
+                s.style.top = sy + "px";
+                s.style.transform = "rotate(" + (180 - ang * 180 / Math.PI) + "deg)";
+                w.appendChild(s);
+                if (s.animate) {
+                    var dx = -Math.cos(ang) * len * 1.6, dy = Math.sin(ang) * len * 1.6;
+                    s.animate([
+                        { translate: "0 0", opacity: 0 },
+                        { translate: (dx * 0.15) + "px " + (dy * 0.15) + "px", opacity: 1, offset: 0.12 },
+                        { translate: dx + "px " + dy + "px", opacity: 0 }
+                    ], { duration: rnd(900, 1400), easing: "cubic-bezier(.3,.1,.6,1)", fill: "forwards" }).onfinish = function () { s.remove(); };
+                } else { s.remove(); }
+            }
+            setTimeout(shoot, rnd(6500, 12500));
+        }
+        setTimeout(shoot, 4200);
+        sampleFrames(2800);
+    }
+
+    // ---------- slow phones: drop the heavy parts automatically ----------
+    var sampled = false;
+    function sampleFrames(wait) {
+        if (sampled || lite || reduce || forced || navigator.webdriver) { return; }
+        sampled = true;
+        setTimeout(function run() {
+            if (doc.hidden) { setTimeout(run, 1500); return; }
+            var gaps = [], last = 0, count = 0;
+            function frame(t) {
+                if (last) { gaps.push(t - last); }
+                last = t;
+                if (++count < 110 && !doc.hidden) { requestAnimationFrame(frame); return; }
+                if (gaps.length < 40) { return; }
+                gaps.sort(function (a, b) { return a - b; });
+                if (gaps[Math.floor(gaps.length / 2)] > 40) {
+                    lite = true;
+                    root.classList.add("fx-lite");
+                    try { localStorage.setItem("gvccFxLite", String(Date.now())); } catch (e) { }
+                }
+            }
+            requestAnimationFrame(frame);
+        }, wait);
+    }
+
+    // ---------- events ----------
+    var lastTrail = 0, eggTaps = 0, eggTimer = 0, downNow = false;
+    function interactive(t) {
+        return !!(t && t.closest && t.closest("button,input,textarea,a,select,label,.landing-card,.login-card,.glass-panel,.action-btn"));
+    }
+    function eggTarget() { return special ? doc.querySelector(".live-timer") : doc.querySelector(".landing-logo,.login-logo"); }
+    function bind() {
+        layer = el("div", "fx-layer");
+        layer.setAttribute("aria-hidden", "true");
+        doc.body.appendChild(layer);
+
+        doc.addEventListener("pointerdown", function (e) {
+            downNow = true;
+            var x = e.clientX, y = e.clientY;
+            spot(x, y);
+            burst(x, y, special ? 9 : 10);
+            if (!special && !interactive(e.target)) { popShapes(x, y); }
+            var egg = eggTarget();
+            if (egg) {
+                var r = egg.getBoundingClientRect();
+                if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+                    if (!special) { egg.classList.remove("fx-bounce"); void egg.offsetWidth; egg.classList.add("fx-bounce"); }
+                    eggTaps++;
+                    clearTimeout(eggTimer);
+                    eggTimer = setTimeout(function () { eggTaps = 0; }, 2200);
+                    if (eggTaps >= 5) { eggTaps = 0; rain(); }
+                }
+            }
+        }, { passive: true, capture: true });
+        doc.addEventListener("pointerup", function () { downNow = false; }, { passive: true, capture: true });
+        doc.addEventListener("pointercancel", function () { downNow = false; }, { passive: true, capture: true });
+        doc.addEventListener("pointermove", function (e) {
+            var x = e.clientX, y = e.clientY;
+            if (e.pointerType === "mouse" || downNow) {
+                parSet((x / window.innerWidth - 0.5) * 2, (y / window.innerHeight - 0.5) * 2);
+                spot(x, y);
+            }
+            var now = Date.now();
+            if ((e.pointerType === "mouse" || downNow) && now - lastTrail > 55) { lastTrail = now; trail(x, y); }
+        }, { passive: true });
+        doc.addEventListener("mouseleave", function () { parSet(0, 0); }, { passive: true });
+        window.addEventListener("blur", function () { parSet(0, 0); });
+
+        var g0 = null, b0 = null;
+        window.addEventListener("deviceorientation", function (e) {
+            if (e.gamma == null || e.beta == null) { return; }
+            if (g0 === null) { g0 = e.gamma; b0 = e.beta; }
+            g0 += (e.gamma - g0) * 0.004;
+            b0 += (e.beta - b0) * 0.004;
+            parSet((e.gamma - g0) / 18, (e.beta - b0) / 18);
+        }, { passive: true });
+    }
+
+    window.gvccFx = { attach: attach, burst: burst, isLite: function () { return lite; } };
+
+    onReady(function () {
+        addFilter();
+        if (!special) {
+            var w = buildHome();
+            parTargets.push(w);
+            cards = qa(".landing-card,.login-card");
+            sampleFrames(2200);
+        }
+        bind();
+    });
+})();
+</script>
+<script type="module">
+        // ---------------------------------------------------------------
+        // Private page. The content below is encrypted and can only be
+        // opened with the password of the person who logged in.
+        // ---------------------------------------------------------------
+        const LOCK = {"salt":"BUUIwobxtmCL5Yp2ipBNDA==","iterations":600000,"wraps":["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"],"data":"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"};
+
+        // Turns what she types into one fixed "skeleton", so capital letters, spaces, symbols, doubled letters and
+// small spelling differences do not matter. It holds no secret.
+function gvccSkel(raw) {
+    var s = String(raw).normalize("NFKC").toLowerCase();
+    s = s.replace(/[^\p{L}\p{M}\p{N}]/gu, "");
+    s = s.replace(/ph/g, "f").replace(/bh/g, "b").replace(/kh/g, "k").replace(/q/g, "k").replace(/w/g, "v").replace(/z/g, "j");
+    s = s.replace(/[aeiouy]/g, "");
+    s = s.replace(/(.)\1+/gu, "$1");
+    return s;
+}
+
+
+        function fromBase64(text) {
+            return Uint8Array.from(atob(text), (ch) => ch.charCodeAt(0));
+        }
+
+        // The key is made from the password AND the three answers. One of the stored (wrapped) copies of the
+        // master key opens only if every answer is right; nothing here tells which answer was wrong.
+        async function openWith(password, answers) {
+            const secret = [password].concat(answers.map(gvccSkel)).join("\u0001");
+            const baseKey = await crypto.subtle.importKey(
+                "raw", new TextEncoder().encode(secret), "PBKDF2", false, ["deriveKey"]
+            );
+            const wrapKey = await crypto.subtle.deriveKey(
+                { name: "PBKDF2", salt: fromBase64(LOCK.salt), iterations: LOCK.iterations, hash: "SHA-256" },
+                baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+            );
+            for (const wrapped of LOCK.wraps) {
+                try {
+                    const raw = fromBase64(wrapped);
+                    const master = await crypto.subtle.decrypt({ name: "AES-GCM", iv: raw.slice(0, 12) }, wrapKey, raw.slice(12));
+                    const key = await crypto.subtle.importKey("raw", master, "AES-GCM", false, ["decrypt"]);
+                    const data = fromBase64(LOCK.data);
+                    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: data.slice(0, 12) }, key, data.slice(12));
+                    return { content: JSON.parse(new TextDecoder().decode(plain)), key: key };
+                } catch (e) { /* not this one */ }
+            }
+            return null;
+        }
+
+        let savedPassword = null;
+        try { savedPassword = sessionStorage.getItem("gvccKey"); } catch (e) { savedPassword = null; }
+
+        // The (encrypted) photo is only downloaded after the first song has some seconds loaded,
+        // so on a slow connection the song gets all of it. Nobody who is not logged in downloads it.
+        let photoRequest = null;
+        function startPhotoDownload() {
+            if (!photoRequest && savedPassword) {
+                photoRequest = fetch("n2.dat", { priority: "low" })
+                    .then((res) => res.arrayBuffer()).catch(() => null);
+            }
+            return photoRequest;
+        }
+
+        // The question screen: shown after the login, before anything private is opened.
+        function askQuestions() {
+            const lock = document.getElementById("vipLock");
+            const form = document.getElementById("vipLockForm");
+            const fields = Array.prototype.slice.call(form.querySelectorAll("input"));
+            const loader = document.getElementById("vipLoader");
+            if (loader) { loader.remove(); }
+            lock.hidden = false;
+            if (window.gvccFx) { try { window.gvccFx.attach(lock); } catch (e) { } }   // drifting lights (decoration only)
+            // warm the browser cache with the (encrypted) photo while the answers are being typed
+            try { fetch("n2.dat", { priority: "low" }).catch(function () { }); } catch (e) { }
+            function wrong() {
+                form.classList.remove("shake");
+                void form.offsetWidth;
+                form.classList.add("shake");
+                fields.forEach((f) => f.classList.add("bad"));
+                setTimeout(() => fields.forEach((f) => f.classList.remove("bad")), 900);
+            }
+            return new Promise((resolve) => {
+                let busy = false;
+                form.addEventListener("submit", async (ev) => {
+                    ev.preventDefault();
+                    if (busy) { return; }
+                    if (fields.some((f) => !f.value.trim())) { wrong(); return; }
+                    busy = true;
+                    form.classList.add("busy");
+                    let opened = null;
+                    try { opened = await openWith(savedPassword, fields.map((f) => f.value)); } catch (e) { opened = null; }
+                    form.classList.remove("busy");
+                    busy = false;
+                    if (opened) {
+                        fields.forEach((f) => { f.value = ""; f.blur(); });
+                        lock.classList.add("done");
+                        setTimeout(() => lock.remove(), 900);
+                        resolve(opened);
+                    } else { wrong(); }
+                });
+            });
+        }
+
+        let content = null;
+        let aesKey = null;
+        try {
+            if (savedPassword) {
+                const opened = await askQuestions();
+                content = opened.content;
+                aesKey = opened.key;
+            }
+        } catch (e) { content = null; }
+
+        if (!content) {
+            // Not logged in: show the normal offline notice.
+            location.replace("dashboard.html");
+            await new Promise(() => {});
+        }
+
+        const world = document.getElementById("secretWorld");
+        world.innerHTML = content.html;
+        world.style.display = "block";
+        if (window.gvccFx) { try { window.gvccFx.attach(world); } catch (e) { } }   // drifting lights (decoration only)
+        const loader = document.getElementById("vipLoader");
+        if (loader) { loader.remove(); }
+
+        let photoDoneResolve = function () { };
+        const photoDone = new Promise((resolve) => { photoDoneResolve = resolve; });
+
+        // Background photo: decrypted in the background. The music and the buttons never wait for it.
+        async function showPhoto() {
+            try {
+                await songGate;
+                let buffer = await startPhotoDownload();
+                if (!buffer) { buffer = await (await fetch("n2.dat")).arrayBuffer(); }
+                const bytes = new Uint8Array(buffer);
+                const image = await crypto.subtle.decrypt(
+                    { name: "AES-GCM", iv: bytes.slice(0, 12) }, aesKey, bytes.slice(12)
+                );
+                const head = new Uint8Array(image, 0, 4);
+                const type = (head[0] === 0x89 && head[1] === 0x50) ? "image/png" : "image/webp";
+                const imageUrl = URL.createObjectURL(new Blob([image], { type: type }));
+                // Decode first, so the photo fades in smoothly instead of popping in.
+                try { const probe = new Image(); probe.src = imageUrl; await probe.decode(); } catch (e) { }
+                const bg = world.querySelector(".bg-image");
+                if (bg) { bg.style.backgroundImage = `url("${imageUrl}")`; }
+            } catch (e) { /* the page still works without the background */ }
+            world.classList.add("vip-ready");
+            photoDoneResolve();
+        }
+        // 🎵 MUSIC SYSTEM LOGIC 🎵
+        // Rules: the song starts as soon as the browser allows it (or on the first tap) and
+        // some seconds of it are loaded (on a slow connection it waits for them, instead of
+        // playing two seconds and stalling over and over); a new song only takes over when it is
+        // really playing; if the browser or phone stops the song by itself the next tap starts
+        // it again; the round music button shows what is happening.
+        const VOLUME = 0.2;
+        const audios = ["bgMusic", "diaryMusic", "pankhMusic"].map((id) => document.getElementById(id));
+        audios.forEach((a) => { a.volume = VOLUME; a._src = a.getAttribute("src"); });
+        let currentAudio = document.getElementById("bgMusic");
+        let userMuted = false;              // true only when the person pressed the music button
+        let fadeCounter = 0;
+        const musicBtn = document.getElementById("musicBtn");
+        const audioEvents = [];             // last few events, shown by the music-button long press
+
+        // "element": the <audio> tags stream the songs. "buffer": the songs are played with Web Audio.
+        // Some phones keep pausing an audible <audio> tag right after it starts (the beep and other Web Audio
+        // sound still plays there), so when that happens the page switches to "buffer" and remembers it.
+        let mode = "element";
+        try { if (localStorage.getItem("gvccSongMode") === "buffer") { mode = "buffer"; } } catch (e) { }
+        const buf = { ctx: null, tracks: {}, entered: false };
+        let bufWanted = "bgMusic";
+        let gateCheck = function () { };
+        let away = false;                   // the person left the page (other app, other tab, screen off): silence at once
+        // Phones with little memory decode a song only when it is needed; others keep all three ready for instant switching.
+        const keepDecoded = !(navigator.deviceMemory && navigator.deviceMemory < 4);
+
+        function noteEvent(a, name) {
+            audioEvents.push(`${(performance.now() / 1000).toFixed(1)}s ${a.id.replace("Music", "")} ${name} t=${a.currentTime.toFixed(1)} rs=${a.readyState}${a.error ? " ERR" + a.error.code : ""}`);
+            if (audioEvents.length > 14) { audioEvents.shift(); }
+        }
+
+        function showMusicState(state) {    // "on" | "load" | "wait" | "off"
+            if (!musicBtn) { return; }
+            musicBtn.classList.remove("on", "load", "wait", "off");
+            musicBtn.classList.add(state);
+        }
+
+        function isAudible(a) { return !a.paused && a.readyState >= 3; }
+
+        // ---- loaded-ahead cushion (slow connections) ----
+        const START_CUSHION = 6;       // seconds that must be loaded before a song starts
+        const RESUME_CUSHION = 15;     // ... before it continues after a stall
+        const HOLD_MAX_MS = 30000;     // never wait longer than this
+        function aheadOf(a) {
+            const t = a.currentTime, r = a.buffered;
+            for (let i = 0; i < r.length; i++) {
+                if (t >= r.start(i) - 0.1 && t <= r.end(i) + 0.1) { return r.end(i) - t; }
+            }
+            return 0;
+        }
+        function loadedEnough(a) {
+            const need = a._played ? RESUME_CUSHION : START_CUSHION;
+            const ahead = aheadOf(a);
+            if (ahead >= need) { return true; }
+            const d = isFinite(a.duration) ? a.duration : 0;
+            return d > 0 && ahead >= d - a.currentTime - 0.5;      // everything that is left is loaded
+        }
+
+        // Released when the first song has its start cushion (or after a short wait): then the photo may load.
+        const songGate = new Promise((resolve) => {
+            const first = document.getElementById("bgMusic");
+            const events = ["progress", "canplaythrough", "playing"];
+            let timer = null;
+            function open() {
+                clearTimeout(timer);
+                events.forEach((n) => first.removeEventListener(n, check));
+                resolve();
+            }
+            function check() {
+                if (loadedEnough(first) || (mode === "buffer" && bufTrack("bgMusic").buffer)) { open(); }
+            }
+            gateCheck = check;
+            events.forEach((n) => first.addEventListener(n, check));
+            timer = setTimeout(open, 8000);
+            check();
+        });
+
+        // Our own pause() calls are marked, so a pause done by the browser can be told apart.
+        function pauseTrack(a) {
+            if (a.paused) { return; }
+            a._ours = true;
+            a.pause();
+        }
+
+        function fade(a, from, to, ms, done) {
+            const id = ++fadeCounter;
+            a._fade = id;
+            const startedAt = performance.now();
+            const timer = setInterval(() => {
+                if (a._fade !== id) { clearInterval(timer); return; }
+                const t = Math.min(1, (performance.now() - startedAt) / ms);
+                a.volume = Math.max(0, Math.min(1, from + (to - from) * t));
+                if (t >= 1) { clearInterval(timer); if (done) { done(); } }
+            }, 40);
+        }
+
+        function fadeOutOthers() {
+            audios.forEach((a) => {
+                if (a === currentAudio || a.paused) { return; }
+                fade(a, a.volume, 0, 450, () => { pauseTrack(a); a.volume = VOLUME; parkTrack(a); });
+            });
+        }
+
+        function playTrack(a) {
+            if (userMuted) { return Promise.resolve(false); }
+            let promise = null;
+            a._lastPlay = performance.now();
+            try { promise = a.play(); } catch (e) { promise = null; }
+            if (!promise) { return Promise.resolve(true); }
+            return promise.then(() => true).catch((err) => {
+                if (err && err.name === "AbortError") { return false; }   // we switched song a moment later
+                if (a === currentAudio) { showMusicState("wait"); armUnlock(); }
+                return false;
+            });
+        }
+
+        function clearHold(a) { a._hold = false; clearTimeout(a._holdTimer); }
+
+        // A song that is not wanted for now stops downloading (so the song that is wanted gets the whole
+        // connection) and remembers its place; it is loaded again from that place when it is needed.
+        function parkTrack(a) {
+            if (a._parked || a === currentAudio || !a._src) { return; }
+            if (a.readyState === 0 && a.networkState !== 2) { return; }   // never started loading
+            a._parkAt = a.currentTime;
+            a._parked = true;
+            a.removeAttribute("src");
+            a.load();
+            a._ours = false;                       // load() drops the queued "pause" event
+        }
+        function unparkTrack(a) {
+            if (!a._parked) { return; }
+            a._parked = false;
+            const at = a._parkAt || 0;
+            a.src = a._src;
+            if (at > 0) { a.addEventListener("loadedmetadata", () => { try { a.currentTime = at; } catch (e) { } }, { once: true }); }
+            a.load();
+        }
+
+        // Wait (silently, button shows "loading") until enough of the song is loaded, then start it.
+        function holdTrack(a) {
+            if (a._hold) { return; }
+            a._hold = true;
+            pauseTrack(a);
+            if (a === currentAudio && !userMuted && !audios.some((x) => x !== a && isAudible(x))) { showMusicState("load"); }
+            a._holdTimer = setTimeout(() => releaseHold(a), HOLD_MAX_MS);
+        }
+        function releaseHold(a) {
+            if (!a._hold) { return; }
+            clearHold(a);
+            if (a !== currentAudio || userMuted || document.hidden) { return; }
+            startTrack(a, true, true);
+        }
+
+        function startTrack(a, withFade, skipCushion) {
+            clearHold(a);
+            unparkTrack(a);
+            if (a.preload !== "auto") { a.preload = "auto"; }   // a song that was paused keeps loading
+            a._fade = ++fadeCounter;                     // cancels a fade-out still running on this song
+            if (withFade && a.paused) { a.volume = 0; } else if (!withFade) { a.volume = VOLUME; }
+            if (a === currentAudio && !userMuted) { showMusicState(isAudible(a) ? "on" : "load"); }
+            return playTrack(a).then((ok) => {
+                if (!ok) { a.volume = VOLUME; return ok; }
+                if (a !== currentAudio) { pauseTrack(a); a.volume = VOLUME; return false; }   // not wanted any more
+                if (!skipCushion && !loadedEnough(a)) { a.volume = VOLUME; holdTrack(a); return ok; }
+                showMusicState("on");
+                if (a.volume < VOLUME) { fade(a, a.volume, VOLUME, 800); }
+                fadeOutOthers();
+                return ok;
+            });
+        }
+
+        // ================= Web Audio player =================
+        function noteBuf(msg) {
+            audioEvents.push(`${(performance.now() / 1000).toFixed(1)}s web ${msg}`);
+            if (audioEvents.length > 14) { audioEvents.shift(); }
+        }
+        function bufCtx() {
+            if (!buf.ctx) {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                try { buf.ctx = new AC({ sampleRate: 32000 }); } catch (e) { buf.ctx = new AC(); }
+                buf.ctx.addEventListener("statechange", () => {
+                    noteBuf("ctx " + buf.ctx.state);
+                    if (mode !== "buffer") { return; }
+                    if (buf.ctx.state === "running") { disarmUnlock(); }
+                    else { bufPlaying().forEach((t) => bufStop(t, 0)); }     // sound was taken away (call, lock, ...): remember the place
+                    bufSync();
+                });
+            }
+            return buf.ctx;
+        }
+        function bufTrack(id) {
+            if (!buf.tracks[id]) {
+                buf.tracks[id] = { id: id, url: document.getElementById(id)._src, encoded: null, buffer: null, loading: null,
+                                   fails: 0, gain: null, node: null, startedAt: 0, offset: 0, playing: false };
+            }
+            return buf.tracks[id];
+        }
+        function bufPlaying() {
+            return Object.keys(buf.tracks).map((k) => buf.tracks[k]).filter((t) => t.playing);
+        }
+        function bufDecode(data) {
+            return new Promise((resolve, reject) => { bufCtx().decodeAudioData(data, resolve, reject); });
+        }
+        // Downloads the whole song once and decodes it (the downloaded file is kept to decode it again later).
+        function bufLoad(t, quiet) {
+            if (t.buffer) { return Promise.resolve(true); }
+            if (t.loading) { return t.loading; }
+            noteBuf("load " + t.id);
+            t.loading = (async () => {
+                try {
+                    if (!t.encoded) {
+                        const res = await fetch(t.url, quiet ? { priority: "low" } : undefined);
+                        if (!res.ok) { throw new Error("http " + res.status); }
+                        t.encoded = await res.arrayBuffer();
+                    }
+                    t.buffer = await bufDecode(t.encoded.slice(0));
+                    t.fails = 0;
+                    noteBuf("ready " + t.id + " " + t.buffer.duration.toFixed(0) + "s");
+                    gateCheck();
+                    return true;
+                } catch (e) {
+                    t.fails++;
+                    t.encoded = null;
+                    noteBuf("load failed " + t.id + " " + (e && e.message));
+                    return false;
+                } finally { t.loading = null; }
+            })();
+            return t.loading;
+        }
+        function bufStart(t, fadeSec) {
+            const ctx = bufCtx();
+            const node = ctx.createBufferSource();
+            node.buffer = t.buffer;
+            node.loop = true;
+            const gain = ctx.createGain();
+            node.connect(gain);
+            gain.connect(ctx.destination);
+            const off = t.offset % t.buffer.duration;
+            const now = ctx.currentTime;
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(VOLUME, now + fadeSec);
+            node.start(0, off);
+            t.node = node; t.gain = gain; t.startedAt = now - off; t.playing = true;
+            noteBuf("play " + t.id + " from " + off.toFixed(0) + "s");
+        }
+        function bufStop(t, fadeSec) {
+            if (!t.playing) { return; }
+            const ctx = bufCtx(), now = ctx.currentTime;
+            t.offset = t.buffer ? (now - t.startedAt) % t.buffer.duration : 0;     // remember the place in the song
+            t.playing = false;
+            const node = t.node, gain = t.gain;
+            t.node = null; t.gain = null;
+            try {
+                if (fadeSec <= 0) {                     // at once, no fade
+                    gain.gain.cancelScheduledValues(now);
+                    gain.gain.value = 0;
+                    node.stop();
+                } else {
+                    if (gain.gain.cancelAndHoldAtTime) { gain.gain.cancelAndHoldAtTime(now); }
+                    else { gain.gain.cancelScheduledValues(now); gain.gain.setValueAtTime(gain.gain.value, now); }
+                    gain.gain.linearRampToValueAtTime(0, now + fadeSec);
+                    node.stop(now + fadeSec + 0.05);
+                }
+            } catch (e) { try { node.stop(); } catch (e2) { } }
+            node.onended = () => { try { node.disconnect(); gain.disconnect(); } catch (e) { } };
+            noteBuf("stop " + t.id + " at " + t.offset.toFixed(0) + "s");
+            // the decoded copy of a song that is not wanted is freed (it is decoded again when needed)
+            if (!keepDecoded) {
+                setTimeout(() => { if (!t.playing && bufWanted !== t.id) { t.buffer = null; } }, (fadeSec + 0.3) * 1000);
+            }
+        }
+        // Makes what is heard match what is wanted (song, muted, page hidden, sound allowed).
+        function bufSync() {
+            if (mode !== "buffer") { return; }
+            const ctx = bufCtx();
+            const playing = bufPlaying();
+            if (userMuted || away || document.hidden) {
+                playing.forEach((t) => bufStop(t, (userMuted && !away && !document.hidden) ? 0.25 : 0));
+                if (userMuted) { showMusicState("off"); }
+                return;
+            }
+            const t = bufTrack(bufWanted);
+            if (t.playing) {
+                playing.forEach((o) => { if (o !== t) { bufStop(o, 0.25); } });
+                showMusicState("on");
+                return;
+            }
+            if (!t.buffer) {
+                if (!playing.length) { showMusicState("load"); }
+                if (t.fails >= 3) { showMusicState("wait"); return; }
+                bufLoad(t).then((ok) => { if (ok) { bufSync(); } else { setTimeout(bufSync, 1500); } });
+                return;
+            }
+            if (ctx.state !== "running") {
+                showMusicState("wait");
+                armUnlock();
+                try { const p = ctx.resume(); if (p && p.catch) { p.catch(() => { }); } } catch (e) { }
+                return;
+            }
+            playing.forEach((o) => { if (o !== t) { bufStop(o, 0.25); } });
+            bufStart(t, 0.4);
+            showMusicState("on");
+            bufPrefetch();
+        }
+        // Once the first song plays (and the photo is in), the other songs are downloaded and decoded one after
+        // the other, so opening the diary or the message box switches the song at once.
+        let bufPrefetched = false;
+        function bufPrefetch() {
+            if (bufPrefetched || !keepDecoded) { return; }
+            bufPrefetched = true;
+            Promise.race([photoDone, new Promise((r) => setTimeout(r, 15000))]).then(() => {
+                let chain = Promise.resolve();
+                ["pankhMusic", "diaryMusic"].forEach((id) => {
+                    chain = chain.then(() => bufLoad(bufTrack(id), true)).catch(() => { });
+                });
+            });
+        }
+        function bufResume() {
+            bufTrack(bufWanted).fails = 0;
+            try { const p = bufCtx().resume(); if (p && p.catch) { p.catch(() => { }); } } catch (e) { }
+            bufSync();
+        }
+        function enterBufferMode() {
+            if (buf.entered) { return; }
+            buf.entered = true;
+            mode = "buffer";
+            try { localStorage.setItem("gvccSongMode", "buffer"); } catch (e) { }
+            noteBuf("using Web Audio");
+            disarmUnlock();
+            audios.forEach((a) => {                    // the <audio> tags are not used any more
+                clearHold(a);
+                pauseTrack(a);
+                a._parked = true;
+                a.removeAttribute("src");
+                a.load();
+                a._ours = false;
+            });
+            bufWanted = currentAudio.id;
+            bufSync();
+        }
+
+        function switchAudio(newAudioId) {
+            const next = document.getElementById(newAudioId);
+            currentAudio = next;
+            if (mode === "buffer") { bufWanted = newAudioId; bufSync(); return; }
+            // a song that is only half-loaded is dropped at once; the one that is really heard
+            // keeps playing until the new song is ready, then they cross-fade
+            audios.forEach((a) => {
+                if (a === next) { return; }
+                clearHold(a);
+                if (!a.paused && !isAudible(a)) { pauseTrack(a); a.volume = VOLUME; }
+                if (a.paused) { parkTrack(a); }
+            });
+            startTrack(next, true);
+        }
+
+        // If the browser blocks the song, wait for the first tap / key press and start it then.
+        let unlockArmed = false;
+        function isControl(el) {
+            return !!(el && el.closest && el.closest("button, a, input, textarea, select, label, [onclick]"));
+        }
+        function tryUnlock() {
+            if (userMuted) { return; }
+            if (mode === "buffer") { bufResume(); return; }
+            if (!currentAudio.paused) { disarmUnlock(); return; }
+            startTrack(currentAudio, true).then((ok) => { if (ok) { disarmUnlock(); } });
+        }
+        function onTouchEnd(e) { if (!isControl(e.target)) { tryUnlock(); } }
+        function armUnlock() {
+            if (unlockArmed) { return; }
+            unlockArmed = true;
+            document.addEventListener("click", tryUnlock);      // bubbling: runs after the button's own handler
+            document.addEventListener("keydown", tryUnlock);
+            document.addEventListener("touchend", onTouchEnd);
+        }
+        function disarmUnlock() {
+            unlockArmed = false;
+            document.removeEventListener("click", tryUnlock);
+            document.removeEventListener("keydown", tryUnlock);
+            document.removeEventListener("touchend", onTouchEnd);
+        }
+
+        audios.forEach((a) => {
+            ["playing", "pause", "waiting", "stalled", "error", "ended", "canplay"].forEach((name) => {
+                a.addEventListener(name, () => noteEvent(a, name));
+            });
+            a.addEventListener("progress", () => { if (a._hold && loadedEnough(a)) { releaseHold(a); } });
+            a.addEventListener("canplaythrough", () => { if (a._hold) { releaseHold(a); } });
+            a.addEventListener("playing", () => {
+                a._retries = 0;
+                a._played = true;
+                if (a === currentAudio) { showMusicState("on"); fadeOutOthers(); }
+            });
+            a.addEventListener("waiting", () => {
+                if (a === currentAudio && !a.paused && !userMuted) {
+                    showMusicState("load");
+                    // Stopping and starting every few seconds is worse than one wait: collect a cushion first.
+                    if (!loadedEnough(a)) { holdTrack(a); }
+                }
+            });
+            a.addEventListener("pause", () => {
+                if (a._ours) { a._ours = false; return; }
+                // Paused by the browser right after it started: switch to the Web Audio player.
+                if (mode === "element" && a === currentAudio && !document.hidden && !userMuted
+                    && performance.now() - (a._lastPlay || 0) < 6000) { enterBufferMode(); return; }
+                // Not paused by us (phone call, another app took the sound, ...): next tap starts it again.
+                if (a === currentAudio && !document.hidden && !userMuted) { showMusicState("wait"); armUnlock(); }
+            });
+            a.addEventListener("error", () => {
+                clearHold(a);
+                a._retries = (a._retries || 0) + 1;
+                if (a._retries > 3) { return; }
+                setTimeout(() => {
+                    a.load();
+                    if (a === currentAudio && !document.hidden) { startTrack(a, true); }
+                }, 1500);
+            });
+        });
+
+        // Leaving the page (home button, other app or tab, screen off, window not in front): sound off at once.
+        function silenceNow() {
+            away = true;
+            if (mode === "buffer") { bufPlaying().forEach((t) => bufStop(t, 0)); }
+            audios.forEach(pauseTrack);
+        }
+        function backNow() {
+            if (!away || document.hidden) { return; }
+            away = false;
+            if (userMuted) { return; }
+            if (mode === "buffer") { bufResume(); } else { startTrack(currentAudio, true); }
+        }
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) { silenceNow(); } else { backNow(); }
+        });
+        window.addEventListener("pagehide", silenceNow);
+        window.addEventListener("pageshow", backNow);
+        window.addEventListener("blur", silenceNow);
+        window.addEventListener("focus", backNow);
+        // Safety net: touching the visible page means the person is back, even if no "focus" event came.
+        ["pointerdown", "touchend", "keydown"].forEach((n) => document.addEventListener(n, backNow, true));
+
+        if (musicBtn) {
+            let longPress = false;
+            let pressTimer = null;
+            const diag = document.createElement("pre");
+            diag.id = "vipDiag";
+            document.body.appendChild(diag);
+            let diagTimer = null;
+            function showDiag() {
+                const a = currentAudio;
+                const c = navigator.connection || {};
+                const lines = [
+                    `song=${a.id} src=${a.getAttribute("src")}`,
+                    `paused=${a.paused} t=${a.currentTime.toFixed(1)}/${isFinite(a.duration) ? a.duration.toFixed(0) : "?"} ready=${a.readyState} net=${a.networkState} err=${a.error ? a.error.code : 0}`,
+                    `buffered=${a.buffered.length ? a.buffered.end(a.buffered.length - 1).toFixed(0) + "s" : "0s"} ahead=${aheadOf(a).toFixed(0)}s hold=${!!a._hold} muted=${userMuted} hidden=${document.hidden}`,
+                    `mode=${mode}` + (mode === "buffer" ? ` ctx=${buf.ctx ? buf.ctx.state : "-"} want=${bufWanted} playing=${bufPlaying().map((t) => t.id).join("+") || "-"}` : ""),
+                    `online=${navigator.onLine} link=${c.effectiveType || "?"} ${c.downlink || "?"}Mbps`,
+                    "---"
+                ].concat(audioEvents.slice(-9));
+                diag.textContent = lines.join("\n");
+            }
+            diag.addEventListener("click", () => { diag.style.display = "none"; clearInterval(diagTimer); });
+            const startPress = () => {
+                longPress = false;
+                clearTimeout(pressTimer);
+                pressTimer = setTimeout(() => {
+                    longPress = true;
+                    diag.style.display = "block";
+                    showDiag();
+                    clearInterval(diagTimer);
+                    diagTimer = setInterval(showDiag, 500);
+                }, 1300);
+            };
+            const endPress = () => clearTimeout(pressTimer);
+            musicBtn.addEventListener("pointerdown", startPress);
+            ["pointerup", "pointerleave", "pointercancel"].forEach((n) => musicBtn.addEventListener(n, endPress));
+            musicBtn.addEventListener("contextmenu", (e) => e.preventDefault());
+
+            musicBtn.addEventListener("click", () => {
+                if (longPress) { longPress = false; return; }     // long press only opens the status box
+                if (mode === "buffer") {
+                    if (!userMuted && bufPlaying().length) { userMuted = true; bufSync(); } else { userMuted = false; bufResume(); }
+                    return;
+                }
+                if (!userMuted && (!currentAudio.paused || currentAudio._hold)) {
+                    userMuted = true;
+                    audios.forEach((a) => { clearHold(a); pauseTrack(a); });
+                    showMusicState("off");
+                } else {
+                    userMuted = false;
+                    startTrack(currentAudio, true);
+                }
+            });
+        }
+
+        if (mode === "buffer") { enterBufferMode(); } else { startTrack(currentAudio, true); }
+        showPhoto();
+
+        // Last memory button
+        const lastBtn = document.getElementById('lastMemoryBtn');
+        if (lastBtn) {
+            lastBtn.onclick = function () { window.showMemory(content.last); };
+        }
+
+        // Firebase is loaded only when a reply is sent
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+            authDomain: "gvcc-database.firebaseapp.com",
+            projectId: "gvcc-database",
+            storageBucket: "gvcc-database.firebasestorage.app",
+            messagingSenderId: "1063216875940",
+            appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+        };
+
+        let firebasePromise = null;
+        function getFirebase() {
+            if (!firebasePromise) {
+                firebasePromise = (async () => {
+                    const appModule = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js");
+                    const storeModule = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
+                    const app = appModule.initializeApp(firebaseConfig);
+                    return { db: storeModule.getFirestore(app), collection: storeModule.collection, addDoc: storeModule.addDoc };
+                })();
+            }
+            return firebasePromise;
+        }
+
+        // UI Open/Close Logic
+        const diarySidebar = document.getElementById('diarySidebar');
+        const replyModal = document.getElementById('replyModal');
+
+        document.getElementById('openDiary').addEventListener('click', () => {
+            diarySidebar.classList.add('open');
+            switchAudio('diaryMusic');
+        });
+
+        document.getElementById('closeDiary').addEventListener('click', () => {
+            diarySidebar.classList.remove('open');
+            switchAudio('bgMusic');
+        });
+
+        document.getElementById('openReply').addEventListener('click', () => {
+            replyModal.classList.add('open');
+            switchAudio('pankhMusic');
+        });
+
+        document.getElementById('closeReply').addEventListener('click', () => {
+            replyModal.classList.remove('open');
+            switchAudio('bgMusic');
+        });
+
+        window.showMemory = function (text) {
+            const box = document.getElementById('memoryDisplay');
+            box.innerText = `"${text}"`;
+            box.classList.remove('swap');
+            void box.offsetWidth;
+            box.classList.add('swap');
+        };
+
+        // The memory that is open right now gets a highlight
+        document.getElementById('memoryList').addEventListener('click', (e) => {
+            const btn = e.target.closest('.memory-btn');
+            if (!btn) { return; }
+            document.querySelectorAll('#memoryList .memory-btn.active').forEach((x) => x.classList.remove('active'));
+            btn.classList.add('active');
+        });
+
+        // Save the reply in Firebase
+        document.getElementById('sendReplyBtn').addEventListener('click', async function () {
+            let msg = document.getElementById('replyMessage').value.trim();
+            if (msg === "") return;
+
+            let btn = this;
+            btn.innerText = "Bhej raha hoon...";
+
+            try {
+                const fb = await getFirebase();
+                await fb.addDoc(fb.collection(fb.db, "replies_from_2357"), {
+                    message: msg,
+                    timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                });
+
+                document.getElementById('replyMessage').value = "";
+                btn.innerHTML = 'Message Bhej Do <i class="fa-solid fa-heart"></i>';
+                document.getElementById('replyStatus').style.display = "block";
+
+                setTimeout(() => {
+                    replyModal.classList.remove('open');
+                    document.getElementById('replyStatus').style.display = "none";
+                    switchAudio('bgMusic');
+                }, 3000);
+
+            } catch (error) {
+                console.error("Firebase Error: ", error);
+                btn.innerText = "Error! Phir se try karein.";
+            }
+        });
+</script>
+</body>
+</html>

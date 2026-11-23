@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="smTR7T7o1MeEBFJU_zg880rkDG2EWxsQRT0eMnzZXpE" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+    
+    <link rel="preload" href="logo.webp" as="image" type="image/webp">
+    
+    <title>Gyan Varsha Coaching Center</title>
+    
+    <link rel="icon" type="image/png" href="20260620_144347.png"> 
+    <meta name="description" content="ज्ञान वर्षा कोचिंग सेंटर (GVCC), हिरौता ward no.13 (Sheohar)। आपकी सफलता ही हमारी पहचान है । हमारे स्मार्ट पोर्टल से जुड़ें, ऑनलाइन स्टडी और ऐप डाउनलोड करें! Manage By :– GVCC All Members [MFR]">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GLOBAL THEME SYSTEM -->
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js" defer></script>
+    
+    <style>
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; 
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input, textarea {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        img {
+            -webkit-user-drag: none; 
+        }
+
+        /* THEME VARIABLES */
+        :root {
+            /* LIGHT MODE (Premium Bright Look) */
+            --page-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --text-main: #1e293b;
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --subtitle-color: #64748b;
+            --teacher-btn-bg: rgba(0, 0, 0, 0.05);
+            --teacher-btn-text: #475569;
+            --teacher-btn-border: rgba(0, 0, 0, 0.1);
+            --teacher-btn-hover: rgba(0, 0, 0, 0.1);
+            --divider-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* DARK MODE (Aapka Original Navy Blue Look) */
+            --page-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --text-main: white;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --subtitle-color: #94a3b8;
+            --teacher-btn-bg: rgba(255, 255, 255, 0.1);
+            --teacher-btn-text: #e2e8f0;
+            --teacher-btn-border: rgba(255, 255, 255, 0.2);
+            --teacher-btn-hover: rgba(255, 255, 255, 0.2);
+            --divider-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--page-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow: hidden;
+            overscroll-behavior-y: none;
+            touch-action: manipulation;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(-8vh); } 
+        }
+
+        .landing-container {
+            width: 85%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .landing-logo {
+            width: 260px;
+            height: auto;
+            position: relative;
+            z-index: 10;
+            margin-bottom: -110px; 
+            filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.3));
+            top: 0px;  
+            left: 10px; 
+            pointer-events: none;
+        }
+
+        .landing-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 120px 30px 40px 30px; 
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            transition: background 0.4s ease, border 0.4s ease;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--subtitle-color);
+            font-size: 14px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            transition: color 0.4s ease;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn:active {
+            transform: scale(0.95) !important;
+            opacity: 0.8; 
+            transition: all 0.1s ease;
+        }
+
+        .btn i { font-size: 20px; }
+
+        .btn-student {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        .btn-student:hover { background: #f1f5f9; transform: translateY(-2px); }
+
+        .btn-teacher {
+            background: var(--teacher-btn-bg);
+            color: var(--teacher-btn-text);
+            border: 1px solid var(--teacher-btn-border);
+        }
+        .btn-teacher:hover { background: var(--teacher-btn-hover); transform: translateY(-2px); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 25px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--divider-color);
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .page-exit {
+            animation: zoomOutUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @keyframes zoomOutUp {
+            from { opacity: 1; transform: translateY(-8vh) scale(1); }
+            to { opacity: 0; transform: translateY(-15vh) scale(0.9); }
+        }
+    
+        /* =================================================================
+           FIXED SCREEN + VIP LOOK (styling only - no text is changed)
+        ================================================================= */
+        :root {
+            --gold: #e6c27a;
+            --gold-soft: rgba(230, 194, 122, 0.55);
+            --gold-faint: rgba(230, 194, 122, 0.28);
+        }
+        html { height: 100%; overflow: hidden; }
+        body {
+            height: 100%; padding: 0; overflow: hidden; overflow: clip; overscroll-behavior: none; min-height: 100vh;
+            background:
+                radial-gradient(70% 50% at 50% -5%, rgba(56, 189, 248, 0.20), rgba(56, 189, 248, 0) 70%),
+                radial-gradient(55% 45% at 100% 105%, rgba(230, 194, 122, 0.18), rgba(230, 194, 122, 0) 70%),
+                var(--page-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+        @supports (height: 100dvh) { body { min-height: 100dvh; } }
+
+        /* the whole page is one block that is scaled to fit the screen, so it looks the same on every
+           phone, tablet and computer and never needs scrolling */
+        .fit {
+            width: 100%; display: flex; justify-content: center;
+            transform: scale(var(--fit, 1)); transform-origin: 50% 50%;
+            animation: vipFade 0.7s ease-out both;
+        }
+        @keyframes vipFade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* card with a thin gold-to-blue edge */
+        .landing-card::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, rgba(230, 194, 122, 0.85), rgba(255, 255, 255, 0.12) 42%, rgba(56, 189, 248, 0.55));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .landing-card { box-shadow: 0 22px 55px rgba(15, 23, 42, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+        .title {
+            background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #0ea5e9 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+        }
+
+        /* the main button: gold ring + a slow shine */
+        .btn-student {
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.28), 0 0 0 1px var(--gold-soft);
+        }
+        .btn-student::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 38%; pointer-events: none;
+            background: linear-gradient(100deg, rgba(230, 194, 122, 0), rgba(230, 194, 122, 0.5), rgba(230, 194, 122, 0));
+            transform: translateX(-130%) skewX(-20deg); animation: vipShine 5s ease-in-out 1.6s infinite;
+        }
+        .btn-student:disabled::after { display: none; }
+        @keyframes vipShine { 0% { transform: translateX(-130%) skewX(-20deg); } 40%, 100% { transform: translateX(380%) skewX(-20deg); } }
+
+        /* theme button: gold ring, stays clear of phone edges */
+        #themeToggleBtn {
+            width: 44px; height: 44px; font-size: 20px; border-color: var(--gold);
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(18px + env(safe-area-inset-right, 0px));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(230, 194, 122, 0.18);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fit, .btn-student::after { animation: none; }
+        }
+        .landing-logo { aspect-ratio: 1 / 1; }
+    </style>
+<link rel="stylesheet" href="fx.css">
+<script src="fx.js" defer></script>
+</head>
+<body>
+
+<div class="fit">
+<div class="landing-container">
+    <img src="logo.webp" width="260" height="260" alt="GVCC Logo" class="landing-logo">
+
+    <div class="landing-card">
+        <div class="title">GVCC PORTAL</div>
+        <div class="subtitle">आपकी सफलता ही हमारी पहचान हैं....!</div>
+        
+        <div class="divider">SELECT YOUR LOGIN</div>
+        
+        <button class="btn btn-student" onclick="openPortal('student-login.html')">
+            <i class="fa-solid fa-user-graduate"></i> छात्र के लिए
+        </button>
+    </div>
+</div>
+</div>
+<script>
+// Scales the page block so it fits the screen (never scrolls, same look everywhere).
+(function () {
+    var fit = document.querySelector('.fit');
+    if (!fit) { return; }
+    var box = fit.firstElementChild;
+    var SHIFT = 0.08;            // how far the block is lifted up (share of screen height)
+    var baseW = 0, baseH = 0;
+    function update(force) {
+        var w = window.innerWidth, h = window.innerHeight;
+        // an on-screen keyboard only makes the height smaller: ignore that, keep the size
+        if (force || !baseH || w !== baseW || h > baseH) { baseW = w; baseH = h; }
+        var nw = box.offsetWidth, nh = box.offsetHeight;
+        if (!nw || !nh) { return; }
+        var s = Math.min(1.18, (baseH * (1 - 2 * SHIFT) - 28) / nh, (baseW - 20) / nw);
+        fit.style.setProperty('--fit', Math.max(0.4, s).toFixed(3));
+    }
+    update(true);
+    window.addEventListener('resize', function () { update(false); });
+    window.addEventListener('orientationchange', function () { setTimeout(function () { update(true); }, 250); });
+    window.addEventListener('load', function () { update(true); });
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { update(true); }); }
+})();
+</script>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJX_dyLK80p2rNqSVvGY67TpWV7e_UdPI",
+        authDomain: "gvcc-database.firebaseapp.com",
+        projectId: "gvcc-database",
+        storageBucket: "gvcc-database.firebasestorage.app",
+        messagingSenderId: "1063216875940",
+        appId: "1:1063216875940:web:a4ee2f39b01896b44c5931"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messaging = getMessaging(app);
+
+    // 🌟 SMART NOTIFICATION SYSTEM 🌟
+    // 👇 Yahan apni VAPID Key jarur dalein 👇
+    const VAPID_KEY = "BCm8eNsThwmymZsqhfaDcHw37fLgNI2qWnr8aLUc0xWSCl0BuhRSkZ0KrYI1D8n0wzK8MY5fybOgMVWoXAR97VM";
+
+    setTimeout(async () => {
+        if ("Notification" in window && Notification.permission === "default") {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    console.log("🔔 Notification Permission Granted!");
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (token) {
+                        await addDoc(collection(db, "notification_tokens"), {
+                            token: token,
+                            userType: "Index Visitor",
+                            timestamp: serverTimestamp()
+                        });
+                        console.log("✅ Device Token Saved!");
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ Notification Setup Error:", error);
+            }
+        }
+    }, 2000); // 2 Second baad notification aayega
+
+</script>
+
+<script>
+    // Browser ka apna "Install app" banner band rakhna
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); });
+
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+            navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
+            .catch(function(error) { console.log("PWA Error:", error); });
+        });
+    }
+
+    // 🌟 FIXED: Ab yahan purani permission logic nahi hai, siraf smooth animation hai
+    function openPortal(url) {
+        const container = document.querySelector('.landing-container');
+        container.classList.add('page-exit');
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 400); 
+    }
+
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            const container = document.querySelector('.landing-container');
+            if (container) {
+                container.classList.remove('page-exit');
+            }
+        }
+    });
+</script>
+
+<div id="notificationBlocker" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.98); z-index:9999999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; box-sizing: border-box; backdrop-filter: blur(10px);">
+    
+    <i class="fa-solid fa-bell" style="font-size: 60px; color: #3b82f6; margin-bottom: 20px;"></i>
+    <h2 style="color: #f8fafc; margin-bottom: 10px; font-size: 24px;">Stay Updated! 🔔</h2>
+    
+    <p id="permMsg" style="color: #cbd5e1; margin: 0 auto 25px auto; line-height: 1.6; font-size: 15px; width: 100%; max-width: 320px; word-wrap: break-word; text-align: center;">
+        Live Test aur Chhutti ke updates turant paane ke liye Notifications ON karein.
+    </p>
+
+    <button id="permBtn" style="background: linear-gradient(135deg, #3b82f6, #0284c7); color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); width: 100%; max-width: 300px; margin-bottom: 15px;">
+        Enable Notifications 🚀
+    </button>
+
+    <button id="closeNotificationUiBtn" style="background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s;">
+        Skip for now (Enter App) &rarr;
+    </button>
+</div>
+
+<script>
+    const blocker = document.getElementById("notificationBlocker");
+    const btn = document.getElementById("permBtn");
+    const closeBtn = document.getElementById("closeNotificationUiBtn");
+
+    // 🎯 फंक्शन: जो स्क्रीन पर टच करते ही पॉप-अप दिखाएगा
+    function showPopupOnFirstTouch() {
+        // अगर परमिशन पहले से डिसाइड हो चुकी है या यूज़र पहले ही SKIP कर चुका है, तो कुछ मत करो
+        if (!("Notification" in window) || Notification.permission !== "default" || localStorage.getItem("gvcc_notif_seen")) {
+            return; 
+        }
+        
+        // पॉप-अप दिखाओ
+        blocker.style.display = "flex";
+
+        // स्क्रीन से टच वाला सेंसर हटा दो ताकि हर टच पर यह कोड बार-बार ना चले
+        document.removeEventListener("click", showPopupOnFirstTouch);
+        document.removeEventListener("touchstart", showPopupOnFirstTouch);
+    }
+
+    // 📱 स्क्रीन पर कहीं भी टच या क्लिक होने का इंतज़ार
+    document.addEventListener("click", showPopupOnFirstTouch);
+    document.addEventListener("touchstart", showPopupOnFirstTouch);
+
+    // ✅ जब बच्चा 'Enable Notifications' दबायेगा
+    btn.addEventListener("click", async () => {
+        try {
+            const perm = await Notification.requestPermission();
+            blocker.style.display = "none";
+            // फोन की मेमोरी में सेव कर लो कि बच्चा जवाब दे चुका है
+            localStorage.setItem("gvcc_notif_seen", "true"); 
+        } catch(e) {
+            alert("⚠️ Kripya apne phone ki Settings se allow karein.");
+        }
+    });
+
+    // ❌ जब बच्चा 'Skip' दबायेगा
+    closeBtn.addEventListener("click", () => {
+        blocker.style.display = "none";
+        // इसे भी मेमोरी में सेव कर लो ताकि पेज रिफ्रेश होने पर दोबारा परेशान ना करे
+        localStorage.setItem("gvcc_notif_seen", "true");
+    });
+</script>
+</body>
+</html>
